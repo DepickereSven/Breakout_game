@@ -1,5 +1,9 @@
-const constants = require("./constants")
-const utils = require("./utils")
+/**
+ * @module bodies/ball
+ */
+
+const constants = require('../constants')
+const utils = require('../utils')
 
 /**
  * Represents the ball
@@ -9,7 +13,7 @@ const utils = require("./utils")
  * @prop {int} dx - horizontal speed
  * @prop {int} dy - vertical speed
  */
-function Ball () {
+exports.Ball = function Ball () {
   this.x = constants.C_WIDTH / 2
   this.y = constants.C_HEIGHT - 80
 
@@ -42,5 +46,3 @@ function Ball () {
     ellipse(this.x, this.y, this.radius * 2)
   }
 }
-
-module.exports = { Ball }

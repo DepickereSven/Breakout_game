@@ -1,12 +1,14 @@
+/**
+ * @module constants
+ */
 
 /**
- * @namespace
+ * Canvas height
+ * @type {number}
  */
-const constants = {
-  /** @type {number} - Canvas Height */
-  C_HEIGHT: 600,
-  /** @type {number} - Canvas Width */
-  C_WIDTH: 800,
-}
-
-module.exports = constants
+exports.C_HEIGHT = 600
+/**
+ * Canvas width
+ * @type {number}
+ */
+exports.C_WIDTH = 800

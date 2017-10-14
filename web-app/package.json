@@ -5,7 +5,9 @@
   "main": "ball.js",
   "scripts": {
     "start": "brunch watch --server",
-    "build": "brunch build --production"
+    "build": "brunch build --production && npm run docs",
+    "docs": "rimraf ./docs && jsdox --output ./docs ./src",
+    "lint": "eslint \"./src/**/*.js\""
   },
   "author": "",
   "license": "ISC",
@@ -19,7 +21,8 @@
     "eslint-plugin-node": "^5.2.0",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
-    "jsdoc": "^3.5.5",
+    "jsdox": "^0.4.10",
+    "rimraf": "^2.6.2",
     "sass-brunch": "^2.10.4",
     "uglify-js-brunch": "^2"
   },

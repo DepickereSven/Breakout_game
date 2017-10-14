@@ -14,7 +14,7 @@ exports.files = {
 };
 
 exports.paths = {
-  public: '../web',
+  public: '../breakout-backend/web',
   watched: ['src']
 };
 

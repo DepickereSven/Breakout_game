@@ -1,5 +1,9 @@
-const constants = require("./constants")
-const utils = require("./utils")
+/**
+ * @module bodies/brick
+ */
+
+const constants = require('../constants')
+const utils = require('../utils')
 
 /**
  * Represents a brick
@@ -9,7 +13,7 @@ const utils = require("./utils")
  * @prop {number} width
  * @prop {number[]} color
  */
-function Brick(x, height, width){
+function Brick (x, height, width) {
   this.x = x
   this.y = 0
   this.height = height
@@ -22,7 +26,7 @@ function Brick(x, height, width){
    * @param {int} dx
    * @param {int} dy
    */
-  this.move = function(dx, dy){
+  this.move = function (dx, dy) {
     this.x += dx
     this.y += dy
   }
@@ -31,12 +35,12 @@ function Brick(x, height, width){
    * Draw the brick on the screen
    * @method
    */
-  this.draw = function() {
+  this.draw = function () {
     fill.apply(fill, this.color)
     rect(this.x, this.y, this.width, this.height)
   }
 }
-
+exports.Brick = Brick
 
 /**
  * Represents a row of bricks
@@ -44,7 +48,7 @@ function Brick(x, height, width){
  * @param {number} rowIndex - The index of row
  * @prop {Brick[]} bricks
  */
-function BrickRow(rowIndex=0){
+function BrickRow (rowIndex = 0) {
   const count = 8
   const margin = 10
   const height = 30
@@ -55,13 +59,12 @@ function BrickRow(rowIndex=0){
     .fill(null)
     .map((_, i) => new Brick((width + margin) * i, height, width))
 
-
   /**
    * Move the bricks in this row down 1 row
    * @method
    */
-  this.moveDown = function(){
-    for(const brick of this.bricks){
+  this.moveDown = function () {
+    for (const brick of this.bricks) {
       brick.move(0, height + margin)
     }
   }
@@ -72,9 +75,9 @@ function BrickRow(rowIndex=0){
    * @param {Ball} ball
    * @return {Ball}
    */
-  this.isBallCollision = function(ball){
-    for(const brick of this.bricks){
-      if(utils.isBallCollision(ball, brick)){
+  this.isBallCollision = function (ball) {
+    for (const brick of this.bricks) {
+      if (utils.isBallCollision(ball, brick)) {
         return brick
       }
     }
@@ -86,7 +89,7 @@ function BrickRow(rowIndex=0){
    * @method
    * @param {Brick} brick
    */
-  this.removeBrick = function(brick){
+  this.removeBrick = function (brick) {
     this.bricks = this.bricks.filter((b) => b !== brick)
   }
 
@@ -95,7 +98,7 @@ function BrickRow(rowIndex=0){
    * @method
    * @return {bool}
    */
-  this.isEmpty = function(){
+  this.isEmpty = function () {
     return this.bricks.length < 1
   }
 
@@ -103,11 +106,11 @@ function BrickRow(rowIndex=0){
    * Draws the bricks
    * @method
    */
-  this.draw = function(){
-    for(const brick of this.bricks){
+  this.draw = function () {
+    for (const brick of this.bricks) {
       brick.draw()
     }
   }
 }
 
-module.exports = { Brick, BrickRow }
+exports.BrickRow = BrickRow

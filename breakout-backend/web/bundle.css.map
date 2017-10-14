@@ -1,0 +1,1 @@
+{"version":3,"sources":["src/styles/main.scss"],"names":[],"mappings":"AAAA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA","file":"../breakout-backend/web/bundle.css","sourcesContent":["\n* {\n  padding: 0;\n  margin: 0;\n}\n\ncanvas {\n  background: #eee;\n  display: block;\n  margin: 0 auto;\n  width: 100%;\n  max-width: 700px;\n}\n"]}

@@ -1,5 +1,9 @@
-const constants = require("./constants")
-const utils = require("./utils")
+/**
+ * @module bodies/score
+ */
+
+const constants = require('../constants')
+const utils = require('../utils')
 
 /**
  * Represents the user score
@@ -7,15 +11,15 @@ const utils = require("./utils")
  * @prop {number} score
  * @prop {string} color
  */
-function Score(){
+exports.Score = function Score () {
   let score = 0
-  const color = "white"
+  const color = 'white'
 
   /**
    * Increases the score by 1
    * @method
    */
-  this.add = function(){
+  this.add = function () {
     score += 1
   }
 
@@ -24,7 +28,7 @@ function Score(){
    * @method
    * @return {number}
    */
-  this.get = function(){
+  this.get = function () {
     return score
   }
 
@@ -32,12 +36,9 @@ function Score(){
    * Draws the score on the screen
    * @method
    */
-  this.draw = function(){
+  this.draw = function () {
     fill(color)
-    textFont("Arial", 30)
+    textFont('Arial', 30)
     text(score, constants.C_WIDTH / 2, constants.C_HEIGHT / 2)
   }
 }
-
-
-module.exports = { Score }

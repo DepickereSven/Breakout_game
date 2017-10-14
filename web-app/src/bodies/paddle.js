@@ -1,5 +1,9 @@
-const constants = require("./constants")
-const utils = require("./utils")
+/**
+ * @module bodies/paddle
+ */
+
+const constants = require('../constants')
+const utils = require('../utils')
 
 /**
  * Represents paddle
@@ -11,8 +15,7 @@ const utils = require("./utils")
  * @prop {number} y
  * @prop {string} color
  */
-function Paddle(){
-
+exports.Paddle = function Paddle () {
   this.height = 30
   this.width = 120
   this.borderRadius = 4
@@ -20,24 +23,21 @@ function Paddle(){
   this.x = (constants.C_WIDTH - this.width) / 2
   this.y = constants.C_HEIGHT - this.height - 10
 
-  this.color = "white"
+  this.color = 'white'
 
   /**
    * Move the paddle horizontally
    * @param {number} dx - Relative change in x
    */
-  this.move = function(dx){
+  this.move = function (dx) {
     this.x += dx
   }
 
   /**
    * Daw the paddle on the screen
    */
-  this.draw = function(){
+  this.draw = function () {
     fill(this.color)
     rect(this.x, this.y, this.width, this.height, this.borderRadius)
   }
 }
-
-
-module.exports = { Paddle }
