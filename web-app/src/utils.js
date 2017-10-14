@@ -1,0 +1,71 @@
+"use strict"
+
+/**
+ * @namespace
+ */
+const utils = {
+
+  /**
+   * Calculate distance between 2 points
+   * @param {number} x1
+   * @param {number} y1
+   * @param {number} x2
+   * @param {number} y2
+   * @return {number}
+   */
+  calcPointsDistance: function(x1, y1, x2, y2){
+    let xDist = x2 - x1
+    let yDist = y2 - y1
+
+    // Pythagoras
+    return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2))
+  },
+
+  /**
+   * Check if value is between min and max
+   * @param {number} val
+   * @param {number} min
+   * @param {number} max
+   * @return {boolean}
+   */
+  inRange: function(val, min, max){
+    return val >= Math.min(min, max) && val <= Math.max(min, max)
+  },
+
+  /**
+   * Check if there is a collision between ball and brick
+   * @param {Ball} ball
+   * @param {Brick} brick
+   * @return {boolean}
+   */
+  isBallCollision: function(ball, brick){
+    return utils.inRange(ball.x, brick.x - ball.radius, brick.x + brick.width + ball.radius) &&
+      utils.inRange(ball.y, brick.y - ball.radius, brick.y + brick.height + ball.radius)
+  },
+
+  /**
+   * Generate random number between min and max
+   * @param {number} min
+   * @param {number} max
+   * @return {number}
+   */
+  randomInRange: function(min, max){
+    min = Math.ceil(min)
+    max = Math.floor(max)
+    return Math.round(Math.random() * (max - min)) + min
+  },
+
+  /**
+   * Generate either 1 or -1
+   * @return {number}
+   */
+  randomSign: () => Math.round(Math.random()) ? 1 : -1,
+
+  /**
+   * Generate random color in RGB
+   * @return {number[]}
+   */
+  randomColor: () => [0, 0, 0].map(() => utils.randomInRange(50, 255)),
+}
+
+module.exports = utils
