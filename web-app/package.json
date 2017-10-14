@@ -6,11 +6,9 @@
   "scripts": {
     "start": "brunch watch --server",
     "build": "brunch build --production && npm run docs",
-    "docs": "rimraf ./docs && jsdox --output ./docs ./src",
+    "docs": "jsdoc2md --template README.hbs --files ./src/*.js ./src/**/*.js > README.md",
     "lint": "eslint \"./src/**/*.js\""
   },
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "auto-reload-brunch": "^2.7.1",
     "brunch": "^2",
@@ -21,7 +19,8 @@
     "eslint-plugin-node": "^5.2.0",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
-    "jsdox": "^0.4.10",
+    "jsdoc": "^3.5.5",
+    "jsdoc-to-markdown": "^3.0.0",
     "rimraf": "^2.6.2",
     "sass-brunch": "^2.10.4",
     "uglify-js-brunch": "^2"

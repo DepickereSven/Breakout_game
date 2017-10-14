@@ -7,6 +7,8 @@
  * @type {number}
  */
 exports.C_HEIGHT = 600
+
+
 /**
  * Canvas width
  * @type {number}
