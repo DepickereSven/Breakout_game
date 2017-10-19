@@ -27,8 +27,5 @@ exports.npm = {
   globals: {
     jQuery: 'jquery',
     $: 'jquery',
-  },
-  styles: {
-    bootstrap: ['dist/css/bootstrap.css']
   }
 };

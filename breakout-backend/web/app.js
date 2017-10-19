@@ -425,6 +425,8 @@ exports.Score = function Score () {
  * @type {number}
  */
 exports.C_HEIGHT = 600
+
+
 /**
  * Canvas width
  * @type {number}
@@ -675,5 +677,3 @@ window["$"] = require("jquery");
 
 });})();require('___globals___');
 
-
-//# sourceMappingURL=app.js.map
