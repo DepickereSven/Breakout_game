@@ -14,6 +14,8 @@ const { Score } = require('./bodies/score')
 
 const state = {}
 
+d = 
+
 function addBrickRow () {
   // Move other rows down
   for (const row of state.brickRows) {

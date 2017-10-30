@@ -1,0 +1,20 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package nu.smashit.socket;
+
+/**
+ *
+ * @author jodus
+ */
+public class CreateGameFailureAction implements Action {
+
+    public final String errorMessage;
+
+    public CreateGameFailureAction(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+}
