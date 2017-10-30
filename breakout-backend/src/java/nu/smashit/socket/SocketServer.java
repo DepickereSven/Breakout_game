@@ -44,34 +44,10 @@ public class SocketServer {
      * @param sess
      */
     @OnMessage
-    public void onMessage(Action a, Session sess) {
+    public void onMessage(RequestAction a, Session sess) {
         Client c = clientManager.getClient(sess);
 
-        if (a instanceof CreateGameRequestAction) {
-            onClientMessage((CreateGameRequestAction) a, c);
-        }
-        if (a instanceof JoinGameRequestAction) {
-            onClientMessage((JoinGameRequestAction) a, c);
-        }
-    }
-
-    private void onClientMessage(CreateGameRequestAction a, Client c) {
-        try {
-            GameSession gm = gameSessionManager.createGame(c);
-            c.sendAction(new CreateGameSuccessAction(gm.key));
-        } catch (Error err) {
-            c.sendAction(new CreateGameFailureAction(err.getMessage()));
-        }
-    }
-
-    private void onClientMessage(JoinGameRequestAction a, Client c) {
-        try {
-            GameSession gm = gameSessionManager.joinGame(a.key, c);
-            c.sendAction(new JoinGameSuccessAction(gm.key));
-            gm.startGame();
-        } catch (Error err) {
-            c.sendAction(new CreateGameFailureAction(err.getMessage()));
-        }
+        a.handler(c);
     }
 
     /**

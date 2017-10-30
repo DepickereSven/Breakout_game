@@ -28,13 +28,11 @@ public class Client {
         return session.getId();
     }
 
-    public void sendAction(Action a) {
+    public void sendAction(ResponseAction a) {
         try {
             session.getBasicRemote().sendObject(a);
-        } catch (IOException err) {
+        } catch (IOException | EncodeException err) {
             Logger.log(err.getMessage());
-        } catch (EncodeException ex) {
-            Logger.log(ex.getMessage());
         }
     }
 

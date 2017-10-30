@@ -6,11 +6,10 @@
 package nu.smashit.core;
 
 import java.util.Timer;
-import java.util.TimerTask;
-import nu.smashit.socket.Action;
 import nu.smashit.socket.Client;
 import nu.smashit.socket.GameStartAction;
 import nu.smashit.socket.GameStopAction;
+import nu.smashit.socket.ResponseAction;
 
 /**
  *
@@ -40,7 +39,7 @@ public class GameSession {
         c.setGame(this);
     }
 
-    private void broadcastAction(Action a) {
+    private void broadcastAction(ResponseAction a) {
         for (Client c : clients) {
             c.sendAction(a);
         }

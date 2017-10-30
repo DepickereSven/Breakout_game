@@ -5,16 +5,16 @@
  */
 package nu.smashit.socket;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
 /**
  *
  * @author jodus
  */
-@JsonTypeInfo(use = Id.NAME,
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "type")
 @JsonSubTypes({
@@ -22,5 +22,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
     ,
     @Type(value = JoinGameRequestAction.class)
 })
-public interface Action {
+public interface RequestAction {
+
+    @JsonIgnore
+    public void handler(Client c);
 }

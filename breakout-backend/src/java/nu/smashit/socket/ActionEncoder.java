@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  *
  * @author jodus
  */
-public class ActionEncoder implements Encoder.Binary<Action> {
+public class ActionEncoder implements Encoder.Binary<ResponseAction> {
 
     private final ObjectMapper objectMapper = new ObjectMapper(new MessagePackFactory());
 
@@ -32,7 +32,7 @@ public class ActionEncoder implements Encoder.Binary<Action> {
     }
 
     @Override
-    public ByteBuffer encode(Action a) throws EncodeException {
+    public ByteBuffer encode(ResponseAction a) throws EncodeException {
         try {
             byte[] bytes = objectMapper.writeValueAsBytes(a);
             return ByteBuffer.wrap(bytes);

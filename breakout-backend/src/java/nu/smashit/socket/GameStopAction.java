@@ -9,6 +9,6 @@ package nu.smashit.socket;
  *
  * @author jodus
  */
-public class GameStopAction implements Action {
+public class GameStopAction implements ResponseAction {
 
 }

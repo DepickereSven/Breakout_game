@@ -5,11 +5,23 @@
  */
 package nu.smashit.socket;
 
+import nu.smashit.core.GameSession;
+import nu.smashit.core.GameSessionManager;
+
 /**
  *
  * @author jodus
  */
-public class CreateGameRequestAction implements Action {
+public class CreateGameRequestAction implements RequestAction {
 
-    public String key;
+    @Override
+    public void handler(Client c) {
+        GameSessionManager gameSessionManager = GameSessionManager.getInstance();
+        try {
+            GameSession gm = gameSessionManager.createGame(c);
+            c.sendAction(new CreateGameSuccessAction(gm.key));
+        } catch (Error err) {
+            c.sendAction(new CreateGameFailureAction(err.getMessage()));
+        }
+    }
 }

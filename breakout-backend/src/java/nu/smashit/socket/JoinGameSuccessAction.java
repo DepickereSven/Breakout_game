@@ -9,7 +9,7 @@ package nu.smashit.socket;
  *
  * @author jodus
  */
-public class JoinGameSuccessAction implements Action {
+public class JoinGameSuccessAction implements ResponseAction {
 
     public final String key;
 

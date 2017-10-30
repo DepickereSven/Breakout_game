@@ -19,7 +19,7 @@ import org.msgpack.jackson.dataformat.MessagePackFactory;
  *
  * @author jodus
  */
-public class ActionDecoder implements Decoder.Binary<Action> {
+public class ActionDecoder implements Decoder.Binary<RequestAction> {
 
     private final ObjectMapper objectMapper = new ObjectMapper(new MessagePackFactory());
 
@@ -32,9 +32,9 @@ public class ActionDecoder implements Decoder.Binary<Action> {
     }
 
     @Override
-    public Action decode(ByteBuffer bytes) throws DecodeException {
+    public RequestAction decode(ByteBuffer bytes) throws DecodeException {
         try {
-            return objectMapper.readValue(bytes.array(), Action.class);
+            return objectMapper.readValue(bytes.array(), RequestAction.class);
         } catch (IOException ex) {
             Logger.getLogger(ActionDecoder.class.getName()).log(Level.SEVERE, null, ex);
             return null;

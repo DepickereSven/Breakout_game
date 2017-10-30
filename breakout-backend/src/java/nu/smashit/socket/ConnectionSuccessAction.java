@@ -9,5 +9,5 @@ package nu.smashit.socket;
  *
  * @author jodus
  */
-public class ConnectionSuccessAction implements Action {
+public class ConnectionSuccessAction implements ResponseAction {
 }

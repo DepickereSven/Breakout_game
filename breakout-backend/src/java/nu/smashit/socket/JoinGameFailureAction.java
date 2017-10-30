@@ -9,7 +9,7 @@ package nu.smashit.socket;
  *
  * @author jodus
  */
-public class JoinGameFailureAction implements Action {
+public class JoinGameFailureAction implements ResponseAction {
 
     public final String key;
 
