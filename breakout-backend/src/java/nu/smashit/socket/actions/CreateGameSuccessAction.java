@@ -3,12 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nu.smashit.socket;
+package nu.smashit.socket.actions;
 
 /**
  *
  * @author jodus
  */
-public class GameStartAction implements ResponseAction {
+public class CreateGameSuccessAction implements ResponseAction {
 
+    public final String key;
+
+    public CreateGameSuccessAction(String key) {
+        this.key = key;
+    }
 }

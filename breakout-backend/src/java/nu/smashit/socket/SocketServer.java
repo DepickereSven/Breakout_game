@@ -1,15 +1,14 @@
 package nu.smashit.socket;
 
-import java.io.IOException;
+import nu.smashit.socket.actions.ConnectionSuccessAction;
+import nu.smashit.socket.actions.RequestAction;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
-import nu.smashit.core.GameSession;
 import nu.smashit.core.GameSessionManager;
-import nu.smashit.utils.Logger;
 
 @ServerEndpoint(
         value = "/socket",

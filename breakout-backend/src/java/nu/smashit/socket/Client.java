@@ -5,6 +5,7 @@
  */
 package nu.smashit.socket;
 
+import nu.smashit.socket.actions.ResponseAction;
 import java.io.IOException;
 import javax.websocket.EncodeException;
 import javax.websocket.Session;

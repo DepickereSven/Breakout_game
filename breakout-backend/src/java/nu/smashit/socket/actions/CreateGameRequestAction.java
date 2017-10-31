@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nu.smashit.socket;
+package nu.smashit.socket.actions;
 
 import nu.smashit.core.GameSession;
 import nu.smashit.core.GameSessionManager;
+import nu.smashit.socket.Client;
 
 /**
  *
@@ -19,7 +20,7 @@ public class CreateGameRequestAction implements RequestAction {
         GameSessionManager gameSessionManager = GameSessionManager.getInstance();
         try {
             GameSession gm = gameSessionManager.createGame(c);
-            c.sendAction(new CreateGameSuccessAction(gm.key));
+            c.sendAction(new CreateGameSuccessAction(gm.getKey()));
         } catch (Error err) {
             c.sendAction(new CreateGameFailureAction(err.getMessage()));
         }

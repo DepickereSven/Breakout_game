@@ -5,6 +5,7 @@
  */
 package nu.smashit.socket;
 
+import nu.smashit.socket.actions.RequestAction;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.nio.ByteBuffer;

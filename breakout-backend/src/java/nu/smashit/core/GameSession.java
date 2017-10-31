@@ -1,17 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nu.smashit.core;
 
 import java.util.Timer;
 import java.util.TimerTask;
 import nu.smashit.socket.Client;
-import nu.smashit.socket.GameStartAction;
-import nu.smashit.socket.GameStopAction;
-import nu.smashit.socket.GameStateUpdateAction;
-import nu.smashit.socket.ResponseAction;
+import nu.smashit.socket.actions.GameStateUpdateAction;
+import nu.smashit.socket.actions.GameStartAction;
+import nu.smashit.socket.actions.GameStopAction;
+import nu.smashit.socket.actions.ResponseAction;
 
 /**
  *
@@ -20,7 +15,7 @@ import nu.smashit.socket.ResponseAction;
 public class GameSession {
 
     private final Client[] clients;
-    public final String key;
+    private final String key;
     private final Timer timer;
     private final int updateInterval;
 
@@ -71,7 +66,15 @@ public class GameSession {
         for (Client c : clients) {
             c.removeGame();
         }
-        GameSessionManager.getInstance().removeGame(key);
+        GameSessionManager.getInstance().removeGame(getKey());
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public Timer getTimer() {
+        return timer;
     }
 
     public void runUpdate() {
@@ -85,5 +88,4 @@ public class GameSession {
 
         broadcastAction(updateStateAction);
     }
-
 }
