@@ -25,6 +25,7 @@ public class GameSession {
     private final int updateInterval;
 
     public final Paddle paddle;
+    public final Ball ball;
 
     GameSession(String key) {
         this.key = key;
@@ -33,6 +34,7 @@ public class GameSession {
         this.updateInterval = 33;
 
         this.paddle = new Paddle();
+        this.ball = new Ball();
     }
 
     public void join(Client c) {
@@ -73,9 +75,15 @@ public class GameSession {
     }
 
     public void runUpdate() {
-        GameStateUpdateAction updateStateaction = new GameStateUpdateAction();
-        updateStateaction.addBody(paddle);
-        broadcastAction(updateStateaction);
+        GameStateUpdateAction updateStateAction = new GameStateUpdateAction();
+
+        ball.move(1, 2);
+        updateStateAction.addBody(ball);
+
+        paddle.move(3, 0);
+        updateStateAction.addBody(paddle);
+
+        broadcastAction(updateStateAction);
     }
 
 }
