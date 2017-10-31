@@ -3,17 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nu.smashit.socket;
+package nu.smashit.socket.actions;
 
 /**
  *
  * @author jodus
  */
-public class JoinGameFailureAction implements ResponseAction {
-
-    public final String key;
-
-    public JoinGameFailureAction(String key) {
-        this.key = key;
-    }
+public class ConnectionSuccessAction implements ResponseAction {
 }

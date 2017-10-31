@@ -1,17 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nu.smashit.core;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import javax.websocket.Session;
 import nu.smashit.socket.Client;
-import nu.smashit.socket.ClientManager;
-import nu.smashit.utils.Logger;
 
 /**
  *
@@ -34,7 +26,7 @@ public class GameSessionManager {
         String key = generateKey();
         GameSession gm = new GameSession(key);
         gm.join(c);
-        gameSessions.put(gm.key, gm);
+        gameSessions.put(gm.getKey(), gm);
         return gm;
     }
 

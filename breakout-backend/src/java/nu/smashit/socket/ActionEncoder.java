@@ -5,6 +5,7 @@
  */
 package nu.smashit.socket;
 
+import nu.smashit.socket.actions.ResponseAction;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.nio.ByteBuffer;
 import javax.websocket.EncodeException;
