@@ -1,9 +1,7 @@
 package nu.smashit.core;
 
 import java.util.Timer;
-import java.util.TimerTask;
 import nu.smashit.socket.Client;
-import nu.smashit.socket.actions.GameStateUpdateAction;
 import nu.smashit.socket.actions.GameStartAction;
 import nu.smashit.socket.actions.GameStopAction;
 import nu.smashit.socket.actions.ResponseAction;
@@ -14,22 +12,20 @@ import nu.smashit.socket.actions.ResponseAction;
  */
 public class GameSession {
 
-    private final Client[] clients;
     private final String key;
-    private final Timer timer;
-    private final int updateInterval;
+    private final Client[] clients;
+    private final GameLoop gameLoop;
 
-    public final Paddle paddle;
-    public final Ball ball;
+    private final Timer gameLoopTimer;
+    private final int updateInterval;
 
     GameSession(String key) {
         this.key = key;
         this.clients = new Client[2];
-        this.timer = new Timer();
-        this.updateInterval = 33;
+        this.gameLoop = new GameLoop(this);
 
-        this.paddle = new Paddle();
-        this.ball = new Ball();
+        this.gameLoopTimer = new Timer();
+        this.updateInterval = 33;
     }
 
     public void join(Client c) {
@@ -41,7 +37,7 @@ public class GameSession {
         c.setGame(this);
     }
 
-    private void broadcastAction(ResponseAction a) {
+    void broadcastAction(ResponseAction a) {
         for (Client c : clients) {
             c.sendAction(a);
         }
@@ -50,16 +46,11 @@ public class GameSession {
     public void startGame() {
         broadcastAction(new GameStartAction());
 
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                runUpdate();
-            }
-        }, 0, updateInterval);
+        gameLoopTimer.scheduleAtFixedRate(this.gameLoop, 0, updateInterval);
     }
 
     public void stopGame() {
-        timer.cancel();
+        gameLoopTimer.cancel();
 
         broadcastAction(new GameStopAction());
 
@@ -71,21 +62,5 @@ public class GameSession {
 
     public String getKey() {
         return key;
-    }
-
-    public Timer getTimer() {
-        return timer;
-    }
-
-    public void runUpdate() {
-        GameStateUpdateAction updateStateAction = new GameStateUpdateAction();
-
-        ball.move(1, 2);
-        updateStateAction.addBody(ball);
-
-        paddle.move(3, 0);
-        updateStateAction.addBody(paddle);
-
-        broadcastAction(updateStateAction);
     }
 }
