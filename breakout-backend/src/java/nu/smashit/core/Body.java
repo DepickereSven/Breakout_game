@@ -5,16 +5,21 @@
  */
 package nu.smashit.core;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 /**
  *
  * @author jodus
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type")
 public class Body {
 
-    protected int x;
-    protected int y;
-    protected int width;
-    protected int height;
+    public int x;
+    public int y;
+    public int width;
+    public int height;
 
     Body(int x, int y, int width, int height) {
         this.x = x;

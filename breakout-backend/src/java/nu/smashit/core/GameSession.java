@@ -6,9 +6,11 @@
 package nu.smashit.core;
 
 import java.util.Timer;
+import java.util.TimerTask;
 import nu.smashit.socket.Client;
 import nu.smashit.socket.GameStartAction;
 import nu.smashit.socket.GameStopAction;
+import nu.smashit.socket.GameStateUpdateAction;
 import nu.smashit.socket.ResponseAction;
 
 /**
@@ -18,16 +20,19 @@ import nu.smashit.socket.ResponseAction;
 public class GameSession {
 
     private final Client[] clients;
-    private final Paddle paddle;
     public final String key;
-    public final Timer timer;
+    private final Timer timer;
+    private final int updateInterval;
+
+    public final Paddle paddle;
 
     GameSession(String key) {
         this.key = key;
         this.clients = new Client[2];
-        this.paddle = new Paddle();
-
         this.timer = new Timer();
+        this.updateInterval = 33;
+
+        this.paddle = new Paddle();
     }
 
     public void join(Client c) {
@@ -47,9 +52,18 @@ public class GameSession {
 
     public void startGame() {
         broadcastAction(new GameStartAction());
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                runUpdate();
+            }
+        }, 0, updateInterval);
     }
 
     public void stopGame() {
+        timer.cancel();
+
         broadcastAction(new GameStopAction());
 
         for (Client c : clients) {
@@ -57,4 +71,11 @@ public class GameSession {
         }
         GameSessionManager.getInstance().removeGame(key);
     }
+
+    public void runUpdate() {
+        GameStateUpdateAction updateStateaction = new GameStateUpdateAction();
+        updateStateaction.addBody(paddle);
+        broadcastAction(updateStateaction);
+    }
+
 }
