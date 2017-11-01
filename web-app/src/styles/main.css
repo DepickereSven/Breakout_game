@@ -4,10 +4,14 @@
   margin: 0;
 }
 
-canvas {
+body {
   background: #eee;
   display: block;
   margin: 0 auto;
   width: 100%;
-  max-width: 700px;
+  max-width: 300px;
+}
+
+.hidden {
+  display: none;
 }

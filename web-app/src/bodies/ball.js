@@ -7,42 +7,30 @@ const utils = require('../utils')
 
 /**
  * Represents the ball
- * @constructor
- * @prop {int} x - horizontal position
- * @prop {int} y - vertical position
- * @prop {int} dx - horizontal speed
- * @prop {int} dy - vertical speed
+ * @class
+ * @prop {number} x - horizontal position
+ * @prop {number} y - vertical position
+ * @prop {number} dx - horizontal speed
+ * @prop {number} dy - vertical speed
  */
-exports.Ball = function Ball () {
-  this.x = constants.C_WIDTH / 2
-  this.y = constants.C_HEIGHT - 80
+function Ball () {
+  this.height = 0
+  this.width = 0
 
-  this.dx = utils.randomInRange(4, 6) * utils.randomSign()
-  this.dy = -8
+  this.x = 0
+  this.y = 0
 
-  this.radius = 10
   this.color = 'white'
+}
+exports.Ball = Ball
 
-  /**
-   * Move the ball to new position
-   * @method
-   * @param {int} dx
-   * @param {int} dy
-   */
-  this.move = function (dx, dy) {
-    this.dx = dx
-    this.dy = dy
 
-    this.x += dx
-    this.y += dy
-  }
-
-  /**
-   * Draw the ball on the provides 2D context
-   * @method
-   */
-  this.draw = function () {
-    fill(this.color)
-    ellipse(this.x, this.y, this.radius * 2)
-  }
+/**
+ * Draw the ball on the provides 2D context
+ * @method
+ * @param {Sketch} s
+ */
+Ball.prototype.draw = function (s) {
+  s.fill(this.color)
+  s.ellipse(this.x, this.y, this.height)
 }

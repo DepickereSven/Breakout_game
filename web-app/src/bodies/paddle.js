@@ -15,29 +15,26 @@ const utils = require('../utils')
  * @prop {number} y
  * @prop {string} color
  */
-exports.Paddle = function Paddle () {
-  this.height = 30
-  this.width = 120
+function Paddle () {
+  this.height = 0
+  this.width = 0
   this.borderRadius = 4
 
-  this.x = (constants.C_WIDTH - this.width) / 2
-  this.y = constants.C_HEIGHT - this.height - 10
+  this.x = 0
+  this.y = 0
 
   this.color = 'white'
-
-  /**
-   * Move the paddle horizontally
-   * @param {number} dx - Relative change in x
-   */
-  this.move = function (dx) {
-    this.x += dx
-  }
-
-  /**
-   * Daw the paddle on the screen
-   */
-  this.draw = function () {
-    fill(this.color)
-    rect(this.x, this.y, this.width, this.height, this.borderRadius)
-  }
 }
+exports.Paddle = Paddle
+
+
+/**
+ * Daw the paddle on the screen
+ * @method
+ * @param {Sketch} s
+ */
+Paddle.prototype.draw = function (s) {
+  s.fill(this.color)
+  s.rect(this.x, this.y, this.width, this.height, this.borderRadius)
+}
+

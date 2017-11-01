@@ -148,7 +148,32 @@ var __makeRelativeRequire = function(require, mappings, pref) {
     return require(name);
   }
 };
-require.register("src/bodies/ball.js", function(exports, require, module) {
+require.register("src/actions.js", function(exports, require, module) {
+/**
+ * Contains action creators
+ * @module actions
+ */
+
+/**
+ * Action object creator
+ * @param {string} shortType
+ * @param {object} payload
+ */
+function createAction (shortType, payload={}){
+  const fullType = shortType + 'Action'
+  return { type: fullType, ...payload }
+}
+
+
+exports.createGameRequest = () =>
+  createAction('CreateGameRequest')
+
+exports.joinGameRequest = (key) =>
+  createAction('JoinGameRequest', { key })
+
+});
+
+;require.register("src/bodies/ball.js", function(exports, require, module) {
 /**
  * @module bodies/ball
  */
@@ -158,44 +183,32 @@ const utils = require('../utils')
 
 /**
  * Represents the ball
- * @constructor
- * @prop {int} x - horizontal position
- * @prop {int} y - vertical position
- * @prop {int} dx - horizontal speed
- * @prop {int} dy - vertical speed
+ * @class
+ * @prop {number} x - horizontal position
+ * @prop {number} y - vertical position
+ * @prop {number} dx - horizontal speed
+ * @prop {number} dy - vertical speed
  */
-exports.Ball = function Ball () {
-  this.x = constants.C_WIDTH / 2
-  this.y = constants.C_HEIGHT - 80
+function Ball () {
+  this.height = 0
+  this.width = 0
 
-  this.dx = utils.randomInRange(4, 6) * utils.randomSign()
-  this.dy = -8
+  this.x = 0
+  this.y = 0
 
-  this.radius = 10
   this.color = 'white'
+}
+exports.Ball = Ball
 
-  /**
-   * Move the ball to new position
-   * @method
-   * @param {int} dx
-   * @param {int} dy
-   */
-  this.move = function (dx, dy) {
-    this.dx = dx
-    this.dy = dy
 
-    this.x += dx
-    this.y += dy
-  }
-
-  /**
-   * Draw the ball on the provides 2D context
-   * @method
-   */
-  this.draw = function () {
-    fill(this.color)
-    ellipse(this.x, this.y, this.radius * 2)
-  }
+/**
+ * Draw the ball on the provides 2D context
+ * @method
+ * @param {Sketch} s
+ */
+Ball.prototype.draw = function (s) {
+  s.fill(this.color)
+  s.ellipse(this.x, this.y, this.height)
 }
 
 });
@@ -338,32 +351,29 @@ const utils = require('../utils')
  * @prop {number} y
  * @prop {string} color
  */
-exports.Paddle = function Paddle () {
-  this.height = 30
-  this.width = 120
+function Paddle () {
+  this.height = 0
+  this.width = 0
   this.borderRadius = 4
 
-  this.x = (constants.C_WIDTH - this.width) / 2
-  this.y = constants.C_HEIGHT - this.height - 10
+  this.x = 0
+  this.y = 0
 
   this.color = 'white'
-
-  /**
-   * Move the paddle horizontally
-   * @param {number} dx - Relative change in x
-   */
-  this.move = function (dx) {
-    this.x += dx
-  }
-
-  /**
-   * Daw the paddle on the screen
-   */
-  this.draw = function () {
-    fill(this.color)
-    rect(this.x, this.y, this.width, this.height, this.borderRadius)
-  }
 }
+exports.Paddle = Paddle
+
+
+/**
+ * Daw the paddle on the screen
+ * @method
+ * @param {Sketch} s
+ */
+Paddle.prototype.draw = function (s) {
+  s.fill(this.color)
+  s.rect(this.x, this.y, this.width, this.height, this.borderRadius)
+}
+
 
 });
 
@@ -420,18 +430,75 @@ exports.Score = function Score () {
  * @module constants
  */
 
+
+/**
+ * API url
+ * @type {string}
+ */
+exports.API_URL = 'ws://localhost:8080/breakout/socket'
+
+
 /**
  * Canvas height
  * @type {number}
  */
-exports.C_HEIGHT = 600
+exports.C_HEIGHT = 450
 
 
 /**
  * Canvas width
  * @type {number}
  */
-exports.C_WIDTH = 800
+exports.C_WIDTH = 300
+
+});
+
+;require.register("src/gameloop.js", function(exports, require, module) {
+/**
+ * @module gameLoop
+ */
+
+const constants = require('./constants')
+const utils = require('./utils')
+
+const { Ball } = require('./bodies/ball')
+const { Paddle } = require('./bodies/paddle')
+
+/**
+ * GameLoop provides the state and drawing for the sketch
+ * @class
+ * @prop {Paddle} paddle
+ * @prop {Ball} ball
+ */
+function GameLoop() {
+  // Initialise bodies
+  this.paddle = new Paddle()
+  this.ball = new Ball()
+}
+exports.GameLoop = GameLoop
+
+
+/**
+ * Draws the current state onto the provided sketch
+ * @method
+ * @param {Sketch} s - p5.js sketch object to draw on
+ */
+GameLoop.prototype.run = function run(s) {
+  // Clear canvas
+  s.background(0)
+  s.fill(255)
+
+  // Paddle controls
+  {
+    this.paddle.draw(s)
+  }
+
+  // Ball controls
+  {
+    this.ball.draw(s)
+  }
+
+}
 
 });
 
@@ -443,146 +510,133 @@ exports.C_WIDTH = 800
 const P5 = require('p5')
 
 const constants = require('./constants')
-const utils = require('./utils')
+const { GameLoop } = require('./gameloop')
+const { wsClient } = require('./socket/client')
 
-const { Ball } = require('./bodies/ball')
-const { Paddle } = require('./bodies/paddle')
-const { BrickRow } = require('./bodies/brick')
-const { Score } = require('./bodies/score')
+require('./userinput')
 
 const state = {}
 
-function addBrickRow () {
-  // Move other rows down
-  for (const row of state.brickRows) {
-    row.moveDown()
-  }
-
-  // Create new row
-  const rowIndex = state.brickRows.length
-  const row = new BrickRow(rowIndex)
-
-  // Place in on top
-  state.brickRows.unshift(row)
-}
-
-function removeBrickFromRow (brickRow, brick) {
-  brickRow.removeBrick(brick)
-
-  // Check if bottom row is empty
-  const lastIndex = state.brickRows.length - 1
-  const isBottomRow = brickRow == state.brickRows[lastIndex]
-
-  if (isBottomRow && brickRow.isEmpty()) {
-    state.brickRows.pop()
-  }
-}
-
 const p5 = new P5(function (sketch) {
-
-  // Set globals
-  window.fill = sketch.fill.bind(sketch)
-  window.background = sketch.background.bind(sketch)
-  window.rect = sketch.rect.bind(sketch)
-  window.ellipse = sketch.ellipse.bind(sketch)
-  window.textFont = sketch.textFont.bind(sketch)
-  window.text = sketch.text.bind(sketch)
+  let gameLoop
 
   sketch.setup = function () {
     sketch.createCanvas(constants.C_WIDTH, constants.C_HEIGHT)
 
-    // Initialise paddle
-    state.paddle = new Paddle()
-    state.paddleCollisions = 0
+    wsClient.open()
 
-    // Initialise ball
-    state.ball = new Ball()
-
-    // Initialise bricks
-    state.brickRows = []
-    addBrickRow()
-    addBrickRow()
-
-    // Initialise score
-    state.score = new Score()
+    gameLoop  = new GameLoop()
   }
 
   sketch.draw = function () {
-    // Clear canvas
-    background(0)
-    fill(255)
-
-    // Paddle movement
-    if (state.paddle) {
-      const { x, y, width } = state.paddle
-
-      if (sketch.keyIsPressed && sketch.keyCode == sketch.LEFT_ARROW && x > 0) {
-        state.paddle.move(-8)
-      }
-      if (sketch.keyIsPressed && sketch.keyCode == sketch.RIGHT_ARROW && x < constants.C_WIDTH - width) {
-        state.paddle.move(8)
-      }
-
-      state.paddle.draw()
-    }
-
-    // Ball movement
-    if (state.ball) {
-      let { x, y, dx, dy, radius } = state.ball
-
-      // Wall collission
-      if (x + dx > constants.C_WIDTH - radius || x + dx < radius) {
-        dx = -dx
-
-        // Ceiling collission
-      } else if (y + dy < radius) {
-        dy = -dy
-
-        // Floor collission
-      } else if (y + dy > constants.C_HEIGHT - radius) {
-        console.log('GAME OVER')
-        setup()
-        return
-
-        // Paddle collision
-      } else if (utils.isBallCollision(state.ball, state.paddle)) {
-        dy = -dy
-        state.paddleCollisions += 1
-        if (state.paddleCollisions > 4) {
-          addBrickRow()
-          state.paddleCollisions = 0
-        }
-
-        // Brick collision
-      } else {
-        // Reverse loop over the brickRows -> bottom rows will be first checked
-        for (let i = state.brickRows.length - 1; i >= 0; i--) {
-          const brickRow = state.brickRows[i]
-          const brick = brickRow.isBallCollision(state.ball)
-
-          if (brick) {
-            removeBrickFromRow(brickRow, brick)
-
-            state.score.add()
-            dy = -dy
-            break
-          }
-        }
-      }
-
-      state.ball.move(dx, dy)
-      state.ball.draw()
-    }
-
-    for (const brickRow of state.brickRows) {
-      brickRow.draw()
-    }
-
-    state.score.draw()
+    gameLoop.run(sketch)
   }
 })
 
 
+
+});
+
+;require.register("src/socket/client.js", function(exports, require, module) {
+/**
+ * @module socket/client
+ */
+
+const msgpack = require('msgpack-lite');
+
+const constants = require('../constants')
+
+/**
+ * Websocket client
+ * @class
+ * @prop {WebSocket} ws
+ */
+function WsClient(){
+}
+
+
+/**
+ * Open connection
+ * @method
+ */
+WsClient.prototype.open = function open() {
+  if(this.ws !== undefined && this.ws.readyState !== WebSocket.CLOSED){
+    throw new Error('WebSocket is already opened.')
+  }
+
+  this.ws = new WebSocket(constants.API_URL)
+  this.ws.binaryType = 'arraybuffer'
+
+  this.ws.onopen = this.onOpen
+  this.ws.onclose = this.onClose
+  this.ws.onmessage = this.onMessage
+}
+
+/**
+ * Event handler for succesfull connection
+ * @method
+ */
+WsClient.prototype.onOpen = function onOpen() {
+}
+
+/**
+ * Event handler for connection termination
+ * @method
+ */
+WsClient.prototype.onClose = function onClose() {
+  throw new Error('WebSocket was closed.')
+}
+
+/**
+ * Event handler for receicing messages
+ * @method
+ */
+WsClient.prototype.onMessage = function onMessage(event) {
+  const bufferView = new Uint8Array(event.data)
+  const action = msgpack.decode(bufferView)
+  console.log(action)
+}
+
+/**
+ * Send an action to the server
+ * @method
+ * @param {Action} action
+ */
+WsClient.prototype.send = function send(action) {
+  if(!this.ws){
+    throw new Error('Websocket isn\'t yet open')
+  }
+  console.log(action)
+  const buffer = msgpack.encode(action)
+  this.ws.send(buffer)
+}
+
+
+// Export a single WsClient instance
+if(!window.wsClient){
+  window.wsClient = new WsClient()
+}
+
+exports.wsClient = window.wsClient
+
+});
+
+;require.register("src/userinput.js", function(exports, require, module) {
+/**
+ * @module userinput
+ */
+
+const { wsClient } = require('./socket/client')
+const actions = require('./actions')
+
+$('#create_game_btn').on('click', function() {
+  wsClient.send(actions.createGameRequest())
+})
+
+$('#join_game_btn').on('click', function() {
+  const key = $('#game_key_input').val()
+  wsClient.send(actions.joinGameRequest(key))
+})
 
 });
 
@@ -666,6 +720,14 @@ exports.randomColor = randomColor
 
 });
 
+;require.register("src/views/createdgame.js", function(exports, require, module) {
+
+});
+
+;require.register("src/views/initgame.js", function(exports, require, module) {
+
+});
+
 ;require.alias("buffer/index.js", "buffer");
 require.alias("process/browser.js", "process");process = require('process');require.register("___globals___", function(exports, require, module) {
   
@@ -677,3 +739,5 @@ window["$"] = require("jquery");
 
 });})();require('___globals___');
 
+
+//# sourceMappingURL=app.js.map
