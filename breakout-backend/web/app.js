@@ -191,13 +191,36 @@ exports.GameStartAction = class GameStartAction {
 
 });
 
+;require.register("src/actions/game_state_update.js", function(exports, require, module) {
+/**
+ * @module actions/game_state_update.js
+ */
+
+const { gameLoop } = require('../gameloop')
+
+exports.GameStateUpdateAction = class GameStateUpdateAction {
+  constructor ({ bodies }) {
+    this.bodies = bodies
+  }
+
+  handler () {
+    for (const bodyObj of this.bodies) {
+      gameLoop.update(bodyObj)
+    }
+  }
+}
+
+});
+
 ;require.register("src/actions/index.js", function(exports, require, module) {
 const { CreateGameSuccessAction } = require('./create_game_success')
 const { GameStartAction } = require('./game_start')
+const { GameStateUpdateAction } = require('./game_state_update')
 
 exports.requestActionsMap = {
   CreateGameSuccessAction,
-  GameStartAction
+  GameStartAction,
+  GameStateUpdateAction
 }
 
 });
@@ -223,9 +246,6 @@ exports.JoinGameRequestAction = class JoinGameRequestAction {
  * @module bodies/ball
  */
 
-const constants = require('../constants')
-const utils = require('../utils')
-
 /**
  * Represents the ball
  * @class
@@ -235,7 +255,7 @@ const utils = require('../utils')
  * @prop {number} dy - vertical speed
  */
 exports.Ball = class Ball {
-  constructor(){
+  constructor () {
     this.height = 0
     this.width = 0
 
@@ -246,136 +266,24 @@ exports.Ball = class Ball {
   }
 
   /**
+   * Update body to match the server state
+   * @param {object} bodyObj 
+   */
+  update ({ height, width, x, y }) {
+    this.height = height
+    this.width = width
+    this.x = x
+    this.y = y
+  }
+
+  /**
    * Draw the ball on the provides 2D context
    * @method
    * @param {Sketch} s
    */
-  draw(s) {
+  draw (s) {
     s.fill(this.color)
     s.ellipse(this.x, this.y, this.height)
-  }
-}
-
-
-
-});
-
-;require.register("src/bodies/brick.js", function(exports, require, module) {
-/**
- * @module bodies/brick
- */
-
-const constants = require('../constants')
-const utils = require('../utils')
-
-/**
- * Represents a brick
- * @class
- * @prop {number} x - horizontal position
- * @prop {number} height
- * @prop {number} width
- * @prop {number[]} color
- */
-exports.Brick = class Brick {
-  constructor(x, height, width) {
-    this.x = x
-    this.y = 0
-    this.height = height
-    this.width = width
-    this.color = utils.randomColor()
-  }
-
-  /**
-   * Move the ball to new position
-   * @method
-   * @param {int} dx
-   * @param {int} dy
-   */
-  move(dx, dy) {
-    this.x += dx
-    this.y += dy
-  }
-
-  /**
-   * Draw the brick on the screen
-   * @method
-   */
-  draw() {
-    fill.apply(fill, this.color)
-    rect(this.x, this.y, this.width, this.height)
-  }
-}
-
-/**
- * Represents a row of bricks
- * @class
- * @param {number} rowIndex - The index of row
- * @prop {Brick[]} bricks
- */
-exports.BrickRow = class BrickRow {
-  constructor(rowIndex){
-    const count = 8
-    const margin = 10
-    const height = 30
-    const width = (constants.C_WIDTH - count * margin) / count
-
-    // Create new row
-    this.bricks = new Array(count)
-      .fill(null)
-      .map((_, i) => new Brick((width + margin) * i, height, width))
-  }
-
-  /**
-   * Move the bricks in this row down 1 row
-   * @method
-   */
-  moveDown() {
-    for (const brick of this.bricks) {
-      brick.move(0, height + margin)
-    }
-  }
-
-  /**
-   * Checks if the ball colides with a brick in the row
-   * @method
-   * @param {Ball} ball
-   * @return {Ball}
-   */
-  isBallCollision(ball) {
-    for (const brick of this.bricks) {
-      if (utils.isBallCollision(ball, brick)) {
-        return brick
-      }
-    }
-    return null
-  }
-
-  /**
-   * Removes brick from the row
-   * @method
-   * @param {Brick} brick
-   */
-  removeBrick(brick) {
-    this.bricks = this.bricks.filter((b) => b !== brick)
-  }
-
-  /**
-   * Checks if the row is empty
-   * @method
-   * @return {bool}
-   */
-  isEmpty() {
-    return this.bricks.length < 1
-  }
-
-  /**
-   * Draws the bricks
-   * @method
-   */
-  draw() {
-    for (const brick of this.bricks) {
-      brick.draw()
-    }
   }
 }
 
@@ -385,9 +293,6 @@ exports.BrickRow = class BrickRow {
 /**
  * @module bodies/paddle
  */
-
-const constants = require('../constants')
-const utils = require('../utils')
 
 /**
  * Represents paddle
@@ -411,17 +316,26 @@ exports.Paddle = class Paddle {
     this.color = 'white'
   }
 
+  /**
+   * Update body to match the server state
+   * @param {object} bodyObj 
+   */
+  update ({ height, width, x, y }) {
+    this.height = height
+    this.width = width
+    this.x = x
+    this.y = y
+  }
 
   /**
    * Daw the paddle on the screen
    * @method
    * @param {Sketch} s
    */
-  draw(s) {
+  draw (s) {
     s.fill(this.color)
     s.rect(this.x, this.y, this.width, this.height, this.borderRadius)
   }
-
 }
 
 });
@@ -509,11 +423,13 @@ exports.C_WIDTH = 300
  * @module gameLoop
  */
 
-const constants = require('./constants')
-const utils = require('./utils')
-
 const { Ball } = require('./bodies/ball')
 const { Paddle } = require('./bodies/paddle')
+
+/**
+ * @param {string} str 
+ */
+const firstLetterToLowerCase = str => str[0].toLowerCase() + str.slice(1)
 
 /**
  * GameLoop provides the state and drawing for the sketch
@@ -521,36 +437,44 @@ const { Paddle } = require('./bodies/paddle')
  * @prop {Paddle} paddle
  * @prop {Ball} ball
  */
-exports.GameLoop = class GameLoop {
-  constructor() {
+class GameLoop {
+  constructor () {
+    this.reset()
+  }
+
+  reset () {
     // Initialise bodies
     this.paddle = new Paddle()
     this.ball = new Ball()
   }
 
+  /**
+   * Update the body to match the server state
+   * @method
+   * @param {object} bodyObj 
+   */
+  update (bodyObj) {
+    const instanceKey = firstLetterToLowerCase(bodyObj.type)
+    if (this[instanceKey]) {
+      this[instanceKey].update(bodyObj)
+    }
+  }
 
   /**
    * Draws the current state onto the provided sketch
    * @method
    * @param {Sketch} s - p5.js sketch object to draw on
    */
-  run(s) {
+  run (s) {
     // Clear canvas
     s.background(0)
-    s.fill(255)
 
-    // Paddle controls
-    {
-      this.paddle.draw(s)
-    }
-
-    // Ball controls
-    {
-      this.ball.draw(s)
-    }
-
+    this.paddle.draw(s)
+    this.ball.draw(s)
   }
 }
+
+exports.gameLoop = new GameLoop()
 
 });
 
@@ -562,29 +486,23 @@ exports.GameLoop = class GameLoop {
 const P5 = require('p5')
 
 const constants = require('./constants')
-const { GameLoop } = require('./gameloop')
+const { gameLoop } = require('./gameloop')
 const { wsClient } = require('./socket/client')
 const initGameView = require('./views/init_game')
 
-const p5 = new P5(function (sketch) {
-  let gameLoop
+$(document).ready(function () {
+  initGameView.show()
+  wsClient.open()
+})
 
+const p5 = new P5(function (sketch) {
   sketch.setup = function () {
     const canvas = sketch.createCanvas(constants.C_WIDTH, constants.C_HEIGHT)
     canvas.parent('game_started')
-
-    initGameView.show()
-    wsClient.open()
-
-    gameLoop = new GameLoop()
   }
 
-  sketch.draw = function () {
-    gameLoop.run(sketch)
-  }
+  sketch.draw = () => gameLoop.run(sketch)
 })
-
-
 
 });
 
@@ -645,8 +563,6 @@ class WsClient {
     const bufferView = new Uint8Array(event.data)
     const action = msgpack.decode(bufferView)
 
-    console.log(action)
-
     const RequestAction = requestActionsMap[action.type]
     if (RequestAction) {
       const a = new RequestAction(action)
@@ -668,7 +584,6 @@ class WsClient {
     action.type = action.constructor.name
 
     const buffer = msgpack.encode(action)
-    console.log(msgpack.decode(buffer))
     this.ws.send(buffer)
   }
 }
@@ -681,7 +596,6 @@ exports.wsClient = new WsClient()
 /**
  * @module utils
  */
-
 
 /**
  * Calculate distance between 2 points
@@ -754,7 +668,6 @@ function randomColor() {
   return [0, 0, 0].map(() => randomInRange(50, 255))
 }
 exports.randomColor = randomColor
-
 
 /**
  * Show the given view and hide the others

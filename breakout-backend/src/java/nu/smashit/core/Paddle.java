@@ -12,6 +12,6 @@ package nu.smashit.core;
 public class Paddle extends MovableBody {
 
     public Paddle() {
-        super(0, 0, 100, 20);
+        super(0, GameCanvas.HEIGHT - 20, 70, 20);
     }
 }

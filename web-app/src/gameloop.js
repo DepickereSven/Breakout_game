@@ -2,11 +2,13 @@
  * @module gameLoop
  */
 
-const constants = require('./constants')
-const utils = require('./utils')
-
 const { Ball } = require('./bodies/ball')
 const { Paddle } = require('./bodies/paddle')
+
+/**
+ * @param {string} str 
+ */
+const firstLetterToLowerCase = str => str[0].toLowerCase() + str.slice(1)
 
 /**
  * GameLoop provides the state and drawing for the sketch
@@ -14,33 +16,41 @@ const { Paddle } = require('./bodies/paddle')
  * @prop {Paddle} paddle
  * @prop {Ball} ball
  */
-exports.GameLoop = class GameLoop {
-  constructor() {
+class GameLoop {
+  constructor () {
+    this.reset()
+  }
+
+  reset () {
     // Initialise bodies
     this.paddle = new Paddle()
     this.ball = new Ball()
   }
 
+  /**
+   * Update the body to match the server state
+   * @method
+   * @param {object} bodyObj 
+   */
+  update (bodyObj) {
+    const instanceKey = firstLetterToLowerCase(bodyObj.type)
+    if (this[instanceKey]) {
+      this[instanceKey].update(bodyObj)
+    }
+  }
 
   /**
    * Draws the current state onto the provided sketch
    * @method
    * @param {Sketch} s - p5.js sketch object to draw on
    */
-  run(s) {
+  run (s) {
     // Clear canvas
     s.background(0)
-    s.fill(255)
 
-    // Paddle controls
-    {
-      this.paddle.draw(s)
-    }
-
-    // Ball controls
-    {
-      this.ball.draw(s)
-    }
-
+    this.paddle.draw(s)
+    this.ball.draw(s)
   }
 }
+
+exports.gameLoop = new GameLoop()

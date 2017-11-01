@@ -2,7 +2,6 @@
  * @module utils
  */
 
-
 /**
  * Calculate distance between 2 points
  * @param {number} x1
@@ -74,7 +73,6 @@ function randomColor() {
   return [0, 0, 0].map(() => randomInRange(50, 255))
 }
 exports.randomColor = randomColor
-
 
 /**
  * Show the given view and hide the others

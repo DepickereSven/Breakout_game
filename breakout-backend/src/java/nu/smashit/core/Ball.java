@@ -11,7 +11,19 @@ package nu.smashit.core;
  */
 public class Ball extends MovableBody {
 
+    public int dx;
+    public int dy;
+
     public Ball() {
-        super(0, 0, 10, 10);
+        super(GameCanvas.WIDTH / 2, GameCanvas.HEIGHT / 2, 15, 15);
+        this.dx = 1;
+        this.dy = -7;
+    }
+
+    @Override
+    public void move(int dx, int dy) {
+        super.move(dx, dy);
+        this.dx = dx;
+        this.dy = dy;
     }
 }

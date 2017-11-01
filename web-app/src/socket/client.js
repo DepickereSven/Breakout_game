@@ -54,8 +54,6 @@ class WsClient {
     const bufferView = new Uint8Array(event.data)
     const action = msgpack.decode(bufferView)
 
-    console.log(action)
-
     const RequestAction = requestActionsMap[action.type]
     if (RequestAction) {
       const a = new RequestAction(action)
@@ -77,7 +75,6 @@ class WsClient {
     action.type = action.constructor.name
 
     const buffer = msgpack.encode(action)
-    console.log(msgpack.decode(buffer))
     this.ws.send(buffer)
   }
 }

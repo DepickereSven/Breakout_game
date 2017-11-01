@@ -2,9 +2,6 @@
  * @module bodies/ball
  */
 
-const constants = require('../constants')
-const utils = require('../utils')
-
 /**
  * Represents the ball
  * @class
@@ -14,7 +11,7 @@ const utils = require('../utils')
  * @prop {number} dy - vertical speed
  */
 exports.Ball = class Ball {
-  constructor(){
+  constructor () {
     this.height = 0
     this.width = 0
 
@@ -25,14 +22,23 @@ exports.Ball = class Ball {
   }
 
   /**
+   * Update body to match the server state
+   * @param {object} bodyObj 
+   */
+  update ({ height, width, x, y }) {
+    this.height = height
+    this.width = width
+    this.x = x
+    this.y = y
+  }
+
+  /**
    * Draw the ball on the provides 2D context
    * @method
    * @param {Sketch} s
    */
-  draw(s) {
+  draw (s) {
     s.fill(this.color)
     s.ellipse(this.x, this.y, this.height)
   }
 }
-
-

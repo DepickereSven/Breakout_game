@@ -2,9 +2,6 @@
  * @module bodies/paddle
  */
 
-const constants = require('../constants')
-const utils = require('../utils')
-
 /**
  * Represents paddle
  * @class
@@ -27,15 +24,24 @@ exports.Paddle = class Paddle {
     this.color = 'white'
   }
 
+  /**
+   * Update body to match the server state
+   * @param {object} bodyObj 
+   */
+  update ({ height, width, x, y }) {
+    this.height = height
+    this.width = width
+    this.x = x
+    this.y = y
+  }
 
   /**
    * Daw the paddle on the screen
    * @method
    * @param {Sketch} s
    */
-  draw(s) {
+  draw (s) {
     s.fill(this.color)
     s.rect(this.x, this.y, this.width, this.height, this.borderRadius)
   }
-
 }
