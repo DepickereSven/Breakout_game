@@ -5,10 +5,9 @@
 const { showView } = require('../utils')
 
 const els = {
-  container: $('#connection_loss_modal'),
+  container: $('#connection_loss')
 }
 
-
-exports.show = function show() {
+exports.show = function show () {
   showView(els.container)
 }

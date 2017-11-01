@@ -4,11 +4,10 @@
 
 const { showView } = require('../utils')
 
-const els = exports.els = {
-  container: $('#created_game_success_modal')
+const els = {
+  container: $('#game_started')
 }
 
-
-exports.show = function show() {
+exports.show = function show () {
   showView(els.container)
 }

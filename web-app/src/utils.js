@@ -81,7 +81,7 @@ exports.randomColor = randomColor
  * @param {jQuery} el - jQuery container element
  */
 function showView(el) {
-  $('.views').addClass('hidden')
+  $('.view').addClass('hidden')
   el.removeClass('hidden')
 }
 exports.showView = showView

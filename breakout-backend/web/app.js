@@ -162,7 +162,42 @@ exports.CreateGameRequestAction = class CreateGameRequestAction {}
  * @module actions/create_game_success.js
  */
 
+const createdGameView = require('../views/created_game')
+
 exports.CreateGameSuccessAction = class CreateGameSuccessAction {
+  constructor ({ key }) {
+    this.key = key
+  }
+
+  handler () {
+    createdGameView.show(this.key)
+  }
+}
+
+});
+
+;require.register("src/actions/game_start.js", function(exports, require, module) {
+/**
+ * @module actions/game_start.js
+ */
+
+const gameStartedView = require('../views/game_started')
+
+exports.GameStartAction = class GameStartAction {
+  handler () {
+    gameStartedView.show()
+  }
+}
+
+});
+
+;require.register("src/actions/index.js", function(exports, require, module) {
+const { CreateGameSuccessAction } = require('./create_game_success')
+const { GameStartAction } = require('./game_start')
+
+exports.requestActionsMap = {
+  CreateGameSuccessAction,
+  GameStartAction
 }
 
 });
@@ -562,6 +597,7 @@ const msgpack = require('msgpack-lite')
 
 const constants = require('../constants')
 const connectionLossView = require('../views/connection_loss')
+const { requestActionsMap } = require('../actions/index')
 
 /**
  * Websocket client
@@ -590,8 +626,7 @@ class WsClient {
    * Event handler for succesfull connection
    * @method
    */
-  onOpen () {
-  }
+  onOpen () {}
 
   /**
    * Event handler for connection loss
@@ -609,7 +644,14 @@ class WsClient {
   onMessage (event) {
     const bufferView = new Uint8Array(event.data)
     const action = msgpack.decode(bufferView)
+
     console.log(action)
+
+    const RequestAction = requestActionsMap[action.type]
+    if (RequestAction) {
+      const a = new RequestAction(action)
+      a.handler()
+    }
   }
 
   /**
@@ -619,7 +661,7 @@ class WsClient {
    */
   send (action) {
     if (!this.ws) {
-      throw new Error('Websocket isn\'t yet open')
+      throw new Error("Websocket isn't yet open")
     }
 
     // Set action type as the name of the class
@@ -719,7 +761,7 @@ exports.randomColor = randomColor
  * @param {jQuery} el - jQuery container element
  */
 function showView(el) {
-  $('.views').addClass('hidden')
+  $('.view').addClass('hidden')
   el.removeClass('hidden')
 }
 exports.showView = showView
@@ -734,11 +776,10 @@ exports.showView = showView
 const { showView } = require('../utils')
 
 const els = {
-  container: $('#connection_loss_modal'),
+  container: $('#connection_loss')
 }
 
-
-exports.show = function show() {
+exports.show = function show () {
   showView(els.container)
 }
 
@@ -753,16 +794,15 @@ exports.show = function show() {
 const { showView } = require('../utils')
 
 const els = exports.els = {
-  container: $('#created_game_success_modal'),
+  container: $('#created_game_success'),
   createdGameKey: $('#created_game_key')
 }
-
 
 /**
  * Show the created game view
  * @param {string} key - Game session key
  */
-exports.show = function show(key) {
+exports.show = function show (key) {
   els.createdGameKey.text(key)
   showView(els.container)
 }
@@ -776,12 +816,11 @@ exports.show = function show(key) {
 
 const { showView } = require('../utils')
 
-const els = exports.els = {
-  container: $('#created_game_success_modal')
+const els = {
+  container: $('#game_started')
 }
 
-
-exports.show = function show() {
+exports.show = function show () {
   showView(els.container)
 }
 
@@ -798,7 +837,7 @@ const { CreateGameRequestAction } = require('../actions/create_game_request')
 const { JoinGameRequestAction } = require('../actions/join_game_request')
 
 const els = {
-  container: $('#init_game_modal'),
+  container: $('#init_game'),
   createGameBtn: $('#create_game_btn'),
   joinGameBtn: $('#join_game_btn'),
   gameKeyInput: $('#game_key_input')
