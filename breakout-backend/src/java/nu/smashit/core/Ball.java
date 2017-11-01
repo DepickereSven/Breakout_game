@@ -16,8 +16,8 @@ public class Ball extends MovableBody {
 
     public Ball() {
         super(GameCanvas.WIDTH / 2, GameCanvas.HEIGHT / 2, 15, 15);
-        this.dx = 1;
-        this.dy = -7;
+        this.dx = 3;
+        this.dy = -9;
     }
 
     @Override

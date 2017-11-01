@@ -25,7 +25,7 @@ public class GameSession {
         this.gameLoop = new GameLoop(this);
 
         this.gameLoopTimer = new Timer();
-        this.updateInterval = 33;
+        this.updateInterval = 30;
     }
 
     public void join(Client c) {

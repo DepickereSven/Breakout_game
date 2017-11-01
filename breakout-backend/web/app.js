@@ -425,6 +425,7 @@ exports.C_WIDTH = 300
 
 const { Ball } = require('./bodies/ball')
 const { Paddle } = require('./bodies/paddle')
+const { sketch } = require('./sketch')
 
 /**
  * @param {string} str 
@@ -458,19 +459,20 @@ class GameLoop {
     if (this[instanceKey]) {
       this[instanceKey].update(bodyObj)
     }
+
+    this.run()
   }
 
   /**
    * Draws the current state onto the provided sketch
    * @method
-   * @param {Sketch} s - p5.js sketch object to draw on
    */
-  run (s) {
+  run () {
     // Clear canvas
-    s.background(0)
+    sketch.background(0)
 
-    this.paddle.draw(s)
-    this.ball.draw(s)
+    this.paddle.draw(sketch)
+    this.ball.draw(sketch)
   }
 }
 
@@ -485,23 +487,35 @@ exports.gameLoop = new GameLoop()
 
 const P5 = require('p5')
 
-const constants = require('./constants')
-const { gameLoop } = require('./gameloop')
 const { wsClient } = require('./socket/client')
 const initGameView = require('./views/init_game')
+
+require('./sketch')
 
 $(document).ready(function () {
   initGameView.show()
   wsClient.open()
 })
 
-const p5 = new P5(function (sketch) {
+});
+
+;require.register("src/sketch.js", function(exports, require, module) {
+/**
+ * @module sketch
+ */
+
+const P5 = require('p5')
+const constants = require('./constants')
+
+exports.sketch = new P5(function (sketch) {
   sketch.setup = function () {
     const canvas = sketch.createCanvas(constants.C_WIDTH, constants.C_HEIGHT)
     canvas.parent('game_started')
-  }
 
-  sketch.draw = () => gameLoop.run(sketch)
+    // Don't loop on its own because we draw manualy when the server send and update
+    sketch.noLoop()
+  }
+  sketch.draw = () => {}
 })
 
 });
@@ -533,7 +547,6 @@ class WsClient {
     }
 
     this.ws = new WebSocket(constants.API_URL)
-    this.ws.binaryType = 'arraybuffer'
 
     this.ws.onopen = this.onOpen
     this.ws.onclose = this.onClose
@@ -560,8 +573,7 @@ class WsClient {
    * @method
    */
   onMessage (event) {
-    const bufferView = new Uint8Array(event.data)
-    const action = msgpack.decode(bufferView)
+    const action = JSON.parse(event.data)
 
     const RequestAction = requestActionsMap[action.type]
     if (RequestAction) {
@@ -583,8 +595,8 @@ class WsClient {
     // Set action type as the name of the class
     action.type = action.constructor.name
 
-    const buffer = msgpack.encode(action)
-    this.ws.send(buffer)
+    const json = JSON.stringify(action)
+    this.ws.send(json)
   }
 }
 

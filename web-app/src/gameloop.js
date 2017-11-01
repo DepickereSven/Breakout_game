@@ -4,6 +4,7 @@
 
 const { Ball } = require('./bodies/ball')
 const { Paddle } = require('./bodies/paddle')
+const { sketch } = require('./sketch')
 
 /**
  * @param {string} str 
@@ -37,19 +38,20 @@ class GameLoop {
     if (this[instanceKey]) {
       this[instanceKey].update(bodyObj)
     }
+
+    this.run()
   }
 
   /**
    * Draws the current state onto the provided sketch
    * @method
-   * @param {Sketch} s - p5.js sketch object to draw on
    */
-  run (s) {
+  run () {
     // Clear canvas
-    s.background(0)
+    sketch.background(0)
 
-    this.paddle.draw(s)
-    this.ball.draw(s)
+    this.paddle.draw(sketch)
+    this.ball.draw(sketch)
   }
 }
 
