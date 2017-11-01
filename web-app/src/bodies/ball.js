@@ -13,24 +13,26 @@ const utils = require('../utils')
  * @prop {number} dx - horizontal speed
  * @prop {number} dy - vertical speed
  */
-function Ball () {
-  this.height = 0
-  this.width = 0
+exports.Ball = class Ball {
+  constructor(){
+    this.height = 0
+    this.width = 0
 
-  this.x = 0
-  this.y = 0
+    this.x = 0
+    this.y = 0
 
-  this.color = 'white'
+    this.color = 'white'
+  }
+
+  /**
+   * Draw the ball on the provides 2D context
+   * @method
+   * @param {Sketch} s
+   */
+  draw(s) {
+    s.fill(this.color)
+    s.ellipse(this.x, this.y, this.height)
+  }
 }
-exports.Ball = Ball
 
 
-/**
- * Draw the ball on the provides 2D context
- * @method
- * @param {Sketch} s
- */
-Ball.prototype.draw = function (s) {
-  s.fill(this.color)
-  s.ellipse(this.x, this.y, this.height)
-}

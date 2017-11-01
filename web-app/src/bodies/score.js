@@ -11,16 +11,18 @@ const utils = require('../utils')
  * @prop {number} score
  * @prop {string} color
  */
-exports.Score = function Score () {
-  let score = 0
-  const color = 'white'
+exports.Score = class Score {
+  constructor(){
+    this.score = 0
+    this.color = 'white'
+  }
 
   /**
    * Increases the score by 1
    * @method
    */
-  this.add = function () {
-    score += 1
+  add() {
+    this.score += 1
   }
 
   /**
@@ -28,15 +30,15 @@ exports.Score = function Score () {
    * @method
    * @return {number}
    */
-  this.get = function () {
-    return score
+  get() {
+    return this.score
   }
 
   /**
    * Draws the score on the screen
    * @method
    */
-  this.draw = function () {
+  draw() {
     fill(color)
     textFont('Arial', 30)
     text(score, constants.C_WIDTH / 2, constants.C_HEIGHT / 2)

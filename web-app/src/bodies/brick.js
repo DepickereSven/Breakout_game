@@ -7,18 +7,20 @@ const utils = require('../utils')
 
 /**
  * Represents a brick
- * @constructor
+ * @class
  * @prop {number} x - horizontal position
  * @prop {number} height
  * @prop {number} width
  * @prop {number[]} color
  */
-function Brick (x, height, width) {
-  this.x = x
-  this.y = 0
-  this.height = height
-  this.width = width
-  this.color = utils.randomColor()
+exports.Brick = class Brick {
+  constructor(x, height, width) {
+    this.x = x
+    this.y = 0
+    this.height = height
+    this.width = width
+    this.color = utils.randomColor()
+  }
 
   /**
    * Move the ball to new position
@@ -26,7 +28,7 @@ function Brick (x, height, width) {
    * @param {int} dx
    * @param {int} dy
    */
-  this.move = function (dx, dy) {
+  move(dx, dy) {
     this.x += dx
     this.y += dy
   }
@@ -35,35 +37,36 @@ function Brick (x, height, width) {
    * Draw the brick on the screen
    * @method
    */
-  this.draw = function () {
+  draw() {
     fill.apply(fill, this.color)
     rect(this.x, this.y, this.width, this.height)
   }
 }
-exports.Brick = Brick
 
 /**
  * Represents a row of bricks
- * @constructor
+ * @class
  * @param {number} rowIndex - The index of row
  * @prop {Brick[]} bricks
  */
-function BrickRow (rowIndex = 0) {
-  const count = 8
-  const margin = 10
-  const height = 30
-  const width = (constants.C_WIDTH - count * margin) / count
+exports.BrickRow = class BrickRow {
+  constructor(rowIndex){
+    const count = 8
+    const margin = 10
+    const height = 30
+    const width = (constants.C_WIDTH - count * margin) / count
 
-  // Create new row
-  this.bricks = new Array(count)
-    .fill(null)
-    .map((_, i) => new Brick((width + margin) * i, height, width))
+    // Create new row
+    this.bricks = new Array(count)
+      .fill(null)
+      .map((_, i) => new Brick((width + margin) * i, height, width))
+  }
 
   /**
    * Move the bricks in this row down 1 row
    * @method
    */
-  this.moveDown = function () {
+  moveDown() {
     for (const brick of this.bricks) {
       brick.move(0, height + margin)
     }
@@ -75,7 +78,7 @@ function BrickRow (rowIndex = 0) {
    * @param {Ball} ball
    * @return {Ball}
    */
-  this.isBallCollision = function (ball) {
+  isBallCollision(ball) {
     for (const brick of this.bricks) {
       if (utils.isBallCollision(ball, brick)) {
         return brick
@@ -89,7 +92,7 @@ function BrickRow (rowIndex = 0) {
    * @method
    * @param {Brick} brick
    */
-  this.removeBrick = function (brick) {
+  removeBrick(brick) {
     this.bricks = this.bricks.filter((b) => b !== brick)
   }
 
@@ -98,7 +101,7 @@ function BrickRow (rowIndex = 0) {
    * @method
    * @return {bool}
    */
-  this.isEmpty = function () {
+  isEmpty() {
     return this.bricks.length < 1
   }
 
@@ -106,11 +109,9 @@ function BrickRow (rowIndex = 0) {
    * Draws the bricks
    * @method
    */
-  this.draw = function () {
+  draw() {
     for (const brick of this.bricks) {
       brick.draw()
     }
   }
 }
-
-exports.BrickRow = BrickRow

@@ -189,27 +189,29 @@ const utils = require('../utils')
  * @prop {number} dx - horizontal speed
  * @prop {number} dy - vertical speed
  */
-function Ball () {
-  this.height = 0
-  this.width = 0
+exports.Ball = class Ball {
+  constructor(){
+    this.height = 0
+    this.width = 0
 
-  this.x = 0
-  this.y = 0
+    this.x = 0
+    this.y = 0
 
-  this.color = 'white'
+    this.color = 'white'
+  }
+
+  /**
+   * Draw the ball on the provides 2D context
+   * @method
+   * @param {Sketch} s
+   */
+  draw(s) {
+    s.fill(this.color)
+    s.ellipse(this.x, this.y, this.height)
+  }
 }
-exports.Ball = Ball
 
 
-/**
- * Draw the ball on the provides 2D context
- * @method
- * @param {Sketch} s
- */
-Ball.prototype.draw = function (s) {
-  s.fill(this.color)
-  s.ellipse(this.x, this.y, this.height)
-}
 
 });
 
@@ -223,18 +225,20 @@ const utils = require('../utils')
 
 /**
  * Represents a brick
- * @constructor
+ * @class
  * @prop {number} x - horizontal position
  * @prop {number} height
  * @prop {number} width
  * @prop {number[]} color
  */
-function Brick (x, height, width) {
-  this.x = x
-  this.y = 0
-  this.height = height
-  this.width = width
-  this.color = utils.randomColor()
+exports.Brick = class Brick {
+  constructor(x, height, width) {
+    this.x = x
+    this.y = 0
+    this.height = height
+    this.width = width
+    this.color = utils.randomColor()
+  }
 
   /**
    * Move the ball to new position
@@ -242,7 +246,7 @@ function Brick (x, height, width) {
    * @param {int} dx
    * @param {int} dy
    */
-  this.move = function (dx, dy) {
+  move(dx, dy) {
     this.x += dx
     this.y += dy
   }
@@ -251,35 +255,36 @@ function Brick (x, height, width) {
    * Draw the brick on the screen
    * @method
    */
-  this.draw = function () {
+  draw() {
     fill.apply(fill, this.color)
     rect(this.x, this.y, this.width, this.height)
   }
 }
-exports.Brick = Brick
 
 /**
  * Represents a row of bricks
- * @constructor
+ * @class
  * @param {number} rowIndex - The index of row
  * @prop {Brick[]} bricks
  */
-function BrickRow (rowIndex = 0) {
-  const count = 8
-  const margin = 10
-  const height = 30
-  const width = (constants.C_WIDTH - count * margin) / count
+exports.BrickRow = class BrickRow {
+  constructor(rowIndex){
+    const count = 8
+    const margin = 10
+    const height = 30
+    const width = (constants.C_WIDTH - count * margin) / count
 
-  // Create new row
-  this.bricks = new Array(count)
-    .fill(null)
-    .map((_, i) => new Brick((width + margin) * i, height, width))
+    // Create new row
+    this.bricks = new Array(count)
+      .fill(null)
+      .map((_, i) => new Brick((width + margin) * i, height, width))
+  }
 
   /**
    * Move the bricks in this row down 1 row
    * @method
    */
-  this.moveDown = function () {
+  moveDown() {
     for (const brick of this.bricks) {
       brick.move(0, height + margin)
     }
@@ -291,7 +296,7 @@ function BrickRow (rowIndex = 0) {
    * @param {Ball} ball
    * @return {Ball}
    */
-  this.isBallCollision = function (ball) {
+  isBallCollision(ball) {
     for (const brick of this.bricks) {
       if (utils.isBallCollision(ball, brick)) {
         return brick
@@ -305,7 +310,7 @@ function BrickRow (rowIndex = 0) {
    * @method
    * @param {Brick} brick
    */
-  this.removeBrick = function (brick) {
+  removeBrick(brick) {
     this.bricks = this.bricks.filter((b) => b !== brick)
   }
 
@@ -314,7 +319,7 @@ function BrickRow (rowIndex = 0) {
    * @method
    * @return {bool}
    */
-  this.isEmpty = function () {
+  isEmpty() {
     return this.bricks.length < 1
   }
 
@@ -322,14 +327,12 @@ function BrickRow (rowIndex = 0) {
    * Draws the bricks
    * @method
    */
-  this.draw = function () {
+  draw() {
     for (const brick of this.bricks) {
       brick.draw()
     }
   }
 }
-
-exports.BrickRow = BrickRow
 
 });
 
@@ -351,29 +354,30 @@ const utils = require('../utils')
  * @prop {number} y
  * @prop {string} color
  */
-function Paddle () {
-  this.height = 0
-  this.width = 0
-  this.borderRadius = 4
+exports.Paddle = class Paddle {
+  constructor () {
+    this.height = 0
+    this.width = 0
+    this.borderRadius = 4
 
-  this.x = 0
-  this.y = 0
+    this.x = 0
+    this.y = 0
 
-  this.color = 'white'
+    this.color = 'white'
+  }
+
+
+  /**
+   * Daw the paddle on the screen
+   * @method
+   * @param {Sketch} s
+   */
+  draw(s) {
+    s.fill(this.color)
+    s.rect(this.x, this.y, this.width, this.height, this.borderRadius)
+  }
+
 }
-exports.Paddle = Paddle
-
-
-/**
- * Daw the paddle on the screen
- * @method
- * @param {Sketch} s
- */
-Paddle.prototype.draw = function (s) {
-  s.fill(this.color)
-  s.rect(this.x, this.y, this.width, this.height, this.borderRadius)
-}
-
 
 });
 
@@ -391,16 +395,18 @@ const utils = require('../utils')
  * @prop {number} score
  * @prop {string} color
  */
-exports.Score = function Score () {
-  let score = 0
-  const color = 'white'
+exports.Score = class Score {
+  constructor(){
+    this.score = 0
+    this.color = 'white'
+  }
 
   /**
    * Increases the score by 1
    * @method
    */
-  this.add = function () {
-    score += 1
+  add() {
+    this.score += 1
   }
 
   /**
@@ -408,15 +414,15 @@ exports.Score = function Score () {
    * @method
    * @return {number}
    */
-  this.get = function () {
-    return score
+  get() {
+    return this.score
   }
 
   /**
    * Draws the score on the screen
    * @method
    */
-  this.draw = function () {
+  draw() {
     fill(color)
     textFont('Arial', 30)
     text(score, constants.C_WIDTH / 2, constants.C_HEIGHT / 2)
@@ -470,34 +476,35 @@ const { Paddle } = require('./bodies/paddle')
  * @prop {Paddle} paddle
  * @prop {Ball} ball
  */
-function GameLoop() {
-  // Initialise bodies
-  this.paddle = new Paddle()
-  this.ball = new Ball()
-}
-exports.GameLoop = GameLoop
-
-
-/**
- * Draws the current state onto the provided sketch
- * @method
- * @param {Sketch} s - p5.js sketch object to draw on
- */
-GameLoop.prototype.run = function run(s) {
-  // Clear canvas
-  s.background(0)
-  s.fill(255)
-
-  // Paddle controls
-  {
-    this.paddle.draw(s)
+exports.GameLoop = class GameLoop {
+  constructor() {
+    // Initialise bodies
+    this.paddle = new Paddle()
+    this.ball = new Ball()
   }
 
-  // Ball controls
-  {
-    this.ball.draw(s)
-  }
 
+  /**
+   * Draws the current state onto the provided sketch
+   * @method
+   * @param {Sketch} s - p5.js sketch object to draw on
+   */
+  run(s) {
+    // Clear canvas
+    s.background(0)
+    s.fill(255)
+
+    // Paddle controls
+    {
+      this.paddle.draw(s)
+    }
+
+    // Ball controls
+    {
+      this.ball.draw(s)
+    }
+
+  }
 }
 
 });
@@ -552,67 +559,67 @@ const connectionLossView = require('../views/connection_loss')
  * @class
  * @prop {WebSocket} ws
  */
-function WsClient(){
-}
+class WsClient {
 
+  /**
+   * Open connection
+   * @method
+   */
+  open() {
+    if(this.ws !== undefined && this.ws.readyState !== WebSocket.CLOSED){
+      throw new Error('WebSocket is already opened.')
+    }
 
-/**
- * Open connection
- * @method
- */
-WsClient.prototype.open = function open() {
-  if(this.ws !== undefined && this.ws.readyState !== WebSocket.CLOSED){
-    throw new Error('WebSocket is already opened.')
+    this.ws = new WebSocket(constants.API_URL)
+    this.ws.binaryType = 'arraybuffer'
+
+    this.ws.onopen = this.onOpen
+    this.ws.onclose = this.onClose
+    this.ws.onmessage = this.onMessage
   }
 
-  this.ws = new WebSocket(constants.API_URL)
-  this.ws.binaryType = 'arraybuffer'
-
-  this.ws.onopen = this.onOpen
-  this.ws.onclose = this.onClose
-  this.ws.onmessage = this.onMessage
-}
-
-/**
- * Event handler for succesfull connection
- * @method
- */
-WsClient.prototype.onOpen = function onOpen() {
-  initGameView.show()
-}
-
-/**
- * Event handler for connection loss
- * @method
- */
-WsClient.prototype.onClose = function onClose() {
-  connectionLossView.show()
-  throw new Error('WebSocket was closed.')
-}
-
-/**
- * Event handler for receicing messages
- * @method
- */
-WsClient.prototype.onMessage = function onMessage(event) {
-  const bufferView = new Uint8Array(event.data)
-  const action = msgpack.decode(bufferView)
-  console.log(action)
-}
-
-/**
- * Send an action to the server
- * @method
- * @param {Action} action
- */
-WsClient.prototype.send = function send(action) {
-  if(!this.ws){
-    throw new Error('Websocket isn\'t yet open')
+  /**
+   * Event handler for succesfull connection
+   * @method
+   */
+  onOpen() {
+    initGameView.show()
   }
-  console.log(action)
-  const buffer = msgpack.encode(action)
-  this.ws.send(buffer)
+
+  /**
+   * Event handler for connection loss
+   * @method
+   */
+  onClose() {
+    connectionLossView.show()
+    throw new Error('WebSocket was closed.')
+  }
+
+  /**
+   * Event handler for receicing messages
+   * @method
+   */
+  onMessage(event) {
+    const bufferView = new Uint8Array(event.data)
+    const action = msgpack.decode(bufferView)
+    console.log(action)
+  }
+
+  /**
+   * Send an action to the server
+   * @method
+   * @param {Action} action
+   */
+  send(action) {
+    if(!this.ws){
+      throw new Error('Websocket isn\'t yet open')
+    }
+    console.log(action)
+    const buffer = msgpack.encode(action)
+    this.ws.send(buffer)
+  }
 }
+
 
 
 // Export a single WsClient instance
