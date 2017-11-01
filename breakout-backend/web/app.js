@@ -148,28 +148,38 @@ var __makeRelativeRequire = function(require, mappings, pref) {
     return require(name);
   }
 };
-require.register("src/actions.js", function(exports, require, module) {
+require.register("src/actions/create_game_request.js", function(exports, require, module) {
 /**
- * Contains action creators
- * @module actions
+ * @module actions/create_game_request.js
  */
 
+exports.CreateGameRequestAction = class CreateGameRequestAction {}
+
+});
+
+;require.register("src/actions/create_game_success.js", function(exports, require, module) {
 /**
- * Action object creator
- * @param {string} shortType
- * @param {object} payload
+ * @module actions/create_game_success.js
  */
-function createAction (shortType, payload={}){
-  const fullType = shortType + 'Action'
-  return { type: fullType, ...payload }
+
+exports.CreateGameSuccessAction = class CreateGameSuccessAction {
 }
 
+});
 
-exports.createGameRequest = () =>
-  createAction('CreateGameRequest')
+;require.register("src/actions/join_game_request.js", function(exports, require, module) {
+/**
+ * @module actions/join_game_request.js
+ */
 
-exports.joinGameRequest = (key) =>
-  createAction('JoinGameRequest', { key })
+exports.JoinGameRequestAction = class JoinGameRequestAction {
+  /**
+   * @param {string} key 
+   */
+  constructor (key) {
+    this.key = key
+  }
+}
 
 });
 
@@ -519,8 +529,7 @@ const P5 = require('p5')
 const constants = require('./constants')
 const { GameLoop } = require('./gameloop')
 const { wsClient } = require('./socket/client')
-
-const state = {}
+const initGameView = require('./views/init_game')
 
 const p5 = new P5(function (sketch) {
   let gameLoop
@@ -529,9 +538,10 @@ const p5 = new P5(function (sketch) {
     const canvas = sketch.createCanvas(constants.C_WIDTH, constants.C_HEIGHT)
     canvas.parent('game_started')
 
+    initGameView.show()
     wsClient.open()
 
-    gameLoop  = new GameLoop()
+    gameLoop = new GameLoop()
   }
 
   sketch.draw = function () {
@@ -548,10 +558,9 @@ const p5 = new P5(function (sketch) {
  * @module socket/client
  */
 
-const msgpack = require('msgpack-lite');
+const msgpack = require('msgpack-lite')
 
 const constants = require('../constants')
-const initGameView = require('../views/init_game')
 const connectionLossView = require('../views/connection_loss')
 
 /**
@@ -560,13 +569,12 @@ const connectionLossView = require('../views/connection_loss')
  * @prop {WebSocket} ws
  */
 class WsClient {
-
   /**
    * Open connection
    * @method
    */
-  open() {
-    if(this.ws !== undefined && this.ws.readyState !== WebSocket.CLOSED){
+  open () {
+    if (this.ws !== undefined && this.ws.readyState !== WebSocket.CLOSED) {
       throw new Error('WebSocket is already opened.')
     }
 
@@ -582,15 +590,14 @@ class WsClient {
    * Event handler for succesfull connection
    * @method
    */
-  onOpen() {
-    initGameView.show()
+  onOpen () {
   }
 
   /**
    * Event handler for connection loss
    * @method
    */
-  onClose() {
+  onClose () {
     connectionLossView.show()
     throw new Error('WebSocket was closed.')
   }
@@ -599,7 +606,7 @@ class WsClient {
    * Event handler for receicing messages
    * @method
    */
-  onMessage(event) {
+  onMessage (event) {
     const bufferView = new Uint8Array(event.data)
     const action = msgpack.decode(bufferView)
     console.log(action)
@@ -608,26 +615,23 @@ class WsClient {
   /**
    * Send an action to the server
    * @method
-   * @param {Action} action
+   * @param {RequestAction} action
    */
-  send(action) {
-    if(!this.ws){
+  send (action) {
+    if (!this.ws) {
       throw new Error('Websocket isn\'t yet open')
     }
-    console.log(action)
+
+    // Set action type as the name of the class
+    action.type = action.constructor.name
+
     const buffer = msgpack.encode(action)
+    console.log(msgpack.decode(buffer))
     this.ws.send(buffer)
   }
 }
 
-
-
-// Export a single WsClient instance
-if(!window.wsClient){
-  window.wsClient = new WsClient()
-}
-
-exports.wsClient = window.wsClient
+exports.wsClient = new WsClient()
 
 });
 
@@ -789,30 +793,28 @@ exports.show = function show() {
  */
 
 const { wsClient } = require('../socket/client')
-const actions = require('../actions')
 const { showView } = require('../utils')
+const { CreateGameRequestAction } = require('../actions/create_game_request')
+const { JoinGameRequestAction } = require('../actions/join_game_request')
 
 const els = {
   container: $('#init_game_modal'),
   createGameBtn: $('#create_game_btn'),
   joinGameBtn: $('#join_game_btn'),
-  gameKeyInput: $('#join_game_input')
+  gameKeyInput: $('#game_key_input')
 }
 
-
-exports.show = function show() {
+exports.show = function show () {
   showView(els.container)
 }
 
-
-els.createGameBtn.on('click', function() {
-  wsClient.send(actions.createGameRequest())
+els.createGameBtn.on('click', function () {
+  wsClient.send(new CreateGameRequestAction())
 })
 
-
-els.joinGameBtn.on('click', function() {
-  const key = gameKeyInput.val()
-  wsClient.send(actions.joinGameRequest(key))
+els.joinGameBtn.on('click', function () {
+  const key = els.gameKeyInput.val()
+  wsClient.send(new JoinGameRequestAction(key))
 })
 
 });
