@@ -513,15 +513,14 @@ const constants = require('./constants')
 const { GameLoop } = require('./gameloop')
 const { wsClient } = require('./socket/client')
 
-require('./userinput')
-
 const state = {}
 
 const p5 = new P5(function (sketch) {
   let gameLoop
 
   sketch.setup = function () {
-    sketch.createCanvas(constants.C_WIDTH, constants.C_HEIGHT)
+    const canvas = sketch.createCanvas(constants.C_WIDTH, constants.C_HEIGHT)
+    canvas.parent('game_started')
 
     wsClient.open()
 
@@ -545,6 +544,8 @@ const p5 = new P5(function (sketch) {
 const msgpack = require('msgpack-lite');
 
 const constants = require('../constants')
+const initGameView = require('../views/init_game')
+const connectionLossView = require('../views/connection_loss')
 
 /**
  * Websocket client
@@ -577,13 +578,15 @@ WsClient.prototype.open = function open() {
  * @method
  */
 WsClient.prototype.onOpen = function onOpen() {
+  initGameView.show()
 }
 
 /**
- * Event handler for connection termination
+ * Event handler for connection loss
  * @method
  */
 WsClient.prototype.onClose = function onClose() {
+  connectionLossView.show()
   throw new Error('WebSocket was closed.')
 }
 
@@ -618,25 +621,6 @@ if(!window.wsClient){
 }
 
 exports.wsClient = window.wsClient
-
-});
-
-;require.register("src/userinput.js", function(exports, require, module) {
-/**
- * @module userinput
- */
-
-const { wsClient } = require('./socket/client')
-const actions = require('./actions')
-
-$('#create_game_btn').on('click', function() {
-  wsClient.send(actions.createGameRequest())
-})
-
-$('#join_game_btn').on('click', function() {
-  const key = $('#game_key_input').val()
-  wsClient.send(actions.joinGameRequest(key))
-})
 
 });
 
@@ -718,13 +702,111 @@ function randomColor() {
 }
 exports.randomColor = randomColor
 
+
+/**
+ * Show the given view and hide the others
+ * @param {jQuery} el - jQuery container element
+ */
+function showView(el) {
+  $('.views').addClass('hidden')
+  el.removeClass('hidden')
+}
+exports.showView = showView
+
 });
 
-;require.register("src/views/createdgame.js", function(exports, require, module) {
+;require.register("src/views/connection_loss.js", function(exports, require, module) {
+/**
+ * @module views/connection_loss
+ */
+
+const { showView } = require('../utils')
+
+const els = {
+  container: $('#connection_loss_modal'),
+}
+
+
+exports.show = function show() {
+  showView(els.container)
+}
 
 });
 
-;require.register("src/views/initgame.js", function(exports, require, module) {
+;require.register("src/views/created_game.js", function(exports, require, module) {
+
+/**
+ * @module views/created_game
+ */
+
+const { showView } = require('../utils')
+
+const els = exports.els = {
+  container: $('#created_game_success_modal'),
+  createdGameKey: $('#created_game_key')
+}
+
+
+/**
+ * Show the created game view
+ * @param {string} key - Game session key
+ */
+exports.show = function show(key) {
+  els.createdGameKey.text(key)
+  showView(els.container)
+}
+
+});
+
+;require.register("src/views/game_started.js", function(exports, require, module) {
+/**
+ * @module views/game_started
+ */
+
+const { showView } = require('../utils')
+
+const els = exports.els = {
+  container: $('#created_game_success_modal')
+}
+
+
+exports.show = function show() {
+  showView(els.container)
+}
+
+});
+
+;require.register("src/views/init_game.js", function(exports, require, module) {
+/**
+ * @module views/init_game
+ */
+
+const { wsClient } = require('../socket/client')
+const actions = require('../actions')
+const { showView } = require('../utils')
+
+const els = {
+  container: $('#init_game_modal'),
+  createGameBtn: $('#create_game_btn'),
+  joinGameBtn: $('#join_game_btn'),
+  gameKeyInput: $('#join_game_input')
+}
+
+
+exports.show = function show() {
+  showView(els.container)
+}
+
+
+els.createGameBtn.on('click', function() {
+  wsClient.send(actions.createGameRequest())
+})
+
+
+els.joinGameBtn.on('click', function() {
+  const key = gameKeyInput.val()
+  wsClient.send(actions.joinGameRequest(key))
+})
 
 });
 

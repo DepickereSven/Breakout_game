@@ -8,15 +8,14 @@ const constants = require('./constants')
 const { GameLoop } = require('./gameloop')
 const { wsClient } = require('./socket/client')
 
-require('./userinput')
-
 const state = {}
 
 const p5 = new P5(function (sketch) {
   let gameLoop
 
   sketch.setup = function () {
-    sketch.createCanvas(constants.C_WIDTH, constants.C_HEIGHT)
+    const canvas = sketch.createCanvas(constants.C_WIDTH, constants.C_HEIGHT)
+    canvas.parent('game_started')
 
     wsClient.open()
 

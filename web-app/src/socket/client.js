@@ -5,6 +5,8 @@
 const msgpack = require('msgpack-lite');
 
 const constants = require('../constants')
+const initGameView = require('../views/init_game')
+const connectionLossView = require('../views/connection_loss')
 
 /**
  * Websocket client
@@ -37,13 +39,15 @@ WsClient.prototype.open = function open() {
  * @method
  */
 WsClient.prototype.onOpen = function onOpen() {
+  initGameView.show()
 }
 
 /**
- * Event handler for connection termination
+ * Event handler for connection loss
  * @method
  */
 WsClient.prototype.onClose = function onClose() {
+  connectionLossView.show()
   throw new Error('WebSocket was closed.')
 }
 
