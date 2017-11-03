@@ -14,13 +14,11 @@ import nu.smashit.socket.actions.GameStateUpdateAction;
  */
 public class GameLoop extends TimerTask {
 
-    public final Paddle paddle;
     public final Ball ball;
     private final GameSession gameSession;
 
     public GameLoop(GameSession gm) {
-        this.paddle = new Paddle();
-        this.ball = new Ball();
+        ball = new Ball();
         this.gameSession = gm;
     }
 
@@ -45,14 +43,24 @@ public class GameLoop extends TimerTask {
             } else if (ball.y + dy > GameCanvas.HEIGHT - ball.getRadius()) {
                 dy = -dy;
             }
+            // Paddle collision
+            for (Paddle p : gameSession.paddles) {
+                if (p.isCollision(ball)) {
+                    dy = -dy;
+                    break;
+                }
+            }
+
 
             ball.move(dx, dy);
 
             updateStateAction.addBody(ball);
         }
 
-        paddle.move(0, 0);
-        updateStateAction.addBody(paddle);
+        for (Paddle p : gameSession.paddles) {
+            updateStateAction.addBody(p);
+
+        }
 
         gameSession.broadcastAction(updateStateAction);
     }

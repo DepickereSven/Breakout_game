@@ -5,6 +5,8 @@
 const { Ball } = require('./bodies/ball')
 const { Paddle } = require('./bodies/paddle')
 const { sketch } = require('./sketch')
+const { MovePaddleLeftAction } = require('./actions/move_paddle_left')
+const { MovePaddleRightAction } = require('./actions/move_paddle_right')
 
 /**
  * @param {string} str 
@@ -14,7 +16,7 @@ const firstLetterToLowerCase = str => str[0].toLowerCase() + str.slice(1)
 /**
  * GameLoop provides the state and drawing for the sketch
  * @class
- * @prop {Paddle} paddle
+ * @prop {Paddle[]} paddles
  * @prop {Ball} ball
  */
 class GameLoop {
@@ -24,19 +26,36 @@ class GameLoop {
 
   reset () {
     // Initialise bodies
-    this.paddle = new Paddle()
+    this.paddles = [new Paddle(), new Paddle()]
     this.ball = new Ball()
   }
 
   /**
    * Update the body to match the server state
    * @method
-   * @param {object} bodyObj 
+   * @param {object[]} bodyObj 
    */
-  update (bodyObj) {
-    const instanceKey = firstLetterToLowerCase(bodyObj.type)
-    if (this[instanceKey]) {
-      this[instanceKey].update(bodyObj)
+  update (bodies) {
+    let paddleIndex = 0
+    for (const bodyObj of bodies) {
+      const instanceKey = firstLetterToLowerCase(bodyObj.type)
+      if (instanceKey === 'paddle') {
+        this.paddles[paddleIndex].update(bodyObj)
+        paddleIndex++
+      } else if (this[instanceKey]) {
+        this[instanceKey].update(bodyObj)
+      }
+    }
+
+    if (sketch.keyIsPressed) {
+      switch (sketch.keyCode) {
+        case 37:
+          window.wsClient.send(new MovePaddleLeftAction())
+          break
+        case 39:
+          window.wsClient.send(new MovePaddleRightAction())
+          break
+      }
     }
 
     this.run()
@@ -50,7 +69,9 @@ class GameLoop {
     // Clear canvas
     sketch.background(0)
 
-    this.paddle.draw(sketch)
+    for (const paddle of this.paddles) {
+      paddle.draw(sketch)
+    }
     this.ball.draw(sketch)
   }
 }

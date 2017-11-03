@@ -2,8 +2,6 @@
  * @module socket/client
  */
 
-const msgpack = require('msgpack-lite')
-
 const constants = require('../constants')
 const connectionLossView = require('../views/connection_loss')
 const { requestActionsMap } = require('../actions/index')

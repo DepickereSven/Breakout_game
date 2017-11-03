@@ -9,5 +9,7 @@ require('./sketch')
 
 $(document).ready(function () {
   initGameView.show()
+
+  window.wsClient = wsClient
   wsClient.open()
 })

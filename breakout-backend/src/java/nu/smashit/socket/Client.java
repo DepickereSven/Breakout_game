@@ -41,8 +41,8 @@ public class Client {
         return gameSession != null;
     }
 
-    public void setGame(GameSession gm) {
-        this.gameSession = gm;
+    public void setGame(GameSession gameSession) {
+        this.gameSession = gameSession;
     }
 
     public GameSession getGame() {

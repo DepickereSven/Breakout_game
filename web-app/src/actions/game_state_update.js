@@ -10,8 +10,6 @@ exports.GameStateUpdateAction = class GameStateUpdateAction {
   }
 
   handler () {
-    for (const bodyObj of this.bodies) {
-      gameLoop.update(bodyObj)
-    }
+    gameLoop.update(this.bodies)
   }
 }

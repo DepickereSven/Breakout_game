@@ -204,9 +204,7 @@ exports.GameStateUpdateAction = class GameStateUpdateAction {
   }
 
   handler () {
-    for (const bodyObj of this.bodies) {
-      gameLoop.update(bodyObj)
-    }
+    gameLoop.update(this.bodies)
   }
 }
 
@@ -238,6 +236,24 @@ exports.JoinGameRequestAction = class JoinGameRequestAction {
     this.key = key
   }
 }
+
+});
+
+;require.register("src/actions/move_paddle_left.js", function(exports, require, module) {
+/**
+ * @module actions/move_paddle_left.js
+ */
+
+exports.MovePaddleLeftAction = class MovePaddleLeftAction {}
+
+});
+
+;require.register("src/actions/move_paddle_right.js", function(exports, require, module) {
+/**
+ * @module actions/move_paddle_right.js
+ */
+
+exports.MovePaddleRightAction = class MovePaddleRightAction {}
 
 });
 
@@ -285,6 +301,140 @@ exports.Ball = class Ball {
     s.fill(this.color)
     s.ellipse(this.x, this.y, this.height)
   }
+}
+
+});
+
+;require.register("src/bodies/brick.js", function(exports, require, module) {
+/**
+ * @module bodies/brick
+ */
+
+const constants = require('../constants')
+const utils = require('../utils')
+
+/**
+ * Represents a brick
+ * @class
+ * @prop {number} x - horizontal position
+ * @prop {number} height
+ * @prop {number} width
+ * @prop {number[]} color
+ */
+exports.Brick = class Brick {
+  constructor(x, height, width) {
+    this.x = x
+    this.y = 0
+    this.height = height
+    this.width = width
+    this.color = utils.randomColor()
+  }
+
+  /**
+   * Move the ball to new position
+   * @method
+   * @param {int} dx
+   * @param {int} dy
+   */
+  move(dx, dy) {
+    this.x += dx
+    this.y += dy
+  }
+
+  /**
+   * Draw the brick on the screen
+   * @method
+   */
+  draw() {
+    fill.apply(fill, this.color)
+    rect(this.x, this.y, this.width, this.height)
+  }
+}
+
+/**
+ * Represents a row of bricks
+ * @class
+ * @param {number} rowIndex - The index of row
+ * @prop {Brick[]} bricks
+ */
+exports.BrickRow = class BrickRow {
+  constructor(rowIndex){
+    const count = 8
+    const margin = 10
+    const height = 30
+    const width = (constants.C_WIDTH - count * margin) / count
+
+    // Create new row
+    this.bricks = new Array(count)
+      .fill(null)
+      .map((_, i) => new Brick((width + margin) * i, height, width))
+  }
+
+  /**
+   * Move the bricks in this row down 1 row
+   * @method
+   */
+  moveDown() {
+    for (const brick of this.bricks) {
+      brick.move(0, height + margin)
+    }
+  }
+
+  /**
+   * Checks if the ball colides with a brick in the row
+   * @method
+   * @param {Ball} ball
+   * @return {Ball}
+   */
+  isBallCollision(ball) {
+    for (const brick of this.bricks) {
+      if (utils.isBallCollision(ball, brick)) {
+        return brick
+      }
+    }
+    return null
+  }
+
+  /**
+   * Removes brick from the row
+   * @method
+   * @param {Brick} brick
+   */
+  removeBrick(brick) {
+    this.bricks = this.bricks.filter((b) => b !== brick)
+  }
+
+  /**
+   * Checks if the row is empty
+   * @method
+   * @return {bool}
+   */
+  isEmpty() {
+    return this.bricks.length < 1
+  }
+
+  /**
+   * Draws the bricks
+   * @method
+   */
+  draw() {
+    for (const brick of this.bricks) {
+      brick.draw()
+    }
+  }
+}
+
+});
+
+;require.register("src/bodies/index.js", function(exports, require, module) {
+const { Ball } = require('./ball')
+const { Paddle } = require('./paddle')
+const { Brick } = require('./brick')
+
+exports.bodiesMap = {
+  Ball,
+  Paddle,
+  Brick
 }
 
 });
@@ -426,6 +576,8 @@ exports.C_WIDTH = 300
 const { Ball } = require('./bodies/ball')
 const { Paddle } = require('./bodies/paddle')
 const { sketch } = require('./sketch')
+const { MovePaddleLeftAction } = require('./actions/move_paddle_left')
+const { MovePaddleRightAction } = require('./actions/move_paddle_right')
 
 /**
  * @param {string} str 
@@ -435,7 +587,7 @@ const firstLetterToLowerCase = str => str[0].toLowerCase() + str.slice(1)
 /**
  * GameLoop provides the state and drawing for the sketch
  * @class
- * @prop {Paddle} paddle
+ * @prop {Paddle[]} paddles
  * @prop {Ball} ball
  */
 class GameLoop {
@@ -445,19 +597,36 @@ class GameLoop {
 
   reset () {
     // Initialise bodies
-    this.paddle = new Paddle()
+    this.paddles = [new Paddle(), new Paddle()]
     this.ball = new Ball()
   }
 
   /**
    * Update the body to match the server state
    * @method
-   * @param {object} bodyObj 
+   * @param {object[]} bodyObj 
    */
-  update (bodyObj) {
-    const instanceKey = firstLetterToLowerCase(bodyObj.type)
-    if (this[instanceKey]) {
-      this[instanceKey].update(bodyObj)
+  update (bodies) {
+    let paddleIndex = 0
+    for (const bodyObj of bodies) {
+      const instanceKey = firstLetterToLowerCase(bodyObj.type)
+      if (instanceKey === 'paddle') {
+        this.paddles[paddleIndex].update(bodyObj)
+        paddleIndex++
+      } else if (this[instanceKey]) {
+        this[instanceKey].update(bodyObj)
+      }
+    }
+
+    if (sketch.keyIsPressed) {
+      switch (sketch.keyCode) {
+        case 37:
+          window.wsClient.send(new MovePaddleLeftAction())
+          break
+        case 39:
+          window.wsClient.send(new MovePaddleRightAction())
+          break
+      }
     }
 
     this.run()
@@ -471,7 +640,9 @@ class GameLoop {
     // Clear canvas
     sketch.background(0)
 
-    this.paddle.draw(sketch)
+    for (const paddle of this.paddles) {
+      paddle.draw(sketch)
+    }
     this.ball.draw(sketch)
   }
 }
@@ -492,6 +663,8 @@ require('./sketch')
 
 $(document).ready(function () {
   initGameView.show()
+
+  window.wsClient = wsClient
   wsClient.open()
 })
 
@@ -522,8 +695,6 @@ exports.sketch = new P5(function (sketch) {
 /**
  * @module socket/client
  */
-
-const msgpack = require('msgpack-lite')
 
 const constants = require('../constants')
 const connectionLossView = require('../views/connection_loss')
@@ -754,7 +925,6 @@ exports.show = function show () {
  * @module views/init_game
  */
 
-const { wsClient } = require('../socket/client')
 const { showView } = require('../utils')
 const { CreateGameRequestAction } = require('../actions/create_game_request')
 const { JoinGameRequestAction } = require('../actions/join_game_request')
@@ -768,16 +938,16 @@ const els = {
 
 exports.show = function show () {
   showView(els.container)
+
+  els.createGameBtn.on('click', function () {
+    window.wsClient.send(new CreateGameRequestAction())
+  })
+
+  els.joinGameBtn.on('click', function () {
+    const key = els.gameKeyInput.val()
+    window.wsClient.send(new JoinGameRequestAction(key))
+  })
 }
-
-els.createGameBtn.on('click', function () {
-  wsClient.send(new CreateGameRequestAction())
-})
-
-els.joinGameBtn.on('click', function () {
-  const key = els.gameKeyInput.val()
-  wsClient.send(new JoinGameRequestAction(key))
-})
 
 });
 

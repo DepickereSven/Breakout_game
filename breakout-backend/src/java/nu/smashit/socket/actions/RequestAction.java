@@ -22,6 +22,10 @@ import nu.smashit.socket.Client;
     @Type(value = CreateGameRequestAction.class)
     ,
     @Type(value = JoinGameRequestAction.class)
+    ,
+    @Type(value = MovePaddleLeftAction.class)
+    ,
+    @Type(value = MovePaddleRightAction.class)
 })
 public interface RequestAction {
 

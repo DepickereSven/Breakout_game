@@ -27,4 +27,11 @@ public class Body {
         this.width = width;
         this.height = height;
     }
+
+    public boolean isCollision(Body b) {
+        return x < b.x + b.width
+                && x + width > b.x
+                && y < b.y + b.height
+                && height + y > b.y;
+    }
 }

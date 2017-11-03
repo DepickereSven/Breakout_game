@@ -13,8 +13,9 @@ import nu.smashit.socket.actions.ResponseAction;
 public class GameSession {
 
     private final String key;
-    private final Client[] clients;
-    private final GameLoop gameLoop;
+    public final Client[] clients;
+    public final Paddle[] paddles;
+    private GameLoop gameLoop;
 
     private final Timer gameLoopTimer;
     private final int updateInterval;
@@ -22,7 +23,7 @@ public class GameSession {
     GameSession(String key) {
         this.key = key;
         this.clients = new Client[2];
-        this.gameLoop = new GameLoop(this);
+        this.paddles = new Paddle[2];
 
         this.gameLoopTimer = new Timer();
         this.updateInterval = 30;
@@ -34,6 +35,10 @@ public class GameSession {
         }
         int i = clients[0] == null ? 0 : 1;
         clients[i] = c;
+
+        int paddleY = i == 0 ? GameCanvas.HEIGHT - 30 : 10;
+        paddles[i] = new Paddle(paddleY);
+
         c.setGame(this);
     }
 
@@ -48,6 +53,8 @@ public class GameSession {
 
     public void startGame() {
         broadcastAction(new GameStartAction());
+
+        this.gameLoop = new GameLoop(this);
 
         gameLoopTimer.scheduleAtFixedRate(this.gameLoop, 0, updateInterval);
     }
@@ -65,5 +72,10 @@ public class GameSession {
 
     public String getKey() {
         return key;
+    }
+
+    public Paddle getPaddle(Client c) {
+        int index = clients[0] == c ? 0 : 1;
+        return paddles[index];
     }
 }

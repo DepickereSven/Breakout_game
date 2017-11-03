@@ -2,7 +2,6 @@
  * @module views/init_game
  */
 
-const { wsClient } = require('../socket/client')
 const { showView } = require('../utils')
 const { CreateGameRequestAction } = require('../actions/create_game_request')
 const { JoinGameRequestAction } = require('../actions/join_game_request')
@@ -16,13 +15,13 @@ const els = {
 
 exports.show = function show () {
   showView(els.container)
+
+  els.createGameBtn.on('click', function () {
+    window.wsClient.send(new CreateGameRequestAction())
+  })
+
+  els.joinGameBtn.on('click', function () {
+    const key = els.gameKeyInput.val()
+    window.wsClient.send(new JoinGameRequestAction(key))
+  })
 }
-
-els.createGameBtn.on('click', function () {
-  wsClient.send(new CreateGameRequestAction())
-})
-
-els.joinGameBtn.on('click', function () {
-  const key = els.gameKeyInput.val()
-  wsClient.send(new JoinGameRequestAction(key))
-})
