@@ -15,7 +15,7 @@ public class Ball extends MovableBody {
     public int dy;
 
     public Ball() {
-        super(GameCanvas.WIDTH / 2, GameCanvas.HEIGHT / 2, 15, 15);
+        super(GameCanvas.WIDTH / 2, GameCanvas.HEIGHT / 2, 14, 14);
         this.dx = 3;
         this.dy = -9;
     }
@@ -25,5 +25,9 @@ public class Ball extends MovableBody {
         super.move(dx, dy);
         this.dx = dx;
         this.dy = dy;
+    }
+
+    public int getRadius() {
+        return this.height / 2;
     }
 }

@@ -34,15 +34,15 @@ public class GameLoop extends TimerTask {
             int dy = ball.dy;
 
             // Wall collission
-            if (ball.x + dx > GameCanvas.WIDTH - ball.height / 2 || ball.x + dx < ball.height / 2) {
+            if (ball.x + dx > GameCanvas.WIDTH - ball.getRadius() || ball.x + dx < ball.getRadius()) {
                 dx = -dx;
 
                 // Ceiling collission
-            } else if (ball.y + dy < ball.height / 2) {
+            } else if (ball.y + dy < ball.getRadius()) {
                 dy = -dy;
 
                 // Floor collission
-            } else if (ball.y + dy > GameCanvas.HEIGHT - ball.height / 2) {
+            } else if (ball.y + dy > GameCanvas.HEIGHT - ball.getRadius()) {
                 dy = -dy;
             }
 
