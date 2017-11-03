@@ -39,7 +39,10 @@ public class GameSession {
 
     void broadcastAction(ResponseAction a) {
         for (Client c : clients) {
-            c.sendAction(a);
+            try {
+                c.sendAction(a);
+            } catch (Exception e) {
+            }
         }
     }
 
