@@ -24,7 +24,6 @@ class WsClient {
     }
 
     this.ws = new WebSocket(constants.API_URL)
-    this.ws.binaryType = 'arraybuffer'
 
     this.ws.onopen = this.onOpen
     this.ws.onclose = this.onClose
@@ -51,8 +50,7 @@ class WsClient {
    * @method
    */
   onMessage (event) {
-    const bufferView = new Uint8Array(event.data)
-    const action = msgpack.decode(bufferView)
+    const action = JSON.parse(event.data)
 
     const RequestAction = requestActionsMap[action.type]
     if (RequestAction) {
@@ -74,8 +72,8 @@ class WsClient {
     // Set action type as the name of the class
     action.type = action.constructor.name
 
-    const buffer = msgpack.encode(action)
-    this.ws.send(buffer)
+    const json = JSON.stringify(action)
+    this.ws.send(json)
   }
 }
 

@@ -20,9 +20,9 @@ import java.util.logging.Logger;
  *
  * @author jodus
  */
-public class ActionEncoder implements Encoder.Binary<ResponseAction> {
+public class ActionEncoder implements Encoder.Text<ResponseAction> {
 
-    private final ObjectMapper objectMapper = new ObjectMapper(new MessagePackFactory());
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public void init(EndpointConfig config) {
@@ -33,10 +33,9 @@ public class ActionEncoder implements Encoder.Binary<ResponseAction> {
     }
 
     @Override
-    public ByteBuffer encode(ResponseAction a) throws EncodeException {
+    public String encode(ResponseAction a) throws EncodeException {
         try {
-            byte[] bytes = objectMapper.writeValueAsBytes(a);
-            return ByteBuffer.wrap(bytes);
+            return objectMapper.writeValueAsString(a);
         } catch (JsonProcessingException ex) {
             Logger.getLogger(ActionEncoder.class.getName()).log(Level.SEVERE, null, ex);
             return null;
