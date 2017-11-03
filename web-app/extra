@@ -1,0 +1,7 @@
+Hier vind je alle vlaggen van de wereld in PNG( genormaliseerd volgens deze normen https://www.iso.org/obp/ui/#search)
+http://forum.tsgk.com/viewtopic.php?t=4921
+Het is commercial free.
+
+Hier onder vind je een API waar in je alle landen van de wereld kunt callen.
+API website doc: https://restcountries.eu/#api-endpoints-list-of-codes
+Endpoint of use: https://restcountries.eu/rest/v2/all
