@@ -28,31 +28,23 @@ public class GameLoop extends TimerTask {
 
         // Ball movement
         if (ball != null) {
-            int dx = ball.dx;
-            int dy = ball.dy;
-
-            // Wall collission
-            if (ball.x + dx > GameCanvas.WIDTH - ball.getRadius() || ball.x + dx < ball.getRadius()) {
-                dx = -dx;
-
-                // Ceiling collission
-            } else if (ball.y + dy < ball.getRadius()) {
-                dy = -dy;
-
-                // Floor collission
-            } else if (ball.y + dy > GameCanvas.HEIGHT - ball.getRadius()) {
-                dy = -dy;
+            if (ball.isWallCollision()) {
+                ball.inverseXSpeed();
+            } else if (ball.isCeilingCollision()) {
+                ball.inverseYSpeed();
+            } else if (ball.isFloorCollision()) {
+                ball.inverseYSpeed();
             }
+
             // Paddle collision
             for (Paddle p : gameSession.paddles) {
                 if (p.isCollision(ball)) {
-                    dy = -dy;
+                    ball.inverseYSpeed();
                     break;
                 }
             }
 
-
-            ball.move(dx, dy);
+            ball.move();
 
             updateStateAction.addBody(ball);
         }

@@ -11,8 +11,8 @@ package nu.smashit.core;
  */
 public class Ball extends MovableBody {
 
-    public int dx;
-    public int dy;
+    private int dx;
+    private int dy;
 
     public Ball() {
         super(GameCanvas.WIDTH / 2, GameCanvas.HEIGHT / 2, 14, 14);
@@ -20,14 +20,31 @@ public class Ball extends MovableBody {
         this.dy = -9;
     }
 
-    @Override
-    public void move(int dx, int dy) {
+    public void move() {
         super.move(dx, dy);
-        this.dx = dx;
-        this.dy = dy;
     }
 
     public int getRadius() {
         return this.height / 2;
+    }
+
+    public boolean isWallCollision() {
+        return x + dx > GameCanvas.WIDTH - getRadius() || x + dx < getRadius();
+    }
+
+    public boolean isCeilingCollision() {
+        return y + dy < getRadius();
+    }
+
+    public boolean isFloorCollision() {
+        return y + dy > GameCanvas.HEIGHT - getRadius();
+    }
+
+    public void inverseYSpeed() {
+        dy = -dy;
+    }
+
+    public void inverseXSpeed() {
+        dx = -dx;
     }
 }
