@@ -11,17 +11,22 @@ package nu.smashit.core;
  */
 public class Ball extends MovableBody {
 
-    private int dx;
-    private int dy;
+    private double dx;
+    private double dy;
+
+    private final double multiplier;
 
     public Ball() {
-        super(GameCanvas.WIDTH / 2, GameCanvas.HEIGHT / 2, 14, 14);
+        super(GameCanvas.WIDTH / 2, GameCanvas.HEIGHT / 2, 12, 12);
         this.dx = 3;
         this.dy = -9;
+        this.multiplier = 1.0002;
     }
 
     public void move() {
-        super.move(dx, dy);
+        dx = dx * multiplier;
+        dy = dy * multiplier;
+        super.move((int) dx, (int) dy);
     }
 
     public int getRadius() {
