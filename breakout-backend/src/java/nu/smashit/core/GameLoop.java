@@ -29,20 +29,24 @@ public class GameLoop extends TimerTask {
         // Ball movement
         if (ball != null) {
             if (ball.isWallCollision()) {
-                ball.inverseXSpeed();
+                ball.inverseHozSpeed();
             }
             if (ball.isCeilingCollision()) {
-                ball.inverseYSpeed();
+                ball.inverseVerSpeed();
             }
             if (ball.isFloorCollision()) {
-                ball.inverseYSpeed();
+                ball.inverseVerSpeed();
             }
 
             // Paddle collision
             int pIndex = ball.isGoingUp() ? 1 : 0;
             Paddle p = gameSession.paddles[pIndex];
             if (ball.isCollision(p)) {
-                ball.inverseYSpeed();
+                if (ball.isVerCollision(p)) {
+                    ball.inverseVerSpeed();
+                } else {
+                    ball.inverseHozSpeed();
+                }
             }
 
             ball.move();

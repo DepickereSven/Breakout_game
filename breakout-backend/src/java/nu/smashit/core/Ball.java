@@ -53,6 +53,11 @@ public class Ball extends MovableBody {
                 && height + (dy + y) > b.y;
     }
 
+    public boolean isVerCollision(Body b) {
+        return y <= b.y - (b.height / 2)
+                || y >= b.y + (b.height / 2);
+    }
+
     public boolean isGoingUp() {
         return dy < 0;
     }
@@ -61,11 +66,11 @@ public class Ball extends MovableBody {
         return dx < 0;
     }
 
-    public void inverseYSpeed() {
+    public void inverseVerSpeed() {
         dy = -dy;
     }
 
-    public void inverseXSpeed() {
+    public void inverseHozSpeed() {
         dx = -dx;
     }
 }
