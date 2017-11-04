@@ -299,7 +299,7 @@ exports.Ball = class Ball {
    */
   draw (s) {
     s.fill(this.color)
-    s.ellipse(this.x, this.y, this.height)
+    s.rect(this.x, this.y, this.height, this.width, this.width)
   }
 }
 
@@ -576,6 +576,8 @@ exports.C_WIDTH = 300
 const { Ball } = require('./bodies/ball')
 const { Paddle } = require('./bodies/paddle')
 const { sketch } = require('./sketch')
+const { MovePaddleLeftAction } = require('./actions/move_paddle_left')
+const { MovePaddleRightAction } = require('./actions/move_paddle_right')
 
 /**
  * @param {string} str 
@@ -613,6 +615,17 @@ class GameLoop {
         paddleIndex++
       } else if (this[instanceKey]) {
         this[instanceKey].update(bodyObj)
+      }
+    }
+
+    if (sketch.keyIsPressed) {
+      switch (sketch.keyCode) {
+        case 37:
+          window.wsClient.send(new MovePaddleLeftAction())
+          break
+        case 39:
+          window.wsClient.send(new MovePaddleRightAction())
+          break
       }
     }
 
@@ -898,32 +911,14 @@ exports.show = function show (key) {
  * @module views/game_started
  */
 
-const { sketch } = require('../sketch')
 const { showView } = require('../utils')
-const { MovePaddleLeftAction } = require('../actions/move_paddle_left')
-const { MovePaddleRightAction } = require('../actions/move_paddle_right')
 
 const els = {
   container: $('#game_started')
 }
 
-let timeout
 exports.show = function show () {
   showView(els.container)
-
-  timeout = setInterval(function () {
-    console.log('timeout')
-    if (sketch.keyIsPressed) {
-      switch (sketch.keyCode) {
-        case 37:
-          window.wsClient.send(new MovePaddleLeftAction())
-          break
-        case 39:
-          window.wsClient.send(new MovePaddleRightAction())
-          break
-      }
-    }
-  }, 35)
 }
 
 });

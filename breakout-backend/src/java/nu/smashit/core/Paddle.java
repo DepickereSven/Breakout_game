@@ -12,6 +12,6 @@ package nu.smashit.core;
 public class Paddle extends MovableBody {
 
     public Paddle(int y) {
-        super(0, y, 70, 20);
+        super(0, y, 50, 14);
     }
 }

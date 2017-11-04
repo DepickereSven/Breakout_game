@@ -18,7 +18,7 @@ public class Ball extends MovableBody {
 
     public Ball() {
         super(GameCanvas.WIDTH / 2, GameCanvas.HEIGHT / 2, 12, 12);
-        this.dx = 3;
+        this.dx = -3;
         this.dy = -9;
         this.multiplier = 1.0002;
     }
@@ -34,15 +34,31 @@ public class Ball extends MovableBody {
     }
 
     public boolean isWallCollision() {
-        return x + dx > GameCanvas.WIDTH - getRadius() || x + dx < getRadius();
+        return isGoingLeft() && x < 0
+                || !isGoingLeft() && x > GameCanvas.WIDTH - width;
     }
 
     public boolean isCeilingCollision() {
-        return y + dy < getRadius();
+        return isGoingUp() && y < 0;
     }
 
     public boolean isFloorCollision() {
-        return y + dy > GameCanvas.HEIGHT - getRadius();
+        return !isGoingUp() && y > GameCanvas.HEIGHT - height;
+    }
+
+    public boolean isCollision(Body b) {
+        return (dx + x) < b.x + b.width
+                && (dx + x) + width > b.x
+                && (dy + y) < b.y + b.height
+                && height + (dy + y) > b.y;
+    }
+
+    public boolean isGoingUp() {
+        return dy < 0;
+    }
+
+    public boolean isGoingLeft() {
+        return dx < 0;
     }
 
     public void inverseYSpeed() {

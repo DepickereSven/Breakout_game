@@ -39,6 +39,6 @@ exports.Ball = class Ball {
    */
   draw (s) {
     s.fill(this.color)
-    s.ellipse(this.x, this.y, this.height)
+    s.rect(this.x, this.y, this.height, this.width, this.width)
   }
 }
