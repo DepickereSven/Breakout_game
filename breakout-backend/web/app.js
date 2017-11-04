@@ -210,14 +210,31 @@ exports.GameStateUpdateAction = class GameStateUpdateAction {
 
 });
 
+;require.register("src/actions/game_stop.js", function(exports, require, module) {
+/**
+ * @module actions/game_stop.js
+ */
+
+const gameStoppedView = require('../views/game_stopped')
+
+exports.GameStopAction = class GameStopAction {
+  handler () {
+    gameStoppedView.show()
+  }
+}
+
+});
+
 ;require.register("src/actions/index.js", function(exports, require, module) {
 const { CreateGameSuccessAction } = require('./create_game_success')
 const { GameStartAction } = require('./game_start')
+const { GameStopAction } = require('./game_stop')
 const { GameStateUpdateAction } = require('./game_state_update')
 
 exports.requestActionsMap = {
   CreateGameSuccessAction,
   GameStartAction,
+  GameStopAction,
   GameStateUpdateAction
 }
 
@@ -915,6 +932,23 @@ const { showView } = require('../utils')
 
 const els = {
   container: $('#game_started')
+}
+
+exports.show = function show () {
+  showView(els.container)
+}
+
+});
+
+;require.register("src/views/game_stopped.js", function(exports, require, module) {
+/**
+ * @module views/game_stopped
+ */
+
+const { showView } = require('../utils')
+
+const els = {
+  container: $('#game_stopped')
 }
 
 exports.show = function show () {
