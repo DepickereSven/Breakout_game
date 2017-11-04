@@ -576,8 +576,6 @@ exports.C_WIDTH = 300
 const { Ball } = require('./bodies/ball')
 const { Paddle } = require('./bodies/paddle')
 const { sketch } = require('./sketch')
-const { MovePaddleLeftAction } = require('./actions/move_paddle_left')
-const { MovePaddleRightAction } = require('./actions/move_paddle_right')
 
 /**
  * @param {string} str 
@@ -618,17 +616,6 @@ class GameLoop {
       }
     }
 
-    if (sketch.keyIsPressed) {
-      switch (sketch.keyCode) {
-        case 37:
-          window.wsClient.send(new MovePaddleLeftAction())
-          break
-        case 39:
-          window.wsClient.send(new MovePaddleRightAction())
-          break
-      }
-    }
-
     this.run()
   }
 
@@ -657,12 +644,12 @@ exports.gameLoop = new GameLoop()
  */
 
 const { wsClient } = require('./socket/client')
-const initGameView = require('./views/init_game')
+const loadingView = require('./views/loading')
 
 require('./sketch')
 
 $(document).ready(function () {
-  initGameView.show()
+  loadingView.show()
 
   window.wsClient = wsClient
   wsClient.open()
@@ -698,6 +685,7 @@ exports.sketch = new P5(function (sketch) {
 
 const constants = require('../constants')
 const connectionLossView = require('../views/connection_loss')
+const initGameView = require('../views/init_game')
 const { requestActionsMap } = require('../actions/index')
 
 /**
@@ -726,7 +714,9 @@ class WsClient {
    * Event handler for succesfull connection
    * @method
    */
-  onOpen () {}
+  onOpen () {
+    initGameView.show()
+  }
 
   /**
    * Event handler for connection loss
@@ -908,14 +898,32 @@ exports.show = function show (key) {
  * @module views/game_started
  */
 
+const { sketch } = require('../sketch')
 const { showView } = require('../utils')
+const { MovePaddleLeftAction } = require('../actions/move_paddle_left')
+const { MovePaddleRightAction } = require('../actions/move_paddle_right')
 
 const els = {
   container: $('#game_started')
 }
 
+let timeout
 exports.show = function show () {
   showView(els.container)
+
+  timeout = setInterval(function () {
+    console.log('timeout')
+    if (sketch.keyIsPressed) {
+      switch (sketch.keyCode) {
+        case 37:
+          window.wsClient.send(new MovePaddleLeftAction())
+          break
+        case 39:
+          window.wsClient.send(new MovePaddleRightAction())
+          break
+      }
+    }
+  }, 35)
 }
 
 });
@@ -949,6 +957,22 @@ exports.show = function show () {
   })
 }
 
+});
+
+;require.register("src/views/loading.js", function(exports, require, module) {
+/**
+ * @module views/loading
+ */
+
+const { showView } = require('../utils')
+
+const els = {
+  container: $('#loading')
+}
+
+exports.show = function show () {
+  showView(els.container)
+}
 });
 
 ;require.alias("buffer/index.js", "buffer");

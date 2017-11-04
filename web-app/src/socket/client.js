@@ -4,6 +4,7 @@
 
 const constants = require('../constants')
 const connectionLossView = require('../views/connection_loss')
+const initGameView = require('../views/init_game')
 const { requestActionsMap } = require('../actions/index')
 
 /**
@@ -32,7 +33,9 @@ class WsClient {
    * Event handler for succesfull connection
    * @method
    */
-  onOpen () {}
+  onOpen () {
+    initGameView.show()
+  }
 
   /**
    * Event handler for connection loss

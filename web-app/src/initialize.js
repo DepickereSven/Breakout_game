@@ -3,12 +3,12 @@
  */
 
 const { wsClient } = require('./socket/client')
-const initGameView = require('./views/init_game')
+const loadingView = require('./views/loading')
 
 require('./sketch')
 
 $(document).ready(function () {
-  initGameView.show()
+  loadingView.show()
 
   window.wsClient = wsClient
   wsClient.open()
