@@ -47,15 +47,14 @@ class GameLoop {
       }
     }
 
-    if (sketch.keyIsPressed) {
-      switch (sketch.keyCode) {
-        case 37:
-          window.wsClient.send(new MovePaddleLeftAction())
-          break
-        case 39:
-          window.wsClient.send(new MovePaddleRightAction())
-          break
-      }
+    //keyIsPressed left and right arrows does not work in firefox
+    //so we need to use keyIsDown
+    if (sketch.keyIsDown(sketch.LEFT_ARROW)){
+      window.wsClient.send(new MovePaddleLeftAction())
+    }
+
+    if (sketch.keyIsDown(sketch.RIGHT_ARROW)){
+      window.wsClient.send(new MovePaddleRightAction())
     }
 
     this.run()
