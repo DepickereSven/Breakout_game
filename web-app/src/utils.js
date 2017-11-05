@@ -10,7 +10,7 @@
  * @param {number} y2
  * @return {number}
  */
-function calcPointsDistance(x1, y1, x2, y2) {
+function calcPointsDistance (x1, y1, x2, y2) {
   let xDist = x2 - x1
   let yDist = y2 - y1
 
@@ -26,7 +26,7 @@ exports.calcPointsDistance = calcPointsDistance
  * @param {number} max
  * @return {boolean}
  */
-function inRange(val, min, max) {
+function inRange (val, min, max) {
   return val >= Math.min(min, max) && val <= Math.max(min, max)
 }
 exports.inRange = inRange
@@ -37,7 +37,7 @@ exports.inRange = inRange
  * @param {Brick} brick
  * @return {boolean}
  */
-function isBallCollision(ball, brick) {
+function isBallCollision (ball, brick) {
   return inRange(ball.x, brick.x - ball.radius, brick.x + brick.width + ball.radius) &&
     inRange(ball.y, brick.y - ball.radius, brick.y + brick.height + ball.radius)
 }
@@ -49,7 +49,7 @@ exports.isBallCollision = isBallCollision
  * @param {number} max
  * @return {number}
  */
-function randomInRange(min, max) {
+function randomInRange (min, max) {
   min = Math.ceil(min)
   max = Math.floor(max)
   return Math.round(Math.random() * (max - min)) + min
@@ -60,7 +60,7 @@ exports.randomInRange = randomInRange
  * Generate either 1 or -1
  * @return {number}
  */
-function randomSign() {
+function randomSign () {
   return Math.round(Math.random()) ? 1 : -1
 }
 exports.randomSign = randomSign
@@ -69,7 +69,7 @@ exports.randomSign = randomSign
  * Generate random color in RGB
  * @return {number[]}
  */
-function randomColor() {
+function randomColor () {
   return [0, 0, 0].map(() => randomInRange(50, 255))
 }
 exports.randomColor = randomColor
@@ -78,7 +78,7 @@ exports.randomColor = randomColor
  * Show the given view and hide the others
  * @param {jQuery} el - jQuery container element
  */
-function showView(el) {
+function showView (el) {
   $('.view').addClass('hidden')
   el.removeClass('hidden')
 }
