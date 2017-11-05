@@ -21,7 +21,7 @@ public class MovePaddleLeftAction implements RequestAction {
             GameSession gm = c.getGame();
             Paddle p = gm.getPaddle(c);
             if (p.x > 0) {
-                p.move(-7, 0);
+                p.moveLeft();
             }
         }
     }

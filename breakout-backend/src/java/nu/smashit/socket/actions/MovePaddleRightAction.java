@@ -22,7 +22,7 @@ public class MovePaddleRightAction implements RequestAction {
             GameSession gm = c.getGame();
             Paddle p = gm.getPaddle(c);
             if (p.x < GameCanvas.WIDTH - p.width) {
-                p.move(7, 0);
+                p.moveRight();
             }
         }
     }
