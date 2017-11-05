@@ -698,7 +698,7 @@ const constants = require('./constants')
 exports.sketch = new P5(function (sketch) {
   sketch.setup = function () {
     const canvas = sketch.createCanvas(constants.C_WIDTH, constants.C_HEIGHT)
-    canvas.parent('game_started')
+    canvas.parent('game_started_view')
 
     // Don't loop on its own because we draw manualy when the server send and update
     sketch.noLoop()
@@ -890,7 +890,7 @@ exports.showView = showView
 const { showView } = require('../utils')
 
 const els = {
-  container: $('#connection_loss')
+  container: $('#connection_loss_view')
 }
 
 exports.show = function show () {
@@ -908,7 +908,7 @@ exports.show = function show () {
 const { showView } = require('../utils')
 
 const els = exports.els = {
-  container: $('#created_game_success'),
+  container: $('#created_game_success_view'),
   createdGameKey: $('#created_game_key')
 }
 
@@ -931,7 +931,7 @@ exports.show = function show (key) {
 const { showView } = require('../utils')
 
 const els = {
-  container: $('#game_started')
+  container: $('#game_started_view')
 }
 
 exports.show = function show () {
@@ -948,7 +948,7 @@ exports.show = function show () {
 const { showView } = require('../utils')
 
 const els = {
-  container: $('#game_stopped')
+  container: $('#game_stopped_view')
 }
 
 exports.show = function show () {
@@ -967,7 +967,7 @@ const { CreateGameRequestAction } = require('../actions/create_game_request')
 const { JoinGameRequestAction } = require('../actions/join_game_request')
 
 const els = {
-  container: $('#init_game'),
+  container: $('#init_game_view'),
   createGameBtn: $('#create_game_btn'),
   joinGameBtn: $('#join_game_btn'),
   gameKeyInput: $('#game_key_input')
@@ -996,12 +996,13 @@ exports.show = function show () {
 const { showView } = require('../utils')
 
 const els = {
-  container: $('#loading')
+  container: $('#loading_view')
 }
 
 exports.show = function show () {
   showView(els.container)
 }
+
 });
 
 ;require.alias("buffer/index.js", "buffer");
@@ -1015,5 +1016,3 @@ window["$"] = require("jquery");
 
 });})();require('___globals___');
 
-
-//# sourceMappingURL=app.js.map

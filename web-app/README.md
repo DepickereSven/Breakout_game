@@ -43,6 +43,8 @@ npm start
 <dd></dd>
 <dt><a href="#actions/game_state_update.module_js">js</a></dt>
 <dd></dd>
+<dt><a href="#actions/game_stop.module_js">js</a></dt>
+<dd></dd>
 <dt><a href="#actions/join_game_request.module_js">js</a></dt>
 <dd></dd>
 <dt><a href="#actions/move_paddle_left.module_js">js</a></dt>
@@ -64,6 +66,8 @@ npm start
 <dt><a href="#module_views/created_game">views/created_game</a></dt>
 <dd></dd>
 <dt><a href="#module_views/game_started">views/game_started</a></dt>
+<dd></dd>
+<dt><a href="#module_views/game_stopped">views/game_stopped</a></dt>
 <dd></dd>
 <dt><a href="#module_views/init_game">views/init_game</a></dt>
 <dd></dd>
@@ -255,6 +259,9 @@ Show the given view and hide the others
 
 ## js
 <a name="actions/game_state_update.module_js"></a>
+
+## js
+<a name="actions/game_stop.module_js"></a>
 
 ## js
 <a name="actions/join_game_request.module_js"></a>
@@ -644,6 +651,9 @@ Show the created game view
 <a name="module_views/game_started"></a>
 
 ## views/game_started
+<a name="module_views/game_stopped"></a>
+
+## views/game_stopped
 <a name="module_views/init_game"></a>
 
 ## views/init_game

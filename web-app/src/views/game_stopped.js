@@ -5,7 +5,7 @@
 const { showView } = require('../utils')
 
 const els = {
-  container: $('#game_stopped')
+  container: $('#game_stopped_view')
 }
 
 exports.show = function show () {

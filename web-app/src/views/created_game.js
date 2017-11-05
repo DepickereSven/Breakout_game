@@ -6,7 +6,7 @@
 const { showView } = require('../utils')
 
 const els = exports.els = {
-  container: $('#created_game_success'),
+  container: $('#created_game_success_view'),
   createdGameKey: $('#created_game_key')
 }
 
