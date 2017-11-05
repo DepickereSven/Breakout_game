@@ -5,6 +5,8 @@
  */
 package nu.smashit.core;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  *
  * @author jodus
@@ -29,23 +31,28 @@ public class Ball extends MovableBody {
         super.move((int) dx, (int) dy);
     }
 
+    @JsonIgnore
     public int getRadius() {
         return this.height / 2;
     }
 
+    @JsonIgnore
     public boolean isWallCollision() {
         return isGoingLeft() && x < 0
                 || !isGoingLeft() && x > GameCanvas.WIDTH - width;
     }
 
+    @JsonIgnore
     public boolean isCeilingCollision() {
         return isGoingUp() && y < 0;
     }
 
+    @JsonIgnore
     public boolean isFloorCollision() {
         return !isGoingUp() && y > GameCanvas.HEIGHT - height;
     }
 
+    @JsonIgnore
     public boolean isCollision(Body b) {
         return (dx + x) < b.x + b.width
                 && (dx + x) + width > b.x
@@ -58,18 +65,22 @@ public class Ball extends MovableBody {
                 || y >= b.y + (b.height / 2);
     }
 
+    @JsonIgnore
     public boolean isGoingUp() {
         return dy < 0;
     }
 
+    @JsonIgnore
     public boolean isGoingLeft() {
         return dx < 0;
     }
 
+    @JsonIgnore
     public void inverseVerSpeed() {
         dy = -dy;
     }
 
+    @JsonIgnore
     public void inverseHozSpeed() {
         dx = -dx;
     }
