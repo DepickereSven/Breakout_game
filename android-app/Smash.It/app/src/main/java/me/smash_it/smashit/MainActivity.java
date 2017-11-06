@@ -42,7 +42,7 @@ public class MainActivity extends Activity {
 
 
         });
-        view.loadUrl("https://github.com");
+        view.loadUrl("http://localhost:8080/breakout/");
         view.setWebChromeClient(new WebChromeClient() {
             public void onConsoleMessage(String message, int lineNumber, String sourceID) {
                 //TODO add here logs if something need to pop-up as toast
