@@ -11,14 +11,13 @@ import android.webkit.WebViewClient;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 
-
 public class MainActivity extends Activity {
 
     private GoogleApiClient client;
     private WebView view;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //TODO create icon for app updater
 //        AppUpdater appUpdater = new AppUpdater(this)
@@ -28,7 +27,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         view = (WebView) this.findViewById(R.id.webView);
         view.getSettings().setJavaScriptEnabled(true);
-        view.getSettings().setAllowFileAccess(true);
+//        view.getSettings().setAllowFileAccess(true);
         view.getSettings().setDomStorageEnabled(true);
         view.setWebViewClient(new MyBrowser() {
             @Override
@@ -39,10 +38,8 @@ public class MainActivity extends Activity {
                 //show webview
 //                findViewById(R.id.webView).setVisibility(View.VISIBLE);
             }
-
-
         });
-        view.loadUrl("http://localhost:8080/breakout/");
+        view.loadUrl("https://www.google.be/");
         view.setWebChromeClient(new WebChromeClient() {
             public void onConsoleMessage(String message, int lineNumber, String sourceID) {
                 //TODO add here logs if something need to pop-up as toast
@@ -52,12 +49,12 @@ public class MainActivity extends Activity {
 //                if (sourceID.equals("file:///android_asset/www/assets/js/newScript.js") && lineNumber == 1088) {
 //                    if (!message.isEmpty()){
 //                        Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
-//
 //                    }
 //                }
             }
         });
     }
+
     private class MyBrowser extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
