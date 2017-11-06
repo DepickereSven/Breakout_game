@@ -11,7 +11,9 @@ const constants = require('../constants')
  * @prop {string} color
  */
 exports.Score = class Score {
-  constructor () {
+  constructor (currentPlayer = false) {
+    const gap = constants.C_HEIGHT * 0.20
+    this.y = currentPlayer ? constants.C_HEIGHT - gap : gap
     this.points = 0
     this.color = 'white'
   }
@@ -19,7 +21,7 @@ exports.Score = class Score {
   /**
    * @method
    */
-  update ({points}) {
+  update ({ points }) {
     this.points = points
   }
 
@@ -29,7 +31,8 @@ exports.Score = class Score {
    */
   draw (s) {
     s.fill(this.color)
-    s.textFont('Arial', 30)
-    s.text(this.points, constants.C_WIDTH / 2, constants.C_HEIGHT / 2)
+    s.textFont('Arial', 20)
+    s.textAlign(s.CENTER)
+    s.text(this.points, constants.C_WIDTH / 2, this.y)
   }
 }

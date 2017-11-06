@@ -16,10 +16,16 @@ public class Ball extends MovableBody {
     private double dx;
     private double dy;
 
-    private final double multiplier;
+    private double multiplier;
 
     public Ball() {
         super(GameCanvas.WIDTH / 2, GameCanvas.HEIGHT / 2, 12, 12);
+        this.reset();
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
         this.dx = -3;
         this.dy = -9;
         this.multiplier = 1.0002;

@@ -30,11 +30,7 @@ public class Client {
     }
 
     public void sendAction(ResponseAction a) {
-        try {
-            session.getBasicRemote().sendObject(a);
-        } catch (IOException | EncodeException err) {
-            Logger.log(err.getMessage());
-        }
+        session.getAsyncRemote().sendObject(a);
     }
 
     public boolean isInGame() {

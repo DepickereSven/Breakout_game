@@ -11,6 +11,7 @@ const { requestActionsMap } = require('../actions/index')
  * Websocket client
  * @class
  * @prop {WebSocket} ws
+ * @prop {String} clientId - UUID that the socket server gives to our client with the ConnectionSuccessAction
  */
 class WsClient {
   /**
@@ -22,11 +23,22 @@ class WsClient {
       throw new Error('WebSocket is already opened.')
     }
 
+    this.clientId = null
+
     this.ws = new WebSocket(constants.API_URL)
 
     this.ws.onopen = this.onOpen
     this.ws.onclose = this.onClose
     this.ws.onmessage = this.onMessage
+  }
+
+  /**
+   * Set the clientId
+   * Only done once
+   * @method
+   */
+  setClientId (clientId) {
+    this.cliendId = clientId
   }
 
   /**

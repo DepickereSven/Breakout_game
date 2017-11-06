@@ -148,7 +148,24 @@ var __makeRelativeRequire = function(require, mappings, pref) {
     return require(name);
   }
 };
-require.register("src/actions/create_game_request.js", function(exports, require, module) {
+require.register("src/actions/connection_success.js", function(exports, require, module) {
+/**
+ * @module actions/connection_success.js
+ */
+
+exports.ConnectionSuccessAction = class ConnectionSuccessAction {
+  constructor ({ clientId }) {
+    this.clientId = clientId
+  }
+
+  handler () {
+    window.wsClient.setClientId(this.clientId)
+  }
+}
+
+});
+
+;require.register("src/actions/create_game_request.js", function(exports, require, module) {
 /**
  * @module actions/create_game_request.js
  */
@@ -171,6 +188,21 @@ exports.CreateGameSuccessAction = class CreateGameSuccessAction {
 
   handler () {
     createdGameView.show(this.key)
+  }
+}
+
+});
+
+;require.register("src/actions/game_loss.js", function(exports, require, module) {
+/**
+ * @module actions/game_loss.js
+ */
+
+const gameLossView = require('../views/game_loss')
+
+exports.GameLossAction = class GameLossAction {
+  handler () {
+    gameLossView.show()
   }
 }
 
@@ -227,16 +259,37 @@ exports.GameStopAction = class GameStopAction {
 
 });
 
+;require.register("src/actions/game_victory.js", function(exports, require, module) {
+/**
+ * @module actions/game_victory.js
+ */
+
+const gameVictoryView = require('../views/game_victory')
+
+exports.GameVictoryAction = class GameVictoryAction {
+  handler () {
+    gameVictoryView.show()
+  }
+}
+
+});
+
 ;require.register("src/actions/index.js", function(exports, require, module) {
+const { ConnectionSuccessAction } = require('./connection_success')
 const { CreateGameSuccessAction } = require('./create_game_success')
 const { GameStartAction } = require('./game_start')
 const { GameStopAction } = require('./game_stop')
+const { GameVictoryAction } = require('./game_victory')
+const { GameLossAction } = require('./game_loss')
 const { GameStateUpdateAction } = require('./game_state_update')
 
 exports.requestActionsMap = {
+  ConnectionSuccessAction,
   CreateGameSuccessAction,
   GameStartAction,
   GameStopAction,
+  GameVictoryAction,
+  GameLossAction,
   GameStateUpdateAction
 }
 
@@ -523,7 +576,9 @@ const constants = require('../constants')
  * @prop {string} color
  */
 exports.Score = class Score {
-  constructor () {
+  constructor (currentPlayer = false) {
+    const gap = constants.C_HEIGHT * 0.20
+    this.y = currentPlayer ? constants.C_HEIGHT - gap : gap
     this.points = 0
     this.color = 'white'
   }
@@ -531,7 +586,7 @@ exports.Score = class Score {
   /**
    * @method
    */
-  update ({points}) {
+  update ({ points }) {
     this.points = points
   }
 
@@ -541,8 +596,9 @@ exports.Score = class Score {
    */
   draw (s) {
     s.fill(this.color)
-    s.textFont('Arial', 30)
-    s.text(this.points, constants.C_WIDTH / 2, constants.C_HEIGHT / 2)
+    s.textFont('Arial', 20)
+    s.textAlign(s.CENTER)
+    s.text(this.points, constants.C_WIDTH / 2, this.y)
   }
 }
 
@@ -686,7 +742,7 @@ exports.Player = class Player {
   constructor (currentPlayer = false) {
     this.currentPlayer = currentPlayer
     this.paddle = new Paddle()
-    this.score = new Score()
+    this.score = new Score(currentPlayer)
   }
 
   update ({ paddle, score }) {
@@ -732,6 +788,7 @@ const { requestActionsMap } = require('../actions/index')
  * Websocket client
  * @class
  * @prop {WebSocket} ws
+ * @prop {String} clientId - UUID that the socket server gives to our client with the ConnectionSuccessAction
  */
 class WsClient {
   /**
@@ -743,11 +800,22 @@ class WsClient {
       throw new Error('WebSocket is already opened.')
     }
 
+    this.clientId = null
+
     this.ws = new WebSocket(constants.API_URL)
 
     this.ws.onopen = this.onOpen
     this.ws.onclose = this.onClose
     this.ws.onmessage = this.onMessage
+  }
+
+  /**
+   * Set the clientId
+   * Only done once
+   * @method
+   */
+  setClientId (clientId) {
+    this.cliendId = clientId
   }
 
   /**
@@ -933,6 +1001,23 @@ exports.show = function show (key) {
 
 });
 
+;require.register("src/views/game_loss.js", function(exports, require, module) {
+/**
+ * @module views/game_loss
+ */
+
+const { showView } = require('../utils')
+
+const els = {
+  container: $('#game_loss_view')
+}
+
+exports.show = function show () {
+  showView(els.container)
+}
+
+});
+
 ;require.register("src/views/game_started.js", function(exports, require, module) {
 /**
  * @module views/game_started
@@ -959,6 +1044,23 @@ const { showView } = require('../utils')
 
 const els = {
   container: $('#game_stopped_view')
+}
+
+exports.show = function show () {
+  showView(els.container)
+}
+
+});
+
+;require.register("src/views/game_victory.js", function(exports, require, module) {
+/**
+ * @module views/game_victory
+ */
+
+const { showView } = require('../utils')
+
+const els = {
+  container: $('#game_victory_view')
 }
 
 exports.show = function show () {

@@ -38,7 +38,7 @@ public class GameSession {
         c.setGame(this);
     }
 
-    void broadcastAction(ResponseAction a) {
+    public void broadcastAction(ResponseAction a) {
         for (Player p : players) {
             try {
                 p.client.sendAction(a);
@@ -51,6 +51,14 @@ public class GameSession {
         return players[0].client == c ? players[0] : players[1];
     }
 
+    public Player getTopPlayer() {
+        return players[1];
+    }
+
+    public Player getBottomPlayer() {
+        return players[0];
+    }
+
     public void startGame() {
         broadcastAction(new GameStartAction());
 
@@ -61,8 +69,6 @@ public class GameSession {
 
     public void stopGame() {
         gameLoopTimer.cancel();
-
-        broadcastAction(new GameStopAction());
 
         for (Player p : players) {
             p.client.removeGame();

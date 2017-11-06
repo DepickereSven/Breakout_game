@@ -15,10 +15,10 @@ public class Score {
 
     private static final int DEATH_POINTS = 50;
 
-    private int points;
+    private double points;
 
     Score() {
-        points = 0;
+        points = 100;
     }
 
     @JsonIgnore
@@ -34,7 +34,7 @@ public class Score {
         points -= DEATH_POINTS;
     }
 
-    public int getPoints() {
+    public double getPoints() {
         return points;
     }
 }

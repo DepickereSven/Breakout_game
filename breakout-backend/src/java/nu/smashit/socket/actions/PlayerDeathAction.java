@@ -9,11 +9,5 @@ package nu.smashit.socket.actions;
  *
  * @author jodus
  */
-public class ConnectionSuccessAction implements ResponseAction {
-
-    public String clientId;
-
-    public ConnectionSuccessAction(String clientId) {
-        this.clientId = clientId;
-    }
+public class PlayerDeathAction implements ResponseAction {
 }

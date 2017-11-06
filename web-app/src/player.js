@@ -7,7 +7,7 @@ exports.Player = class Player {
   constructor (currentPlayer = false) {
     this.currentPlayer = currentPlayer
     this.paddle = new Paddle()
-    this.score = new Score()
+    this.score = new Score(currentPlayer)
   }
 
   update ({ paddle, score }) {

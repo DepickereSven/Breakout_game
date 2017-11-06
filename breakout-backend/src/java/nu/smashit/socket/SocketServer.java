@@ -8,7 +8,9 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+import nu.smashit.core.GameSession;
 import nu.smashit.core.GameSessionManager;
+import nu.smashit.socket.actions.GameStopAction;
 
 @ServerEndpoint(
         value = "/socket",
@@ -29,7 +31,7 @@ public class SocketServer {
     @OnOpen
     public void onOpen(Session session) {
         Client c = new Client(session);
-        c.sendAction(new ConnectionSuccessAction());
+        c.sendAction(new ConnectionSuccessAction(c.getId()));
 
         clientManager.addClient(c);
     }
@@ -61,6 +63,8 @@ public class SocketServer {
         Client c = clientManager.getClient(session);
 
         if (c.isInGame()) {
+            GameSession gm = c.getGame();
+            gm.broadcastAction(new GameStopAction());
             c.getGame().stopGame();
         }
 
