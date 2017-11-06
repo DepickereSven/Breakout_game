@@ -22,15 +22,20 @@ public class GameSessionManager {
         return INSTANCE;
     }
 
-    public GameSession createGame(Client c) {
+    public GameSession createMultiplayerGame(Client c) {
         String key = generateKey();
         GameSession gm = new GameSession(key);
         gm.join(c);
         gameSessions.put(gm.key, gm);
         return gm;
     }
+    
+    public GameSession createSingleplayerGame(Client c){
+        //TODO
+        return null;
+    }
 
-    public GameSession joinGame(String key, Client c) {
+    public GameSession joinMultiplayerGame(String key, Client c) {
         GameSession gm = gameSessions.get(key);
         gm.join(c);
         return gm;

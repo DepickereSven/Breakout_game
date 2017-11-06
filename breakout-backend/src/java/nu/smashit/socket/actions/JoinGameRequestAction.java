@@ -21,7 +21,7 @@ public class JoinGameRequestAction implements RequestAction {
     public void handler(Client c) {
         GameSessionManager gameSessionManager = GameSessionManager.getInstance();
         try {
-            GameSession gm = gameSessionManager.joinGame(key, c);
+            GameSession gm = gameSessionManager.joinMultiplayerGame(key, c);
             c.sendAction(new JoinGameSuccessAction(gm.key));
             gm.startGame();
         } catch (Error err) {

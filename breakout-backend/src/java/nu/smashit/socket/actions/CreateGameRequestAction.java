@@ -19,7 +19,7 @@ public class CreateGameRequestAction implements RequestAction {
     public void handler(Client c) {
         GameSessionManager gameSessionManager = GameSessionManager.getInstance();
         try {
-            GameSession gm = gameSessionManager.createGame(c);
+            GameSession gm = gameSessionManager.createMultiplayerGame(c);
             c.sendAction(new CreateGameSuccessAction(gm.key));
         } catch (Error err) {
             c.sendAction(new CreateGameFailureAction(err.getMessage()));
