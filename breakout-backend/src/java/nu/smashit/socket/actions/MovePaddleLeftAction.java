@@ -19,7 +19,7 @@ public class MovePaddleLeftAction implements RequestAction {
     public void handler(Client c) {
         if (c.isInGame()) {
             GameSession gm = c.getGame();
-            Paddle p = gm.getPaddle(c);
+            Paddle p = gm.getPlayer(c).paddle;
             if (p.x > 0) {
                 p.moveLeft();
             }

@@ -2,8 +2,8 @@
  * @module gameLoop
  */
 
+const { Player } = require('./player')
 const { Ball } = require('./bodies/ball')
-const { Paddle } = require('./bodies/paddle')
 const { sketch } = require('./sketch')
 const { MovePaddleLeftAction } = require('./actions/move_paddle_left')
 const { MovePaddleRightAction } = require('./actions/move_paddle_right')
@@ -26,8 +26,14 @@ class GameLoop {
 
   reset () {
     // Initialise bodies
-    this.paddles = [new Paddle(), new Paddle()]
+    this.players = [new Player(true), new Player()]
     this.ball = new Ball()
+  }
+
+  updatePlayers (players) {
+    for (let i = 0; i < this.players.length; i++) {
+      this.players[i].update(players[i])
+    }
   }
 
   /**
@@ -35,16 +41,10 @@ class GameLoop {
    * @method
    * @param {object[]} bodyObj 
    */
-  update (bodies) {
-    let paddleIndex = 0
+  updateBodies (bodies) {
     for (const bodyObj of bodies) {
       const instanceKey = firstLetterToLowerCase(bodyObj.type)
-      if (instanceKey === 'paddle') {
-        this.paddles[paddleIndex].update(bodyObj)
-        paddleIndex++
-      } else if (this[instanceKey]) {
-        this[instanceKey].update(bodyObj)
-      }
+      this[instanceKey].update(bodyObj)
     }
 
     // keyIsPressed left and right arrows does not work in firefox
@@ -68,9 +68,11 @@ class GameLoop {
     // Clear canvas
     sketch.background(0)
 
-    for (const paddle of this.paddles) {
-      paddle.draw(sketch)
+    for (const player of this.players) {
+      player.paddle.draw(sketch)
+      player.score.draw(sketch)
     }
+
     this.ball.draw(sketch)
   }
 }

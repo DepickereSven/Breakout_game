@@ -199,12 +199,14 @@ exports.GameStartAction = class GameStartAction {
 const { gameLoop } = require('../gameloop')
 
 exports.GameStateUpdateAction = class GameStateUpdateAction {
-  constructor ({ bodies }) {
+  constructor ({ bodies, players }) {
     this.bodies = bodies
+    this.players = players
   }
 
   handler () {
-    gameLoop.update(this.bodies)
+    gameLoop.updatePlayers(this.players)
+    gameLoop.updateBodies(this.bodies)
   }
 }
 
@@ -513,7 +515,6 @@ exports.Paddle = class Paddle {
  */
 
 const constants = require('../constants')
-const utils = require('../utils')
 
 /**
  * Represents the user score
@@ -522,36 +523,26 @@ const utils = require('../utils')
  * @prop {string} color
  */
 exports.Score = class Score {
-  constructor(){
-    this.score = 0
+  constructor () {
+    this.points = 0
     this.color = 'white'
   }
 
   /**
-   * Increases the score by 1
    * @method
    */
-  add() {
-    this.score += 1
-  }
-
-  /**
-   * Get the current score
-   * @method
-   * @return {number}
-   */
-  get() {
-    return this.score
+  update ({points}) {
+    this.points = points
   }
 
   /**
    * Draws the score on the screen
    * @method
    */
-  draw() {
-    fill(color)
-    textFont('Arial', 30)
-    text(score, constants.C_WIDTH / 2, constants.C_HEIGHT / 2)
+  draw (s) {
+    s.fill(this.color)
+    s.textFont('Arial', 30)
+    s.text(this.points, constants.C_WIDTH / 2, constants.C_HEIGHT / 2)
   }
 }
 
@@ -562,20 +553,17 @@ exports.Score = class Score {
  * @module constants
  */
 
-
 /**
  * API url
  * @type {string}
  */
 exports.API_URL = 'ws://localhost:8080/breakout/socket'
 
-
 /**
  * Canvas height
  * @type {number}
  */
 exports.C_HEIGHT = 450
-
 
 /**
  * Canvas width
@@ -590,8 +578,8 @@ exports.C_WIDTH = 300
  * @module gameLoop
  */
 
+const { Player } = require('./player')
 const { Ball } = require('./bodies/ball')
-const { Paddle } = require('./bodies/paddle')
 const { sketch } = require('./sketch')
 const { MovePaddleLeftAction } = require('./actions/move_paddle_left')
 const { MovePaddleRightAction } = require('./actions/move_paddle_right')
@@ -614,8 +602,14 @@ class GameLoop {
 
   reset () {
     // Initialise bodies
-    this.paddles = [new Paddle(), new Paddle()]
+    this.players = [new Player(true), new Player()]
     this.ball = new Ball()
+  }
+
+  updatePlayers (players) {
+    for (let i = 0; i < this.players.length; i++) {
+      this.players[i].update(players[i])
+    }
   }
 
   /**
@@ -623,16 +617,10 @@ class GameLoop {
    * @method
    * @param {object[]} bodyObj 
    */
-  update (bodies) {
-    let paddleIndex = 0
+  updateBodies (bodies) {
     for (const bodyObj of bodies) {
       const instanceKey = firstLetterToLowerCase(bodyObj.type)
-      if (instanceKey === 'paddle') {
-        this.paddles[paddleIndex].update(bodyObj)
-        paddleIndex++
-      } else if (this[instanceKey]) {
-        this[instanceKey].update(bodyObj)
-      }
+      this[instanceKey].update(bodyObj)
     }
 
     // keyIsPressed left and right arrows does not work in firefox
@@ -656,9 +644,11 @@ class GameLoop {
     // Clear canvas
     sketch.background(0)
 
-    for (const paddle of this.paddles) {
-      paddle.draw(sketch)
+    for (const player of this.players) {
+      player.paddle.draw(sketch)
+      player.score.draw(sketch)
     }
+
     this.ball.draw(sketch)
   }
 }
@@ -683,6 +673,27 @@ $(document).ready(function () {
   window.wsClient = wsClient
   wsClient.open()
 })
+
+});
+
+;require.register("src/player.js", function(exports, require, module) {
+/** @module player */
+
+const { Paddle } = require('./bodies/paddle')
+const { Score } = require('./bodies/score')
+
+exports.Player = class Player {
+  constructor (currentPlayer = false) {
+    this.currentPlayer = currentPlayer
+    this.paddle = new Paddle()
+    this.score = new Score()
+  }
+
+  update ({ paddle, score }) {
+    this.paddle.update(paddle)
+    this.score.update(score)
+  }
+}
 
 });
 
@@ -763,8 +774,6 @@ class WsClient {
   onMessage (event) {
     const action = JSON.parse(event.data)
 
-    console.log(action)
-
     const RequestAction = requestActionsMap[action.type]
     if (RequestAction) {
       const a = new RequestAction(action)
@@ -807,7 +816,7 @@ exports.wsClient = new WsClient()
  * @param {number} y2
  * @return {number}
  */
-function calcPointsDistance(x1, y1, x2, y2) {
+function calcPointsDistance (x1, y1, x2, y2) {
   let xDist = x2 - x1
   let yDist = y2 - y1
 
@@ -823,7 +832,7 @@ exports.calcPointsDistance = calcPointsDistance
  * @param {number} max
  * @return {boolean}
  */
-function inRange(val, min, max) {
+function inRange (val, min, max) {
   return val >= Math.min(min, max) && val <= Math.max(min, max)
 }
 exports.inRange = inRange
@@ -834,7 +843,7 @@ exports.inRange = inRange
  * @param {Brick} brick
  * @return {boolean}
  */
-function isBallCollision(ball, brick) {
+function isBallCollision (ball, brick) {
   return inRange(ball.x, brick.x - ball.radius, brick.x + brick.width + ball.radius) &&
     inRange(ball.y, brick.y - ball.radius, brick.y + brick.height + ball.radius)
 }
@@ -846,7 +855,7 @@ exports.isBallCollision = isBallCollision
  * @param {number} max
  * @return {number}
  */
-function randomInRange(min, max) {
+function randomInRange (min, max) {
   min = Math.ceil(min)
   max = Math.floor(max)
   return Math.round(Math.random() * (max - min)) + min
@@ -857,7 +866,7 @@ exports.randomInRange = randomInRange
  * Generate either 1 or -1
  * @return {number}
  */
-function randomSign() {
+function randomSign () {
   return Math.round(Math.random()) ? 1 : -1
 }
 exports.randomSign = randomSign
@@ -866,7 +875,7 @@ exports.randomSign = randomSign
  * Generate random color in RGB
  * @return {number[]}
  */
-function randomColor() {
+function randomColor () {
   return [0, 0, 0].map(() => randomInRange(50, 255))
 }
 exports.randomColor = randomColor
@@ -875,7 +884,7 @@ exports.randomColor = randomColor
  * Show the given view and hide the others
  * @param {jQuery} el - jQuery container element
  */
-function showView(el) {
+function showView (el) {
   $('.view').addClass('hidden')
   el.removeClass('hidden')
 }
@@ -1017,3 +1026,5 @@ window["$"] = require("jquery");
 
 });})();require('___globals___');
 
+
+//# sourceMappingURL=app.js.map

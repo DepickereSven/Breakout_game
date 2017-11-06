@@ -24,7 +24,7 @@ public class GameLoop extends TimerTask {
 
     @Override
     public void run() {
-        GameStateUpdateAction updateStateAction = new GameStateUpdateAction();
+        GameStateUpdateAction updateStateAction = new GameStateUpdateAction(gameSession.players);
 
         // Ball movement
         if (ball != null) {
@@ -40,7 +40,7 @@ public class GameLoop extends TimerTask {
 
             // Paddle collision
             int pIndex = ball.isGoingUp() ? 1 : 0;
-            Paddle p = gameSession.paddles[pIndex];
+            Paddle p = gameSession.players[pIndex].paddle;
             if (ball.isCollision(p)) {
                 if (ball.isVerCollision(p)) {
                     ball.inverseVerSpeed();
@@ -51,10 +51,6 @@ public class GameLoop extends TimerTask {
 
             ball.move();
             updateStateAction.addBody(ball);
-        }
-
-        for (Paddle p : gameSession.paddles) {
-            updateStateAction.addBody(p);
         }
 
         gameSession.broadcastAction(updateStateAction);

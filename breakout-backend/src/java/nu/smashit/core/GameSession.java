@@ -12,9 +12,8 @@ import nu.smashit.socket.actions.ResponseAction;
  */
 public class GameSession {
 
-    private final String key;
-    public final Client[] clients;
-    public final Paddle[] paddles;
+    public final String key;
+    public final Player[] players;
     private GameLoop gameLoop;
 
     private final Timer gameLoopTimer;
@@ -22,33 +21,34 @@ public class GameSession {
 
     GameSession(String key) {
         this.key = key;
-        this.clients = new Client[2];
-        this.paddles = new Paddle[2];
+        this.players = new Player[2];
 
         this.gameLoopTimer = new Timer();
         this.updateInterval = 30;
     }
 
     public void join(Client c) {
-        if (clients[1] != null) {
+        if (players[1] != null) {
             throw new Error("GameSession full");
         }
-        int i = clients[0] == null ? 0 : 1;
-        clients[i] = c;
-
-        int paddleY = i == 0 ? GameCanvas.HEIGHT - 30 : 10;
-        paddles[i] = new Paddle(paddleY);
+        int i = players[0] == null ? 0 : 1;
+        String playerType = i == 0 ? Player.PLAYER_1 : Player.PLAYER_2;
+        players[i] = new Player(c, playerType);
 
         c.setGame(this);
     }
 
     void broadcastAction(ResponseAction a) {
-        for (Client c : clients) {
+        for (Player p : players) {
             try {
-                c.sendAction(a);
+                p.client.sendAction(a);
             } catch (Exception e) {
             }
         }
+    }
+
+    public Player getPlayer(Client c) {
+        return players[0].client == c ? players[0] : players[1];
     }
 
     public void startGame() {
@@ -64,18 +64,9 @@ public class GameSession {
 
         broadcastAction(new GameStopAction());
 
-        for (Client c : clients) {
-            c.removeGame();
+        for (Player p : players) {
+            p.client.removeGame();
         }
-        GameSessionManager.getInstance().removeGame(getKey());
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public Paddle getPaddle(Client c) {
-        int index = clients[0] == c ? 0 : 1;
-        return paddles[index];
+        GameSessionManager.getInstance().removeGame(key);
     }
 }

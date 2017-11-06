@@ -26,7 +26,7 @@ public class GameSessionManager {
         String key = generateKey();
         GameSession gm = new GameSession(key);
         gm.join(c);
-        gameSessions.put(gm.getKey(), gm);
+        gameSessions.put(gm.key, gm);
         return gm;
     }
 
