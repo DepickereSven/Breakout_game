@@ -31,19 +31,27 @@ npm start
 <dd></dd>
 <dt><a href="#module_initialize">initialize</a></dt>
 <dd></dd>
+<dt><a href="#module_player">player</a></dt>
+<dd></dd>
 <dt><a href="#module_sketch">sketch</a></dt>
 <dd></dd>
 <dt><a href="#module_utils">utils</a></dt>
 <dd></dd>
+<dt><a href="#actions/connection_success.module_js">js</a></dt>
+<dd></dd>
 <dt><a href="#actions/create_game_request.module_js">js</a></dt>
 <dd></dd>
 <dt><a href="#actions/create_game_success.module_js">js</a></dt>
+<dd></dd>
+<dt><a href="#actions/game_loss.module_js">js</a></dt>
 <dd></dd>
 <dt><a href="#actions/game_start.module_js">js</a></dt>
 <dd></dd>
 <dt><a href="#actions/game_state_update.module_js">js</a></dt>
 <dd></dd>
 <dt><a href="#actions/game_stop.module_js">js</a></dt>
+<dd></dd>
+<dt><a href="#actions/game_victory.module_js">js</a></dt>
 <dd></dd>
 <dt><a href="#actions/join_game_request.module_js">js</a></dt>
 <dd></dd>
@@ -65,9 +73,13 @@ npm start
 <dd></dd>
 <dt><a href="#module_views/created_game">views/created_game</a></dt>
 <dd></dd>
+<dt><a href="#module_views/game_loss">views/game_loss</a></dt>
+<dd></dd>
 <dt><a href="#module_views/game_started">views/game_started</a></dt>
 <dd></dd>
 <dt><a href="#module_views/game_stopped">views/game_stopped</a></dt>
+<dd></dd>
+<dt><a href="#module_views/game_victory">views/game_victory</a></dt>
 <dd></dd>
 <dt><a href="#module_views/init_game">views/init_game</a></dt>
 <dd></dd>
@@ -108,7 +120,7 @@ Canvas width
 
 * [gameLoop](#module_gameLoop)
     * [~GameLoop](#module_gameLoop..GameLoop)
-        * [.update(bodyObj)](#module_gameLoop..GameLoop+update)
+        * [.updateBodies(bodyObj)](#module_gameLoop..GameLoop+updateBodies)
         * [.run()](#module_gameLoop..GameLoop+run)
     * [~firstLetterToLowerCase(str)](#module_gameLoop..firstLetterToLowerCase)
 
@@ -127,12 +139,12 @@ GameLoop provides the state and drawing for the sketch
 
 
 * [~GameLoop](#module_gameLoop..GameLoop)
-    * [.update(bodyObj)](#module_gameLoop..GameLoop+update)
+    * [.updateBodies(bodyObj)](#module_gameLoop..GameLoop+updateBodies)
     * [.run()](#module_gameLoop..GameLoop+run)
 
-<a name="module_gameLoop..GameLoop+update"></a>
+<a name="module_gameLoop..GameLoop+updateBodies"></a>
 
-#### gameLoop.update(bodyObj)
+#### gameLoop.updateBodies(bodyObj)
 Update the body to match the server state
 
 **Kind**: instance method of [<code>GameLoop</code>](#module_gameLoop..GameLoop)  
@@ -159,6 +171,9 @@ Draws the current state onto the provided sketch
 <a name="module_initialize"></a>
 
 ## initialize
+<a name="module_player"></a>
+
+## player
 <a name="module_sketch"></a>
 
 ## sketch
@@ -249,10 +264,16 @@ Show the given view and hide the others
 | --- | --- | --- |
 | el | <code>jQuery</code> | jQuery container element |
 
+<a name="actions/connection_success.module_js"></a>
+
+## js
 <a name="actions/create_game_request.module_js"></a>
 
 ## js
 <a name="actions/create_game_success.module_js"></a>
+
+## js
+<a name="actions/game_loss.module_js"></a>
 
 ## js
 <a name="actions/game_start.module_js"></a>
@@ -262,6 +283,9 @@ Show the given view and hide the others
 
 ## js
 <a name="actions/game_stop.module_js"></a>
+
+## js
+<a name="actions/game_victory.module_js"></a>
 
 ## js
 <a name="actions/join_game_request.module_js"></a>
@@ -523,8 +547,7 @@ Daw the paddle on the screen
 
 * [bodies/score](#module_bodies/score)
     * [.Score](#module_bodies/score.Score)
-        * [.add()](#module_bodies/score.Score+add)
-        * [.get()](#module_bodies/score.Score+get) ⇒ <code>number</code>
+        * [.update()](#module_bodies/score.Score+update)
         * [.draw()](#module_bodies/score.Score+draw)
 
 <a name="module_bodies/score.Score"></a>
@@ -542,21 +565,12 @@ Represents the user score
 
 
 * [.Score](#module_bodies/score.Score)
-    * [.add()](#module_bodies/score.Score+add)
-    * [.get()](#module_bodies/score.Score+get) ⇒ <code>number</code>
+    * [.update()](#module_bodies/score.Score+update)
     * [.draw()](#module_bodies/score.Score+draw)
 
-<a name="module_bodies/score.Score+add"></a>
+<a name="module_bodies/score.Score+update"></a>
 
-#### score.add()
-Increases the score by 1
-
-**Kind**: instance method of [<code>Score</code>](#module_bodies/score.Score)  
-<a name="module_bodies/score.Score+get"></a>
-
-#### score.get() ⇒ <code>number</code>
-Get the current score
-
+#### score.update()
 **Kind**: instance method of [<code>Score</code>](#module_bodies/score.Score)  
 <a name="module_bodies/score.Score+draw"></a>
 
@@ -571,6 +585,7 @@ Draws the score on the screen
 * [socket/client](#module_socket/client)
     * [~WsClient](#module_socket/client..WsClient)
         * [.open()](#module_socket/client..WsClient+open)
+        * [.setClientId()](#module_socket/client..WsClient+setClientId)
         * [.onOpen()](#module_socket/client..WsClient+onOpen)
         * [.onClose()](#module_socket/client..WsClient+onClose)
         * [.onMessage()](#module_socket/client..WsClient+onMessage)
@@ -584,13 +599,15 @@ Websocket client
 **Kind**: inner class of [<code>socket/client</code>](#module_socket/client)  
 **Properties**
 
-| Name | Type |
-| --- | --- |
-| ws | <code>WebSocket</code> | 
+| Name | Type | Description |
+| --- | --- | --- |
+| ws | <code>WebSocket</code> |  |
+| clientId | <code>String</code> | UUID that the socket server gives to our client with the ConnectionSuccessAction |
 
 
 * [~WsClient](#module_socket/client..WsClient)
     * [.open()](#module_socket/client..WsClient+open)
+    * [.setClientId()](#module_socket/client..WsClient+setClientId)
     * [.onOpen()](#module_socket/client..WsClient+onOpen)
     * [.onClose()](#module_socket/client..WsClient+onClose)
     * [.onMessage()](#module_socket/client..WsClient+onMessage)
@@ -600,6 +617,13 @@ Websocket client
 
 #### wsClient.open()
 Open connection
+
+**Kind**: instance method of [<code>WsClient</code>](#module_socket/client..WsClient)  
+<a name="module_socket/client..WsClient+setClientId"></a>
+
+#### wsClient.setClientId()
+Set the clientId
+Only done once
 
 **Kind**: instance method of [<code>WsClient</code>](#module_socket/client..WsClient)  
 <a name="module_socket/client..WsClient+onOpen"></a>
@@ -648,12 +672,18 @@ Show the created game view
 | --- | --- | --- |
 | key | <code>string</code> | Game session key |
 
+<a name="module_views/game_loss"></a>
+
+## views/game_loss
 <a name="module_views/game_started"></a>
 
 ## views/game_started
 <a name="module_views/game_stopped"></a>
 
 ## views/game_stopped
+<a name="module_views/game_victory"></a>
+
+## views/game_victory
 <a name="module_views/init_game"></a>
 
 ## views/init_game

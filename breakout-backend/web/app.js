@@ -613,7 +613,7 @@ exports.Score = class Score {
  * API url
  * @type {string}
  */
-exports.API_URL = 'ws://localhost:8080/breakout/socket'
+exports.API_URL = ((window.location.protocol === 'https:') ? 'wss://' : 'ws://') + window.location.host + '/breakout/socket'
 
 /**
  * Canvas height
@@ -1128,5 +1128,3 @@ window["$"] = require("jquery");
 
 });})();require('___globals___');
 
-
-//# sourceMappingURL=app.js.map
