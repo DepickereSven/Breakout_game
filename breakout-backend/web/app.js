@@ -340,21 +340,25 @@ exports.JoinGameRequestAction = class JoinGameRequestAction {
 
 });
 
-;require.register("src/actions/move_paddle_left.js", function(exports, require, module) {
+;require.register("src/actions/move_paddle_start.js", function(exports, require, module) {
 /**
- * @module actions/move_paddle_left.js
+ * @module actions/move_paddle_start.js
  */
 
-exports.MovePaddleLeftAction = class MovePaddleLeftAction {}
+exports.MovePaddleStartAction = class MovePaddleStartAction {
+  constructor (direction) {
+    this.direction = direction
+  }
+}
 
 });
 
-;require.register("src/actions/move_paddle_right.js", function(exports, require, module) {
+;require.register("src/actions/move_paddle_stop.js", function(exports, require, module) {
 /**
- * @module actions/move_paddle_right.js
+ * @module actions/move_paddle_stop.js
  */
 
-exports.MovePaddleRightAction = class MovePaddleRightAction {}
+exports.MovePaddleStopAction = class MovePaddleStopAction {}
 
 });
 
@@ -666,8 +670,6 @@ exports.C_WIDTH = 300
 const { Player } = require('./player')
 const { Ball } = require('./bodies/ball')
 const { sketch } = require('./sketch')
-const { MovePaddleLeftAction } = require('./actions/move_paddle_left')
-const { MovePaddleRightAction } = require('./actions/move_paddle_right')
 
 /**
  * @param {string} str 
@@ -712,16 +714,6 @@ class GameLoop {
     for (const bodyObj of bodies) {
       const instanceKey = firstLetterToLowerCase(bodyObj.type)
       this[instanceKey].update(bodyObj)
-    }
-
-    // keyIsPressed left and right arrows does not work in firefox
-    // so we need to use keyIsDown
-    if (sketch.keyIsDown(sketch.LEFT_ARROW)) {
-      window.wsClient.send(new MovePaddleLeftAction())
-    }
-
-    if (sketch.keyIsDown(sketch.RIGHT_ARROW)) {
-      window.wsClient.send(new MovePaddleRightAction())
     }
 
     this.run()
@@ -1066,6 +1058,8 @@ exports.show = function show () {
  */
 
 const { showView } = require('../utils')
+const { MovePaddleStartAction } = require('../actions/move_paddle_start')
+const { MovePaddleStopAction } = require('../actions/move_paddle_stop')
 
 const els = {
   container: $('#game_started_view')
@@ -1073,7 +1067,54 @@ const els = {
 
 exports.show = function show () {
   showView(els.container)
+  let keyCodePressed
+
+  $(window).on('keydown', function (e) {
+    if (keyCodePressed === e.keyCode) {
+      return
+    }
+    keyCodePressed = e.keyCode
+
+    switch (e.key) {
+      case 'ArrowLeft':
+        window.wsClient.send(new MovePaddleStartAction('left'))
+        break
+      case 'ArrowRight':
+        window.wsClient.send(new MovePaddleStartAction('right'))
+        break
+    }
+  })
+
+  $(window).on('keyup', function (e) {
+    keyCodePressed = undefined
+    window.wsClient.send(new MovePaddleStopAction())
+  })
 }
+
+let lastDirection
+
+function getDirection ({ touches }) {
+  console.log(touches)
+  const xPos = touches[touches.length - 1].pageX
+  return xPos > window.innerWidth / 2 ? 'right' : 'left'
+}
+
+function handleTouchStart (e) {
+  e.preventDefault()
+  const direction = getDirection(e)
+  lastDirection = direction
+  window.wsClient.send(new MovePaddleStartAction(direction))
+  return false
+}
+
+function handleTouchEnd (e) {
+  window.wsClient.send(new MovePaddleStopAction())
+}
+
+const listenerOptions = { passive: false }
+els.container[0].addEventListener('touchstart', handleTouchStart, listenerOptions)
+els.container[0].addEventListener('touchend', handleTouchEnd, listenerOptions)
+els.container[0].addEventListener('touchcancel', handleTouchEnd, listenerOptions)
 
 });
 

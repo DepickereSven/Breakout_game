@@ -5,7 +5,6 @@
  */
 package nu.smashit.socket.actions;
 
-import nu.smashit.core.GameCanvas;
 import nu.smashit.core.GameSession;
 import nu.smashit.core.Paddle;
 import nu.smashit.socket.Client;
@@ -14,16 +13,14 @@ import nu.smashit.socket.Client;
  *
  * @author jodus
  */
-public class MovePaddleRightAction implements RequestAction {
+public class MovePaddleStopAction implements RequestAction {
 
     @Override
     public void handler(Client c) {
         if (c.isInGame()) {
             GameSession gm = c.getGame();
             Paddle p = gm.getPlayer(c).paddle;
-            if (p.x < GameCanvas.WIDTH - p.width) {
-                p.moveRight();
-            }
+            p.goNowhere();
         }
     }
 

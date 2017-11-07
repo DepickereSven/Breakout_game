@@ -55,9 +55,9 @@ npm start
 <dd></dd>
 <dt><a href="#actions/join_game_request.module_js">js</a></dt>
 <dd></dd>
-<dt><a href="#actions/move_paddle_left.module_js">js</a></dt>
+<dt><a href="#actions/move_paddle_start.module_js">js</a></dt>
 <dd></dd>
-<dt><a href="#actions/move_paddle_right.module_js">js</a></dt>
+<dt><a href="#actions/move_paddle_stop.module_js">js</a></dt>
 <dd></dd>
 <dt><a href="#module_bodies/ball">bodies/ball</a></dt>
 <dd></dd>
@@ -308,10 +308,10 @@ Show the given view and hide the others
 | --- | --- |
 | key | <code>string</code> | 
 
-<a name="actions/move_paddle_left.module_js"></a>
+<a name="actions/move_paddle_start.module_js"></a>
 
 ## js
-<a name="actions/move_paddle_right.module_js"></a>
+<a name="actions/move_paddle_stop.module_js"></a>
 
 ## js
 <a name="module_bodies/ball"></a>

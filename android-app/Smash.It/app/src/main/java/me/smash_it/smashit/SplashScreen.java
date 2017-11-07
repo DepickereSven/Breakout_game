@@ -10,16 +10,12 @@ import android.widget.VideoView;
 
 public class SplashScreen extends Activity {
 
-    private VideoView videoHolder;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_splash);
         try {
-//            setContentView(R.layout.activity_splash);
-//            videoHolder = (VideoView) this.findViewById(R.id.videoView);
-            VideoView videoHolder = new VideoView(this);
-            setContentView(videoHolder);
+            VideoView videoHolder = (VideoView)findViewById(R.id.videoView);
             Uri video = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.splash);
             videoHolder.setVideoURI(video);
             videoHolder.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {

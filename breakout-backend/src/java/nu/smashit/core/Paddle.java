@@ -11,7 +11,7 @@ package nu.smashit.core;
  */
 public class Paddle extends MovableBody {
 
-    public final static int MOVE_STEP_SIZE = 9;
+    public final static int MOVE_STEP_SIZE = 7;
 
     public final static int GAP = 10;
 
@@ -21,15 +21,32 @@ public class Paddle extends MovableBody {
     public final static int PLAYER_1_Y = GameCanvas.HEIGHT - HEIGHT - GAP;
     public final static int PLAYER_2_Y = GAP;
 
+    private double dx;
+
     public Paddle(int y) {
         super(0, y, WIDTH, HEIGHT);
+        dx = 0;
     }
 
-    public void moveLeft() {
-        move(-MOVE_STEP_SIZE, 0);
+    public void move() {
+        if (dx < 0 && x < 0) {
+            return;
+        }
+        if (dx > 0 && x > GameCanvas.WIDTH - width) {
+            return;
+        }
+        super.move((int) dx, 0);
     }
 
-    public void moveRight() {
-        move(MOVE_STEP_SIZE, 0);
+    public void goLeft() {
+        dx -= MOVE_STEP_SIZE;
+    }
+
+    public void goRight() {
+        dx += MOVE_STEP_SIZE;
+    }
+
+    public void goNowhere() {
+        dx = 0;
     }
 }
