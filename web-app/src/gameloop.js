@@ -26,11 +26,17 @@ class GameLoop {
 
   reset () {
     // Initialise bodies
-    this.players = [new Player(true), new Player()]
+    this.players = []
     this.ball = new Ball()
   }
 
   updatePlayers (players) {
+    if (this.players.length === 0){
+       this.players = players.map(function (item, index){
+           return new Player(index === 0);
+       })
+    }
+    
     for (let i = 0; i < this.players.length; i++) {
       this.players[i].update(players[i])
     }

@@ -1,1 +1,21 @@
-*{padding:0;margin:0}body{background:#eee;display:block;margin:0 auto;width:100%;max-width:300px;font-family:sans-serif}.hidden{display:none}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: #eee;
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 300px;
+  font-family: sans-serif;
+}
+
+.hidden {
+  display: none;
+}
+
+
+/*# sourceMappingURL=bundle.css.map*/

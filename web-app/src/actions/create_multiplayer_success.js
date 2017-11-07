@@ -4,7 +4,7 @@
 
 const createdGameView = require('../views/created_game')
 
-exports.CreateGameSuccessAction = class CreateGameSuccessAction {
+exports.CreateMultiplayerSuccessAction = class CreateMultiplayerSuccessAction {
   constructor ({ key }) {
     this.key = key
   }

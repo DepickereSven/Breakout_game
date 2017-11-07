@@ -84,3 +84,6 @@ typings/
 /breakout-backend/nbproject/private/
 /breakout-backend/build
 /breakout-backend/nbbuild
+/web-app/nbproject/private/
+/web-app/nbproject/project.properties
+/web-app/nbproject/project.xml
