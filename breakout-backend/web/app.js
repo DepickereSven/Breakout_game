@@ -1049,6 +1049,31 @@ exports.show = function show () {
   })
 }
 
+let lastDirection
+
+function getDirection ({ touches }) {
+  console.log(touches)
+  const xPos = touches[touches.length - 1].pageX
+  return xPos > window.innerWidth / 2 ? 'right' : 'left'
+}
+
+function handleTouchStart (e) {
+  e.preventDefault()
+  const direction = getDirection(e)
+  lastDirection = direction
+  window.wsClient.send(new MovePaddleStartAction(direction))
+  return false
+}
+
+function handleTouchEnd (e) {
+  window.wsClient.send(new MovePaddleStopAction())
+}
+
+const listenerOptions = { passive: false }
+els.container[0].addEventListener('touchstart', handleTouchStart, listenerOptions)
+els.container[0].addEventListener('touchend', handleTouchEnd, listenerOptions)
+els.container[0].addEventListener('touchcancel', handleTouchEnd, listenerOptions)
+
 });
 
 ;require.register("src/views/game_stopped.js", function(exports, require, module) {
@@ -1144,3 +1169,5 @@ window["$"] = require("jquery");
 
 });})();require('___globals___');
 
+
+//# sourceMappingURL=app.js.map
