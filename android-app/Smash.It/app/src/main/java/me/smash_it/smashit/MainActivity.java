@@ -39,14 +39,14 @@ public class MainActivity extends Activity {
 //                findViewById(R.id.webView).setVisibility(View.VISIBLE);
             }
         });
-        view.loadUrl("https://www.google.be/");
+        view.loadUrl("file:///android_asset/www/index.html");
         view.setWebChromeClient(new WebChromeClient() {
             public void onConsoleMessage(String message, int lineNumber, String sourceID) {
                 //TODO add here logs if something need to pop-up as toast
-//                if (sourceID.equals("file:///android_asset/www/assets/js/new.js") && lineNumber == 1084) {
+//                if (sourceID.equals("file:///android_asset/www/assets/www.js/new.www.js") && lineNumber == 1084) {
 //                    Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
 //                }
-//                if (sourceID.equals("file:///android_asset/www/assets/js/newScript.js") && lineNumber == 1088) {
+//                if (sourceID.equals("file:///android_asset/www/assets/www.js/newScript.www.js") && lineNumber == 1088) {
 //                    if (!message.isEmpty()){
 //                        Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
 //                    }
