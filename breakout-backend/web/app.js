@@ -1092,30 +1092,38 @@ exports.show = function show () {
   })
 }
 
-let lastDirection
-
 function getDirection ({ touches }) {
-  console.log(touches)
-  const xPos = touches[touches.length - 1].pageX
+  const xPos = touches[touches.length - 1].clientX
   return xPos > window.innerWidth / 2 ? 'right' : 'left'
 }
 
 function handleTouchStart (e) {
   e.preventDefault()
   const direction = getDirection(e)
-  lastDirection = direction
   window.wsClient.send(new MovePaddleStartAction(direction))
   return false
 }
 
 function handleTouchEnd (e) {
   window.wsClient.send(new MovePaddleStopAction())
+  if (e.touches.length > 0) {
+    const direction = getDirection(e)
+    window.wsClient.send(new MovePaddleStartAction(direction))
+  }
 }
 
 const listenerOptions = { passive: false }
-els.container[0].addEventListener('touchstart', handleTouchStart, listenerOptions)
+els.container[0].addEventListener(
+  'touchstart',
+  handleTouchStart,
+  listenerOptions
+)
 els.container[0].addEventListener('touchend', handleTouchEnd, listenerOptions)
-els.container[0].addEventListener('touchcancel', handleTouchEnd, listenerOptions)
+els.container[0].addEventListener(
+  'touchcancel',
+  handleTouchEnd,
+  listenerOptions
+)
 
 });
 
