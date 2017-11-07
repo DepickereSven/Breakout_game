@@ -13,16 +13,14 @@ import nu.smashit.socket.Client;
  *
  * @author jodus
  */
-public class MovePaddleLeftAction implements RequestAction {
+public class MovePaddleStopAction implements RequestAction {
 
     @Override
     public void handler(Client c) {
         if (c.isInGame()) {
             GameSession gm = c.getGame();
             Paddle p = gm.getPlayer(c).paddle;
-            if (p.x > 0) {
-                p.moveLeft();
-            }
+            p.goNowhere();
         }
     }
 

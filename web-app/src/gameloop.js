@@ -5,8 +5,6 @@
 const { Player } = require('./player')
 const { Ball } = require('./bodies/ball')
 const { sketch } = require('./sketch')
-const { MovePaddleLeftAction } = require('./actions/move_paddle_left')
-const { MovePaddleRightAction } = require('./actions/move_paddle_right')
 
 /**
  * @param {string} str 
@@ -45,16 +43,6 @@ class GameLoop {
     for (const bodyObj of bodies) {
       const instanceKey = firstLetterToLowerCase(bodyObj.type)
       this[instanceKey].update(bodyObj)
-    }
-
-    // keyIsPressed left and right arrows does not work in firefox
-    // so we need to use keyIsDown
-    if (sketch.keyIsDown(sketch.LEFT_ARROW)) {
-      window.wsClient.send(new MovePaddleLeftAction())
-    }
-
-    if (sketch.keyIsDown(sketch.RIGHT_ARROW)) {
-      window.wsClient.send(new MovePaddleRightAction())
     }
 
     this.run()

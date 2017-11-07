@@ -14,15 +14,27 @@ import nu.smashit.socket.Client;
  *
  * @author jodus
  */
-public class MovePaddleRightAction implements RequestAction {
+public class MovePaddleStartAction implements RequestAction {
+
+    public static final String LEFT = "left";
+    public static final String RIGHT = "right";
+
+    public String direction;
 
     @Override
     public void handler(Client c) {
         if (c.isInGame()) {
             GameSession gm = c.getGame();
             Paddle p = gm.getPlayer(c).paddle;
-            if (p.x < GameCanvas.WIDTH - p.width) {
-                p.moveRight();
+
+            if (direction.equals(LEFT)) {
+                if (p.x > 0) {
+                    p.goLeft();
+                }
+            } else if (direction.equals(RIGHT)) {
+                if (p.x < GameCanvas.WIDTH - p.width) {
+                    p.goRight();
+                }
             }
         }
     }
