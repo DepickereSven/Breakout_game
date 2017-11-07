@@ -24,11 +24,17 @@ class GameLoop {
 
   reset () {
     // Initialise bodies
-    this.players = [new Player(true), new Player()]
+    this.players = []
     this.ball = new Ball()
   }
 
   updatePlayers (players) {
+    if (this.players.length === 0){
+       this.players = players.map(function (item, index){
+           return new Player(index === 0, players.length === 2);
+       })
+    }
+    
     for (let i = 0; i < this.players.length; i++) {
       this.players[i].update(players[i])
     }
@@ -58,7 +64,9 @@ class GameLoop {
 
     for (const player of this.players) {
       player.paddle.draw(sketch)
-      player.score.draw(sketch)
+      if (player.score){
+        player.score.draw(sketch)
+      }
     }
 
     this.ball.draw(sketch)

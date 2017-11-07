@@ -116,7 +116,6 @@
 
 (function() {
 var global = typeof window === 'undefined' ? this : window;
-var process;
 var __makeRelativeRequire = function(require, mappings, pref) {
   var none = {};
   var tryReq = function(name, pref) {
@@ -83693,10 +83692,9 @@ process.chdir = function (dir) {
 process.umask = function() { return 0; };
   })();
 });
-require.alias("buffer/index.js", "buffer");
 require.alias("jquery/dist/jquery.js", "jquery");
 require.alias("p5/lib/p5.js", "p5");
-require.alias("process/browser.js", "process");process = require('process');require.register("___globals___", function(exports, require, module) {
+require.alias("process/browser.js", "process");require.register("___globals___", function(exports, require, module) {
   
 
 // Auto-loaded modules from config.npm.globals.

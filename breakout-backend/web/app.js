@@ -116,7 +116,6 @@
 
 (function() {
 var global = typeof window === 'undefined' ? this : window;
-var process;
 var __makeRelativeRequire = function(require, mappings, pref) {
   var none = {};
   var tryReq = function(name, pref) {
@@ -165,29 +164,57 @@ exports.ConnectionSuccessAction = class ConnectionSuccessAction {
 
 });
 
-;require.register("src/actions/create_game_request.js", function(exports, require, module) {
+;require.register("src/actions/create_multiplayer_request.js", function(exports, require, module) {
 /**
  * @module actions/create_game_request.js
  */
 
-exports.CreateGameRequestAction = class CreateGameRequestAction {}
+exports.CreateMultiplayerRequestAction = class CreateMultiplayerRequestAction {}
 
 });
 
-;require.register("src/actions/create_game_success.js", function(exports, require, module) {
+;require.register("src/actions/create_multiplayer_success.js", function(exports, require, module) {
 /**
  * @module actions/create_game_success.js
  */
 
 const createdGameView = require('../views/created_game')
 
-exports.CreateGameSuccessAction = class CreateGameSuccessAction {
+exports.CreateMultiplayerSuccessAction = class CreateMultiplayerSuccessAction {
   constructor ({ key }) {
     this.key = key
   }
 
   handler () {
     createdGameView.show(this.key)
+  }
+}
+
+});
+
+;require.register("src/actions/create_singleplayer_request.js", function(exports, require, module) {
+/**
+ * @module actions/create_game_request.js
+ */
+
+exports.CreateSingleplayerRequestAction = class CreateSingleplayerRequestAction {}
+
+});
+
+;require.register("src/actions/create_singleplayer_success.js", function(exports, require, module) {
+/**
+ * @module actions/create_game_success.js
+ */
+
+const createdGameView = require('../views/created_game')
+
+exports.CreateSingleplayerSuccessAction = class CreateSingleplayerSuccessAction {
+  constructor ({ key }) {
+    this.key = key
+  }
+
+  handler () {
+
   }
 }
 
@@ -276,7 +303,8 @@ exports.GameVictoryAction = class GameVictoryAction {
 
 ;require.register("src/actions/index.js", function(exports, require, module) {
 const { ConnectionSuccessAction } = require('./connection_success')
-const { CreateGameSuccessAction } = require('./create_game_success')
+const { CreateSingleplayerSuccessAction } = require('./create_singleplayer_success')
+const { CreateMultiplayerSuccessAction } = require('./create_multiplayer_success')
 const { GameStartAction } = require('./game_start')
 const { GameStopAction } = require('./game_stop')
 const { GameVictoryAction } = require('./game_victory')
@@ -285,7 +313,8 @@ const { GameStateUpdateAction } = require('./game_state_update')
 
 exports.requestActionsMap = {
   ConnectionSuccessAction,
-  CreateGameSuccessAction,
+  CreateSingleplayerSuccessAction,
+  CreateMultiplayerSuccessAction,
   GameStartAction,
   GameStopAction,
   GameVictoryAction,
@@ -660,11 +689,17 @@ class GameLoop {
 
   reset () {
     // Initialise bodies
-    this.players = [new Player(true), new Player()]
+    this.players = []
     this.ball = new Ball()
   }
 
   updatePlayers (players) {
+    if (this.players.length === 0){
+       this.players = players.map(function (item, index){
+           return new Player(index === 0, players.length === 2);
+       })
+    }
+    
     for (let i = 0; i < this.players.length; i++) {
       this.players[i].update(players[i])
     }
@@ -694,7 +729,9 @@ class GameLoop {
 
     for (const player of this.players) {
       player.paddle.draw(sketch)
-      player.score.draw(sketch)
+      if (player.score){
+        player.score.draw(sketch)
+      }
     }
 
     this.ball.draw(sketch)
@@ -731,15 +768,20 @@ const { Paddle } = require('./bodies/paddle')
 const { Score } = require('./bodies/score')
 
 exports.Player = class Player {
-  constructor (currentPlayer = false) {
+  constructor (currentPlayer = false, multiplayer = true) {
     this.currentPlayer = currentPlayer
     this.paddle = new Paddle()
-    this.score = new Score(currentPlayer)
+    this.multiplayer = multiplayer
+    if (this.multiplayer){
+        this.score = new Score(currentPlayer)
+    }
   }
 
   update ({ paddle, score }) {
     this.paddle.update(paddle)
-    this.score.update(score)
+    if (this.multiplayer){
+        this.score.update(score)
+    }
   }
 }
 
@@ -1116,12 +1158,14 @@ exports.show = function show () {
  */
 
 const { showView } = require('../utils')
-const { CreateGameRequestAction } = require('../actions/create_game_request')
+const { CreateMultiplayerRequestAction } = require('../actions/create_multiplayer_request')
+const { CreateSingleplayerRequestAction } = require('../actions/create_singleplayer_request')
 const { JoinGameRequestAction } = require('../actions/join_game_request')
 
 const els = {
   container: $('#init_game_view'),
-  createGameBtn: $('#create_game_btn'),
+  createMultiplayerBtn: $('#create_multiplayer_btn'),
+  createSingleplayerBtn: $('#create_singleplayer_btn'),
   joinGameBtn: $('#join_game_btn'),
   gameKeyInput: $('#game_key_input')
 }
@@ -1129,8 +1173,12 @@ const els = {
 exports.show = function show () {
   showView(els.container)
 
-  els.createGameBtn.on('click', function () {
-    window.wsClient.send(new CreateGameRequestAction())
+  els.createMultiplayerBtn.on('click', function () {
+    window.wsClient.send(new CreateMultiplayerRequestAction())
+  })
+  
+  els.createSingleplayerBtn.on('click', function () {
+    window.wsClient.send(new CreateSingleplayerRequestAction())
   })
 
   els.joinGameBtn.on('click', function () {
@@ -1158,8 +1206,7 @@ exports.show = function show () {
 
 });
 
-;require.alias("buffer/index.js", "buffer");
-require.alias("process/browser.js", "process");process = require('process');require.register("___globals___", function(exports, require, module) {
+;require.register("___globals___", function(exports, require, module) {
   
 
 // Auto-loaded modules from config.npm.globals.

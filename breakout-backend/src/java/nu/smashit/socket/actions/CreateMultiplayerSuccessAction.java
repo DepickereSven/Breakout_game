@@ -9,11 +9,11 @@ package nu.smashit.socket.actions;
  *
  * @author jodus
  */
-public class CreateGameSuccessAction implements ResponseAction {
+public class CreateMultiplayerSuccessAction implements ResponseAction {
 
     public final String key;
 
-    public CreateGameSuccessAction(String key) {
+    public CreateMultiplayerSuccessAction(String key) {
         this.key = key;
     }
 }

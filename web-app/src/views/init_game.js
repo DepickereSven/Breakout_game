@@ -3,12 +3,14 @@
  */
 
 const { showView } = require('../utils')
-const { CreateGameRequestAction } = require('../actions/create_game_request')
+const { CreateMultiplayerRequestAction } = require('../actions/create_multiplayer_request')
+const { CreateSingleplayerRequestAction } = require('../actions/create_singleplayer_request')
 const { JoinGameRequestAction } = require('../actions/join_game_request')
 
 const els = {
   container: $('#init_game_view'),
-  createGameBtn: $('#create_game_btn'),
+  createMultiplayerBtn: $('#create_multiplayer_btn'),
+  createSingleplayerBtn: $('#create_singleplayer_btn'),
   joinGameBtn: $('#join_game_btn'),
   gameKeyInput: $('#game_key_input')
 }
@@ -16,8 +18,12 @@ const els = {
 exports.show = function show () {
   showView(els.container)
 
-  els.createGameBtn.on('click', function () {
-    window.wsClient.send(new CreateGameRequestAction())
+  els.createMultiplayerBtn.on('click', function () {
+    window.wsClient.send(new CreateMultiplayerRequestAction())
+  })
+  
+  els.createSingleplayerBtn.on('click', function () {
+    window.wsClient.send(new CreateSingleplayerRequestAction())
   })
 
   els.joinGameBtn.on('click', function () {
