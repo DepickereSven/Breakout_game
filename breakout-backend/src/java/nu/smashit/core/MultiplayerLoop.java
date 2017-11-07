@@ -18,6 +18,10 @@ public class MultiplayerLoop extends GameLoop{
     public void run() {
         GameStateUpdateAction updateStateAction = new GameStateUpdateAction(gameSession.players);
 
+        for (Player p : gameSession.players) {
+            p.paddle.move();
+        }
+
         // Ball movement
         if (ball != null) {
             Player scoredPlayer = null;

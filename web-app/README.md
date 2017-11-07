@@ -43,6 +43,10 @@ npm start
 <dd></dd>
 <dt><a href="#actions/create_game_success.module_js">js</a></dt>
 <dd></dd>
+<dt><a href="#actions/create_game_request.module_js">js</a></dt>
+<dd></dd>
+<dt><a href="#actions/create_game_success.module_js">js</a></dt>
+<dd></dd>
 <dt><a href="#actions/game_loss.module_js">js</a></dt>
 <dd></dd>
 <dt><a href="#actions/game_start.module_js">js</a></dt>
@@ -265,6 +269,12 @@ Show the given view and hide the others
 | el | <code>jQuery</code> | jQuery container element |
 
 <a name="actions/connection_success.module_js"></a>
+
+## js
+<a name="actions/create_game_request.module_js"></a>
+
+## js
+<a name="actions/create_game_success.module_js"></a>
 
 ## js
 <a name="actions/create_game_request.module_js"></a>
