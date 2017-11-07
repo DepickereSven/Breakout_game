@@ -21,7 +21,6 @@ body {
 /********** Multiplayer CSS **********/
 
 .container{
-  height: 100vh;
   width: 100%;
   max-width: 800px;
   margin: auto;
