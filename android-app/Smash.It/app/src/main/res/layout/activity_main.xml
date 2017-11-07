@@ -6,19 +6,12 @@
     android:layout_height="match_parent"
     tools:context="me.smash_it.smashit.MainActivity">
 
-    <!--<VideoView-->
-        <!--android:id="@+id/videoView1"-->
+    <!--<ImageView-->
+        <!--android:id="@+id/imageLoading1"-->
         <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"/>-->
-        <!--&lt;!&ndash;android:visibility="visible" &ndash;&gt;-->
-        <!--&lt;!&ndash;/>&ndash;&gt;-->
-
-    <!--<ImageView android:id="@+id/imageLoading1"-->
-        <!--android:layout_height="fill_parent"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:visibility="visible"-->
-        <!--android:src="@drawable/vert_loading"-->
-        <!--/>-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="#0C141F"-->
+        <!--android:visibility="visible" />-->
 
     <WebView
         android:layout_width="wrap_content"
