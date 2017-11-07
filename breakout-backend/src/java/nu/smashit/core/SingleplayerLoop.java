@@ -27,6 +27,7 @@ public class SingleplayerLoop extends GameLoop{
                 ball.inverseVerSpeed();
             }else if (ball.isFloorCollision()){
                 gameSession.broadcastAction(new GameLossAction());
+                gameSession.stopGame();
             } else {
                 Player player = ((SingleplayerSession)gameSession).getPlayer();
                 if (!ball.isGoingUp() && ball.isCollision(player.paddle)) {
