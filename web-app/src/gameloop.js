@@ -33,7 +33,7 @@ class GameLoop {
   updatePlayers (players) {
     if (this.players.length === 0){
        this.players = players.map(function (item, index){
-           return new Player(index === 0);
+           return new Player(index === 0, players.length === 2);
        })
     }
     
@@ -76,7 +76,9 @@ class GameLoop {
 
     for (const player of this.players) {
       player.paddle.draw(sketch)
-      player.score.draw(sketch)
+      if (player.score){
+        player.score.draw(sketch)
+      }
     }
 
     this.ball.draw(sketch)

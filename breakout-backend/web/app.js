@@ -694,7 +694,7 @@ class GameLoop {
   updatePlayers (players) {
     if (this.players.length === 0){
        this.players = players.map(function (item, index){
-           return new Player(index === 0);
+           return new Player(index === 0, players.length === 2);
        })
     }
     
@@ -737,7 +737,9 @@ class GameLoop {
 
     for (const player of this.players) {
       player.paddle.draw(sketch)
-      player.score.draw(sketch)
+      if (player.score){
+        player.score.draw(sketch)
+      }
     }
 
     this.ball.draw(sketch)
@@ -774,15 +776,20 @@ const { Paddle } = require('./bodies/paddle')
 const { Score } = require('./bodies/score')
 
 exports.Player = class Player {
-  constructor (currentPlayer = false) {
+  constructor (currentPlayer = false, multiplayer = true) {
     this.currentPlayer = currentPlayer
     this.paddle = new Paddle()
-    this.score = new Score(currentPlayer)
+    this.multiplayer = multiplayer
+    if (this.multiplayer){
+        this.score = new Score(currentPlayer)
+    }
   }
 
   update ({ paddle, score }) {
     this.paddle.update(paddle)
-    this.score.update(score)
+    if (this.multiplayer){
+        this.score.update(score)
+    }
   }
 }
 
