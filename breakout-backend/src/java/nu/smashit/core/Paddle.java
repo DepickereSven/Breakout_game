@@ -29,6 +29,12 @@ public class Paddle extends MovableBody {
     }
 
     public void move() {
+        if (dx < 0 && x < 0) {
+            return;
+        }
+        if (dx > 0 && x > GameCanvas.WIDTH - width) {
+            return;
+        }
         super.move((int) dx, 0);
     }
 

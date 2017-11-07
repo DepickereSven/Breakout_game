@@ -28,13 +28,9 @@ public class MovePaddleStartAction implements RequestAction {
             Paddle p = gm.getPlayer(c).paddle;
 
             if (direction.equals(LEFT)) {
-                if (p.x > 0) {
-                    p.goLeft();
-                }
+                p.goLeft();
             } else if (direction.equals(RIGHT)) {
-                if (p.x < GameCanvas.WIDTH - p.width) {
-                    p.goRight();
-                }
+                p.goRight();
             }
         }
     }
