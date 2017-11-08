@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ViewSwitcher xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/viewSwitcher"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="me.smash_it.smashit.MainActivity">
 
-    <!--<ImageView-->
-        <!--android:id="@+id/imageLoading1"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:background="#0C141F"-->
-        <!--android:visibility="visible" />-->
+    <VideoView
+        android:id="@+id/videoView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <WebView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/webView"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
@@ -25,7 +23,6 @@
         android:layout_alignParentStart="true"
         tools:layout_constraintTop_creator="1"
         tools:layout_constraintLeft_creator="1">
-        <!--android:visibility="gone"     >-->
     </WebView>
 
-</RelativeLayout>
+</ViewSwitcher>
