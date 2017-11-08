@@ -28,5 +28,10 @@ public class Brick extends Body{
     public boolean isBroken(){
         return remainingSmashesNeeded < 1;
     }
+
+    @Override
+    public String toString() {
+        return "Brick" + type + "(" + remainingSmashesNeeded + ")";
+    }
     
 }

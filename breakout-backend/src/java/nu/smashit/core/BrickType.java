@@ -44,5 +44,10 @@ public class BrickType {
     public int getPoints() {
         return points;
     }
-     
+
+    @Override
+    public String toString() {
+        return sort.toString() ;
+    }
+       
 }
