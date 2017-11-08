@@ -11,11 +11,13 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 import android.widget.VideoView;
 import android.widget.ViewAnimator;
 import android.widget.ViewSwitcher;
 
 public class MainActivity extends Activity {
+    //    private String myURL = "172.31.27.139:3333";
     private String myURL = "file:///android_asset/www/index.html";
     VideoView videoView;
     ViewSwitcher viewSwitcher;
@@ -31,7 +33,6 @@ public class MainActivity extends Activity {
 //                .setIcon(R.drawable.ic_update3);
 //        appUpdater.start();
         setContentView(R.layout.activity_main);
-
         try {
             viewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher);
             final VideoView videoView = (VideoView) findViewById(R.id.videoView);
@@ -43,6 +44,7 @@ public class MainActivity extends Activity {
                 public void onCompletion(MediaPlayer mp) {
                     if (hasFinishedLoadingPage)
                         setViewToSwitchTo(viewSwitcher, view);
+
                     setViewToSwitchTo(viewSwitcher, view);
 
                 }
@@ -53,6 +55,11 @@ public class MainActivity extends Activity {
         }
 
         view = (WebView) this.findViewById(R.id.webView);
+        this.view.getSettings().setUserAgentString(
+                this.view.getSettings().getUserAgentString()
+                        + " "
+                        + getString(R.string.user_agent_suffix)
+        );
         view.getSettings().setJavaScriptEnabled(true);
         view.getSettings().setAllowFileAccess(true);
         view.getSettings().setDomStorageEnabled(true);
@@ -81,17 +88,17 @@ public class MainActivity extends Activity {
                 hasFinishedLoadingPage = true;
             }
 
-//            public void onConsoleMessage(String message, int lineNumber, String sourceID) {
-//                //TODO add here logs if something need to pop-up as toast
-//               if (sourceID.equals("file:///android_asset/www/assets/www.js/new.www.js") && lineNumber == 1084) {
-//                    Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
-//                }
-//               if (sourceID.equals("file:///android_asset/www/assets/www.js/newScript.www.js") && lineNumber == 1088) {
-//                    if (!message.isEmpty()){
-//                        Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            }
+            public void onConsoleMessage(String message, int lineNumber, String sourceID) {
+                //TODO add here logs if something need to pop-up as toast
+                if (sourceID.equals("file:///android_asset/www/assets/www/index.html") && lineNumber == 37) {
+                    Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
+                }
+                if (sourceID.equals("file:///android_asset/www/assets/www/index.html") && lineNumber == 38) {
+                    if (!message.isEmpty()) {
+                        Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
         });
 
         view.setWebViewClient(new MyBrowser() {

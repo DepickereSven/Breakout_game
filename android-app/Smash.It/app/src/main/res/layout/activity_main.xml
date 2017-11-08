@@ -4,12 +4,15 @@
     android:id="@+id/viewSwitcher"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#0c141f"
     tools:context="me.smash_it.smashit.MainActivity">
 
     <VideoView
         android:id="@+id/videoView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:gravity="center"
+        />
 
     <WebView
         android:layout_width="match_parent"
