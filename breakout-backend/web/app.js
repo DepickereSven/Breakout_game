@@ -690,19 +690,22 @@ class GameLoop {
 
   reset () {
     // Initialise bodies
-    this.players = []
+    this.players = {}
     this.ball = new Ball()
   }
 
   updatePlayers (players) {
-    if (this.players.length === 0){
-       this.players = players.map(function (item, index){
-           return new Player(index === 0, players.length === 2);
-       })
-    }
-    
-    for (let i = 0; i < this.players.length; i++) {
-      this.players[i].update(players[i])
+    for (const player of players) {
+      if (!this.players[player.clientId]) {
+        const isCurrentPlayer = player.clientId === window.wsClient.clientId
+        const isMultiplayer = players.length === 2
+
+        this.players[player.clientId] = new Player(
+          isCurrentPlayer,
+          isMultiplayer
+        )
+      }
+      this.players[player.clientId].update(player)
     }
   }
 
@@ -728,9 +731,13 @@ class GameLoop {
     // Clear canvas
     sketch.background(0)
 
-    for (const player of this.players) {
+    for (const clientId in this.players) {
+      if (!this.players.hasOwnProperty(clientId)) {
+        return
+      }
+      const player = this.players[clientId]
       player.paddle.draw(sketch)
-      if (player.score){
+      if (player.score) {
         player.score.draw(sketch)
       }
     }
@@ -850,7 +857,7 @@ class WsClient {
    * @method
    */
   setClientId (clientId) {
-    this.cliendId = clientId
+    this.clientId = clientId
   }
 
   /**
@@ -1226,3 +1233,5 @@ window["$"] = require("jquery");
 
 });})();require('___globals___');
 
+
+//# sourceMappingURL=app.js.map

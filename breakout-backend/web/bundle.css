@@ -1,1 +1,36 @@
-*{padding:0;margin:0}body{background:#eee;display:block;height:100vh;width:100%;font-family:sans-serif;padding:0;margin:0;display:flex;flex-direction:column;justify-content:center;align-items:center}.view{max-width:500px;display:flex;flex:1;flex-direction:column}.hidden{display:none}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: #eee;
+  display: block;
+  height: 100vh;
+  width: 100%;
+  font-family: sans-serif;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.view {
+  max-width: 500px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+canvas {
+}
+
+.hidden {
+  display: none;
+}
+
+
+/*# sourceMappingURL=bundle.css.map*/

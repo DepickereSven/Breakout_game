@@ -38,7 +38,7 @@ class WsClient {
    * @method
    */
   setClientId (clientId) {
-    this.cliendId = clientId
+    this.clientId = clientId
   }
 
   /**

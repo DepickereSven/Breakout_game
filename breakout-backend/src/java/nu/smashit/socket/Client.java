@@ -48,4 +48,9 @@ public class Client {
     public void removeGame() {
         this.gameSession = null;
     }
+
+    @Override
+    public String toString() {
+        return getId();
+    }
 }
