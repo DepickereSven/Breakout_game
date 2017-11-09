@@ -18,8 +18,13 @@ public class Ball extends MovableBody {
 
     private double multiplier;
 
+    public static final int HEIGHT = 12;
+    public static final int WIDTH = HEIGHT;
+
+    public static final int Y_START_POS = GameCanvas.HEIGHT - HEIGHT - Paddle.HEIGHT - Paddle.GAP;
+
     public Ball() {
-        super(GameCanvas.WIDTH / 2, (int) (GameCanvas.HEIGHT - 12), 12, 12);
+        super(GameCanvas.WIDTH / 2, Y_START_POS, HEIGHT, WIDTH);
         this.reset();
     }
 
