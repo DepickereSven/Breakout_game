@@ -12,7 +12,7 @@ exports.API_URL = ((window.location.protocol === 'https:') ? 'wss://' : 'ws://')
  * Canvas height
  * @type {number}
  */
-exports.C_HEIGHT = 450
+exports.C_HEIGHT = 480
 
 /**
  * Canvas width
