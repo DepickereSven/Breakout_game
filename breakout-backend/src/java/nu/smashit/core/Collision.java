@@ -10,6 +10,15 @@ package nu.smashit.core;
  * @author jodus
  */
 public class Collision {
+
+    private static double getBallX(Ball ball) {
+        return ball.dx * 0.7 + ball.x;
+    }
+
+    private static double getBallY(Ball ball) {
+        return ball.dy * 0.7 + ball.y;
+    }
+
     public static boolean isWallCollision(Ball b) {
         return b.isGoingLeft() && b.x < 0
                 || !b.isGoingLeft() && b.x > GameCanvas.WIDTH - b.width;
@@ -24,16 +33,22 @@ public class Collision {
     }
 
     public static boolean isCollision(Ball ball, Body body) {
-        double slop = 0.7;
-        double ballX = ball.dx * slop + ball.x;
-        double ballY = ball.dy * slop + ball.y;
-        return ballX < body.x + body.width
-                && ballX + ball.width > body.x
-                && ballY < body.y + body.height
-                && ball.height + ballY > body.y;
+        return isHozCollision(ball, body) && isVerCollision(ball, body);
     }
 
     public static boolean isVerCollision(Ball ball, Body body) {
+        double ballY = getBallY(ball);
+        return ballY <= body.y + body.height
+                && ballY + ball.height >= body.y;
+    }
+
+    public static boolean isHozCollision(Ball ball, Body body) {
+        double ballX = getBallX(ball);
+        return ballX <= body.x + body.width
+                && ballX + ball.width >= body.x;
+    }
+
+    public static boolean isTopOrBottomCollision(Ball ball, Body body) {
         return ball.y <= body.y - (body.height / 2)
                 || ball.y >= body.y + (body.height / 2);
     }

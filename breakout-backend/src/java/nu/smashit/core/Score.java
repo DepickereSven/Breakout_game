@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Score {
 
     private static final int DEATH_POINTS = 50;
+    private static final int BRICK_POINTS = 10;
 
     private double points;
 
@@ -32,6 +33,10 @@ public class Score {
 
     public void subtractDeath() {
         points -= DEATH_POINTS;
+    }
+
+    public void addBrickSmash() {
+        points += BRICK_POINTS;
     }
 
     public double getPoints() {

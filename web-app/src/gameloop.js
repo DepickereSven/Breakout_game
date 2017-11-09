@@ -92,7 +92,10 @@ class GameLoop {
       if (!this.bricks.hasOwnProperty(brickId)) {
         return
       }
-      this.bricks[brickId].draw(sketch)
+      const brick = this.bricks[brickId]
+      if (!brick.isBroken()) {
+        this.bricks[brickId].draw(sketch)
+      }
     }
 
     this.ball.draw(sketch)

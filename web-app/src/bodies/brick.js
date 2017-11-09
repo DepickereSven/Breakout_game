@@ -22,11 +22,13 @@ exports.Brick = class Brick {
     this.lives = 0
     this.height = 0
     this.width = 0
+    this.borderRadius = 2
     this.color = utils.randomColor()
   }
 
   /**
    * Update body to match the server state
+   * @method
    * @param {object} bodyObj 
    */
   update ({ height, width, x, y, lives }) {
@@ -38,12 +40,21 @@ exports.Brick = class Brick {
   }
 
   /**
+   * Check if the brick is broken
+   * @method
+   * @return {boolean}
+   */
+  isBroken () {
+    return this.lives < 1
+  }
+
+  /**
    * Draw the brick on the provides 2D context
    * @method
    * @param {Sketch} s
    */
   draw (s) {
     s.fill(...this.color)
-    s.rect(this.x, this.y, this.width, this.height)
+    s.rect(this.x, this.y, this.width, this.height, this.borderRadius)
   }
 }

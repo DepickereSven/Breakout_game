@@ -1,22 +1,31 @@
 package nu.smashit.core;
 
 // @author Jonas
-
 import nu.smashit.socket.actions.GameLossAction;
 import nu.smashit.socket.actions.GameStateUpdateAction;
 import nu.smashit.socket.actions.GameVictoryAction;
 import nu.smashit.socket.actions.OpponentDeathAction;
 import nu.smashit.socket.actions.PlayerDeathAction;
 
-public class MultiplayerLoop extends GameLoop{
+public class MultiplayerLoop extends GameLoop {
 
     public MultiplayerLoop(MultiplayerSession gm) {
         super(gm, Field.getMultiplayerInstance());
     }
-    
+
     @Override
     public void run() {
         GameStateUpdateAction updateStateAction = new GameStateUpdateAction(ball, gameSession.players);
+
+        if (firstRun) {
+            for (BrickRow br : field.brickRows) {
+                for (Brick b : br.bricks) {
+                    if (b != null) {
+                        updateStateAction.addBrick(b);
+                    }
+                }
+            }
+        }
 
         for (Player p : gameSession.players) {
             p.paddle.move();
@@ -35,17 +44,8 @@ public class MultiplayerLoop extends GameLoop{
             } else if (Collision.isFloorCollision(ball)) {
                 lostPlayer = ((MultiplayerSession) gameSession).getBottomPlayer();
                 scoredPlayer = ((MultiplayerSession) gameSession).getTopPlayer();
-            } else {
-                // Paddle collision
-                int pIndex = ball.isGoingUp() ? 1 : 0;
-                Player player = gameSession.players[pIndex];
-                if (Collision.isCollision(ball, player.paddle)) {
-                    if (Collision.isVerCollision(ball, player.paddle)) {
-                        ball.inverseVerSpeed();
-                    } else {
-                        ball.inverseHozSpeed();
-                    }
-                }
+            } else if (runPaddleCollision(updateStateAction)) {
+            } else if (runBrickCollision(updateStateAction)) {
             }
 
             if (scoredPlayer != null && lostPlayer != null) {
@@ -68,16 +68,11 @@ public class MultiplayerLoop extends GameLoop{
             ball.move();
         }
 
-        if (field != null) {
-            for (BrickRow br : field.getField()) {
-                for (Brick b : br.row) {
-                    if (b != null)
-                        updateStateAction.addBrick(b);
-                }
-            }
-        }
-
         gameSession.broadcastAction(updateStateAction);
+
+        if (firstRun) {
+            firstRun = false;
+        }
     }
 
 }

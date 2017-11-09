@@ -124,9 +124,11 @@ Canvas width
 
 * [gameLoop](#module_gameLoop)
     * [~GameLoop](#module_gameLoop..GameLoop)
-        * [.updateBodies(bodyObj)](#module_gameLoop..GameLoop+updateBodies)
+        * [.reset()](#module_gameLoop..GameLoop+reset)
+        * [.updatePlayers(players)](#module_gameLoop..GameLoop+updatePlayers)
+        * [.updateBricks(bricks)](#module_gameLoop..GameLoop+updateBricks)
+        * [.updateBall(ball)](#module_gameLoop..GameLoop+updateBall)
         * [.run()](#module_gameLoop..GameLoop+run)
-    * [~firstLetterToLowerCase(str)](#module_gameLoop..firstLetterToLowerCase)
 
 <a name="module_gameLoop..GameLoop"></a>
 
@@ -143,19 +145,50 @@ GameLoop provides the state and drawing for the sketch
 
 
 * [~GameLoop](#module_gameLoop..GameLoop)
-    * [.updateBodies(bodyObj)](#module_gameLoop..GameLoop+updateBodies)
+    * [.reset()](#module_gameLoop..GameLoop+reset)
+    * [.updatePlayers(players)](#module_gameLoop..GameLoop+updatePlayers)
+    * [.updateBricks(bricks)](#module_gameLoop..GameLoop+updateBricks)
+    * [.updateBall(ball)](#module_gameLoop..GameLoop+updateBall)
     * [.run()](#module_gameLoop..GameLoop+run)
 
-<a name="module_gameLoop..GameLoop+updateBodies"></a>
+<a name="module_gameLoop..GameLoop+reset"></a>
 
-#### gameLoop.updateBodies(bodyObj)
-Update the body to match the server state
+#### gameLoop.reset()
+Reset all props
+
+**Kind**: instance method of [<code>GameLoop</code>](#module_gameLoop..GameLoop)  
+<a name="module_gameLoop..GameLoop+updatePlayers"></a>
+
+#### gameLoop.updatePlayers(players)
+Update players to current state or create new players if they don't exist already
 
 **Kind**: instance method of [<code>GameLoop</code>](#module_gameLoop..GameLoop)  
 
 | Param | Type |
 | --- | --- |
-| bodyObj | <code>Array.&lt;object&gt;</code> | 
+| players | <code>Array.&lt;object&gt;</code> | 
+
+<a name="module_gameLoop..GameLoop+updateBricks"></a>
+
+#### gameLoop.updateBricks(bricks)
+Update bricks to current state or create new bricks if they don't exist already
+
+**Kind**: instance method of [<code>GameLoop</code>](#module_gameLoop..GameLoop)  
+
+| Param | Type |
+| --- | --- |
+| bricks | <code>Array.&lt;object&gt;</code> | 
+
+<a name="module_gameLoop..GameLoop+updateBall"></a>
+
+#### gameLoop.updateBall(ball)
+Update the ball to match the server state
+
+**Kind**: instance method of [<code>GameLoop</code>](#module_gameLoop..GameLoop)  
+
+| Param | Type |
+| --- | --- |
+| ball | <code>object</code> | 
 
 <a name="module_gameLoop..GameLoop+run"></a>
 
@@ -163,15 +196,6 @@ Update the body to match the server state
 Draws the current state onto the provided sketch
 
 **Kind**: instance method of [<code>GameLoop</code>](#module_gameLoop..GameLoop)  
-<a name="module_gameLoop..firstLetterToLowerCase"></a>
-
-### gameLoop~firstLetterToLowerCase(str)
-**Kind**: inner method of [<code>gameLoop</code>](#module_gameLoop)  
-
-| Param | Type |
-| --- | --- |
-| str | <code>string</code> | 
-
 <a name="module_initialize"></a>
 
 ## initialize
@@ -381,15 +405,9 @@ Draw the ball on the provides 2D context
 
 * [bodies/brick](#module_bodies/brick)
     * [.Brick](#module_bodies/brick.Brick)
-        * [.move(dx, dy)](#module_bodies/brick.Brick+move)
-        * [.draw()](#module_bodies/brick.Brick+draw)
-    * [.BrickRow](#module_bodies/brick.BrickRow)
-        * [new exports.BrickRow(rowIndex)](#new_module_bodies/brick.BrickRow_new)
-        * [.moveDown()](#module_bodies/brick.BrickRow+moveDown)
-        * [.isBallCollision(ball)](#module_bodies/brick.BrickRow+isBallCollision) ⇒ <code>Ball</code>
-        * [.removeBrick(brick)](#module_bodies/brick.BrickRow+removeBrick)
-        * [.isEmpty()](#module_bodies/brick.BrickRow+isEmpty) ⇒ <code>bool</code>
-        * [.draw()](#module_bodies/brick.BrickRow+draw)
+        * [.update(bodyObj)](#module_bodies/brick.Brick+update)
+        * [.isBroken()](#module_bodies/brick.Brick+isBroken) ⇒ <code>boolean</code>
+        * [.draw(s)](#module_bodies/brick.Brick+draw)
 
 <a name="module_bodies/brick.Brick"></a>
 
@@ -401,103 +419,47 @@ Represents a brick
 
 | Name | Type | Description |
 | --- | --- | --- |
+| id | <code>string</code> |  |
 | x | <code>number</code> | horizontal position |
 | height | <code>number</code> |  |
 | width | <code>number</code> |  |
+| lives | <code>number</code> |  |
 | color | <code>Array.&lt;number&gt;</code> |  |
 
 
 * [.Brick](#module_bodies/brick.Brick)
-    * [.move(dx, dy)](#module_bodies/brick.Brick+move)
-    * [.draw()](#module_bodies/brick.Brick+draw)
+    * [.update(bodyObj)](#module_bodies/brick.Brick+update)
+    * [.isBroken()](#module_bodies/brick.Brick+isBroken) ⇒ <code>boolean</code>
+    * [.draw(s)](#module_bodies/brick.Brick+draw)
 
-<a name="module_bodies/brick.Brick+move"></a>
+<a name="module_bodies/brick.Brick+update"></a>
 
-#### brick.move(dx, dy)
-Move the ball to new position
+#### brick.update(bodyObj)
+Update body to match the server state
 
 **Kind**: instance method of [<code>Brick</code>](#module_bodies/brick.Brick)  
 
 | Param | Type |
 | --- | --- |
-| dx | <code>int</code> | 
-| dy | <code>int</code> | 
+| bodyObj | <code>object</code> | 
 
+<a name="module_bodies/brick.Brick+isBroken"></a>
+
+#### brick.isBroken() ⇒ <code>boolean</code>
+Check if the brick is broken
+
+**Kind**: instance method of [<code>Brick</code>](#module_bodies/brick.Brick)  
 <a name="module_bodies/brick.Brick+draw"></a>
 
-#### brick.draw()
-Draw the brick on the screen
+#### brick.draw(s)
+Draw the brick on the provides 2D context
 
 **Kind**: instance method of [<code>Brick</code>](#module_bodies/brick.Brick)  
-<a name="module_bodies/brick.BrickRow"></a>
-
-### bodies/brick.BrickRow
-Represents a row of bricks
-
-**Kind**: static class of [<code>bodies/brick</code>](#module_bodies/brick)  
-**Properties**
-
-| Name | Type |
-| --- | --- |
-| bricks | <code>Array.&lt;Brick&gt;</code> | 
-
-
-* [.BrickRow](#module_bodies/brick.BrickRow)
-    * [new exports.BrickRow(rowIndex)](#new_module_bodies/brick.BrickRow_new)
-    * [.moveDown()](#module_bodies/brick.BrickRow+moveDown)
-    * [.isBallCollision(ball)](#module_bodies/brick.BrickRow+isBallCollision) ⇒ <code>Ball</code>
-    * [.removeBrick(brick)](#module_bodies/brick.BrickRow+removeBrick)
-    * [.isEmpty()](#module_bodies/brick.BrickRow+isEmpty) ⇒ <code>bool</code>
-    * [.draw()](#module_bodies/brick.BrickRow+draw)
-
-<a name="new_module_bodies/brick.BrickRow_new"></a>
-
-#### new exports.BrickRow(rowIndex)
-
-| Param | Type | Description |
-| --- | --- | --- |
-| rowIndex | <code>number</code> | The index of row |
-
-<a name="module_bodies/brick.BrickRow+moveDown"></a>
-
-#### brickRow.moveDown()
-Move the bricks in this row down 1 row
-
-**Kind**: instance method of [<code>BrickRow</code>](#module_bodies/brick.BrickRow)  
-<a name="module_bodies/brick.BrickRow+isBallCollision"></a>
-
-#### brickRow.isBallCollision(ball) ⇒ <code>Ball</code>
-Checks if the ball colides with a brick in the row
-
-**Kind**: instance method of [<code>BrickRow</code>](#module_bodies/brick.BrickRow)  
 
 | Param | Type |
 | --- | --- |
-| ball | <code>Ball</code> | 
+| s | <code>Sketch</code> | 
 
-<a name="module_bodies/brick.BrickRow+removeBrick"></a>
-
-#### brickRow.removeBrick(brick)
-Removes brick from the row
-
-**Kind**: instance method of [<code>BrickRow</code>](#module_bodies/brick.BrickRow)  
-
-| Param | Type |
-| --- | --- |
-| brick | <code>Brick</code> | 
-
-<a name="module_bodies/brick.BrickRow+isEmpty"></a>
-
-#### brickRow.isEmpty() ⇒ <code>bool</code>
-Checks if the row is empty
-
-**Kind**: instance method of [<code>BrickRow</code>](#module_bodies/brick.BrickRow)  
-<a name="module_bodies/brick.BrickRow+draw"></a>
-
-#### brickRow.draw()
-Draws the bricks
-
-**Kind**: instance method of [<code>BrickRow</code>](#module_bodies/brick.BrickRow)  
 <a name="module_bodies/paddle"></a>
 
 ## bodies/paddle

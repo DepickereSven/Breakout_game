@@ -11,28 +11,28 @@ import nu.smashit.utils.Tools;
  *
  * @author jodus
  */
-class BrickRow {
+class BrickRow extends Body {
 
-    public final Brick[] row;
+    public final Brick[] bricks;
     private final int numberOfNormalBricks;
     private final int numberOfPowerups;
     private final int numberOfPowerdowns;
     private final int numberOfEmptyPlaces;
-    private final int y;
 
     public BrickRow(int numberOfNormalBricks, int numberOfPowerups, int numberOfPowerdowns, int numberOfEmptyPlaces, int y) {
+        super(0, y, GameCanvas.WIDTH, Brick.HEIGHT);
+
         this.numberOfNormalBricks = numberOfNormalBricks;
         this.numberOfPowerups = numberOfPowerups;
         this.numberOfPowerdowns = numberOfPowerdowns;
         this.numberOfEmptyPlaces = numberOfEmptyPlaces;
-        this.y = y;
 
-        row = new Brick[getNumberOfTotalPlaces()];
+        bricks = new Brick[getNumberOfTotalPlaces()];
         fillRow();
     }
 
     public Brick getBrick(int colIndex) {
-        return row[colIndex];
+        return bricks[colIndex];
     }
 
     public int getNumberOfTotalPlaces() {
@@ -72,10 +72,10 @@ class BrickRow {
         for (int bricknr = 0; bricknr < number; bricknr++) {
             do {
                 place = Tools.getRandomBetween(0, getNumberOfTotalPlaces() - 1);
-            } while (row[place] != null);
+            } while (bricks[place] != null);
 
             int x = place * block_width;
-            row[place] = new Brick(x, y, block_width, Brick.HEIGHT, getRandomBrickType(sort));
+            bricks[place] = new Brick(x, y, block_width, Brick.HEIGHT, getRandomBrickType(sort));
         }
     }
 
@@ -87,7 +87,7 @@ class BrickRow {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (Brick row1 : row) {
+        for (Brick row1 : bricks) {
             if (row1 == null) {
                 sb.append("*.............*");
             } else {

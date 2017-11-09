@@ -11,8 +11,8 @@ public class Brick extends Body {
 
     public final UUID id;
 
-    public static final int HEIGHT = 25;
-    
+    public static final int HEIGHT = 16;
+
     public Brick(int x, int y, int width, int height, BrickType type) {
         super(x, y, width, height);
         this.id = UUID.randomUUID();
@@ -23,13 +23,13 @@ public class Brick extends Body {
     public int getLives() {
         return lives;
     }
-    
+
     public void smashBrick() {
         lives--;
     }
 
     @JsonIgnore
-    public boolean isBroken(){
+    public boolean isBroken() {
         return lives < 1;
     }
 
@@ -37,5 +37,5 @@ public class Brick extends Body {
     public String toString() {
         return "Brick" + type + "(" + lives + ")";
     }
-    
+
 }

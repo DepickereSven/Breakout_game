@@ -24,7 +24,7 @@ public abstract class GameSession {
     }
 
     public abstract void join(Client c);
-    
+
     public abstract Player getPlayer(Client c);
 
     public void broadcastAction(ResponseAction a) {
@@ -38,6 +38,10 @@ public abstract class GameSession {
 
     public abstract void startGame();
 
+    public int playerCount() {
+        return players.length;
+    }
+
     public void stopGame() {
         gameLoopTimer.cancel();
 
@@ -46,8 +50,8 @@ public abstract class GameSession {
         }
         GameSessionManager.getInstance().removeGame(key);
     }
-    
-    public String getKey(){
+
+    public String getKey() {
         return key;
     }
 }

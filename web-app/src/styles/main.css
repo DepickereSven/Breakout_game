@@ -31,3 +31,8 @@ canvas {
 .hidden {
   display: none;
 }
+
+
+#game_key_input {
+  text-transform: uppercase;
+}

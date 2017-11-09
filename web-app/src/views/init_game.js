@@ -27,7 +27,7 @@ exports.show = function show () {
   })
 
   els.joinGameBtn.on('click', function () {
-    const key = els.gameKeyInput.val()
+    const key = els.gameKeyInput.val().toUpperCase()
     window.wsClient.send(new JoinGameRequestAction(key))
   })
 }

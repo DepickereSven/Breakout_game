@@ -19,7 +19,7 @@ public class Ball extends MovableBody {
     private double multiplier;
 
     public Ball() {
-        super(GameCanvas.WIDTH / 2, (int) (GameCanvas.HEIGHT * 0.8), 12, 12);
+        super(GameCanvas.WIDTH / 2, (int) (GameCanvas.HEIGHT - 12), 12, 12);
         this.reset();
     }
 
