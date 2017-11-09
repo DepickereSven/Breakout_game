@@ -21,17 +21,17 @@ public class SingleplayerLoop extends GameLoop{
 
         // Ball movement
         if (ball != null) {
-            if (ball.isWallCollision()) {
+            if (Collision.isWallCollision(ball)) {
                 ball.inverseHozSpeed();
-            }else if (ball.isCeilingCollision()){
+            } else if (Collision.isCeilingCollision(ball)) {
                 ball.inverseVerSpeed();
-            }else if (ball.isFloorCollision()){
+            } else if (Collision.isFloorCollision(ball)) {
                 gameSession.broadcastAction(new GameLossAction());
                 gameSession.stopGame();
             } else {
                 Player player = ((SingleplayerSession)gameSession).getPlayer();
-                if (!ball.isGoingUp() && ball.isCollision(player.paddle)) {
-                    if (ball.isVerCollision(player.paddle)) {
+                if (!ball.isGoingUp() && Collision.isCollision(ball, player.paddle)) {
+                    if (Collision.isVerCollision(ball, player.paddle)) {
                         ball.inverseVerSpeed();
                     } else {
                         ball.inverseHozSpeed();

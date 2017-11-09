@@ -27,20 +27,20 @@ public class MultiplayerLoop extends GameLoop{
             Player scoredPlayer = null;
             Player lostPlayer = null;
 
-            if (ball.isWallCollision()) {
+            if (Collision.isWallCollision(ball)) {
                 ball.inverseHozSpeed();
-            } else if (ball.isCeilingCollision()) {
+            } else if (Collision.isCeilingCollision(ball)) {
                 lostPlayer = ((MultiplayerSession) gameSession).getTopPlayer();
                 scoredPlayer = ((MultiplayerSession) gameSession).getBottomPlayer();
-            } else if (ball.isFloorCollision()) {
+            } else if (Collision.isFloorCollision(ball)) {
                 lostPlayer = ((MultiplayerSession) gameSession).getBottomPlayer();
                 scoredPlayer = ((MultiplayerSession) gameSession).getTopPlayer();
             } else {
                 // Paddle collision
                 int pIndex = ball.isGoingUp() ? 1 : 0;
                 Player player = gameSession.players[pIndex];
-                if (ball.isCollision(player.paddle)) {
-                    if (ball.isVerCollision(player.paddle)) {
+                if (Collision.isCollision(ball, player.paddle)) {
+                    if (Collision.isVerCollision(ball, player.paddle)) {
                         ball.inverseVerSpeed();
                     } else {
                         ball.inverseHozSpeed();

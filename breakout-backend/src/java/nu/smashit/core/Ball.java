@@ -13,8 +13,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 public class Ball extends MovableBody {
 
-    private double dx;
-    private double dy;
+    public double dx;
+    public double dy;
 
     private double multiplier;
 
@@ -40,35 +40,6 @@ public class Ball extends MovableBody {
     @JsonIgnore
     public int getRadius() {
         return this.height / 2;
-    }
-
-    @JsonIgnore
-    public boolean isWallCollision() {
-        return isGoingLeft() && x < 0
-                || !isGoingLeft() && x > GameCanvas.WIDTH - width;
-    }
-
-    @JsonIgnore
-    public boolean isCeilingCollision() {
-        return isGoingUp() && y < 0;
-    }
-
-    @JsonIgnore
-    public boolean isFloorCollision() {
-        return !isGoingUp() && y > GameCanvas.HEIGHT - height;
-    }
-
-    @JsonIgnore
-    public boolean isCollision(Body b) {
-        return (dx + x) < b.x + b.width
-                && (dx + x) + width > b.x
-                && (dy + y) < b.y + b.height
-                && height + (dy + y) > b.y;
-    }
-
-    public boolean isVerCollision(Body b) {
-        return y <= b.y - (b.height / 2)
-                || y >= b.y + (b.height / 2);
     }
 
     @JsonIgnore
