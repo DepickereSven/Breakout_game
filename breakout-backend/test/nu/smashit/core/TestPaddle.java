@@ -1,5 +1,6 @@
 package nu.smashit.core;
 
+import org.junit.After;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -21,6 +22,11 @@ public class TestPaddle {
         x = Paddle.X_START_POS;
         y = 5;
         paddle = new Paddle(y);
+    }
+    
+    @After
+    public void testIfYStaysTheSame(){
+        assertEquals(y, paddle.y);
     }
     
     @Test
