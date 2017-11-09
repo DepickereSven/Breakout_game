@@ -8,13 +8,13 @@ public class TestField {
     
     @Test
     public void testFieldMultiplayer(){
-        Field field = new Field(true);
+        Field field = Field.getMultiplayerInstance();
         System.out.println(field.toString());
     }
     
     @Test
     public void testFieldSingleplayer(){
-        Field field = new Field(false, 2);
+        Field field = Field.getSingleplayerInstance(2);
         System.out.println(field.toString());
     }
 }

@@ -5,6 +5,8 @@ public class Brick extends Body{
 
     private BrickType type;
     private int remainingSmashesNeeded;
+
+    public static final int HEIGHT = 35;
     
     public Brick(int x, int y, int width, int height, BrickType type) {
         super(x, y, width, height);
