@@ -88,4 +88,6 @@ typings/
 /web-app/nbproject/project.properties
 /web-app/nbproject/project.xml
 /breakout-backend/dist/
-/breakout-backend/web
+
+/breakout-backend/web/*
+!/breakout-backend/web/WEB-INF
