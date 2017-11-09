@@ -1,12 +1,7 @@
 package nu.smashit.core;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
 
-/**
- *
- * @author Jonas
- */
 public class TestField {
     
     public TestField() {}
