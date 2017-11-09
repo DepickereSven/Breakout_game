@@ -52,10 +52,9 @@ body{
     flex: 1;
     display: flex;
     margin: 4%;
-    margin-top: 7%;
 }
 
-.container_singleplayer_gamemode div{
+.container_singleplayer_gamemode a{
     max-width: 30%;
     border-radius: 5%;
     text-align: center;
@@ -71,7 +70,82 @@ body{
 .container_singleplayer_gamemode .med img,
 .container_singleplayer_gamemode .med_1 img,
 .container_singleplayer_gamemode .med_2 img,
-.container_singleplayer_gamemode .hard img{
+.container_singleplayer_gamemode .hard img,
+.create_join_public_or_private .join_a_private_game img,
+.create_join_public_or_private .join_a_public_game img,
+.create_join_public_or_private .create_a_private_game img,
+.create_join_public_or_private .create_a_public_game img{
     width: 100%;
+}
+
+.container .create_join_public_or_private{
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    flex: 1;
+    display: flex;
+    margin: 4%;
+}
+
+.container .create_join_public_or_private,
+.container .input_field_for_private_game,
+.container .container_singleplayer_gamemode{
+    margin-top: 7%;
+}
+
+.container .create_join_public_or_private a{
+    max-width: 30%;
+    border-radius: 5%;
+    text-align: center;
+    min-width: 125px;
+    min-height: 125px;
+    margin-left: 3%;
+    margin-right: 3%;
+    margin-bottom: 8%;
+}
+
+.container .form_for_code_private_join{
+    text-align: center;
+}
+
+.container .form_for_code_private_join label{
+    display: block;
+    margin-bottom: 3%;
+}
+
+.container .form_for_code_private_join input{
+    line-height: normal;
+    border-radius: 4px;
+    padding: 6px 12px;
+    border: #eee solid 1px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+.btn{
+    display: block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 4%;
+}
+
+.btn-smash-it{
+    background-color: #6fc3df;
+    border-color: #0086d4;
+    color: #fff;
 }
 

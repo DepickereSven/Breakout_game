@@ -62,7 +62,7 @@ body {
     width: 20px;
 }
 
-.gamemodes-container{
+.gamemodes-container {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
@@ -70,7 +70,7 @@ body {
     margin: 7% 4% 4%;
 }
 
-.gamemodes-container div{
+.gamemodes-container a {
     max-width: 30%;
     border-radius: 5%;
     text-align: center;
@@ -81,48 +81,9 @@ body {
     margin-bottom: 16%;
 }
 
-.gamemodes-container  img{
+.gamemodes-container img {
     width: 100%;
 }
-
-/*.gamemodes-container {*/
-    /*width: 100%;*/
-    /*display: flex;*/
-    /*flex: 1;*/
-    /*flex-direction: row;*/
-    /*flex-wrap: wrap;*/
-    /*justify-content: center;*/
-/*}*/
-
-/*.gamemodes-container div {*/
-    /*text-align: center;*/
-    /*min-width: 30%;*/
-    /*border-radius: 5%;*/
-/*}*/
-
-/*.createGame {*/
-    /*flex: 1;*/
-    /*background-color: grey;*/
-    /*margin: 20px;*/
-/*}*/
-
-/*.joinGame {*/
-    /*flex: 1;*/
-    /*background-color: grey;*/
-    /*margin: 20px;*/
-/*}*/
-
-/*.stats {*/
-    /*flex: 1;*/
-    /*background-color: grey;*/
-    /*margin: 20px;*/
-/*}*/
-
-/*.shop {*/
-    /*flex: 1;*/
-    /*background-color: grey;*/
-    /*margin: 20px;*/
-/*}*/
 
 .bottom-container {
     width: 100%;

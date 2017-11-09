@@ -14,7 +14,8 @@ exports.files = {
 };
 
 exports.paths = {
-  public: '../breakout-backend/web',
+  // public: '../breakout-backend/web',
+  public: '../android-app/Smash.It/app/src/main/assets/www',
   watched: ['src']
 };
 
