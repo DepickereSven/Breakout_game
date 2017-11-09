@@ -4,12 +4,8 @@
 
 const { Player } = require('./player')
 const { Ball } = require('./bodies/ball')
+const { Brick } = require('./bodies/brick')
 const { sketch } = require('./sketch')
-
-/**
- * @param {string} str 
- */
-const firstLetterToLowerCase = str => str[0].toLowerCase() + str.slice(1)
 
 /**
  * GameLoop provides the state and drawing for the sketch
@@ -22,39 +18,55 @@ class GameLoop {
     this.reset()
   }
 
+  /**
+   * Reset all props
+   * @method
+   */
   reset () {
     // Initialise bodies
-    this.players = {}
     this.ball = new Ball()
+    this.players = {}
+    this.bricks = {}
   }
 
+  /**
+   * Update players to current state or create new players if they don't exist already
+   * @method
+   * @param {object[]} players
+   */
   updatePlayers (players) {
-    for (const player of players) {
-      if (!this.players[player.clientId]) {
-        const isCurrentPlayer = player.clientId === window.wsClient.clientId
+    for (const p of players) {
+      if (!this.players[p.clientId]) {
+        const isCurrentPlayer = p.clientId === window.wsClient.clientId
         const isMultiplayer = players.length === 2
 
-        this.players[player.clientId] = new Player(
-          isCurrentPlayer,
-          isMultiplayer
-        )
+        this.players[p.clientId] = new Player(isCurrentPlayer, isMultiplayer)
       }
-      this.players[player.clientId].update(player)
+      this.players[p.clientId].update(p)
     }
   }
 
   /**
-   * Update the body to match the server state
+   * Update bricks to current state or create new bricks if they don't exist already
    * @method
-   * @param {object[]} bodyObj 
+   * @param {object[]} bricks
    */
-  updateBodies (bodies) {
-    for (const bodyObj of bodies) {
-      const instanceKey = firstLetterToLowerCase(bodyObj.type)
-      this[instanceKey].update(bodyObj)
+  updateBricks (bricks) {
+    for (const b of bricks) {
+      if (!this.bricks[b.id]) {
+        this.bricks[b.id] = new Brick(b.id)
+      }
+      this.bricks[b.id].update(b)
     }
+  }
 
-    this.run()
+  /**
+   * Update the ball to match the server state
+   * @method
+   * @param {object} ball 
+   */
+  updateBall (ballObj) {
+    this.ball.update(ballObj)
   }
 
   /**
@@ -74,6 +86,13 @@ class GameLoop {
       if (player.score) {
         player.score.draw(sketch)
       }
+    }
+
+    for (const brickId in this.bricks) {
+      if (!this.bricks.hasOwnProperty(brickId)) {
+        return
+      }
+      this.bricks[brickId].draw(sketch)
     }
 
     this.ball.draw(sketch)

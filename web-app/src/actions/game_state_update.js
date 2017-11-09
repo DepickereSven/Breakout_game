@@ -5,13 +5,16 @@
 const { gameLoop } = require('../gameloop')
 
 exports.GameStateUpdateAction = class GameStateUpdateAction {
-  constructor ({ bodies, players }) {
-    this.bodies = bodies
+  constructor ({ ball, bricks, players }) {
+    this.ball = ball
+    this.bricks = bricks
     this.players = players
   }
 
   handler () {
+    gameLoop.updateBall(this.ball)
+    gameLoop.updateBricks(this.bricks)
     gameLoop.updatePlayers(this.players)
-    gameLoop.updateBodies(this.bodies)
+    gameLoop.run()
   }
 }

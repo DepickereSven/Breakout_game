@@ -1,39 +1,41 @@
 package nu.smashit.core;
 
 // @author Jonas
-public class Brick extends Body{
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.UUID;
 
-    private BrickType type;
-    private int remainingSmashesNeeded;
+public class Brick extends Body {
 
-    public static final int HEIGHT = 35;
+    private final BrickType type;
+    private int lives;
+
+    public final UUID id;
+
+    public static final int HEIGHT = 25;
     
     public Brick(int x, int y, int width, int height, BrickType type) {
         super(x, y, width, height);
+        this.id = UUID.randomUUID();
         this.type = type;
-        this.remainingSmashesNeeded = type.getBrickStrength();
+        this.lives = type.getBrickStrength();
     }
 
-    public BrickType getType() {
-        return type;
+    public int getLives() {
+        return lives;
+    }
+    
+    public void smashBrick() {
+        lives--;
     }
 
-    public int getRemainingSmashesNeeded() {
-        return remainingSmashesNeeded;
-    }
-    
-    public boolean smashBrick(){
-        remainingSmashesNeeded --;
-        return isBroken();       
-    }
-    
+    @JsonIgnore
     public boolean isBroken(){
-        return remainingSmashesNeeded < 1;
+        return lives < 1;
     }
 
     @Override
     public String toString() {
-        return "Brick" + type + "(" + remainingSmashesNeeded + ")";
+        return "Brick" + type + "(" + lives + ")";
     }
     
 }

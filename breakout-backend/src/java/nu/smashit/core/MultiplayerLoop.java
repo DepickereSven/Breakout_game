@@ -11,12 +11,12 @@ import nu.smashit.socket.actions.PlayerDeathAction;
 public class MultiplayerLoop extends GameLoop{
 
     public MultiplayerLoop(MultiplayerSession gm) {
-        super(gm);
+        super(gm, Field.getMultiplayerInstance());
     }
     
     @Override
     public void run() {
-        GameStateUpdateAction updateStateAction = new GameStateUpdateAction(gameSession.players);
+        GameStateUpdateAction updateStateAction = new GameStateUpdateAction(ball, gameSession.players);
 
         for (Player p : gameSession.players) {
             p.paddle.move();
@@ -66,7 +66,15 @@ public class MultiplayerLoop extends GameLoop{
             }
 
             ball.move();
-            updateStateAction.addBody(ball);
+        }
+
+        if (field != null) {
+            for (BrickRow br : field.getField()) {
+                for (Brick b : br.row) {
+                    if (b != null)
+                        updateStateAction.addBrick(b);
+                }
+            }
         }
 
         gameSession.broadcastAction(updateStateAction);

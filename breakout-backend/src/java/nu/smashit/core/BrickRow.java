@@ -13,7 +13,7 @@ import nu.smashit.utils.Tools;
  */
 class BrickRow {
 
-    private final Brick[] row;
+    public final Brick[] row;
     private final int numberOfNormalBricks;
     private final int numberOfPowerups;
     private final int numberOfPowerdowns;
@@ -21,10 +21,10 @@ class BrickRow {
     private final int y;
 
     public BrickRow(int numberOfNormalBricks, int numberOfPowerups, int numberOfPowerdowns, int numberOfEmptyPlaces, int y) {
-        this.numberOfNormalBricks = Tools.validateBetween(numberOfNormalBricks, 1, 10, 6);
-        this.numberOfPowerups = Tools.validateBetween(numberOfPowerdowns, 0, 3, 0);
-        this.numberOfPowerdowns = Tools.validateBetween(numberOfPowerdowns, 0, 3, 0);
-        this.numberOfEmptyPlaces = Tools.validateBetween(numberOfEmptyPlaces, 0, 10, 0);
+        this.numberOfNormalBricks = numberOfNormalBricks;
+        this.numberOfPowerups = numberOfPowerups;
+        this.numberOfPowerdowns = numberOfPowerdowns;
+        this.numberOfEmptyPlaces = numberOfEmptyPlaces;
         this.y = y;
 
         row = new Brick[getNumberOfTotalPlaces()];
@@ -33,10 +33,6 @@ class BrickRow {
 
     public Brick getBrick(int colIndex) {
         return row[colIndex];
-    }
-
-    public void removeBrick(int colIndex) {
-        row[colIndex] = null;
     }
 
     public int getNumberOfTotalPlaces() {

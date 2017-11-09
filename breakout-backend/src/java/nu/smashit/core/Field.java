@@ -9,8 +9,10 @@ public class Field {
     private final BrickRow[] field;
     private final int level;
     private final boolean multiplayer;
+    private final int marginTop;
                 
-    private static final int MARGIN_TOP = 50;
+    private static final int SINGLEPLAYER_MARGIN_TOP = 50;
+    private static final int[] ALLOWED_BRICKS_IN_ROW = new int[]{4, 5, 8};
 
     public static Field getSingleplayerInstance(int level) {
         return new Field(false, level);
@@ -23,8 +25,9 @@ public class Field {
     private Field(boolean multiplayer, int level) {
         this.multiplayer = multiplayer;
         this.level = Tools.validateBetween(level, 1, 100, 1);
-        this.numberOfRows = calculateNumberOfRows();
+        this.numberOfRows = calcNumberOfRows();
         this.field = new BrickRow[numberOfRows];
+        this.marginTop = multiplayer ? calcMultiplayerMarginTop() : SINGLEPLAYER_MARGIN_TOP;
         generateField();
     }
     
@@ -40,21 +43,14 @@ public class Field {
         return getRow(rowIndex).getBrick(colIndex);
     }
     
-    private void removeBrick(int rowIndex, int colIndex){
-        getRow(rowIndex).removeBrick(colIndex);
-    }
-    
     public void smashBrick(int rowIndex, int colIndex){
         if (getBrick(rowIndex, colIndex) != null){
             Brick brick = getBrick(rowIndex, colIndex);
             brick.smashBrick();
-            if (brick.isBroken()){
-                removeBrick(rowIndex, colIndex);
-            }
         }
     }
     
-    public int getRows() {
+    public int getNumerOfRows() {
         return numberOfRows;
     }
 
@@ -80,8 +76,8 @@ public class Field {
         int[] powerdownsPerRow = Tools.shuffleArray(powerupsPerRow.clone());
         
         for (int rownr = 0; rownr < numberOfRows; rownr++){
-            int y = (Brick.HEIGHT * rownr) + MARGIN_TOP;
-            int numberOfTotalPlacesInRow = Tools.getRandomBetween(4, 8);
+            int y = (Brick.HEIGHT * rownr) + marginTop;
+            int numberOfTotalPlacesInRow = ALLOWED_BRICKS_IN_ROW[Tools.getRandomBetween(0, 2)];
             int numberOfPowerupsInRow = powerupsPerRow[rownr];
             int numberOfPowerdownsInRow = powerdownsPerRow[rownr];
             int numberOfEmptyPlacesInRow = getNumberOfEmptyPlacesInRow(numberOfTotalPlacesInRow);
@@ -91,7 +87,7 @@ public class Field {
         }
     }
 
-    private int calculateNumberOfRows() {
+    private int calcNumberOfRows() {
         //TODO read parameters from database
         if (isMultiplayer()){
             return 6;
@@ -114,6 +110,11 @@ public class Field {
         }
         
         throw new Error("Error in field");
+    }
+
+    private int calcMultiplayerMarginTop() {
+        int fieldHeight = numberOfRows * Brick.HEIGHT;
+        return Math.round((GameCanvas.HEIGHT - fieldHeight) / 2);
     }
     
     private int getNumberOfEmptyPlacesInRow(int numberOfTotalPlacesInRow) {

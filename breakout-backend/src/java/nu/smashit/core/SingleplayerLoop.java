@@ -8,12 +8,12 @@ import nu.smashit.socket.actions.GameStateUpdateAction;
 public class SingleplayerLoop extends GameLoop{
 
     public SingleplayerLoop(GameSession gm) {
-        super(gm);
+        super(gm, Field.getSingleplayerInstance(50));
     }
     
    @Override
     public void run() {
-       GameStateUpdateAction updateStateAction = new GameStateUpdateAction(gameSession.players);
+       GameStateUpdateAction updateStateAction = new GameStateUpdateAction(ball, gameSession.players);
 
        for (Player p : gameSession.players) {
            p.paddle.move();
@@ -40,8 +40,17 @@ public class SingleplayerLoop extends GameLoop{
             }
 
             ball.move();
-            updateStateAction.addBody(ball);
-        }
+       }
+
+       if (field != null) {
+           for (BrickRow br : field.getField()) {
+               for (Brick b : br.row) {
+                   if (b != null) {
+                       updateStateAction.addBrick(b);
+                   }
+               }
+           }
+       }
 
         gameSession.broadcastAction(updateStateAction);
     }

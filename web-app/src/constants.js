@@ -18,4 +18,4 @@ exports.C_HEIGHT = 450
  * Canvas width
  * @type {number}
  */
-exports.C_WIDTH = 300
+exports.C_WIDTH = 320

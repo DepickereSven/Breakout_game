@@ -14,10 +14,12 @@ import java.util.TimerTask;
 public abstract class GameLoop extends TimerTask {
 
     protected Ball ball;
+    protected final Field field;
     protected final GameSession gameSession;
 
-    public GameLoop(GameSession gm) {
+    public GameLoop(GameSession gm, Field field) {
         this.gameSession = gm;
+        this.field = field;
         createBall();
     }
 
