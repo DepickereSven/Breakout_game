@@ -1,12 +1,15 @@
 package nu.smashit.core;
 
 // @author Jonas
+import nu.smashit.core.bodies.Field;
+import nu.smashit.core.bodies.BrickRow;
+import nu.smashit.core.bodies.Brick;
 import nu.smashit.socket.actions.GameLossAction;
 import nu.smashit.socket.actions.GameStateUpdateAction;
 
 public class SingleplayerLoop extends GameLoop {
 
-    public SingleplayerLoop(GameSession gm) {
+    public SingleplayerLoop(Game gm) {
         super(gm, Field.getSingleplayerInstance(50));
     }
 

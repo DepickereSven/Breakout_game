@@ -2,7 +2,7 @@ package nu.smashit.data;
 
 // @author Jonas
 
-import nu.smashit.core.Difficulty;
+import nu.smashit.data.dataobjects.Difficulty;
 
 public interface LevelRepository {
 

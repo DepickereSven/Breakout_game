@@ -3,7 +3,7 @@ package nu.smashit.data;
 // @author Jonas
 
 import java.util.List;
-import nu.smashit.core.BrickType;
+import nu.smashit.data.dataobjects.BrickType;
 
 public interface BrickTypeRepository {
 

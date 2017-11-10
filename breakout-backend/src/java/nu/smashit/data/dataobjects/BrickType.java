@@ -1,4 +1,4 @@
-package nu.smashit.core;
+package nu.smashit.data.dataobjects;
 
 // @author Jonas
 public class BrickType {

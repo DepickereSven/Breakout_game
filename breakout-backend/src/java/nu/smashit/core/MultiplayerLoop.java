@@ -1,6 +1,9 @@
 package nu.smashit.core;
 
 // @author Jonas
+import nu.smashit.core.bodies.Field;
+import nu.smashit.core.bodies.BrickRow;
+import nu.smashit.core.bodies.Brick;
 import nu.smashit.socket.actions.GameLossAction;
 import nu.smashit.socket.actions.GameStateUpdateAction;
 import nu.smashit.socket.actions.GameVictoryAction;
@@ -9,7 +12,7 @@ import nu.smashit.socket.actions.PlayerDeathAction;
 
 public class MultiplayerLoop extends GameLoop {
 
-    public MultiplayerLoop(MultiplayerSession gm) {
+    public MultiplayerLoop(MultiplayerGame gm) {
         super(gm, Field.getMultiplayerInstance());
     }
 
@@ -39,11 +42,11 @@ public class MultiplayerLoop extends GameLoop {
             if (Collision.isWallCollision(ball)) {
                 ball.inverseHozSpeed();
             } else if (Collision.isCeilingCollision(ball)) {
-                lostPlayer = ((MultiplayerSession) gameSession).getTopPlayer();
-                scoredPlayer = ((MultiplayerSession) gameSession).getBottomPlayer();
+                lostPlayer = ((MultiplayerGame) gameSession).getTopPlayer();
+                scoredPlayer = ((MultiplayerGame) gameSession).getBottomPlayer();
             } else if (Collision.isFloorCollision(ball)) {
-                lostPlayer = ((MultiplayerSession) gameSession).getBottomPlayer();
-                scoredPlayer = ((MultiplayerSession) gameSession).getTopPlayer();
+                lostPlayer = ((MultiplayerGame) gameSession).getBottomPlayer();
+                scoredPlayer = ((MultiplayerGame) gameSession).getTopPlayer();
             } else if (runPaddleCollision(updateStateAction)) {
             } else if (runBrickCollision(updateStateAction)) {
             }

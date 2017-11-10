@@ -7,8 +7,8 @@ package nu.smashit.socket.actions;
 
 import java.util.HashSet;
 import java.util.Set;
-import nu.smashit.core.Ball;
-import nu.smashit.core.Brick;
+import nu.smashit.core.bodies.Ball;
+import nu.smashit.core.bodies.Brick;
 import nu.smashit.core.Player;
 
 /**

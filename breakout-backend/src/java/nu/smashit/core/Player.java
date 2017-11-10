@@ -1,5 +1,7 @@
 package nu.smashit.core;
 
+import nu.smashit.core.bodies.Paddle;
+import nu.smashit.data.dataobjects.Score;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;

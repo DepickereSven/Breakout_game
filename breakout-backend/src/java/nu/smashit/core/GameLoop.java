@@ -1,10 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nu.smashit.core;
 
+import nu.smashit.core.bodies.Field;
+import nu.smashit.core.bodies.BrickRow;
+import nu.smashit.core.bodies.Brick;
+import nu.smashit.core.bodies.Ball;
 import java.util.TimerTask;
 import nu.smashit.socket.actions.GameStateUpdateAction;
 
@@ -16,12 +15,12 @@ public abstract class GameLoop extends TimerTask {
 
     protected Ball ball;
     protected final Field field;
-    protected final GameSession gameSession;
+    protected final Game gameSession;
     protected Player lastPlayerToHitPaddle;
 
     protected boolean firstRun;
 
-    public GameLoop(GameSession gm, Field field) {
+    public GameLoop(Game gm, Field field) {
         this.gameSession = gm;
         this.firstRun = true;
         this.field = field;

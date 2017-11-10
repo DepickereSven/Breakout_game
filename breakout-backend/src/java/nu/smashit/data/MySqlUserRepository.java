@@ -2,7 +2,7 @@ package nu.smashit.data;
 
 // @author Jonas
 
-import nu.smashit.core.User;
+import nu.smashit.data.dataobjects.User;
 
 public class MySqlUserRepository implements UserRepository{
 

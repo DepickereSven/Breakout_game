@@ -3,7 +3,7 @@ package nu.smashit.data;
 // @author Jonas
 
 import java.util.List;
-import nu.smashit.core.Score;
+import nu.smashit.data.dataobjects.Score;
 
 public class MySqlScoreRepository implements ScoreRepository{
 
