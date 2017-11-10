@@ -20,6 +20,28 @@ const nationsCode = [{
   },
   points: 500,
   time: 50
+}, {
+  player_won: {
+    name: 'Ishan',
+    countryCode: 'CN'
+  },
+  player_lost: {
+    name: 'Max',
+    countryCode: 'NL'
+  },
+  points: 600,
+  time: 30
+}, {
+  player_won: {
+    name: 'Sven',
+    countryCode: 'EU'
+  },
+  player_lost: {
+    name: 'LX',
+    countryCode: 'SG'
+  },
+  points: 600,
+  time: 30
 }]
 // colspan rowspan
 function createTableStats () {

@@ -12,6 +12,7 @@ require('./screenheight')
 require('./qr_code')
 require('./stats')
 require('./get_nation_data')
+require('./generate_levels')
 
 // $(document).ready(function () {
 //   loadingView.show()

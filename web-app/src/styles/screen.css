@@ -33,7 +33,6 @@ body{
     font-size: 21px;
     margin-top: 25px;
     text-align: center;
-
     -webkit-transition: opacity 1s ease-in;
     -moz-transition: opacity 1s ease-in;
     -ms-transition: opacity 1s ease-in;
@@ -45,7 +44,8 @@ body{
     opacity: 1;
 }
 
-.container_singleplayer_gamemode{
+.container_singleplayer_gamemode,
+.generate_levels_singeplayer{
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
@@ -54,7 +54,8 @@ body{
     margin: 4%;
 }
 
-.container_singleplayer_gamemode a{
+.container_singleplayer_gamemode a,
+.generate_levels_singeplayer .level{
     max-width: 30%;
     border-radius: 5%;
     text-align: center;
@@ -178,7 +179,8 @@ body{
 
 th,
 tr,
-td, table img{
+td,
+table img{
     text-align: left;
 }
 
@@ -195,3 +197,26 @@ td, table img{
     min-width: 20%;
 }
 
+.generate_levels_singeplayer a{
+    color: #fff;
+    font-size: 3.2rem;
+    text-decoration: none;
+}
+
+.generate_levels_singeplayer{
+    overflow: auto;
+}
+
+.generate_levels_singeplayer .level{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.level{
+    background-color: #0005b7;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
