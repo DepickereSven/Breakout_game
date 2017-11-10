@@ -4,6 +4,7 @@
  */
 
 const { showView } = require('../utils')
+const QRious = require('qrious')
 
 const els = exports.els = {
   container: $('#created_game_success_view'),
@@ -16,5 +17,12 @@ const els = exports.els = {
  */
 exports.show = function show (key) {
   els.createdGameKey.text(key)
+
+  const qr = new QRious({
+    element: document.getElementById('qr_code_canvas'),
+    size: 200,
+    value: key
+  })
+
   showView(els.container)
 }
