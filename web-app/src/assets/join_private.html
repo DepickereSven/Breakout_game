@@ -23,7 +23,8 @@
         <div class="form_for_code_private_join">
             <label for="code_for_join_private_game">Code:</label>
             <input type="text" class="form-control" id="code_for_join_private_game" placeholder="ex. DE892">
-            <button type="submit" class="btn btn-smash-it">JOIN THE GAME</button>
+            <button id="start_QR_scan" class="btn btn-smash-it">SCAN AN QR CODE</button>
+            <button id="submit_and_join_private_game" type="submit" class="btn btn-smash-it">JOIN THE GAME</button>
         </div>
     </div>
 </div>
@@ -31,5 +32,10 @@
 <script src="vendor.js" type="text/javascript"></script>
 <script src="app.js" type="text/javascript"></script>
 <script>require('src/initialize')</script>
+<script type="text/javascript">
+  var fill = function (results) {
+    $('.form-control').val(results)
+  }
+</script>
 </body>
 </html>

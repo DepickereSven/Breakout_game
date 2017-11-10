@@ -9,6 +9,7 @@
 
 require('./music')
 require('./screenheight')
+require('./qr_code')
 
 // $(document).ready(function () {
 //   loadingView.show()

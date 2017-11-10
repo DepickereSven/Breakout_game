@@ -149,3 +149,6 @@ body{
     color: #fff;
 }
 
+#start_QR_scan, #submit_and_join_private_game{
+    margin-top: 13%;
+}
