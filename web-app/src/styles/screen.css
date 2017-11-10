@@ -152,3 +152,46 @@ body{
 #start_QR_scan, #submit_and_join_private_game{
     margin-top: 13%;
 }
+
+.code_private_create{
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.code_private_create span{
+    border: #fff 1px solid;
+    padding: 2%;
+    margin: 4%;
+    line-height: 90px;
+    border-radius: 9px;
+    text-align: center;
+}
+
+.stats_multiplayer{
+    display: flex;
+    justify-content: center;
+}
+
+.table{
+    width: 100%;
+}
+
+th,
+tr,
+td, table img{
+    text-align: left;
+}
+
+.country{
+    min-width: 11%;
+}
+
+.name{
+    min-width: 26%;
+}
+
+.points,
+.time{
+    min-width: 20%;
+}
+

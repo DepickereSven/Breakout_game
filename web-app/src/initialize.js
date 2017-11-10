@@ -10,6 +10,8 @@
 require('./music')
 require('./screenheight')
 require('./qr_code')
+require('./stats')
+require('./get_nation_data')
 
 // $(document).ready(function () {
 //   loadingView.show()
