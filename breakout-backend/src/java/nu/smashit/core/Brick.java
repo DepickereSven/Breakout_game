@@ -27,6 +27,10 @@ public class Brick extends Body {
     public void smashBrick() {
         lives--;
     }
+    
+    public BrickType getBrickType(){
+        return type;
+    }
 
     @JsonIgnore
     public boolean isBroken() {

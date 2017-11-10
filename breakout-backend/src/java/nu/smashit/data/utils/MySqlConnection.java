@@ -1,4 +1,4 @@
-package nu.smashit.data;
+package nu.smashit.data.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

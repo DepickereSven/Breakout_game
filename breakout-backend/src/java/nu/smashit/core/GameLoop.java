@@ -40,19 +40,19 @@ public abstract class GameLoop extends TimerTask {
         BrickRow brickRow = field.getRow(i);
 
         if (Collision.isVerCollision(ball, brickRow)) {
-            for (Brick b : brickRow.bricks) {
-                if (b != null && !b.isBroken() && Collision.isHozCollision(ball, b)) {
-                    b.smashBrick();
-                    updateStateAction.addBrick(b);
+            for (Brick brick : brickRow.bricks) {
+                if (brick != null && !brick.isBroken() && Collision.isHozCollision(ball, brick)) {
+                    brick.smashBrick();
+                    updateStateAction.addBrick(brick);
 
-                    if (Collision.isTopOrBottomCollision(ball, b)) {
+                    if (Collision.isTopOrBottomCollision(ball, brick)) {
                         ball.inverseVerSpeed();
                     } else {
                         ball.inverseHozSpeed();
                     }
 
                     if (lastPlayerToHitPaddle != null) {
-                        lastPlayerToHitPaddle.score.addBrickSmash();
+                        lastPlayerToHitPaddle.score.addBrickSmash(brick);
                     }
 
                     return true;
