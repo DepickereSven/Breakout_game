@@ -116,6 +116,7 @@
 
 (function() {
 var global = typeof window === 'undefined' ? this : window;
+var process;
 var __makeRelativeRequire = function(require, mappings, pref) {
   var none = {};
   var tryReq = function(name, pref) {
@@ -178,7 +179,7 @@ exports.CreateMultiplayerRequestAction = class CreateMultiplayerRequestAction {}
  * @module actions/create_game_success.js
  */
 
-const createdGameView = require('../views/created_game')
+const { viewManager } = require('../views/index')
 
 exports.CreateMultiplayerSuccessAction = class CreateMultiplayerSuccessAction {
   constructor ({ key }) {
@@ -186,7 +187,7 @@ exports.CreateMultiplayerSuccessAction = class CreateMultiplayerSuccessAction {
   }
 
   handler () {
-    createdGameView.show(this.key)
+    //viewManager.go('')
   }
 }
 
@@ -660,6 +661,12 @@ exports.C_HEIGHT = 450
  */
 exports.C_WIDTH = 300
 
+/**
+ * Is the current client the webview in the android app
+ * @type {string}
+ */
+exports.IS_ANDROID_APP = navigator.userAgent.indexOf('Smash_It') > 1
+
 });
 
 ;require.register("src/gameloop.js", function(exports, require, module) {
@@ -742,23 +749,78 @@ exports.gameLoop = new GameLoop()
 
 });
 
+;require.register("src/generate_levels.js", function(exports, require, module) {
+$('.container_singleplayer_gamemode a img').on('click', function () {
+  generate()
+})
+
+function generate () {
+  const $selector = $(this)
+  let $resultaatstring = ''
+  let min = $selector.attr('data-min')
+  let max = parseInt($selector.attr('data-max')) + 1
+  for (max; min < max; min++) {
+    $resultaatstring += '<a href="#" class="level" data-level="' + min + '"><span class="levelName">' + min + '</span></a>'
+  }
+  $('.generate_levels_singeplayer').html($resultaatstring)
+}
+
+});
+
+;require.register("src/get_nation_data.js", function(exports, require, module) {
+const URL_IP = 'http://www.geoplugin.net/json.gp?jsoncallback=?'
+$.getJSON(URL_IP, function (data) {
+  const nationsCode = JSON.stringify(data.geoplugin_countryCode, null, 2)
+  console.log(nationsCode)
+})
+
+});
+
 ;require.register("src/initialize.js", function(exports, require, module) {
 /**
  * @module initialize
  */
 
-const { wsClient } = require('./socket/client')
-const loadingView = require('./views/loading')
+// const { wsClient } = require('./socket/client')
+// const loadingView = require('./views/loading')
+const constants = require('./constants')
 
-require('./sketch')
+// require('./sketch')
+
 require('./music')
-require('./screenheight')
+require('./qr_code')
+require('./stats')
+require('./get_nation_data')
+require('./generate_levels')
 
-$(document).ready(function () {
-  loadingView.show()
+const { viewManager } = require('./views/index')
 
-  window.wsClient = wsClient
-  wsClient.open()
+viewManager.go('modes.html')
+
+// window.wsClient = wsClient
+// wsClient.open()
+
+/**
+ * - The android app needs 4,5 sec to show the vid.
+ * - The body needs to be set to the full height of the browser (vh is not supported in webview)
+ * - Fade in the body
+ */
+const timeout = constants.IS_ANDROID_APP ? 4500 : 0
+setTimeout(function () {
+  $('body').css('height', window.innerHeight)
+  $('#start').addClass('load')
+}, timeout)
+
+/**
+ * Prevent all hyperlinks from opening the web page manually and use viewManager
+ */
+$('body').on('click', 'a', function (e) {
+  const href = e.currentTarget.getAttribute('href')
+  if (!href || href === '#') {
+    return
+  }
+  e.preventDefault()
+  viewManager.go(href)
 })
 
 });
@@ -813,16 +875,14 @@ exports.Player = class Player {
 
 });
 
-;require.register("src/screenheight.js", function(exports, require, module) {
-/**
- * Created by svend on 7/11/2017.
- */
+;require.register("src/qr_code.js", function(exports, require, module) {
+$('#start_QR_scan').on('click', function () {
+  SmashIt.startQRCode()
+})
 
-
-$('.full_screen_height').css('height',innerHeight);
 });
 
-require.register("src/sketch.js", function(exports, require, module) {
+;require.register("src/sketch.js", function(exports, require, module) {
 /**
  * @module sketch
  */
@@ -940,6 +1000,113 @@ exports.wsClient = new WsClient()
 
 });
 
+;require.register("src/stats.js", function(exports, require, module) {
+const nationsCode = [{
+  player_won: {
+    name: 'Jonas',
+    countryCode: 'BE'
+  },
+  player_lost: {
+    name: 'Fritz',
+    countryCode: 'DE'
+  },
+  points: 250,
+  time: 120
+}, {
+  player_won: {
+    name: 'Thomas',
+    countryCode: 'CH'
+  },
+  player_lost: {
+    name: 'Neymar',
+    countryCode: 'PT'
+  },
+  points: 500,
+  time: 50
+}, {
+  player_won: {
+    name: 'Ishan',
+    countryCode: 'CN'
+  },
+  player_lost: {
+    name: 'Max',
+    countryCode: 'NL'
+  },
+  points: 600,
+  time: 30
+}, {
+  player_won: {
+    name: 'Sven',
+    countryCode: 'EU'
+  },
+  player_lost: {
+    name: 'LX',
+    countryCode: 'SG'
+  },
+  points: 600,
+  time: 30
+}]
+// colspan rowspan
+function createTableStats () {
+  let $resultaatString = '<table class="table"><thead><tr><th></th><th>Players</th><th>Points</th><th>Time</th></tr></thead>'
+  $resultaatString += '<tbody>'
+
+  $.each(nationsCode, function (index, item) {
+    const wonPlayerCC = (item.player_won.countryCode).toLowerCase()
+    const lostPlayerCC = (item.player_lost.countryCode).toLocaleLowerCase()
+    $resultaatString += createRow(wonPlayerCC, item, item.points)
+    $resultaatString += createRow(lostPlayerCC, item, 0)
+  })
+  $resultaatString += '</tbody></table>'
+  return $resultaatString
+}
+
+function createRow (playerCC, item, points) {
+  let tr = '<tr>'
+  let ctd = '</td>'
+  let ctr = '</td></tr>'
+  let $resultaatString = ''
+  $resultaatString += tr + '<td class="country">'
+  $resultaatString += createImgString(playerCC)
+  $resultaatString += ctd + '<td class="name">'
+  if (points === 0) {
+    $resultaatString += item.player_lost.name
+  } else {
+    $resultaatString += item.player_won.name
+  }
+  $resultaatString += ctd + '<td class="points">'
+  $resultaatString += points
+  if (points === 0) {} else {
+    $resultaatString += ctd + '<td class="time">'
+    $resultaatString += calcTime(item.time)
+  }
+  $resultaatString += ctr
+  return $resultaatString
+}
+
+function timePadding (time, isBack) {
+  const newtime = time.toString()
+  if (newtime.length < 2) {
+    return isBack ? newtime + '0' : '0' + newtime
+  } else {
+    return newtime
+  }
+}
+
+function calcTime (timeInSec) {
+  const min = Math.floor(timeInSec / 60)
+  const sec = timeInSec - (min * 60)
+  return timePadding(min) + ':' + timePadding(sec)
+}
+
+$('.stats_multiplayer').html(createTableStats())
+
+function createImgString (nation) {
+  return '<img src="images/nations/' + nation + '.png" alt="' + nation + '" title="' + nation + '"/>'
+}
+
+});
+
 ;require.register("src/utils.js", function(exports, require, module) {
 /**
  * @module utils
@@ -1017,16 +1184,6 @@ function randomColor () {
 }
 exports.randomColor = randomColor
 
-/**
- * Show the given view and hide the others
- * @param {jQuery} el - jQuery container element
- */
-function showView (el) {
-  $('.view').addClass('hidden')
-  el.removeClass('hidden')
-}
-exports.showView = showView
-
 });
 
 ;require.register("src/views/connection_loss.js", function(exports, require, module) {
@@ -1046,26 +1203,64 @@ exports.show = function show () {
 
 });
 
-;require.register("src/views/created_game.js", function(exports, require, module) {
+;require.register("src/views/create_multiplayer_screen.js", function(exports, require, module) {
+const {
+  CreateMultiplayerRequestAction
+} = require('../actions/create_multiplayer_request')
 
-/**
- * @module views/created_game
- */
+const path = 'create.html'
+exports.path = path
 
-const { showView } = require('../utils')
+exports.CreateMultiplayerScreenView = class CreateMultiplayerScreenView {
+  constructor (viewManager) {
+    this.path = path
+    this.viewManager = viewManager
 
-const els = exports.els = {
-  container: $('#created_game_success_view'),
-  createdGameKey: $('#created_game_key')
+    this.createGameBtn = 'a.create_a_private_game'
+  }
+
+  createMultiplayerHandler () {
+    window.wsClient.send(new CreateMultiplayerRequestAction())
+  }
+
+  onLoad () {
+    $(this.createGameBtn).on('click', this.multiplayerClickHandler)
+  }
+
+  onUnload () {
+    $(this.createGameBtn).off('click')
+  }
 }
 
-/**
- * Show the created game view
- * @param {string} key - Game session key
- */
-exports.show = function show (key) {
-  els.createdGameKey.text(key)
-  showView(els.container)
+});
+
+;require.register("src/views/created_game.js", function(exports, require, module) {
+const {
+  CreateMultiplayerRequestAction
+} = require('../actions/create_multiplayer_request')
+
+const path = 'multiplayer.html'
+exports.path = path
+
+exports.MultiplayerScreenView = class MultiplayerScreenView {
+  constructor (viewManager) {
+    this.path = path
+    this.viewManager = viewManager
+
+    this.createGameBtn = 'button.createGame'
+  }
+
+  createMultiplayerHandler () {
+    window.wsClient.send(new CreateMultiplayerRequestAction())
+  }
+
+  onLoad () {
+    $(this.createGameBtn).on('click', this.multiplayerClickHandler)
+  }
+
+  onUnload () {
+    $(this.createGameBtn).off('click')
+  }
 }
 
 });
@@ -1187,6 +1382,60 @@ exports.show = function show () {
 
 });
 
+;require.register("src/views/index.js", function(exports, require, module) {
+const modeScreen = require('./mode_screen')
+const multiplayerScreen = require('./multiplayer_screen')
+const createMultiplayerScreen = require('./create_multiplayer_screen')
+
+const viewsMap = {
+  [modeScreen.path]: modeScreen.ModeScreenView,
+  [multiplayerScreen.path]: multiplayerScreen.MultiplayerScreenView,
+  [createMultiplayerScreen.path]: createMultiplayerScreen.CreateMultiplayerScreenView
+}
+exports.viewsMap = viewsMap
+
+class ViewManager {
+  constructor () {
+    this.viewHistory = []
+  }
+
+  go (path) {
+    const ViewConstructor = viewsMap[path]
+
+    if (!ViewConstructor) {
+      throw new Error(`View "${path}" doesn't exist.`)
+    }
+
+    const view = new ViewConstructor(this)
+
+    $.ajax({
+      url: path
+    }).done(html => {
+      const currentView = this.viewHistory[this.viewHistory.length - 1]
+      if (currentView) {
+        currentView.onUnload()
+      }
+      $('.screen').removeClass('currentScreen')
+      $(document.body).append(`<div class="screen">${html}</div>`)
+
+      setTimeout(function () {
+        $('.screen')
+          .last()
+          .addClass('currentScreen')
+        $('.screen:not(.currentScreen)').remove()
+      }, 100)
+
+      view.onLoad()
+
+      this.viewHistory.push(view)
+    })
+  }
+}
+
+exports.viewManager = new ViewManager()
+
+});
+
 ;require.register("src/views/init_game.js", function(exports, require, module) {
 /**
  * @module views/init_game
@@ -1224,24 +1473,45 @@ exports.show = function show () {
 
 });
 
-;require.register("src/views/loading.js", function(exports, require, module) {
-/**
- * @module views/loading
- */
+;require.register("src/views/mode_screen.js", function(exports, require, module) {
+const path = 'modes.html'
+exports.path = path
 
-const { showView } = require('../utils')
+exports.ModeScreenView = class ModeScreenView {
+  constructor (viewManager) {
+    this.path = path
+    this.viewManager = viewManager
+  }
+  onLoad () {
+  }
 
-const els = {
-  container: $('#loading_view')
-}
-
-exports.show = function show () {
-  showView(els.container)
+  onUnload () {
+  }
 }
 
 });
 
-;require.register("___globals___", function(exports, require, module) {
+;require.register("src/views/multiplayer_screen.js", function(exports, require, module) {
+const path = 'multiplayer.html'
+exports.path = path
+
+exports.MultiplayerScreenView = class MultiplayerScreenView {
+  constructor (viewManager) {
+    this.path = path
+    this.viewManager = viewManager
+  }
+
+  onLoad () {
+  }
+
+  onUnload () {
+  }
+}
+
+});
+
+;require.alias("buffer/index.js", "buffer");
+require.alias("process/browser.js", "process");process = require('process');require.register("___globals___", function(exports, require, module) {
   
 
 // Auto-loaded modules from config.npm.globals.

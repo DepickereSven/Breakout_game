@@ -78,7 +78,6 @@ public class MainActivity extends Activity {
         view.getSettings().setJavaScriptEnabled(true);
         view.getSettings().setAllowFileAccess(true);
         view.getSettings().setDomStorageEnabled(true);
-
         view.setWebViewClient(new WebViewClient() {
 
             boolean isRedirected;
@@ -159,7 +158,6 @@ public class MainActivity extends Activity {
 
     public void startScan(){
         new IntentIntegrator(this).initiateScan();
-
     }
 
     @Override

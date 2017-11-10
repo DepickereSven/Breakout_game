@@ -1,15 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Singeplayer</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" type="text/css" href="bundle.css">
-</head>
-<body>
+<div class="container">
+    <div class="header-container">
+        <div class="menu-button">
+            <a href="#">
+                <div class="chevron-arrow-left"></div>
+                Menu</a>
+        </div>
 
-</body>
-<script src="vendor.js" type="text/javascript"></script>
-<script src="app.js" type="text/javascript"></script>
-<script>require("src/initialize")</script>
-</html>
+        <a class="coins" href="#">
+            <img src="images/SmashBit.png" alt="SmashBit">
+            <span id="points">100</span>
+        </a>
+    </div>
+    <div class="container_singleplayer_gamemode">
+        <a href="#" class="tut">
+            <img src="images/tut.png"  title="Tutorial" alt="Tutorial">
+        </a>
+        <a href="#" class="easy">
+            <img src="images/easy.png" data-min="1" data-max="10" title="Level 1 - 10" alt="Easy Level 1 - 10">
+        </a>
+        <a href="#" class="med">
+            <img src="images/Med1.png" data-min="10" data-max="25" title="Level 10 - 25" alt="Med Level 10 - 25">
+        </a>
+        <a href="#" class="med_1">
+            <img src="images/Med2.png" data-min="25" data-max="40" title="Level 25 - 40" alt="Med Level 25 - 40">
+        </a>
+        <a href="#" class="med_2">
+            <img src="images/Med3.png" data-min="40" data-max="75" title="Level 40 - 75" alt="Med Level 40 - 75">
+        </a>
+        <a href="#" class="hard">
+            <img src="images/hard.png" data-min="75" data-max="100" title="Level 75 - 100" alt="Hard Level 75 - 100">
+        </a>
+    </div>
+</div>

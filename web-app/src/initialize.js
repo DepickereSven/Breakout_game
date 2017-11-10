@@ -10,6 +10,9 @@ const constants = require('./constants')
 
 require('./music')
 require('./qr_code')
+require('./stats')
+require('./get_nation_data')
+require('./generate_levels')
 
 const { viewManager } = require('./views/index')
 

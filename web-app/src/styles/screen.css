@@ -49,7 +49,8 @@ body{
     max-width: 254.4px;
 }
 
-.container_singleplayer_gamemode{
+.container_singleplayer_gamemode,
+.generate_levels_singeplayer{
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
@@ -58,7 +59,8 @@ body{
     margin: 4%;
 }
 
-.container_singleplayer_gamemode a{
+.container_singleplayer_gamemode a,
+.generate_levels_singeplayer .level{
     max-width: 30%;
     border-radius: 5%;
     text-align: center;
@@ -155,4 +157,71 @@ body{
 
 #start_QR_scan, #submit_and_join_private_game{
     margin-top: 13%;
+}
+
+.code_private_create{
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.code_private_create span{
+    border: #fff 1px solid;
+    padding: 2%;
+    margin: 4%;
+    line-height: 90px;
+    border-radius: 9px;
+    text-align: center;
+}
+
+.stats_multiplayer{
+    display: flex;
+    justify-content: center;
+}
+
+.table{
+    width: 100%;
+}
+
+th,
+tr,
+td,
+table img{
+    text-align: left;
+}
+
+.country{
+    min-width: 11%;
+}
+
+.name{
+    min-width: 26%;
+}
+
+.points,
+.time{
+    min-width: 20%;
+}
+
+.generate_levels_singeplayer a{
+    color: #fff;
+    font-size: 3.2rem;
+    text-decoration: none;
+}
+
+.generate_levels_singeplayer{
+    overflow: auto;
+}
+
+.generate_levels_singeplayer .level{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.level{
+    background-color: #0005b7;
+}
+
+::-webkit-scrollbar {
+    display: none;
 }
