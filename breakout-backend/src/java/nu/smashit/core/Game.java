@@ -56,4 +56,13 @@ public abstract class Game {
     public String getKey() {
         return key;
     }
+
+    public boolean isFull() {
+        for (Player p : players) {
+            if (p == null) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

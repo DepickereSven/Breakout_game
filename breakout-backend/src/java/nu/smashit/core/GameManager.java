@@ -1,7 +1,10 @@
 package nu.smashit.core;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.UUID;
 import nu.smashit.socket.Client;
 
@@ -13,9 +16,11 @@ public class GameManager {
 
     private static final GameManager INSTANCE = new GameManager();
     private final Map<String, Game> gameSessions;
+    private final Queue<Game> publicGameSessionQueue;
 
     private GameManager() {
         this.gameSessions = new HashMap<>();
+        this.publicGameSessionQueue = new PriorityQueue<>();
     }
 
     public static GameManager getInstance() {
@@ -30,18 +35,29 @@ public class GameManager {
         gameSessions.put(gm.getKey(), gm);
         return gm;
     }
-    
-    public Game createSingleplayerGame(Client c){
+
+    public Game createSingleplayerGame(Client c) {
         String key = generateKey();
         Game gm = new SingleplayerGame(key, c);
-        
+
         gameSessions.put(gm.getKey(), gm);
         return gm;
     }
-    
-    public Game joinMultiplayerGame(String key, Client c) {
+
+    public Game joinPrivateMultiplayerGame(String key, Client c) {
         Game gm = gameSessions.get(key);
         gm.join(c);
+        return gm;
+    }
+
+    public Game joinPublicMultiplayerGame(Client c) {
+        Game gm = publicGameSessionQueue.poll();
+        if (gm != null) {
+            gm.join(c);
+        } else {
+            gm = createMultiplayerGame(c);
+            publicGameSessionQueue.add(gm);
+        }
         return gm;
     }
 

@@ -13,7 +13,7 @@ import nu.smashit.socket.Client;
  *
  * @author jodus
  */
-public class JoinGameRequestAction implements RequestAction {
+public class JoinPrivateGameRequestAction implements RequestAction {
 
     public String key;
 
@@ -21,11 +21,13 @@ public class JoinGameRequestAction implements RequestAction {
     public void handler(Client c) {
         GameManager gameSessionManager = GameManager.getInstance();
         try {
-            Game gm = gameSessionManager.joinMultiplayerGame(key, c);
+            Game gm = gameSessionManager.joinPrivateMultiplayerGame(key, c);
             c.sendAction(new JoinGameSuccessAction(gm.getKey()));
-            gm.startGame();
+            if (gm.isFull()) {
+                gm.startGame();
+            }
         } catch (Error err) {
-            c.sendAction(new CreateGameFailureAction(err.getMessage()));
+            c.sendAction(new JoinGameFailureAction(err.getMessage()));
         }
     }
 }

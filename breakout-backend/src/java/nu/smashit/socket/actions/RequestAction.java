@@ -23,7 +23,9 @@ import nu.smashit.socket.Client;
     ,
     @Type(value = CreateMultiplayerRequestAction.class)
     ,
-    @Type(value = JoinGameRequestAction.class)
+    @Type(value = JoinPrivateGameRequestAction.class)
+    ,
+    @Type(value = JoinPublicGameRequestAction.class)
     ,
     @Type(value = MovePaddleStartAction.class)
     ,
