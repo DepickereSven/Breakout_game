@@ -22,19 +22,25 @@ exports.view = class JoinPrivate {
   }
 
   handleSubmitButtonClick () {
-    const key = $(this.codeInput).val().toUpperCase()
+    const key = $(this.codeInput)
+      .val()
+      .toUpperCase()
     this.handleKeyRetrieval(key)
   }
 
   onLoad () {
     $(this.submitButton).on('click', this.handleSubmitButtonClick.bind(this))
     if (constants.IS_ANDROID_APP) {
+      window.fill = this.handleSubmitButtonClick
       $(this.scanQrCodeButton).on('click', SmashIt.startQRCode)
     }
   }
 
   onUnload () {
     $(this.submitButton).off('click')
-    $(this.scanQrCodeButton).off('click')
+    if (constants.IS_ANDROID_APP) {
+      window.fill = undefined
+      $(this.scanQrCodeButton).off('click')
+    }
   }
 }
