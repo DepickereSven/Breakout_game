@@ -12,29 +12,32 @@ public class Ball extends MovableBody {
     public double dx;
     public double dy;
 
-    private double multiplier;
+    final int DY_START_VALUE = -9;
+    final int DX_START_VALUE = DY_START_VALUE / 3;
 
     public static final int HEIGHT = 12;
     public static final int WIDTH = HEIGHT;
 
     public static final int Y_START_POS = GameCanvas.HEIGHT - HEIGHT - Paddle.HEIGHT - Paddle.GAP;
+    public static final int X_START_POS = GameCanvas.WIDTH / 2;
+
+    static final double MULTIPLIER =  1.0002;
 
     public Ball() {
-        super(GameCanvas.WIDTH / 2, Y_START_POS, HEIGHT, WIDTH);
+        super(X_START_POS, Y_START_POS, HEIGHT, WIDTH);
         this.reset();
     }
 
     @Override
     public void reset() {
         super.reset();
-        this.dx = -3;
-        this.dy = -9;
-        this.multiplier = 1.0002;
+        this.dx = DX_START_VALUE;
+        this.dy = DY_START_VALUE;
     }
 
     public void move() {
-        dx = dx * multiplier;
-        dy = dy * multiplier;
+        dx = dx * MULTIPLIER;
+        dy = dy * MULTIPLIER;
         super.move((int) dx, (int) dy);
     }
 
@@ -47,10 +50,20 @@ public class Ball extends MovableBody {
     public boolean isGoingUp() {
         return dy < 0;
     }
+    
+    @JsonIgnore
+    public boolean isGoingDown() {
+        return !isGoingUp();
+    }
 
     @JsonIgnore
     public boolean isGoingLeft() {
         return dx < 0;
+    }
+    
+    @JsonIgnore
+    public boolean isGoingRight() {
+        return !isGoingLeft();
     }
 
     @JsonIgnore
@@ -62,4 +75,5 @@ public class Ball extends MovableBody {
     public void inverseHozSpeed() {
         dx = -dx;
     }
+    
 }
