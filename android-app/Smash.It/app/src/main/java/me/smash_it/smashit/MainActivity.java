@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -70,6 +72,12 @@ public class MainActivity extends Activity {
         }
 
         view = (WebView) this.findViewById(R.id.webView);
+        view.setBackgroundColor(Color.parseColor("#0c141f"));
+        view.getSettings().setPluginState(WebSettings.PluginState.ON);
+        view.getSettings().setAllowFileAccess(true);
+        view.getSettings().setAllowContentAccess(true);
+        view.getSettings().setAllowFileAccessFromFileURLs(true);
+        view.getSettings().setAllowUniversalAccessFromFileURLs(true);
         this.view.getSettings().setUserAgentString(
                 this.view.getSettings().getUserAgentString()
                         + " "
