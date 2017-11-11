@@ -1,0 +1,22 @@
+
+.singleplayer_level_menu {
+  margin: 0;
+  overflow: auto;
+  align-content: flex-start;
+}
+
+.singleplayer_level_menu .level{
+  max-width: 40%;
+  max-width: 125px;
+  min-height: 125px;
+  margin: 8% 3%;
+  background-color: #0005b7;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #fff;
+  font-size: 3.2rem;
+  text-decoration: none;
+}
