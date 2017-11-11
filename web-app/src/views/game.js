@@ -11,6 +11,7 @@ exports.view = class GameView {
   constructor (viewManager) {
     this.path = path
     this.viewManager = viewManager
+    this.hideHeader = true
 
     this.container = 'game_container'
     this.keyCodePressed = undefined

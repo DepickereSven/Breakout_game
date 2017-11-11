@@ -74,9 +74,9 @@ class ViewManager {
         currentView.onUnload()
       }
       $('.screen').removeClass('currentScreen')
-      $(document.body).append(
-        `<div class="screen">${this.headerHtml}${html}</div>`
-      )
+
+      const header = view.hideHeader ? '' : this.headerHtml
+      $(document.body).append(`<div class="screen">${header}${html}</div>`)
 
       view.onLoad(params)
 
