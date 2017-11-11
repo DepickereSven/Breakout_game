@@ -65,7 +65,7 @@ public class SocketServer {
         if (c.isInGame()) {
             Game gm = c.getGame();
             gm.broadcastAction(new GameStopAction());
-            c.getGame().stopGame();
+            gm.stopGame();
         }
 
         clientManager.removeClient(c);

@@ -62,6 +62,10 @@ public class GameManager {
     }
 
     public void removeGame(String key) {
+        Game gm = gameSessions.get(key);
+        if (!gm.isFull()) {
+            publicGameSessionQueue.remove(gm);
+        }
         gameSessions.remove(key);
     }
 
