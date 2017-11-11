@@ -15,8 +15,18 @@ exports.view = class GameView {
 
     this.container = 'game_container'
     this.keyCodePressed = undefined
+    this.countDownOverlay = '.countdown_overlay'
+    this.countDownCount = '#countdown_count'
 
     this.handleTouchStart = this.handleTouchStart.bind(this)
+    this.countDown = this.countDown.bind(this)
+  }
+
+  countDown (count) {
+    if (count === 0) {
+      $(this.countDownOverlay).addClass('hidden')
+    }
+    $(this.countDownCount).text(count)
   }
 
   getDirection ({ touches }) {

@@ -3,7 +3,6 @@ package nu.smashit.core;
 // @author Jonas
 import nu.smashit.socket.Client;
 import nu.smashit.core.Player.PlayerType;
-import nu.smashit.socket.actions.GameStartAction;
 
 public class SingleplayerGame extends Game {
 
@@ -26,17 +25,13 @@ public class SingleplayerGame extends Game {
     }
 
     @Override
-    public void join(Client c) {
-        throw new Error("Impossible to join a singleplayer game.");
+    protected void createGameLoop() {
+        gameLoop = new SingleplayerLoop(this);
     }
 
     @Override
-    public void startGame() {
-        broadcastAction(new GameStartAction());
-
-        this.gameLoop = new SingleplayerLoop(this);
-
-        gameLoopTimer.scheduleAtFixedRate(this.gameLoop, startDelay, updateInterval);
+    public void join(Client c) {
+        throw new Error("Impossible to join a singleplayer game.");
     }
 
 }

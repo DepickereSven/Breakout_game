@@ -22,7 +22,6 @@ public abstract class GameLoop extends TimerTask {
 
     public GameLoop(Game gm, Field field) {
         this.gameSession = gm;
-        this.firstRun = true;
         this.field = field;
         createBall();
     }
@@ -101,6 +100,23 @@ public abstract class GameLoop extends TimerTask {
     }
 
     @Override
-    public abstract void run();
+    public void run() {
+        GameStateUpdateAction updateStateAction = new GameStateUpdateAction(ball, gameSession.players, gameSession.countDown);
 
+        if (gameSession.countDown > 0) {
+            for (BrickRow br : field.brickRows) {
+                for (Brick b : br.bricks) {
+                    if (b != null) {
+                        updateStateAction.addBrick(b);
+                    }
+                }
+            }
+        } else {
+            runLoop(updateStateAction);
+        }
+
+        gameSession.broadcastAction(updateStateAction);
+    }
+
+    protected abstract void runLoop(GameStateUpdateAction updateStateAction);
 }

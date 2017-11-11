@@ -3,7 +3,6 @@ package nu.smashit.core;
 // @author Jonas
 import nu.smashit.core.Player.PlayerType;
 import nu.smashit.socket.Client;
-import nu.smashit.socket.actions.GameStartAction;
 
 public class MultiplayerGame extends Game {
 
@@ -26,6 +25,11 @@ public class MultiplayerGame extends Game {
     }
 
     @Override
+    protected void createGameLoop() {
+        gameLoop = new MultiplayerLoop(this);
+    }
+
+    @Override
     public Player getPlayer(Client c) {
         return players[0].client == c ? players[0] : players[1];
     }
@@ -37,14 +41,4 @@ public class MultiplayerGame extends Game {
     public Player getBottomPlayer() {
         return players[0];
     }
-
-    @Override
-    public void startGame() {
-        broadcastAction(new GameStartAction());
-
-        this.gameLoop = new MultiplayerLoop(this);
-
-        gameLoopTimer.scheduleAtFixedRate(this.gameLoop, startDelay, updateInterval);
-    }
-
 }

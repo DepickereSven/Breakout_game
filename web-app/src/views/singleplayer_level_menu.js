@@ -16,7 +16,7 @@ exports.view = class SingleplayerMenuView {
     let items = []
     for (max; min <= max; min++) {
       items.push(`
-        <a class="level rounded" data-level="${min}">
+        <a href="#" class="level rounded" data-level="${min}">
           <span class="levelName">${min}</span>
         </a>
       `)

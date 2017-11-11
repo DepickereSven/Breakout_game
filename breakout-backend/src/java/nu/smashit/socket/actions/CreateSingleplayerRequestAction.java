@@ -12,7 +12,7 @@ public class CreateSingleplayerRequestAction implements RequestAction {
         try {
             Game gm = gameSessionManager.createSingleplayerGame(c);
             c.sendAction(new CreateSingleplayerSuccessAction(gm.getKey()));
-            gm.startGame();
+            gm.startCountDown();
         } catch (Error err) {
             c.sendAction(new CreateGameFailureAction(err.getMessage()));
         }

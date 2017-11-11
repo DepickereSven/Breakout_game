@@ -33,6 +33,11 @@ class ViewManager {
     this.getHeader()
 
     this.onLocationChange = this.onLocationChange.bind(this)
+    this.getCurrent = this.getCurrent.bind(this)
+  }
+
+  getCurrent () {
+    return this.viewHistory[this.viewHistory.length - 1]
   }
 
   getHeader () {
@@ -51,7 +56,7 @@ class ViewManager {
 
     const path = hash.slice(2) + '.html'
 
-    const currentView = this.viewHistory[this.viewHistory.length - 1]
+    const currentView = this.getCurrent()
     if (!currentView || currentView.path === path) {
       return
     }
@@ -71,7 +76,7 @@ class ViewManager {
     $.ajax({
       url: path
     }).done(html => {
-      const currentView = this.viewHistory[this.viewHistory.length - 1]
+      const currentView = this.getCurrent()
       if (currentView) {
         currentView.onUnload()
       }

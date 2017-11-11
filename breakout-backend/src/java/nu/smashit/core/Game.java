@@ -1,7 +1,9 @@
 package nu.smashit.core;
 
 import java.util.Timer;
+import java.util.TimerTask;
 import nu.smashit.socket.Client;
+import nu.smashit.socket.actions.GameStartAction;
 import nu.smashit.socket.actions.ResponseAction;
 
 /**
@@ -15,14 +17,16 @@ public abstract class Game {
     protected GameLoop gameLoop;
 
     protected final Timer gameLoopTimer;
+    protected final Timer countDownTimer;
     protected final int updateInterval;
-    protected final int startDelay;
+    public int countDown;
 
     Game(String key) {
         this.key = key;
         this.gameLoopTimer = new Timer();
-        this.updateInterval = 30;
-        this.startDelay = 2000;
+        this.countDownTimer = new Timer();
+        this.updateInterval = 28;
+        this.countDown = 5;
     }
 
     public abstract void join(Client c);
@@ -31,14 +35,29 @@ public abstract class Game {
 
     public void broadcastAction(ResponseAction a) {
         for (Player p : players) {
-            try {
-                p.client.sendAction(a);
-            } catch (Exception e) {
-            }
+            p.client.sendAction(a);
         }
     }
 
-    public abstract void startGame();
+    protected abstract void createGameLoop();
+
+    public void startCountDown() {
+        createGameLoop();
+
+        broadcastAction(new GameStartAction());
+
+        gameLoopTimer.scheduleAtFixedRate(gameLoop, 0, updateInterval);
+
+        countDownTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (countDown <= 0) {
+                    this.cancel();
+                }
+                countDown--;
+            }
+        }, 1000, 1000);
+    }
 
     public int playerCount() {
         return players.length;

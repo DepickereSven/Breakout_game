@@ -2,8 +2,6 @@ package nu.smashit.core;
 
 // @author Jonas
 import nu.smashit.core.bodies.Field;
-import nu.smashit.core.bodies.BrickRow;
-import nu.smashit.core.bodies.Brick;
 import nu.smashit.socket.actions.GameLossAction;
 import nu.smashit.socket.actions.GameStateUpdateAction;
 import nu.smashit.socket.actions.GameVictoryAction;
@@ -17,18 +15,7 @@ public class MultiplayerLoop extends GameLoop {
     }
 
     @Override
-    public void run() {
-        GameStateUpdateAction updateStateAction = new GameStateUpdateAction(ball, gameSession.players);
-
-        if (firstRun) {
-            for (BrickRow br : field.brickRows) {
-                for (Brick b : br.bricks) {
-                    if (b != null) {
-                        updateStateAction.addBrick(b);
-                    }
-                }
-            }
-        }
+    protected void runLoop(GameStateUpdateAction updateStateAction) {
 
         for (Player p : gameSession.players) {
             p.paddle.move();
@@ -72,10 +59,6 @@ public class MultiplayerLoop extends GameLoop {
         }
 
         gameSession.broadcastAction(updateStateAction);
-
-        if (firstRun) {
-            firstRun = false;
-        }
     }
 
 }
