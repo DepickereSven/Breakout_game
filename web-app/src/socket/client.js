@@ -3,8 +3,6 @@
  */
 
 const constants = require('../constants')
-const connectionLossView = require('../views/connection_loss')
-const initGameView = require('../views/init_game')
 const { requestActionsMap } = require('../actions/index')
 
 /**
@@ -46,7 +44,7 @@ class WsClient {
    * @method
    */
   onOpen () {
-    initGameView.show()
+    //initGameView.show()
   }
 
   /**
@@ -54,7 +52,7 @@ class WsClient {
    * @method
    */
   onClose () {
-    connectionLossView.show()
+    //connectionLossView.show()
     throw new Error('WebSocket was closed.')
   }
 

@@ -1,54 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Breakout</title>
+    <meta charset="UTF-8">
+    <title>Smash It!</title>
+    <meta name="author" content="Smash It"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="bundle.css">
 </head>
 <body>
-
-  <div id="loading_view" class="view hidden">
-    <h2>Loading</h2>
-  </div>
-
-  <div id="init_game_view" class="view hidden">
-    <button id="create_multiplayer_btn">Create multiplayer game</button>
-    <button id="create_singleplayer_btn">Create singleplayer game</button>
-    <br />
-    <input id="game_key_input" type="text">
-    <button id="join_game_btn">Join Game</button>
-  </div>
-
-  <div id="created_game_success_view" class="view hidden">
-    <h2>Your game code:</h2>
-    <h2 id="created_game_key"></h2>
-    <canvas id="qr_code_canvas"></canvas>
-  </div>
-
-  <div id="connection_loss_view" class="view hidden">
-    <h2>Connection to the server was lost</h2>
-  </div>
-
-  <div id="game_started_view" class="view hidden">
-  </div>
-
-  <div id="game_stopped_view" class="view hidden">
-    <h2>Your opponent left the game</h2>
-  </div>
-
-  <div id="game_victory_view" class="view hidden">
-    <h2>Victory!</h2>
-  </div>
-
-  <div id="game_loss_view" class="view hidden">
-    <h2>You Suck</h2>
-  </div>
-
+</body>
 <script src="vendor.js" type="text/javascript"></script>
 <script src="app.js" type="text/javascript"></script>
 <script>require("src/initialize")</script>
-
-</body>
 </html>

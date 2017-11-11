@@ -1,0 +1,161 @@
+body{
+    font-family: 'Orbitron', sans-serif;
+    margin: 0px;
+    padding: 0px;
+    background-color: #0C141FD0;
+    overflow: hidden;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #0C141F;
+    transform: translateY(100%);
+    transition: all 0.5s;
+    opacity: 0;
+    color: white;
+}
+
+.screen.currentScreen {
+    opacity: 1;
+    transform: translateY(0px);
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+/*
+.container_singleplayer_gamemode,
+.generate_levels_singeplayer{
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex: 1;
+    display: flex;
+    margin: 4%;
+}
+
+.container_singleplayer_gamemode a,
+.generate_levels_singeplayer .level{
+    max-width: 30%;
+    border-radius: 5%;
+    text-align: center;
+    min-width: 125px;
+    min-height: 125px;
+    margin-left: 3%;
+    margin-right: 3%;
+    margin-bottom: 8%;
+}
+
+.container_singleplayer_gamemode .tut img,
+.container_singleplayer_gamemode .easy img,
+.container_singleplayer_gamemode .med img,
+.container_singleplayer_gamemode .med_1 img,
+.container_singleplayer_gamemode .med_2 img,
+.container_singleplayer_gamemode .hard img,
+.create_join_public_or_private .join_a_private_game img,
+.create_join_public_or_private .join_a_public_game img,
+.create_join_public_or_private .create_a_private_game img,
+.create_join_public_or_private .create_a_public_game img{
+    width: 100%;
+}
+
+.container .create_join_public_or_private{
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    flex: 1;
+    display: flex;
+    margin: 4%;
+}
+
+.container .create_join_public_or_private,
+.container .input_field_for_private_game,
+.container .container_singleplayer_gamemode{
+    margin-top: 7%;
+}
+
+.container .form_for_code_private_join{
+    text-align: center;
+}
+
+.container .form_for_code_private_join label{
+    display: block;
+    margin-bottom: 3%;
+}
+
+.container .form_for_code_private_join input{
+    line-height: normal;
+    border-radius: 4px;
+    padding: 6px 12px;
+    border: #eee solid 1px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+.stats_multiplayer{
+    display: flex;
+    justify-content: center;
+}
+
+.table{
+    width: 100%;
+}
+
+th,
+tr,
+td,
+table img{
+    text-align: left;
+}
+
+.country{
+    min-width: 11%;
+}
+
+.name{
+    min-width: 26%;
+}
+
+.points,
+.time{
+    min-width: 20%;
+}
+
+.generate_levels_singeplayer a{
+    color: #fff;
+    font-size: 3.2rem;
+    text-decoration: none;
+}
+
+.generate_levels_singeplayer{
+    overflow: auto;
+}
+
+.generate_levels_singeplayer .level{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.level{
+    background-color: #0005b7;
+}
+*/

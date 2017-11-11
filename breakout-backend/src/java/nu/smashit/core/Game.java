@@ -16,11 +16,13 @@ public abstract class Game {
 
     protected final Timer gameLoopTimer;
     protected final int updateInterval;
+    protected final int startDelay;
 
     Game(String key) {
         this.key = key;
         this.gameLoopTimer = new Timer();
         this.updateInterval = 30;
+        this.startDelay = 2000;
     }
 
     public abstract void join(Client c);

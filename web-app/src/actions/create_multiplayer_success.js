@@ -2,7 +2,7 @@
  * @module actions/create_game_success.js
  */
 
-const createdGameView = require('../views/created_game')
+const { viewManager } = require('../views/index')
 
 exports.CreateMultiplayerSuccessAction = class CreateMultiplayerSuccessAction {
   constructor ({ key }) {
@@ -10,6 +10,6 @@ exports.CreateMultiplayerSuccessAction = class CreateMultiplayerSuccessAction {
   }
 
   handler () {
-    createdGameView.show(this.key)
+    viewManager.go('create_private_success.html', { key: this.key })
   }
 }

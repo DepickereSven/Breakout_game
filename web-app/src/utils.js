@@ -73,13 +73,3 @@ function randomColor () {
   return [0, 0, 0].map(() => randomInRange(50, 255))
 }
 exports.randomColor = randomColor
-
-/**
- * Show the given view and hide the others
- * @param {jQuery} el - jQuery container element
- */
-function showView (el) {
-  $('.view').addClass('hidden')
-  el.removeClass('hidden')
-}
-exports.showView = showView

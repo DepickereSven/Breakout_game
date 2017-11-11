@@ -1,23 +1,43 @@
 package me.smash_it.smashit;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.KeyEvent;
-import android.webkit.WebChromeClient;
+import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
+import android.widget.VideoView;
+import android.widget.ViewAnimator;
+import android.widget.ViewSwitcher;
 
-import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
+import static android.content.ContentValues.TAG;
 
 public class MainActivity extends Activity {
-
-    private GoogleApiClient client;
+    //    private String myURL = "172.31.27.139:3333";
+    private String myURL = "file:///android_asset/www/index.html";
+    VideoView videoView;
+    ViewSwitcher viewSwitcher;
     private WebView view;
+    private boolean hasFinishedLoadingPage;
 
     @Override
-    protected void onCreate(final Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //TODO create icon for app updater
 //        AppUpdater appUpdater = new AppUpdater(this)
@@ -25,34 +45,138 @@ public class MainActivity extends Activity {
 //                .setIcon(R.drawable.ic_update3);
 //        appUpdater.start();
         setContentView(R.layout.activity_main);
+        if (Build.VERSION.SDK_INT >= 23 && (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.CAMERA}, 1);
+        }
+        try {
+            viewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher);
+            final VideoView videoView = (VideoView) findViewById(R.id.videoView);
+            Uri video = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.splash);
+            videoView.setVideoURI(video);
+
+            videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    if (hasFinishedLoadingPage)
+                        setViewToSwitchTo(viewSwitcher, view);
+
+                    setViewToSwitchTo(viewSwitcher, view);
+
+                }
+            });
+            videoView.start();
+        } catch (Exception ex) {
+
+        }
+
         view = (WebView) this.findViewById(R.id.webView);
+        this.view.getSettings().setUserAgentString(
+                this.view.getSettings().getUserAgentString()
+                        + " "
+                        + getString(R.string.user_agent_suffix)
+        );
         view.getSettings().setJavaScriptEnabled(true);
-//        view.getSettings().setAllowFileAccess(true);
+        view.getSettings().setAllowFileAccess(true);
         view.getSettings().setDomStorageEnabled(true);
-        view.setWebViewClient(new MyBrowser() {
+        view.setWebViewClient(new WebViewClient() {
+
+            boolean isRedirected;
+
             @Override
-            public void onPageFinished(WebView view, String url) {
-                //TODO add here a image for screensplace
-                //hide loading image
-//                findViewById(R.id.imageLoading1).setVisibility(View.GONE);
-                //show webview
-//                findViewById(R.id.webView).setVisibility(View.VISIBLE);
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return false;
             }
-        });
-        view.loadUrl("file:///android_asset/www/index.html");
-        view.setWebChromeClient(new WebChromeClient() {
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                if (!isRedirected) {
+                    setViewToSwitchTo(viewSwitcher, videoView);
+                }
+                isRedirected = true;
+            }
+
+            @Override
+            public void onPageFinished(WebView webView, String url) {
+                super.onPageFinished(webView, url);
+                hasFinishedLoadingPage = true;
+            }
+
             public void onConsoleMessage(String message, int lineNumber, String sourceID) {
+                Log.d(TAG, "onConsoleMessage: " + message + sourceID);
                 //TODO add here logs if something need to pop-up as toast
-//                if (sourceID.equals("file:///android_asset/www/assets/www.js/new.www.js") && lineNumber == 1084) {
-//                    Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
-//                }
-//                if (sourceID.equals("file:///android_asset/www/assets/www.js/newScript.www.js") && lineNumber == 1088) {
-//                    if (!message.isEmpty()){
-//                        Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
-//                    }
-//                }
+                if (sourceID.equals("file:///android_asset/www/assets/www/index.html") && lineNumber == 37) {
+                    Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
+                }
+                if (sourceID.equals("file:///android_asset/www/assets/www/index.html") && lineNumber == 38) {
+                    if (!message.isEmpty()) {
+                        Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
+
+        view.setWebViewClient(new MyBrowser() {
+        });
+        view.loadUrl(myURL);
+        view.getSettings().setJavaScriptEnabled(true);
+        view.addJavascriptInterface(new WebViewJavaScriptInterface(this), "SmashIt");
+    }
+
+    public static void setViewToSwitchTo(@NonNull final ViewAnimator viewAnimator, @NonNull final View viewToSwitchTo) {
+        if (viewAnimator == null)
+            return;
+        if (viewAnimator.getCurrentView() == viewToSwitchTo)
+            return;
+        for (int i = 0; i < viewAnimator.getChildCount(); ++i)
+            if (viewAnimator.getChildAt(i) == viewToSwitchTo) {
+                viewAnimator.setDisplayedChild(i);
+                break;
+            }
+    }
+
+    public class WebViewJavaScriptInterface{
+
+        private Context context;
+
+        public WebViewJavaScriptInterface(Context context){
+            this.context = context;
+        }
+
+        @JavascriptInterface
+        public void startQRCode(){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    onPause();
+                    startScan();
+                }
+            });
+
+        }
+    }
+
+    public void startScan(){
+        new IntentIntegrator(this).initiateScan();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        onResume();
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        String codeResult = result.getContents();
+        if(result != null) {
+            if(result.getContents() == null) {
+                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+            } else {
+                Log.d(TAG, "onActivityResult: " + codeResult);
+                view.loadUrl("javascript:fill(\"" + codeResult + "\")");
+//                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+
     }
 
     private class MyBrowser extends WebViewClient {
@@ -76,5 +200,17 @@ public class MainActivity extends Activity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        view.onPause();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        view.onResume();
     }
 }

@@ -19,3 +19,9 @@ exports.C_HEIGHT = 480
  * @type {number}
  */
 exports.C_WIDTH = 320
+
+/**
+ * Is the current client the webview in the android app
+ * @type {string}
+ */
+exports.IS_ANDROID_APP = navigator.userAgent.indexOf('Smash_It') > 1

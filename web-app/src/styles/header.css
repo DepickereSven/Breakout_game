@@ -1,0 +1,40 @@
+
+.header-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: solid 1px white;
+    width: 100%;
+}
+
+.header-container > * {
+  padding: 20px 20px;
+}
+
+.header-container .menu-button a {
+    color: white;
+    text-decoration: none;
+}
+
+.header-container .chevron-arrow-left {
+    display: inline-block;
+    border-right: 4px solid white;
+    border-bottom: 4px solid white;
+    width: 10px;
+    height: 10px;
+    transform: rotate(-225deg);
+}
+
+.header-container .coins {
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    color: white;
+}
+
+.header-container .coins img {
+    height: 20px;
+    width: 20px;
+}
+

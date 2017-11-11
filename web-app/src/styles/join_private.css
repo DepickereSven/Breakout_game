@@ -1,0 +1,31 @@
+
+.join_private_container {
+  align-items: center;
+}
+
+.join_private_container .btn {
+    display: block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    text-align: center;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 4%;
+}
+
+.join_private_container input {
+  text-transform: uppercase;
+}
+
+.join_private_container .btn-smash-it {
+    background-color: #6fc3df;
+    border-color: #0086d4;
+    color: #fff;
+}
