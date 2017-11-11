@@ -1,48 +1,58 @@
 package nu.smashit.core;
 
 // @author Jonas
-
+import nu.smashit.core.bodies.Field;
+import nu.smashit.core.bodies.BrickRow;
+import nu.smashit.core.bodies.Brick;
 import nu.smashit.socket.actions.GameLossAction;
 import nu.smashit.socket.actions.GameStateUpdateAction;
 
-public class SingleplayerLoop extends GameLoop{
+public class SingleplayerLoop extends GameLoop {
 
-    public SingleplayerLoop(GameSession gm) {
-        super(gm);
+    public SingleplayerLoop(Game gm) {
+        super(gm, Field.getSingleplayerInstance(50));
     }
-    
-   @Override
+
+    @Override
     public void run() {
-       GameStateUpdateAction updateStateAction = new GameStateUpdateAction(gameSession.players);
+        GameStateUpdateAction updateStateAction = new GameStateUpdateAction(ball, gameSession.players);
 
-       for (Player p : gameSession.players) {
-           p.paddle.move();
-       }
+        // Move paddles to position (Player controls)
+        for (Player p : gameSession.players) {
+            p.paddle.move();
+        }
 
-        // Ball movement
-        if (ball != null) {
-            if (ball.isWallCollision()) {
-                ball.inverseHozSpeed();
-            }else if (ball.isCeilingCollision()){
-                ball.inverseVerSpeed();
-            }else if (ball.isFloorCollision()){
-                gameSession.broadcastAction(new GameLossAction());
-            } else {
-                Player player = ((SingleplayerSession)gameSession).getPlayer();
-                if (!ball.isGoingUp() && ball.isCollision(player.paddle)) {
-                    if (ball.isVerCollision(player.paddle)) {
-                        ball.inverseVerSpeed();
-                    } else {
-                        ball.inverseHozSpeed();
+        if (firstRun) {
+            for (BrickRow br : field.brickRows) {
+                for (Brick b : br.bricks) {
+                    if (b != null) {
+                        updateStateAction.addBrick(b);
                     }
                 }
             }
+        }
+
+        // Ball movement
+        if (ball != null) {
+            if (Collision.isWallCollision(ball)) {
+                ball.inverseHozSpeed();
+            } else if (Collision.isCeilingCollision(ball)) {
+                ball.inverseVerSpeed();
+            } else if (Collision.isFloorCollision(ball)) {
+                gameSession.broadcastAction(new GameLossAction());
+                gameSession.stopGame();
+            } else if (runPaddleCollision(updateStateAction)) {
+            } else if (runBrickCollision(updateStateAction)) {
+            }
 
             ball.move();
-            updateStateAction.addBody(ball);
         }
 
         gameSession.broadcastAction(updateStateAction);
+
+        if (firstRun) {
+            firstRun = false;
+        }
     }
 
 }

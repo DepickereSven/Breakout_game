@@ -14,6 +14,8 @@ exports.view = class GameView {
 
     this.container = 'game_container'
     this.keyCodePressed = undefined
+
+    this.handleTouchStart = this.handleTouchStart.bind(this)
   }
 
   getDirection ({ touches }) {

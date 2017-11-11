@@ -6,9 +6,9 @@ import nu.smashit.socket.Client;
 import nu.smashit.core.Player.PlayerType;
 import nu.smashit.socket.actions.GameStartAction;
 
-public class SingleplayerSession extends GameSession{
+public class SingleplayerGame extends Game{
 
-    public SingleplayerSession(String key, Client c) {
+    public SingleplayerGame(String key, Client c) {
         super(key);
         
         this.players = new Player[1];

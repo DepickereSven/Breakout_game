@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nu.smashit.core;
 
 /**
@@ -11,6 +6,6 @@ package nu.smashit.core;
  */
 public class GameCanvas {
 
-    public static int HEIGHT = 450;
-    public static int WIDTH = 300;
+    public static int HEIGHT = 480;
+    public static int WIDTH = 320;
 }

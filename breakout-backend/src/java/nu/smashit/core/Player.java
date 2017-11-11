@@ -1,6 +1,10 @@
 package nu.smashit.core;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import nu.smashit.core.bodies.Paddle;
+import nu.smashit.data.dataobjects.Score;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import nu.smashit.socket.Client;
 
 /**
@@ -14,7 +18,8 @@ public class Player {
         PLAYER_2
     }
 
-    @JsonIgnore
+    @JsonProperty("clientId")
+    @JsonSerialize(using = ToStringSerializer.class)
     public final Client client;
     public final Paddle paddle;
     public final Score score;

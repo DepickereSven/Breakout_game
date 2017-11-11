@@ -1,22 +1,34 @@
 package nu.smashit.core;
 
 // @author Jonas
-
+import nu.smashit.core.bodies.Field;
+import nu.smashit.core.bodies.BrickRow;
+import nu.smashit.core.bodies.Brick;
 import nu.smashit.socket.actions.GameLossAction;
 import nu.smashit.socket.actions.GameStateUpdateAction;
 import nu.smashit.socket.actions.GameVictoryAction;
 import nu.smashit.socket.actions.OpponentDeathAction;
 import nu.smashit.socket.actions.PlayerDeathAction;
 
-public class MultiplayerLoop extends GameLoop{
+public class MultiplayerLoop extends GameLoop {
 
-    public MultiplayerLoop(MultiplayerSession gm) {
-        super(gm);
+    public MultiplayerLoop(MultiplayerGame gm) {
+        super(gm, Field.getMultiplayerInstance());
     }
-    
+
     @Override
     public void run() {
-        GameStateUpdateAction updateStateAction = new GameStateUpdateAction(gameSession.players);
+        GameStateUpdateAction updateStateAction = new GameStateUpdateAction(ball, gameSession.players);
+
+        if (firstRun) {
+            for (BrickRow br : field.brickRows) {
+                for (Brick b : br.bricks) {
+                    if (b != null) {
+                        updateStateAction.addBrick(b);
+                    }
+                }
+            }
+        }
 
         for (Player p : gameSession.players) {
             p.paddle.move();
@@ -27,25 +39,16 @@ public class MultiplayerLoop extends GameLoop{
             Player scoredPlayer = null;
             Player lostPlayer = null;
 
-            if (ball.isWallCollision()) {
+            if (Collision.isWallCollision(ball)) {
                 ball.inverseHozSpeed();
-            } else if (ball.isCeilingCollision()) {
-                lostPlayer = ((MultiplayerSession) gameSession).getTopPlayer();
-                scoredPlayer = ((MultiplayerSession) gameSession).getBottomPlayer();
-            } else if (ball.isFloorCollision()) {
-                lostPlayer = ((MultiplayerSession) gameSession).getBottomPlayer();
-                scoredPlayer = ((MultiplayerSession) gameSession).getTopPlayer();
-            } else {
-                // Paddle collision
-                int pIndex = ball.isGoingUp() ? 1 : 0;
-                Player player = gameSession.players[pIndex];
-                if (ball.isCollision(player.paddle)) {
-                    if (ball.isVerCollision(player.paddle)) {
-                        ball.inverseVerSpeed();
-                    } else {
-                        ball.inverseHozSpeed();
-                    }
-                }
+            } else if (Collision.isCeilingCollision(ball)) {
+                lostPlayer = ((MultiplayerGame) gameSession).getTopPlayer();
+                scoredPlayer = ((MultiplayerGame) gameSession).getBottomPlayer();
+            } else if (Collision.isFloorCollision(ball)) {
+                lostPlayer = ((MultiplayerGame) gameSession).getBottomPlayer();
+                scoredPlayer = ((MultiplayerGame) gameSession).getTopPlayer();
+            } else if (runPaddleCollision(updateStateAction)) {
+            } else if (runBrickCollision(updateStateAction)) {
             }
 
             if (scoredPlayer != null && lostPlayer != null) {
@@ -66,10 +69,13 @@ public class MultiplayerLoop extends GameLoop{
             }
 
             ball.move();
-            updateStateAction.addBody(ball);
         }
 
         gameSession.broadcastAction(updateStateAction);
+
+        if (firstRun) {
+            firstRun = false;
+        }
     }
 
 }

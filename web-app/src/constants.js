@@ -12,13 +12,13 @@ exports.API_URL = 'ws://localhost:8080/breakout/socket'
  * Canvas height
  * @type {number}
  */
-exports.C_HEIGHT = 450
+exports.C_HEIGHT = 480
 
 /**
  * Canvas width
  * @type {number}
  */
-exports.C_WIDTH = 300
+exports.C_WIDTH = 320
 
 /**
  * Is the current client the webview in the android app

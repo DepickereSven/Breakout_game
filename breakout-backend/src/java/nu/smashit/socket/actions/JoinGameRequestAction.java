@@ -5,8 +5,8 @@
  */
 package nu.smashit.socket.actions;
 
-import nu.smashit.core.GameSession;
-import nu.smashit.core.GameSessionManager;
+import nu.smashit.core.Game;
+import nu.smashit.core.GameManager;
 import nu.smashit.socket.Client;
 
 /**
@@ -19,9 +19,9 @@ public class JoinGameRequestAction implements RequestAction {
 
     @Override
     public void handler(Client c) {
-        GameSessionManager gameSessionManager = GameSessionManager.getInstance();
+        GameManager gameSessionManager = GameManager.getInstance();
         try {
-            GameSession gm = gameSessionManager.joinMultiplayerGame(key, c);
+            Game gm = gameSessionManager.joinMultiplayerGame(key, c);
             c.sendAction(new JoinGameSuccessAction(gm.getKey()));
             gm.startGame();
         } catch (Error err) {

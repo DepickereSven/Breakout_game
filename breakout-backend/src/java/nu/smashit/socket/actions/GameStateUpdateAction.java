@@ -7,7 +7,8 @@ package nu.smashit.socket.actions;
 
 import java.util.HashSet;
 import java.util.Set;
-import nu.smashit.core.Body;
+import nu.smashit.core.bodies.Ball;
+import nu.smashit.core.bodies.Brick;
 import nu.smashit.core.Player;
 
 /**
@@ -16,15 +17,17 @@ import nu.smashit.core.Player;
  */
 public class GameStateUpdateAction implements ResponseAction {
 
+    public Ball ball;
     public Player[] players;
-    public Set<Body> bodies;
+    public Set<Brick> bricks;
 
-    public GameStateUpdateAction(Player[] players) {
-        this.bodies = new HashSet<>();
+    public GameStateUpdateAction(Ball ball, Player[] players) {
+        this.ball = ball;
+        this.bricks = new HashSet<>();
         this.players = players;
     }
 
-    public void addBody(Body b) {
-        bodies.add(b);
+    public void addBrick(Brick b) {
+        bricks.add(b);
     }
 }

@@ -91,5 +91,4 @@ typings/
 
 /breakout-backend/web/*
 !/breakout-backend/web/WEB-INF
-
 /android-app/Smash.It/app/src/main/assets/www/*
