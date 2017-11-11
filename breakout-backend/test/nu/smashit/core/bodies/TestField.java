@@ -1,6 +1,5 @@
 package nu.smashit.core.bodies;
 
-import nu.smashit.core.bodies.Field;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
