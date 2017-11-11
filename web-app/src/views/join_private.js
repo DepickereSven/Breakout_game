@@ -12,6 +12,8 @@ exports.view = class JoinPrivate {
     this.submitButton = '#submit_and_join_private_game'
     this.scanQrCodeButton = '#start_QR_scan'
     this.codeInput = '#code_for_join_private_game'
+    
+    this.handleSubmitButtonClick = this.handleSubmitButtonClick.bind(this)
   }
 
   handleKeyRetrieval (key) {
