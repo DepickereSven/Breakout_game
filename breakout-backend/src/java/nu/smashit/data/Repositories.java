@@ -3,19 +3,19 @@ package nu.smashit.data;
 // @author Jonas
 public class Repositories {
 
-    public UserRepository getUserRepository() {
+    public static UserRepository getUserRepository() {
         return new MySqlUserRepository();
     }
 
-    public BrickTypeRepository getBrickTypeRepository() {
+    public static BrickTypeRepository getBrickTypeRepository() {
         return new MySqlBrickTypeRepository();
     }
 
-    public LevelRepository getLevelRepository() {
+    public static LevelRepository getLevelRepository() {
         return new MySqlLevelRepository();
     }
 
-    public ScoreRepository getScoreRepository() {
+    public static ScoreRepository getScoreRepository() {
         return new MySqlScoreRepository();
     }
 

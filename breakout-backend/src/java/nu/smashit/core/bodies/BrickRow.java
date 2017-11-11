@@ -57,9 +57,9 @@ public class BrickRow extends Body {
     }
 
     private void fillRow() {
-        fillType(numberOfNormalBricks, BrickType.BrickSort.NORMAL);
-        fillType(numberOfPowerups, BrickType.BrickSort.POWERUP);
-        fillType(numberOfPowerdowns, BrickType.BrickSort.POWERDOWN);
+        fillType(numberOfNormalBricks, BrickType.BrickSort.N);
+        fillType(numberOfPowerups, BrickType.BrickSort.U);
+        fillType(numberOfPowerdowns, BrickType.BrickSort.D);
     }
 
     private void fillType(int number, BrickType.BrickSort sort) {

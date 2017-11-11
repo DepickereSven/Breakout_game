@@ -35,7 +35,7 @@ public class User {
         return username;
     }
 
-    public String getImage_url() {
+    public String getImageUrl() {
         return imageUrl;
     }
 

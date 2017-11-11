@@ -7,13 +7,14 @@ public class Difficulty {
     private int numberPowerups;
     private int numberPowerdowns;
     private int rows;
-    private int speed_ball;
+    private double speedBall;
 
-    public Difficulty(int id, int numberPowerups, int numberPowerdowns, int rows) {
+    public Difficulty(int id, int numberPowerups, int numberPowerdowns, int rows, double speedBall) {
         setId(id);
         setNumberPowerdowns(numberPowerdowns);
         setNumberPowerups(numberPowerups);
         setRows(rows);
+        setSpeedBall(speedBall);
     }
 
     public int getId() {
@@ -48,12 +49,12 @@ public class Difficulty {
         this.rows = rows;
     }
 
-    public int getSpeed_ball() {
-        return speed_ball;
+    public double getSpeedBall() {
+        return speedBall;
     }
 
-    private void setSpeed_ball(int speed_ball) {
-        this.speed_ball = speed_ball;
+    private void setSpeedBall(double speedBall) {
+        this.speedBall = speedBall;
     }
     
 }

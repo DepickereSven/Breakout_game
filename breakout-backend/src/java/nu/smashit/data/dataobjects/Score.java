@@ -11,14 +11,14 @@ public class Score {
     private int scoreID;
     private User userWon;
     private User userLost;
-    private double points;
+    private int points;
     private int time;
 
     public Score() {
         this(0, null, null, START_POINTS, 0);
     }
 
-    public Score(int scoreID, User userWon, User userLost, double points, int time) {
+    public Score(int scoreID, User userWon, User userLost, int points, int time) {
         this.scoreID = scoreID;
         this.userWon = userWon;
         this.userLost = userLost;
@@ -55,7 +55,7 @@ public class Score {
         return userLost;
     }
 
-    public double getPoints() {
+    public int getPoints() {
         return points;
     }
 

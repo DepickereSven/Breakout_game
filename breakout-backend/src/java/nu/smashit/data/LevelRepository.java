@@ -6,6 +6,6 @@ import nu.smashit.data.dataobjects.Difficulty;
 
 public interface LevelRepository {
 
-    public Difficulty getDiffuculty(int level);
+    public Difficulty getDifficulty(int level);
     
 }
