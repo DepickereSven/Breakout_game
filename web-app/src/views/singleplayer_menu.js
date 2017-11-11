@@ -1,7 +1,7 @@
-const path = 'join_private_public_menu.html'
+const path = 'singleplayer_menu.html'
 exports.path = path
 
-exports.view = class PrivatePublicMenu {
+exports.view = class SingleplayerMenuView {
   constructor (viewManager) {
     this.path = path
     this.viewManager = viewManager

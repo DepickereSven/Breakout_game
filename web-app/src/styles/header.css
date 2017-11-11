@@ -38,3 +38,7 @@
     width: 20px;
 }
 
+.header-container #points {
+    line-height: 23px;
+    margin-left: 3px;
+}

@@ -1,11 +1,16 @@
 .create_private_success_container {
+  justify-content: center;
   align-items: center;
+}
+
+.create_private_success_container h1 {
+  text-align: center;
 }
 
 .create_private_success_container #code{
     border: #fff 1px solid;
     padding: 2%;
-    margin: 4%;
+    margin: 0;
     border-radius: 9px;
     text-align: center;
 }

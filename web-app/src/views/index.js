@@ -1,19 +1,19 @@
 const pickMode = require('./pick_mode')
 const multiplayerMenu = require('./multiplayer_menu')
-const createPrivatePublicMenu = require('./create_private_public_menu')
 const createPrivateSuccess = require('./create_private_success')
-const joinPrivatePublicMenu = require('./join_private_public_menu')
 const joinPrivate = require('./join_private')
+const joinPublic = require('./join_public')
 const game = require('./game')
+const singleplayerMenu = require('./singleplayer_menu')
 
 const views = [
   pickMode,
   multiplayerMenu,
-  createPrivatePublicMenu,
   createPrivateSuccess,
-  joinPrivatePublicMenu,
   game,
-  joinPrivate
+  joinPrivate,
+  joinPublic,
+  singleplayerMenu
 ]
 
 const viewsMap = {}

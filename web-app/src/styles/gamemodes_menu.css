@@ -3,18 +3,17 @@
     flex-direction: row !important;
     flex-wrap: wrap;
     justify-content: center;
+    align-content: center;
     margin: 7% 4% 4%;
 }
 
 .gamemodes-container a {
-    max-width: 30%;
-    border-radius: 5%;
-    text-align: center;
+    max-width: 40%;
     min-width: 125px;
-    min-height: 125px;
     margin-left: 3%;
     margin-right: 3%;
     margin-bottom: 16%;
+    flex: 1;
 }
 
 .gamemodes-container img {

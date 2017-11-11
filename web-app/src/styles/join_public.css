@@ -1,0 +1,9 @@
+
+.join_public_container {
+  justify-content: center;
+  align-items: center;
+}
+
+.join_public_container h1 {
+  text-align: center;
+}

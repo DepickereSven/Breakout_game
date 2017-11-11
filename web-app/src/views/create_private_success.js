@@ -7,6 +7,7 @@ exports.view = class CreatePrivateSuccessView {
   constructor (viewManager) {
     this.path = path
     this.viewManager = viewManager
+    this.hideHeader = true
 
     this.gameCode = '#code'
   }
