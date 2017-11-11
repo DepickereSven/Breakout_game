@@ -2,8 +2,6 @@
  * @module actions/game_state_update.js
  */
 
-const { gameLoop } = require('../gameloop')
-
 exports.GameStateUpdateAction = class GameStateUpdateAction {
   constructor ({ bodies, players }) {
     this.bodies = bodies
@@ -11,7 +9,9 @@ exports.GameStateUpdateAction = class GameStateUpdateAction {
   }
 
   handler () {
-    gameLoop.updatePlayers(this.players)
-    gameLoop.updateBodies(this.bodies)
+    if (window.gameLoop) {
+      window.gameLoop.updatePlayers(this.players)
+      window.gameLoop.updateBodies(this.bodies)
+    }
   }
 }

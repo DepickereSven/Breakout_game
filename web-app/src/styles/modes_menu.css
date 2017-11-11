@@ -1,0 +1,15 @@
+
+.modes_menu_container {
+    align-items: center; /*tegengesteld van het view van de flex*/
+    justify-content: center;
+}
+
+.modes_menu_container a{
+    text-align: center;
+}
+
+.modes_menu_container img{
+    height: auto;
+    width: 40%;
+    max-width: 254.4px;
+}

@@ -1,7 +1,7 @@
-const path = 'multiplayer.html'
+const path = 'join_private_public_menu.html'
 exports.path = path
 
-exports.MultiplayerScreenView = class MultiplayerScreenView {
+exports.view = class PrivatePublicMenu {
   constructor (viewManager) {
     this.path = path
     this.viewManager = viewManager

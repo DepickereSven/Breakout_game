@@ -10,6 +10,6 @@ exports.CreateMultiplayerSuccessAction = class CreateMultiplayerSuccessAction {
   }
 
   handler () {
-    //viewManager.go('')
+    viewManager.go('create_private_success.html', { key: this.key })
   }
 }

@@ -4,7 +4,6 @@
 
 const { Player } = require('./player')
 const { Ball } = require('./bodies/ball')
-const { sketch } = require('./sketch')
 
 /**
  * @param {string} str 
@@ -17,24 +16,22 @@ const firstLetterToLowerCase = str => str[0].toLowerCase() + str.slice(1)
  * @prop {Paddle[]} paddles
  * @prop {Ball} ball
  */
-class GameLoop {
-  constructor () {
-    this.reset()
-  }
+exports.GameLoop = class GameLoop {
+  constructor (sketch) {
+    this.sketch = sketch
 
-  reset () {
     // Initialise bodies
     this.players = []
     this.ball = new Ball()
   }
 
   updatePlayers (players) {
-    if (this.players.length === 0){
-       this.players = players.map(function (item, index){
-           return new Player(index === 0, players.length === 2);
-       })
+    if (this.players.length === 0) {
+      this.players = players.map(function (item, index) {
+        return new Player(index === 0, players.length === 2)
+      })
     }
-    
+
     for (let i = 0; i < this.players.length; i++) {
       this.players[i].update(players[i])
     }
@@ -60,17 +57,15 @@ class GameLoop {
    */
   run () {
     // Clear canvas
-    sketch.background(0)
+    this.sketch.background(0)
 
     for (const player of this.players) {
-      player.paddle.draw(sketch)
-      if (player.score){
-        player.score.draw(sketch)
+      player.paddle.draw(this.sketch)
+      if (player.score) {
+        player.score.draw(this.sketch)
       }
     }
 
-    this.ball.draw(sketch)
+    this.ball.draw(this.sketch)
   }
 }
-
-exports.gameLoop = new GameLoop()

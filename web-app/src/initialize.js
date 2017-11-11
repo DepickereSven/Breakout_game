@@ -2,24 +2,20 @@
  * @module initialize
  */
 
-// const { wsClient } = require('./socket/client')
-// const loadingView = require('./views/loading')
+const { wsClient } = require('./socket/client')
 const constants = require('./constants')
 
-// require('./sketch')
-
-require('./music')
-require('./qr_code')
-require('./stats')
-require('./get_nation_data')
-require('./generate_levels')
+// require('./music')
+// require('./stats')
+// require('./get_nation_data')
+// require('./generate_levels')
 
 const { viewManager } = require('./views/index')
 
 viewManager.go('modes.html')
 
-// window.wsClient = wsClient
-// wsClient.open()
+window.wsClient = wsClient
+wsClient.open()
 
 /**
  * - The android app needs 4,5 sec to show the vid.
@@ -32,14 +28,6 @@ setTimeout(function () {
   $('#start').addClass('load')
 }, timeout)
 
-/**
- * Prevent all hyperlinks from opening the web page manually and use viewManager
- */
-$('body').on('click', 'a', function (e) {
-  const href = e.currentTarget.getAttribute('href')
-  if (!href || href === '#') {
-    return
-  }
-  e.preventDefault()
-  viewManager.go(href)
+$('body').on('click', '#go-back', function () {
+  window.history.back()
 })

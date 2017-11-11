@@ -2,26 +2,26 @@ const {
   CreateMultiplayerRequestAction
 } = require('../actions/create_multiplayer_request')
 
-const path = 'multiplayer.html'
+const path = 'create_private_public_menu.html'
 exports.path = path
 
-exports.MultiplayerScreenView = class MultiplayerScreenView {
+exports.view = class CreatePrivatePublicMenu {
   constructor (viewManager) {
     this.path = path
     this.viewManager = viewManager
 
-    this.createGameBtn = 'button.createGame'
+    this.createPrivateGameBtn = 'a.create_a_private_game'
   }
 
-  createMultiplayerHandler () {
+  multiplayerClickHandler () {
     window.wsClient.send(new CreateMultiplayerRequestAction())
   }
 
   onLoad () {
-    $(this.createGameBtn).on('click', this.multiplayerClickHandler)
+    $(this.createPrivateGameBtn).on('click', this.multiplayerClickHandler)
   }
 
   onUnload () {
-    $(this.createGameBtn).off('click')
+    $(this.createPrivateGameBtn).off('click')
   }
 }

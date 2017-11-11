@@ -1,0 +1,11 @@
+.create_private_success_container {
+  align-items: center;
+}
+
+.create_private_success_container #code{
+    border: #fff 1px solid;
+    padding: 2%;
+    margin: 4%;
+    border-radius: 9px;
+    text-align: center;
+}
