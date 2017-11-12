@@ -19,7 +19,8 @@ exports.paths = {
 };
 
 exports.plugins = {
-
+  babel: {presets: ['latest']},
+  postcss: {processors: [require('autoprefixer')]}
 };
 
 exports.npm = {
