@@ -12,11 +12,11 @@ public class Brick extends Body {
     public final BrickType type;
     private int lives;
 
-    public final int id;
+    public final String id;
 
     public static final int HEIGHT = 16;
 
-    public Brick(int id, int x, int y, int width, int height, BrickType type) {
+    public Brick(String id, int x, int y, int width, int height, BrickType type) {
         super(x, y, width, height);
         this.id = id;
         this.type = type;

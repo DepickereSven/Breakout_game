@@ -1,5 +1,6 @@
 package nu.smashit.core.bodies;
 
+import java.util.Random;
 import nu.smashit.core.GameCanvas;
 import nu.smashit.data.dataobjects.BrickType;
 import nu.smashit.utils.Tools;
@@ -15,6 +16,7 @@ public class BrickRow extends Body {
     private final int numberOfPowerups;
     private final int numberOfPowerdowns;
     private final int numberOfEmptyPlaces;
+    private static final Random RANDOM = new Random();
 
     public BrickRow(int numberOfNormalBricks, int numberOfPowerups, int numberOfPowerdowns, int numberOfEmptyPlaces, int y) {
         super(0, y, GameCanvas.WIDTH, Brick.HEIGHT);
@@ -72,7 +74,7 @@ public class BrickRow extends Body {
             } while (bricks[place] != null);
 
             int x = place * block_width;
-            bricks[place] = new Brick(x + y, x, y, block_width, Brick.HEIGHT, getRandomBrickType(sort));
+            bricks[place] = new Brick(x + ":" + y, x, y, block_width, Brick.HEIGHT, getRandomBrickType(sort));
         }
     }
 
