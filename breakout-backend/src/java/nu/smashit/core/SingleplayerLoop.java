@@ -25,6 +25,7 @@ public class SingleplayerLoop extends GameLoop {
             } else if (Collision.isFloorCollision(ball)) {
                 gameSession.broadcastAction(new GameLossAction());
                 gameSession.stopGame();
+                return;
             } else if (runPaddleCollision(updateStateAction)) {
             } else if (runBrickCollision(updateStateAction)) {
             } else if (Collision.isWallCollision(ball)) {

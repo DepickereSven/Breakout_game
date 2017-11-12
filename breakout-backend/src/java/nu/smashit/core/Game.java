@@ -55,6 +55,7 @@ public abstract class Game implements Comparable<Game> {
             public void run() {
                 if (countDown <= 0) {
                     this.cancel();
+                    return;
                 }
                 countDown--;
             }
