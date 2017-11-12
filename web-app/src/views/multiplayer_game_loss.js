@@ -16,7 +16,7 @@ exports.view = class PickModeView {
   }
   sendBackToMenu (e) {
     const data = $(e.currentTarget).data()
-    this.viewManager.go('singleplayer_menu.html', data)
+    this.viewManager.go('multiplayer_menu.html', data)
   }
   onLoad () {
     $(this.shop).on('click', this.sendToShop.bind(this))
