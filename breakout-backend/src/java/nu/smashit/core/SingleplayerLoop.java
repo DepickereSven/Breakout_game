@@ -34,8 +34,6 @@ public class SingleplayerLoop extends GameLoop {
 
             ball.move();
         }
-
-        gameSession.broadcastAction(updateStateAction);
     }
 
 }

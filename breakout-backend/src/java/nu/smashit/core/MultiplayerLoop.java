@@ -57,8 +57,6 @@ public class MultiplayerLoop extends GameLoop {
 
             ball.move();
         }
-
-        gameSession.broadcastAction(updateStateAction);
     }
 
 }
