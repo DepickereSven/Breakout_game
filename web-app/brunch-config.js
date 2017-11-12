@@ -22,6 +22,11 @@ exports.plugins = {
   babel: { presets: ['latest'] },
   postcss: { processors: [require('autoprefixer')] },
   uglify: {
+    compress: {
+      global_defs: {
+        DEBUG: false
+      }
+    },
     mangle: {
       keep_fnames: true
     }

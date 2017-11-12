@@ -28,6 +28,6 @@ setTimeout(function () {
   $('#start').addClass('load')
 }, timeout)
 
-$('body').on('click', '#go-back', function () {
-  window.history.back()
+$('body').on('click', '#go-back', function (e) {
+  viewManager.goBack()
 })

@@ -64,6 +64,14 @@ class ViewManager {
     this.go(path)
   }
 
+  goBack () {
+    this.viewHistory.pop()
+    const previousView = this.viewHistory.pop()
+    if (previousView.path) {
+      this.go(previousView.path)
+    }
+  }
+
   go (path, params = {}) {
     const ViewConstructor = viewsMap[path]
 
