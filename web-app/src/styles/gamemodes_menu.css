@@ -10,9 +10,7 @@
 .gamemodes-container a {
     max-width: 40%;
     min-width: 125px;
-    margin-left: 3%;
-    margin-right: 3%;
-    margin-bottom: 16%;
+    margin: 3%;
     flex: 1;
 }
 
