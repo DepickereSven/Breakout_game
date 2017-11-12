@@ -2,7 +2,7 @@ body{
     font-family: 'Orbitron', sans-serif;
     margin: 0px;
     padding: 0px;
-    background-color: #0C141FD0;
+    background-color: #0C141F;
     overflow: hidden;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     -webkit-tap-highlight-color: transparent;
@@ -36,6 +36,29 @@ body{
     display: flex;
     flex-direction: column;
     flex: 1;
+}
+
+.btn {
+    display: block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    text-align: center;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 4%;
+}
+
+.btn-smash-it {
+    background-color: #6fc3df;
+    border-color: #0086d4;
+    color: #fff;
 }
 
 /*

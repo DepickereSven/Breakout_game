@@ -13,11 +13,16 @@ exports.view = class MultiplayerMenuView {
     this.createPrivateGameBtn = '.create_a_private_game'
   }
 
+  rememberOnWhichGameModeYouAre () {
+    localStorage.setItem('whatMode', JSON.stringify('multi'))
+  }
+
   multiplayerClickHandler () {
     window.wsClient.send(new CreateMultiplayerRequestAction())
   }
 
   onLoad () {
+    this.rememberOnWhichGameModeYouAre()
     $(this.createPrivateGameBtn).on('click', this.multiplayerClickHandler)
   }
 
