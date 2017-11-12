@@ -26,10 +26,8 @@ public class TestClient {
         
         client.setGame(sps);
         assertEquals(client.getGame(), sps);
-        assertTrue(client.isInGame());
 
         client.removeGame();
         assertNull(client.getGame());
-        assertFalse(client.isInGame());
     }
 }

@@ -18,7 +18,7 @@ public class TestBrick {
         int lives = 0;
         Brick brick = createNormalBrick(lives);
         assertTrue(brick.isBroken());
-        assertEquals(BrickSort.N, brick.getBrickType().getSort());
+        assertEquals(BrickSort.N, brick.type.getSort());
         assertEquals(brick.getLives(), lives);
 
         brick.smashBrick();
@@ -30,7 +30,7 @@ public class TestBrick {
         int lives = 1;
         Brick brick = createNormalBrick(lives);
         assertFalse(brick.isBroken());
-        assertEquals(BrickSort.N, brick.getBrickType().getSort());
+        assertEquals(BrickSort.N, brick.type.getSort());
         assertEquals(brick.getLives(), lives);
 
         brick.smashBrick();
@@ -46,7 +46,7 @@ public class TestBrick {
         int lives = 3;
         Brick brick = createNormalBrick(lives);
         assertFalse(brick.isBroken());
-        assertEquals(BrickSort.N, brick.getBrickType().getSort());
+        assertEquals(BrickSort.N, brick.type.getSort());
         assertEquals(brick.getLives(), lives);
 
         brick.smashBrick();
@@ -66,6 +66,6 @@ public class TestBrick {
     }
 
     private Brick createNormalBrick(int lives) {
-        return new Brick(10, 10, 10, 10, new BrickType("TESTBRICK", BrickSort.N, lives, 10));
+        return new Brick(0,10, 10, 10, 10, new BrickType("TESTBRICK", BrickSort.N, lives, 10));
     }
 }
