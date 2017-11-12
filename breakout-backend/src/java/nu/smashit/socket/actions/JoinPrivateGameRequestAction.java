@@ -22,7 +22,6 @@ public class JoinPrivateGameRequestAction implements RequestAction {
         GameManager gameSessionManager = GameManager.getInstance();
         try {
             Game gm = gameSessionManager.joinPrivateMultiplayerGame(key, c);
-            c.sendAction(new JoinGameSuccessAction(gm.getKey()));
             if (gm.isFull()) {
                 gm.startCountDown();
             }

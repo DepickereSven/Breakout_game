@@ -67,6 +67,7 @@ public abstract class Game implements Comparable<Game> {
     }
 
     public void stopGame() {
+        countDownTimer.cancel();
         gameLoopTimer.cancel();
 
         for (Player p : players) {
