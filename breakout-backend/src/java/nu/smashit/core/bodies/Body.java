@@ -1,6 +1,7 @@
 package nu.smashit.core.bodies;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import nu.smashit.core.GameCanvas;
 
 /**
  *
@@ -21,5 +22,9 @@ public class Body {
         this.y = y;
         this.width = width;
         this.height = height;
+    }
+
+    public void reverseY() {
+        this.y = GameCanvas.HEIGHT - y - height;
     }
 }

@@ -101,6 +101,20 @@ public abstract class GameLoop extends TimerTask {
         return false;
     }
 
+    private void reverseYBodies() {
+        for (Player p : gameSession.players) {
+            p.paddle.reverseY();
+        }
+        for (BrickRow br : field.brickRows) {
+            for (Brick b : br.bricks) {
+                if (b != null) {
+                    b.reverseY();
+                }
+            }
+        }
+        ball.reverseY();
+    }
+
     @Override
     public void run() {
         GameStateUpdateAction updateStateAction = new GameStateUpdateAction(ball, gameSession.players, gameSession.countDown);
@@ -119,7 +133,16 @@ public abstract class GameLoop extends TimerTask {
             runLoop(updateStateAction);
         }
 
-        gameSession.broadcastAction(updateStateAction);
+        if (gameSession.playerCount() > 1) {
+            MultiplayerGame mg = (MultiplayerGame) gameSession;
+            mg.getBottomPlayer().client.sendAction(updateStateAction);
+
+            reverseYBodies();
+            mg.getTopPlayer().client.sendAction(updateStateAction);
+            reverseYBodies();
+        } else {
+            gameSession.broadcastAction(updateStateAction);
+        }
 
         runCount++;
     }
