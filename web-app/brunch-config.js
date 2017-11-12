@@ -11,22 +11,27 @@ exports.files = {
       'bundle.css': /^src\/styles/
     }
   }
-};
+}
 
 exports.paths = {
   public: '../breakout-backend/web',
   watched: ['src']
-};
+}
 
 exports.plugins = {
-  babel: {presets: ['latest']},
-  postcss: {processors: [require('autoprefixer')]}
-};
+  babel: { presets: ['latest'] },
+  postcss: { processors: [require('autoprefixer')] },
+  uglify: {
+    mangle: {
+      keep_fnames: true
+    }
+  }
+}
 
 exports.npm = {
   enabled: true,
   globals: {
     jQuery: 'jquery',
-    $: 'jquery',
+    $: 'jquery'
   }
-};
+}
