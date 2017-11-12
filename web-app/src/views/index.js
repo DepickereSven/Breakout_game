@@ -8,6 +8,8 @@ const singleplayerMenu = require('./singleplayer_menu')
 const singleplayerLevelMenu = require('./singleplayer_level_menu')
 const singleplayerWon = require('./singleplayer_game_victory')
 const singleplayerLost = require('./singleplayer_game_loss')
+const multiplayerWon = require('./multiplayer_game_victory')
+const multiplayerLost = require('./multiplayer_game_loss')
 
 const views = [
   pickMode,
@@ -19,7 +21,9 @@ const views = [
   singleplayerMenu,
   singleplayerLevelMenu,
   singleplayerWon,
-  singleplayerLost
+  singleplayerLost,
+  multiplayerWon,
+  multiplayerLost
 ]
 
 const viewsMap = {}

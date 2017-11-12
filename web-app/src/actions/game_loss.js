@@ -9,6 +9,11 @@ const { viewManager } = require('../views/index')
 exports.GameLossAction = class GameLossAction {
   handler () {
     // gameLossView.show()
-    viewManager.go('singleplayer_game_lost.html')
+    const mod = JSON.parse(localStorage.getItem('whatMode'))
+    if (mod === 'multi') {
+      viewManager.go('multiplayer_game_lost.html')
+    } else {
+      viewManager.go('singleplayer_game_lost.html')
+    }
   }
 }
