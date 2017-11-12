@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -86,6 +87,10 @@ public class MainActivity extends Activity {
         view.getSettings().setJavaScriptEnabled(true);
         view.getSettings().setAllowFileAccess(true);
         view.getSettings().setDomStorageEnabled(true);
+        view.getSettings().setJavaScriptEnabled(true);
+//        view.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+//        view.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
+//        view.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         view.setWebViewClient(new WebViewClient() {
 
             boolean isRedirected;
@@ -110,24 +115,22 @@ public class MainActivity extends Activity {
                 hasFinishedLoadingPage = true;
             }
 
-            public void onConsoleMessage(String message, int lineNumber, String sourceID) {
-                Log.d(TAG, "onConsoleMessage: " + message + sourceID);
-                //TODO add here logs if something need to pop-up as toast
-                if (sourceID.equals("file:///android_asset/www/assets/www/index.html") && lineNumber == 37) {
-                    Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
-                }
-                if (sourceID.equals("file:///android_asset/www/assets/www/index.html") && lineNumber == 38) {
-                    if (!message.isEmpty()) {
-                        Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
+//            public void onConsoleMessage(String message, int lineNumber, String sourceID) {
+//                Log.d(TAG, "onConsoleMessage: " + message + sourceID);
+//                //TODO add here logs if something need to pop-up as toast
+//                if (sourceID.equals("file:///android_asset/www/assets/www/index.html") && lineNumber == 37) {
+//                    Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
+//                }
+//                if (sourceID.equals("file:///android_asset/www/assets/www/index.html") && lineNumber == 38) {
+//                    if (!message.isEmpty()) {
+//                        Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            }
         });
-
-        view.setWebViewClient(new MyBrowser() {
+        view.setWebChromeClient(new WebChromeClient() {
         });
         view.loadUrl(myURL);
-        view.getSettings().setJavaScriptEnabled(true);
         view.addJavascriptInterface(new WebViewJavaScriptInterface(this), "SmashIt");
     }
 
@@ -196,7 +199,7 @@ public class MainActivity extends Activity {
             view.loadUrl("javascript:"+ "$('#code_for_join_private_game').val('"+ message +"')");
     }
 
-    private class MyBrowser extends WebViewClient {
+    private class MyWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             //TODO add here links of site you want to show in their favorite app or browser instead

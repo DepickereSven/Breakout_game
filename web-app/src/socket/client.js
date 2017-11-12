@@ -60,7 +60,7 @@ class WsClient {
    */
   onMessage (event) {
     const action = JSON.parse(event.data)
-
+    console.log(action)
     const RequestAction = requestActionsMap[action.type]
     if (RequestAction) {
       const a = new RequestAction(action)

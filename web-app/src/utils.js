@@ -14,7 +14,6 @@ function inRange (val, min, max) {
 }
 exports.inRange = inRange
 
-
 /**
  * Generate random number between min and max
  * @param {number} min
