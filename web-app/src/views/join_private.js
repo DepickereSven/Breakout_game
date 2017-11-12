@@ -1,5 +1,7 @@
 const constants = require('../constants')
-const { JoinPrivateGameRequestAction } = require('../actions/join_private_game_request')
+const {
+  JoinPrivateGameRequestAction
+} = require('../actions/join_private_game_request')
 
 const path = 'join_private.html'
 exports.path = path
@@ -12,7 +14,7 @@ exports.view = class JoinPrivate {
     this.submitButton = '#submit_and_join_private_game'
     this.scanQrCodeButton = '#start_QR_scan'
     this.codeInput = '#code_for_join_private_game'
-    
+
     this.handleSubmitButtonClick = this.handleSubmitButtonClick.bind(this)
   }
 
@@ -30,11 +32,15 @@ exports.view = class JoinPrivate {
     this.handleKeyRetrieval(key)
   }
 
+  handleScanQrButtonClick () {
+    SmashIt.startQRCode()
+  }
+
   onLoad () {
     $(this.submitButton).on('click', this.handleSubmitButtonClick.bind(this))
     if (constants.IS_ANDROID_APP) {
       window.fill = this.handleSubmitButtonClick
-      $(this.scanQrCodeButton).on('click', SmashIt.startQRCode)
+      $(this.scanQrCodeButton).on('click', this.handleScanQrButtonClick)
     }
   }
 
