@@ -20,15 +20,15 @@ public class SingleplayerLoop extends GameLoop {
 
         // Ball movement
         if (ball != null) {
-            if (Collision.isWallCollision(ball)) {
-                ball.inverseHozSpeed();
-            } else if (Collision.isCeilingCollision(ball)) {
+            if (Collision.isCeilingCollision(ball)) {
                 ball.inverseVerSpeed();
             } else if (Collision.isFloorCollision(ball)) {
                 gameSession.broadcastAction(new GameLossAction());
                 gameSession.stopGame();
             } else if (runPaddleCollision(updateStateAction)) {
             } else if (runBrickCollision(updateStateAction)) {
+            } else if (Collision.isWallCollision(ball)) {
+                ball.inverseHozSpeed();
             }
 
             ball.move();
