@@ -232,7 +232,7 @@ public class MainActivity extends Activity {
     }
 
     public void openSharing(String code){
-        String message = "Come and Smash It with me, my code is:" + code;
+        String message = "Come and Smash It with me, my code is: " + code;
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("text/plain");
         share.putExtra(Intent.EXTRA_TEXT, message);

@@ -1,0 +1,64 @@
+.game_lost_singleplayer,
+.game_won_singleplayer,
+.game_won_multiplayer,
+.game_lost_multiplayer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.game_lost_singleplayer h1,
+.game_won_singleplayer h1,
+.game_won_multiplayer h1,
+.game_lost_multiplayer h1{
+    text-transform: uppercase;
+}
+
+.game_lost_singleplayer p,
+.game_lost_singleplayer small,
+.game_won_singleplayer p,
+.game_won_singleplayer small,
+.game_won_multiplayer p,
+.game_won_multiplayer small,
+.game_lost_multiplayer p,
+.game_lost_multiplayer small,
+.game_lost_singleplayer h1,
+.game_won_singleplayer h1,
+.game_won_multiplayer h1,
+.game_lost_multiplayer h1{
+    color: #fff;
+    text-align: center;
+}
+
+.game_lost_singleplayer p,
+.game_lost_singleplayer small,
+.game_won_singleplayer p,
+.game_won_singleplayer small,
+.game_won_multiplayer p,
+.game_won_multiplayer small,
+.game_lost_multiplayer p,
+.game_lost_multiplayer small{
+    font-size: 0.8rem;
+}
+
+.button_menu_singleplayer,
+.button_menu_multiplayer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20%;
+    margin-bottom: 2%;
+}
+
+.won_or_lost .btn-blank-smashIt{
+    background-color: #0C141F;
+    border-color: #fff;
+    color: #fff;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    border-radius: 7px;
+    padding: 3%;
+    line-height: 180%;
+    font-weight: bold;
+}
