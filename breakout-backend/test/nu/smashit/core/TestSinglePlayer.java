@@ -28,7 +28,7 @@ public class TestSinglePlayer {
         Player player = sps.getPlayer();
         assertEquals(player.client, client);
         
-        sps.startGame();
+        sps.createGameLoop();
         sps.stopGame();
         sps.getKey();
         

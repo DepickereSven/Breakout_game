@@ -38,7 +38,7 @@ public class TestMultiplayer {
         assertEquals((int)player1.score.getPoints(), 100);
         assertEquals((int)player2.score.getPoints(), 100);
         
-        mps.startGame();
+        mps.createGameLoop();
         mps.stopGame();
         mps.getKey();
     }
