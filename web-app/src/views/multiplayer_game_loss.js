@@ -6,23 +6,20 @@ exports.view = class PickModeView {
     this.path = path
     this.hideHeader = true
     this.viewManager = viewManager
-    this.menu = '#menu_multiplayer'
+    this.home = '#home'
     this.shop = '#shop_multiplayer'
   }
 
   sendToShop (e) {
-    const data = $(e.currentTarget).data()
-    this.viewManager.go('multiplayer_menu.html', data)
+    this.viewManager.go('multiplayer_menu.html')
   }
-  sendBackToMenu (e) {
-    const data = $(e.currentTarget).data()
-    this.viewManager.go('multiplayer_menu.html', data)
+  goHome () {
+    this.viewManager.goHome()
   }
   onLoad () {
+    $(this.home).on('click', this.goHome.bind(this))
     $(this.shop).on('click', this.sendToShop.bind(this))
-    $(this.menu).on('click', this.sendBackToMenu.bind(this))
   }
 
-  onUnload () {
-  }
+  onUnload () {}
 }

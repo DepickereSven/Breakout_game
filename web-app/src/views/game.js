@@ -30,7 +30,6 @@ exports.view = class GameView {
   }
 
   getDirection ({ touches }) {
-    console.log(touches)
     const xPos = touches[touches.length - 1].pageX
     return xPos > window.innerWidth / 2 ? 'right' : 'left'
   }

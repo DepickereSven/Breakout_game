@@ -42,6 +42,7 @@ class ViewManager {
 
     this.onLocationChange = this.onLocationChange.bind(this)
     this.getCurrent = this.getCurrent.bind(this)
+    this.goHome = this.goHome.bind(this)
   }
 
   getCurrent () {
@@ -78,6 +79,11 @@ class ViewManager {
     if (previousView.path) {
       this.go(previousView.path)
     }
+  }
+
+  goHome () {
+    this.viewHistory = []
+    this.go('modes.html')
   }
 
   go (path, params = {}) {
