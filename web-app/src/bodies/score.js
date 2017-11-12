@@ -21,8 +21,8 @@ exports.Score = class Score {
   /**
    * @method
    */
-  update ({ points }) {
-    this.points = points
+  update ({ p }) {
+    this.points = p
   }
 
   /**

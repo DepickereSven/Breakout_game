@@ -3,23 +3,6 @@
  */
 
 /**
- * Calculate distance between 2 points
- * @param {number} x1
- * @param {number} y1
- * @param {number} x2
- * @param {number} y2
- * @return {number}
- */
-function calcPointsDistance (x1, y1, x2, y2) {
-  let xDist = x2 - x1
-  let yDist = y2 - y1
-
-  // Pythagoras
-  return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2))
-}
-exports.calcPointsDistance = calcPointsDistance
-
-/**
  * Check if value is between min and max
  * @param {number} val
  * @param {number} min
@@ -31,17 +14,6 @@ function inRange (val, min, max) {
 }
 exports.inRange = inRange
 
-/**
- * Check if there is a collision between ball and brick
- * @param {Ball} ball
- * @param {Brick} brick
- * @return {boolean}
- */
-function isBallCollision (ball, brick) {
-  return inRange(ball.x, brick.x - ball.radius, brick.x + brick.width + ball.radius) &&
-    inRange(ball.y, brick.y - ball.radius, brick.y + brick.height + ball.radius)
-}
-exports.isBallCollision = isBallCollision
 
 /**
  * Generate random number between min and max

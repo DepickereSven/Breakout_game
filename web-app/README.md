@@ -203,26 +203,10 @@ Draws the current state onto the provided sketch
 ## utils
 
 * [utils](#module_utils)
-    * [~calcPointsDistance(x1, y1, x2, y2)](#module_utils..calcPointsDistance) ⇒ <code>number</code>
     * [~inRange(val, min, max)](#module_utils..inRange) ⇒ <code>boolean</code>
-    * [~isBallCollision(ball, brick)](#module_utils..isBallCollision) ⇒ <code>boolean</code>
     * [~randomInRange(min, max)](#module_utils..randomInRange) ⇒ <code>number</code>
     * [~randomSign()](#module_utils..randomSign) ⇒ <code>number</code>
     * [~randomColor()](#module_utils..randomColor) ⇒ <code>Array.&lt;number&gt;</code>
-
-<a name="module_utils..calcPointsDistance"></a>
-
-### utils~calcPointsDistance(x1, y1, x2, y2) ⇒ <code>number</code>
-Calculate distance between 2 points
-
-**Kind**: inner method of [<code>utils</code>](#module_utils)  
-
-| Param | Type |
-| --- | --- |
-| x1 | <code>number</code> | 
-| y1 | <code>number</code> | 
-| x2 | <code>number</code> | 
-| y2 | <code>number</code> | 
 
 <a name="module_utils..inRange"></a>
 
@@ -236,18 +220,6 @@ Check if value is between min and max
 | val | <code>number</code> | 
 | min | <code>number</code> | 
 | max | <code>number</code> | 
-
-<a name="module_utils..isBallCollision"></a>
-
-### utils~isBallCollision(ball, brick) ⇒ <code>boolean</code>
-Check if there is a collision between ball and brick
-
-**Kind**: inner method of [<code>utils</code>](#module_utils)  
-
-| Param | Type |
-| --- | --- |
-| ball | <code>Ball</code> | 
-| brick | <code>Brick</code> | 
 
 <a name="module_utils..randomInRange"></a>
 
@@ -353,8 +325,8 @@ Represents the ball
 | --- | --- | --- |
 | x | <code>number</code> | horizontal position |
 | y | <code>number</code> | vertical position |
-| dx | <code>number</code> | horizontal speed |
-| dy | <code>number</code> | vertical speed |
+| h | <code>number</code> | height |
+| w | <code>number</code> | width |
 
 
 * [.Ball](#module_bodies/ball.Ball)
@@ -405,8 +377,8 @@ Represents a brick
 | --- | --- | --- |
 | id | <code>string</code> |  |
 | x | <code>number</code> | horizontal position |
-| height | <code>number</code> |  |
-| width | <code>number</code> |  |
+| h | <code>number</code> | height |
+| w | <code>number</code> | width |
 | lives | <code>number</code> |  |
 | color | <code>Array.&lt;number&gt;</code> |  |
 
@@ -461,14 +433,14 @@ Represents paddle
 **Kind**: static class of [<code>bodies/paddle</code>](#module_bodies/paddle)  
 **Properties**
 
-| Name | Type |
-| --- | --- |
-| height | <code>number</code> | 
-| width | <code>number</code> | 
-| borderRadius | <code>number</code> | 
-| x | <code>number</code> | 
-| y | <code>number</code> | 
-| color | <code>string</code> | 
+| Name | Type | Description |
+| --- | --- | --- |
+| h | <code>number</code> | height |
+| w | <code>number</code> | width |
+| borderRadius | <code>number</code> |  |
+| x | <code>number</code> |  |
+| y | <code>number</code> |  |
+| color | <code>string</code> |  |
 
 
 * [.Paddle](#module_bodies/paddle.Paddle)

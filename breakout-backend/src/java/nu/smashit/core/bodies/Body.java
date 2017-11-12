@@ -1,20 +1,19 @@
 package nu.smashit.core.bodies;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import nu.smashit.core.GameCanvas;
 
 /**
  *
  * @author jodus
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type")
 public class Body {
 
     public int x;
     public int y;
+    @JsonProperty("w")
     public int width;
+    @JsonProperty("h")
     public int height;
 
     public Body(int x, int y, int width, int height) {

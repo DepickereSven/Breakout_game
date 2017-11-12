@@ -3,20 +3,22 @@ package nu.smashit.core.bodies;
 // @author Jonas
 import nu.smashit.data.dataobjects.BrickType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.UUID;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 public class Brick extends Body {
 
-    private final BrickType type;
+    @JsonSerialize(using = ToStringSerializer.class)
+    public final BrickType type;
     private int lives;
 
-    public final UUID id;
+    public final int id;
 
     public static final int HEIGHT = 16;
 
-    public Brick(int x, int y, int width, int height, BrickType type) {
+    public Brick(int id, int x, int y, int width, int height, BrickType type) {
         super(x, y, width, height);
-        this.id = UUID.randomUUID();
+        this.id = id;
         this.type = type;
         this.lives = type.getBrickStrength();
     }
@@ -27,10 +29,6 @@ public class Brick extends Body {
 
     public void smashBrick() {
         lives--;
-    }
-    
-    public BrickType getBrickType(){
-        return type;
     }
 
     @JsonIgnore

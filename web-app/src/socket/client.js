@@ -44,7 +44,6 @@ class WsClient {
    * @method
    */
   onOpen () {
-    //initGameView.show()
   }
 
   /**
@@ -52,7 +51,6 @@ class WsClient {
    * @method
    */
   onClose () {
-    //connectionLossView.show()
     throw new Error('WebSocket was closed.')
   }
 

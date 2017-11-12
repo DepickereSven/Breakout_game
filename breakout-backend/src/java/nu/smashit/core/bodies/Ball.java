@@ -9,7 +9,9 @@ import nu.smashit.core.GameCanvas;
  */
 public class Ball extends MovableBody {
 
+    @JsonIgnore
     public double dx;
+    @JsonIgnore
     public double dy;
 
     final int DY_START_VALUE = -9;
@@ -21,7 +23,7 @@ public class Ball extends MovableBody {
     public static final int Y_START_POS = GameCanvas.HEIGHT - HEIGHT - Paddle.HEIGHT - Paddle.GAP;
     public static final int X_START_POS = GameCanvas.WIDTH / 2;
 
-    static final double MULTIPLIER =  1.0002;
+    static final double MULTIPLIER = 1.0002;
 
     public Ball() {
         super(X_START_POS, Y_START_POS, HEIGHT, WIDTH);
@@ -50,7 +52,7 @@ public class Ball extends MovableBody {
     public boolean isGoingUp() {
         return dy < 0;
     }
-    
+
     @JsonIgnore
     public boolean isGoingDown() {
         return !isGoingUp();
@@ -60,7 +62,7 @@ public class Ball extends MovableBody {
     public boolean isGoingLeft() {
         return dx < 0;
     }
-    
+
     @JsonIgnore
     public boolean isGoingRight() {
         return !isGoingLeft();
@@ -75,5 +77,5 @@ public class Ball extends MovableBody {
     public void inverseHozSpeed() {
         dx = -dx;
     }
-    
+
 }

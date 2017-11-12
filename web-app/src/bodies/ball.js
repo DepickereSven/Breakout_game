@@ -7,13 +7,13 @@
  * @class
  * @prop {number} x - horizontal position
  * @prop {number} y - vertical position
- * @prop {number} dx - horizontal speed
- * @prop {number} dy - vertical speed
+ * @prop {number} h - height
+ * @prop {number} w - width
  */
 exports.Ball = class Ball {
   constructor () {
-    this.height = 0
-    this.width = 0
+    this.h = 0
+    this.w = 0
 
     this.x = 0
     this.y = 0
@@ -25,9 +25,9 @@ exports.Ball = class Ball {
    * Update body to match the server state
    * @param {object} bodyObj 
    */
-  update ({ height, width, x, y }) {
-    this.height = height
-    this.width = width
+  update ({ h, w, x, y }) {
+    this.h = h
+    this.w = w
     this.x = x
     this.y = y
   }
@@ -39,6 +39,6 @@ exports.Ball = class Ball {
    */
   draw (s) {
     s.fill(this.color)
-    s.rect(this.x, this.y, this.height, this.width, this.width)
+    s.rect(this.x, this.y, this.h, this.w, this.w)
   }
 }

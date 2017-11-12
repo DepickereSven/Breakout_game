@@ -1,6 +1,7 @@
 package nu.smashit.data.dataobjects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import nu.smashit.core.bodies.Brick;
 
 public class Score {
@@ -25,7 +26,7 @@ public class Score {
         this.points = points;
         this.time = time;
     }
-      
+
     @JsonIgnore
     public boolean isAlive() {
         return getPoints() > 0;
@@ -40,25 +41,30 @@ public class Score {
     }
 
     public void addBrickSmash(Brick brick) {
-        points += brick.getBrickType().getPoints();
+        points += brick.type.getPoints();
     }
 
+    @JsonIgnore
     public int getScoreID() {
         return scoreID;
     }
 
+    @JsonIgnore
     public User getUserWon() {
         return userWon;
     }
 
+    @JsonIgnore
     public User getUserLost() {
         return userLost;
     }
 
+    @JsonProperty("p")
     public int getPoints() {
         return points;
     }
 
+    @JsonIgnore
     public int getTime() {
         return time;
     }
@@ -71,8 +77,4 @@ public class Score {
         this.userLost = userLost;
     }
 
-    public void setTime(int time) {
-        this.time = time;
-    }
-    
 }
