@@ -31,8 +31,8 @@ import com.google.zxing.integration.android.IntentResult;
 import static android.content.ContentValues.TAG;
 
 public class MainActivity extends Activity {
-    //    private String myURL = "172.31.27.139:3333";
-    private String myURL = "file:///android_asset/www/index.html";
+        private String myURL = "http://localhost:8080/breakout/";
+//    private String myURL = "file:///android_asset/www/index.html";
     VideoView videoView;
     ViewSwitcher viewSwitcher;
     private WebView view;
@@ -143,16 +143,16 @@ public class MainActivity extends Activity {
             }
     }
 
-    public class WebViewJavaScriptInterface{
+    public class WebViewJavaScriptInterface {
 
         private Context context;
 
-        public WebViewJavaScriptInterface(Context context){
+        public WebViewJavaScriptInterface(Context context) {
             this.context = context;
         }
 
         @JavascriptInterface
-        public void startQRCode(){
+        public void startQRCode() {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -160,11 +160,15 @@ public class MainActivity extends Activity {
                     startScan();
                 }
             });
+        }
 
+        @JavascriptInterface
+        public void sharingIsCaring(String code){
+            openSharing(code);
         }
     }
 
-    public void startScan(){
+    public void startScan() {
         new IntentIntegrator(this).initiateScan();
     }
 
@@ -173,18 +177,23 @@ public class MainActivity extends Activity {
         onResume();
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         String codeResult = result.getContents();
-        if(result != null) {
-            if(result.getContents() == null) {
+        if (result != null) {
+            if (result.getContents() == null) {
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
-                Log.d(TAG, "onActivityResult: " + codeResult);
-                view.loadUrl("javascript:fill(\"" + codeResult + "\")");
-//                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+                Log.d(TAG, "onActivityResult: " + result);
+                injectTheResultCode(codeResult);
+                //                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
 
+    }
+
+    public void injectTheResultCode(String message){
+//            view.evaluateJavascript("$('#code_for_join_private_game').val('"+ message +"')", null);
+            view.loadUrl("javascript:"+ "$('#code_for_join_private_game').val('"+ message +"')");
     }
 
     private class MyBrowser extends WebViewClient {
@@ -211,14 +220,22 @@ public class MainActivity extends Activity {
     }
 
     @Override
-    public void onPause(){
+    public void onPause() {
         super.onPause();
         view.onPause();
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         view.onResume();
+    }
+
+    public void openSharing(String code){
+        String message = "Come and Smash It with me, my code is:" + code;
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("text/plain");
+        share.putExtra(Intent.EXTRA_TEXT, message);
+        startActivity(Intent.createChooser(share, "Share your code"));
     }
 }
