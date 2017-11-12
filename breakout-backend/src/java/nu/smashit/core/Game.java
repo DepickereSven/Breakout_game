@@ -10,7 +10,7 @@ import nu.smashit.socket.actions.ResponseAction;
  *
  * @author jodus
  */
-public abstract class Game implements Comparable<Game>{
+public abstract class Game implements Comparable<Game> {
 
     private final String key;
     protected Player[] players;
@@ -19,13 +19,15 @@ public abstract class Game implements Comparable<Game>{
     protected final Timer gameLoopTimer;
     protected final Timer countDownTimer;
     protected final int updateInterval;
+    private final int delay;
     public int countDown;
 
     Game(String key) {
         this.key = key;
         this.gameLoopTimer = new Timer();
         this.countDownTimer = new Timer();
-        this.updateInterval = 28;
+        this.updateInterval = 30;
+        this.delay = 2000;
         this.countDown = 5;
     }
 
@@ -46,7 +48,7 @@ public abstract class Game implements Comparable<Game>{
 
         broadcastAction(new GameStartAction());
 
-        gameLoopTimer.scheduleAtFixedRate(gameLoop, 0, updateInterval);
+        gameLoopTimer.scheduleAtFixedRate(gameLoop, 1000, updateInterval);
 
         countDownTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -56,7 +58,7 @@ public abstract class Game implements Comparable<Game>{
                 }
                 countDown--;
             }
-        }, 1000, 1000);
+        }, delay, 1000);
     }
 
     public int playerCount() {
@@ -84,10 +86,10 @@ public abstract class Game implements Comparable<Game>{
         }
         return true;
     }
-    
+
     @Override
     public int compareTo(Game o) {
-         return (this.getKey().compareTo(o.getKey())); 
+        return (this.getKey().compareTo(o.getKey()));
     }
-    
+
 }
