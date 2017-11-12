@@ -66,6 +66,6 @@ public class TestBrick {
     }
 
     private Brick createNormalBrick(int lives) {
-        return new Brick(0,10, 10, 10, 10, new BrickType("TESTBRICK", BrickSort.N, lives, 10));
+        return new Brick("",10, 10, 10, 10, new BrickType("TESTBRICK", BrickSort.N, lives, 10));
     }
 }
