@@ -12,6 +12,7 @@ exports.view = class GameView {
     this.path = path
     this.viewManager = viewManager
     this.hideHeader = true
+    this.currentCount = undefined
 
     this.container = 'game_container'
     this.keyCodePressed = undefined
@@ -23,10 +24,14 @@ exports.view = class GameView {
   }
 
   countDown (count) {
+    if (count === this.currentCount) {
+      return
+    }
     if (count === 0) {
       $(this.countDownOverlay).addClass('hidden')
     }
     $(this.countDownCount).text(count)
+    this.currentCount = count
   }
 
   getDirection ({ touches }) {
