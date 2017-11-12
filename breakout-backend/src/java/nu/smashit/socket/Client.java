@@ -22,11 +22,13 @@ public class Client {
     }
 
     public void sendAction(ResponseAction a) {
-        session.getAsyncRemote().sendObject(a);
+        if (session != null && session.isOpen()){
+            session.getAsyncRemote().sendObject(a);
+        }   
     }
 
     public boolean isInGame() {
-        return gameSession != null;
+        return gameSession != null && session != null;
     }
 
     public void setGame(Game gameSession) {
