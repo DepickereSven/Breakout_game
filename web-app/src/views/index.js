@@ -95,15 +95,15 @@ class ViewManager {
 
     const view = new ViewConstructor(this)
 
+    const currentView = this.getCurrent()
+    if (currentView) {
+      currentView.onUnload()
+    }
+    $('.screen').removeClass('currentScreen')
+
     $.ajax({
       url: path
     }).done(html => {
-      const currentView = this.getCurrent()
-      if (currentView) {
-        currentView.onUnload()
-      }
-      $('.screen').removeClass('currentScreen')
-
       const header = view.hideHeader ? '' : this.headerHtml
       $(document.body).append(`<div class="screen">${header}${html}</div>`)
 
