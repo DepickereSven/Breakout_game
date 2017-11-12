@@ -1,11 +1,10 @@
 package nu.smashit.core;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.UUID;
+import java.util.concurrent.PriorityBlockingQueue;
 import nu.smashit.socket.Client;
 
 /**
@@ -20,7 +19,7 @@ public class GameManager {
 
     private GameManager() {
         this.gameSessions = new HashMap<>();
-        this.publicGameSessionQueue = new PriorityQueue<>();
+        this.publicGameSessionQueue = new PriorityBlockingQueue<>();
     }
 
     public static GameManager getInstance() {

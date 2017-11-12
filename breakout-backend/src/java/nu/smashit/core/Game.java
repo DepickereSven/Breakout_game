@@ -10,7 +10,7 @@ import nu.smashit.socket.actions.ResponseAction;
  *
  * @author jodus
  */
-public abstract class Game {
+public abstract class Game implements Comparable<Game>{
 
     private final String key;
     protected Player[] players;
@@ -84,4 +84,10 @@ public abstract class Game {
         }
         return true;
     }
+    
+    @Override
+    public int compareTo(Game o) {
+         return (this.getKey().compareTo(o.getKey())); 
+    }
+    
 }
