@@ -15,7 +15,7 @@ public class MultiplayerLoop extends GameLoop {
     }
 
     @Override
-    protected void runLoop(GameStateUpdateAction updateStateAction) {
+    protected void runLoop(GameStateUpdateAction updateState) {
 
         for (Player p : gameSession.players) {
             p.paddle.move();
@@ -32,8 +32,8 @@ public class MultiplayerLoop extends GameLoop {
             } else if (Collision.isFloorCollision(ball)) {
                 lostPlayer = ((MultiplayerGame) gameSession).getBottomPlayer();
                 scoredPlayer = ((MultiplayerGame) gameSession).getTopPlayer();
-            } else if (runPaddleCollision(updateStateAction)) {
-            } else if (runBrickCollision(updateStateAction)) {
+            } else if (runPaddleCollision(updateState)) {
+            } else if (runBrickCollision(updateState)) {
             } else if (Collision.isWallCollision(ball)) {
                 ball.inverseHozSpeed();
             }

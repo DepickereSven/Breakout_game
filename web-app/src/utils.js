@@ -44,3 +44,20 @@ function randomColor () {
   return [0, 0, 0].map(() => randomInRange(50, 255))
 }
 exports.randomColor = randomColor
+
+function timePadding (time, isBack) {
+  const newtime = time.toString()
+  if (newtime.length < 2) {
+    return isBack ? newtime + '0' : '0' + newtime
+  } else {
+    return newtime
+  }
+}
+exports.timePadding = timePadding
+
+function displayTime (timeInSec) {
+  const min = Math.floor(timeInSec / 60)
+  const sec = timeInSec - (min * 60)
+  return timePadding(min) + ':' + timePadding(sec)
+}
+exports.displayTime = displayTime

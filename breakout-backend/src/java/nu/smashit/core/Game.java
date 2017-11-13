@@ -19,7 +19,8 @@ public abstract class Game implements Comparable<Game> {
     protected final Timer gameLoopTimer;
     protected final Timer countDownTimer;
     protected final int updateInterval;
-    private final int delay;
+
+    public int time;
     public int countDown;
 
     Game(String key) {
@@ -27,8 +28,8 @@ public abstract class Game implements Comparable<Game> {
         this.gameLoopTimer = new Timer();
         this.countDownTimer = new Timer();
         this.updateInterval = 30;
-        this.delay = 2000;
         this.countDown = 5;
+        this.time = 0;
     }
 
     public abstract void join(Client c);
@@ -48,18 +49,18 @@ public abstract class Game implements Comparable<Game> {
 
         broadcastAction(new GameStartAction());
 
-        gameLoopTimer.scheduleAtFixedRate(gameLoop, 1000, updateInterval);
+        gameLoopTimer.scheduleAtFixedRate(gameLoop, 100, updateInterval);
 
         countDownTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 if (countDown <= 0) {
-                    this.cancel();
-                    return;
+                    time++;
+                } else {
+                    countDown--;
                 }
-                countDown--;
             }
-        }, delay, 1000);
+        }, 1000, 1000);
     }
 
     public int playerCount() {

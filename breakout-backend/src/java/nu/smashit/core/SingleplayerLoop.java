@@ -12,7 +12,7 @@ public class SingleplayerLoop extends GameLoop {
     }
 
     @Override
-    protected void runLoop(GameStateUpdateAction updateStateAction) {
+    protected void runLoop(GameStateUpdateAction updateState) {
         // Move paddles to position (Player controls)
         for (Player p : gameSession.players) {
             p.paddle.move();
@@ -26,8 +26,8 @@ public class SingleplayerLoop extends GameLoop {
                 gameSession.broadcastAction(new GameLossAction());
                 gameSession.stopGame();
                 return;
-            } else if (runPaddleCollision(updateStateAction)) {
-            } else if (runBrickCollision(updateStateAction)) {
+            } else if (runPaddleCollision(updateState)) {
+            } else if (runBrickCollision(updateState)) {
             } else if (Collision.isWallCollision(ball)) {
                 ball.inverseHozSpeed();
             }

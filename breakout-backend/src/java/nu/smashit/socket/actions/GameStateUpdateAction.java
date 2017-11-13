@@ -21,16 +21,14 @@ public class GameStateUpdateAction implements ResponseAction {
     public Player[] players;
     public Set<Brick> bricks;
     public int countDown;
+    public int time;
 
-    public GameStateUpdateAction(Ball ball, Player[] players, int countDown) {
+    public GameStateUpdateAction(Ball ball, Player[] players, int countDown, int time) {
         this.ball = ball;
         this.bricks = new HashSet<>();
         this.players = players;
         this.countDown = countDown;
-    }
-
-    public GameStateUpdateAction(Ball ball, Player[] players) {
-        this(ball, players, 0);
+        this.time = time;
     }
 
     public void addBrick(Brick b) {

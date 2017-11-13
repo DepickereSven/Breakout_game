@@ -36,14 +36,14 @@ public abstract class GameLoop extends TimerTask {
         this.ball = null;
     }
 
-    private boolean runBrickRowCollision(int i, GameStateUpdateAction updateStateAction) {
+    private boolean runBrickRowCollision(int i, GameStateUpdateAction updateState) {
         BrickRow brickRow = field.getRow(i);
 
         if (Collision.isVerCollision(ball, brickRow)) {
             for (Brick brick : brickRow.bricks) {
                 if (brick != null && !brick.isBroken() && Collision.isHozCollision(ball, brick)) {
                     brick.smashBrick();
-                    updateStateAction.addBrick(brick);
+                    updateState.addBrick(brick);
 
                     if (Collision.isTopOrBottomCollision(ball, brick)) {
                         ball.inverseVerSpeed();
@@ -63,19 +63,19 @@ public abstract class GameLoop extends TimerTask {
         return false;
     }
 
-    protected boolean runBrickCollision(GameStateUpdateAction updateStateAction) {
+    protected boolean runBrickCollision(GameStateUpdateAction updateState) {
         int start = 0;
         int end = field.getNumberOfRows() - 1;
 
         if (ball.isGoingUp()) {
             for (int i = end; i >= start; i--) {
-                if (runBrickRowCollision(i, updateStateAction)) {
+                if (runBrickRowCollision(i, updateState)) {
                     return true;
                 }
             }
         } else {
             for (int i = start; i <= end; i++) {
-                if (runBrickRowCollision(i, updateStateAction)) {
+                if (runBrickRowCollision(i, updateState)) {
                     return true;
                 }
             }
@@ -84,7 +84,7 @@ public abstract class GameLoop extends TimerTask {
         return false;
     }
 
-    protected boolean runPaddleCollision(GameStateUpdateAction updateStateAction) {
+    protected boolean runPaddleCollision(GameStateUpdateAction updateState) {
         int pIndex = (ball.isGoingUp() && gameSession.playerCount() > 1) ? 1 : 0;
         Player player = gameSession.players[pIndex];
 
@@ -101,47 +101,47 @@ public abstract class GameLoop extends TimerTask {
         return false;
     }
 
-    private void reverseYBodies(GameStateUpdateAction updateStateAction) {
-        for (Player p : updateStateAction.players) {
+    private void reverseYBodies(GameStateUpdateAction updateState) {
+        for (Player p : updateState.players) {
             p.paddle.reverseY();
         }
-        for (Brick b : updateStateAction.bricks) {
+        for (Brick b : updateState.bricks) {
             b.reverseY();
         }
-        updateStateAction.ball.reverseY();
+        updateState.ball.reverseY();
     }
 
     @Override
     public void run() {
-        GameStateUpdateAction updateStateAction = new GameStateUpdateAction(ball, gameSession.players, gameSession.countDown);
+        GameStateUpdateAction updateState = new GameStateUpdateAction(ball, gameSession.players, gameSession.countDown, gameSession.time);
 
         if (gameSession.countDown > 0) {
-            if (runCount % 100 == 0) {
+            if (runCount % 50 == 0) {
                 for (BrickRow br : field.brickRows) {
                     for (Brick b : br.bricks) {
                         if (b != null) {
-                            updateStateAction.addBrick(b);
+                            updateState.addBrick(b);
                         }
                     }
                 }
             }
         } else {
-            runLoop(updateStateAction);
+            runLoop(updateState);
         }
 
         if (gameSession.playerCount() > 1) {
             MultiplayerGame mg = (MultiplayerGame) gameSession;
 
-            mg.getBottomPlayer().client.sendAction(updateStateAction);
-            reverseYBodies(updateStateAction);
-            mg.getTopPlayer().client.sendAction(updateStateAction);
-            reverseYBodies(updateStateAction);
+            mg.getBottomPlayer().client.sendAction(updateState);
+            reverseYBodies(updateState);
+            mg.getTopPlayer().client.sendAction(updateState);
+            reverseYBodies(updateState);
         } else {
-            gameSession.broadcastAction(updateStateAction);
+            gameSession.broadcastAction(updateState);
         }
 
         runCount++;
     }
 
-    protected abstract void runLoop(GameStateUpdateAction updateStateAction);
+    protected abstract void runLoop(GameStateUpdateAction updateState);
 }

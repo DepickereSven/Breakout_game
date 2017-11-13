@@ -3,6 +3,7 @@ const MovePaddleStopAction = require('../actions/move_paddle_stop')
 
 const { createSketch } = require('../sketch')
 const { GameLoop } = require('../gameloop')
+const utils = require('../utils')
 
 const path = 'game.html'
 exports.path = path
@@ -12,18 +13,23 @@ exports.view = class GameView {
     this.path = path
     this.viewManager = viewManager
     this.hideHeader = true
+
     this.currentCount = undefined
+    this.currentTime = undefined
 
     this.container = 'game_container'
     this.keyCodePressed = undefined
+
     this.countDownOverlay = '.countdown_overlay'
     this.countDownCount = '#countdown_count'
+    this.time = '#time'
 
     this.handleTouchStart = this.handleTouchStart.bind(this)
-    this.countDown = this.countDown.bind(this)
+    this.setCount = this.setCount.bind(this)
+    this.setTime = this.setTime.bind(this)
   }
 
-  countDown (count) {
+  setCount (count) {
     if (count === this.currentCount) {
       return
     }
@@ -32,6 +38,14 @@ exports.view = class GameView {
     }
     $(this.countDownCount).text(count)
     this.currentCount = count
+  }
+
+  setTime (time) {
+    if (time === this.currentTime) {
+      return
+    }
+    this.currentTime = time
+    $(this.time).text(utils.displayTime(time))
   }
 
   getDirection ({ touches }) {

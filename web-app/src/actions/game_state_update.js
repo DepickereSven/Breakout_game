@@ -6,8 +6,9 @@ const { viewManager } = require('../views/index')
 
 exports.handler = function ({ ball, bricks, players, countDown, time }) {
   const view = viewManager.getCurrent()
-  if (view.countDown) {
-    view.countDown(countDown)
+  if (view.setCount) {
+    view.setCount(countDown)
+    view.setTime(time)
   }
   if (window.gameLoop) {
     window.gameLoop.updateBall(ball)

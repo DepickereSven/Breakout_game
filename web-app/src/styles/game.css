@@ -1,7 +1,6 @@
 
 .game_container {
   align-items: center;
-  justify-content: center;
 }
 
 .game_container canvas {
@@ -21,4 +20,7 @@
   z-index: 1000;
   font-size: 4rem;
   background: rgba(0, 0, 0, 0.3);
+}
+
+.game_container #time {
 }
