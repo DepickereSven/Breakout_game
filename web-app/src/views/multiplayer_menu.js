@@ -1,6 +1,4 @@
-const {
-  CreateMultiplayerRequestAction
-} = require('../actions/create_multiplayer_request')
+const CreateMultiplayerRequestAction = require('../actions/create_multiplayer_request')
 
 const path = 'multiplayer_menu.html'
 exports.path = path
@@ -18,7 +16,7 @@ exports.view = class MultiplayerMenuView {
   }
 
   multiplayerClickHandler () {
-    window.wsClient.send(new CreateMultiplayerRequestAction())
+    window.wsClient.send(CreateMultiplayerRequestAction.create())
   }
 
   onLoad () {

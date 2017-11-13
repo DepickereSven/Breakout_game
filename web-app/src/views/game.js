@@ -1,5 +1,5 @@
-const { MovePaddleStartAction } = require('../actions/move_paddle_start')
-const { MovePaddleStopAction } = require('../actions/move_paddle_stop')
+const MovePaddleStartAction = require('../actions/move_paddle_start')
+const MovePaddleStopAction = require('../actions/move_paddle_stop')
 
 const { createSketch } = require('../sketch')
 const { GameLoop } = require('../gameloop')
@@ -42,12 +42,12 @@ exports.view = class GameView {
   handleTouchStart (e) {
     e.preventDefault()
     const direction = this.getDirection(e)
-    window.wsClient.send(new MovePaddleStartAction(direction))
+    window.wsClient.send(MovePaddleStartAction.create(direction))
     return false
   }
 
   handleTouchEnd (e) {
-    window.wsClient.send(new MovePaddleStopAction())
+    window.wsClient.send(MovePaddleStopAction.create())
   }
 
   handleKeyDown (e) {
@@ -58,17 +58,17 @@ exports.view = class GameView {
 
     switch (e.key) {
       case 'ArrowLeft':
-        window.wsClient.send(new MovePaddleStartAction('left'))
+        window.wsClient.send(MovePaddleStartAction.create('left'))
         break
       case 'ArrowRight':
-        window.wsClient.send(new MovePaddleStartAction('right'))
+        window.wsClient.send(MovePaddleStartAction.create('right'))
         break
     }
   }
 
   handleKeyUp (e) {
     this.keyCodePressed = undefined
-    window.wsClient.send(new MovePaddleStopAction())
+    window.wsClient.send(MovePaddleStopAction.create())
   }
 
   onLoad () {

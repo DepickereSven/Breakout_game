@@ -1,7 +1,5 @@
 const constants = require('../constants')
-const {
-  JoinPrivateGameRequestAction
-} = require('../actions/join_private_game_request')
+const JoinPrivateGameRequestAction = require('../actions/join_private_game_request')
 
 const path = 'join_private.html'
 exports.path = path
@@ -22,7 +20,7 @@ exports.view = class JoinPrivate {
     if (key.length !== 5) {
       return
     }
-    window.wsClient.send(new JoinPrivateGameRequestAction(key))
+    window.wsClient.send(JoinPrivateGameRequestAction.create(key))
   }
 
   handleSubmitButtonClick () {

@@ -1,5 +1,5 @@
 /**
- * @module actions/create_game_request.js
+ * @module actions/create_multiplayer_request.js
  */
 
-exports.CreateMultiplayerRequestAction = class CreateMultiplayerRequestAction {}
+exports.create = () => ({ type: 'CreateMultiplayerRequestAction' })

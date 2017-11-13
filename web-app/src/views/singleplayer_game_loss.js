@@ -1,6 +1,4 @@
-const {
-  CreateSingleplayerRequestAction
-} = require('../actions/create_singleplayer_request')
+const CreateSingleplayerRequestAction = require('../actions/create_singleplayer_request')
 
 const path = 'singleplayer_game_lost.html'
 exports.path = path
@@ -15,7 +13,7 @@ exports.view = class PickModeView {
   }
 
   handleLevelClick () {
-    window.wsClient.send(new CreateSingleplayerRequestAction())
+    window.wsClient.send(CreateSingleplayerRequestAction.create())
   }
   goHome () {
     this.viewManager.goHome()
@@ -25,6 +23,5 @@ exports.view = class PickModeView {
     $(this.home).on('click', this.goHome.bind(this))
   }
 
-  onUnload () {
-  }
+  onUnload () {}
 }

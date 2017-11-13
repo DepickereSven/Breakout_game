@@ -60,10 +60,9 @@ class WsClient {
    */
   onMessage (event) {
     const action = JSON.parse(event.data)
-    const RequestAction = requestActionsMap[action.type]
-    if (RequestAction) {
-      const a = new RequestAction(action)
-      a.handler()
+    const requestAction = requestActionsMap[action.type]
+    if (requestAction) {
+      requestAction.handler(action)
     }
   }
 
@@ -76,9 +75,6 @@ class WsClient {
     if (!this.ws) {
       throw new Error("Websocket isn't yet open")
     }
-
-    // Set action type as the name of the class
-    action.type = action.constructor.name
 
     const json = JSON.stringify(action)
     this.ws.send(json)

@@ -4,8 +4,6 @@
 
 const { viewManager } = require('../views/index')
 
-exports.GameStartAction = class GameStartAction {
-  handler () {
-    viewManager.go('game.html')
-  }
+exports.handler = function () {
+  viewManager.go('game.html')
 }

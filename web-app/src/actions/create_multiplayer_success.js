@@ -4,12 +4,6 @@
 
 const { viewManager } = require('../views/index')
 
-exports.CreateMultiplayerSuccessAction = class CreateMultiplayerSuccessAction {
-  constructor ({ key }) {
-    this.key = key
-  }
-
-  handler () {
-    viewManager.go('create_private_success.html', { key: this.key })
-  }
+exports.handler = function ({ key }) {
+  viewManager.go('create_private_success.html', { key })
 }

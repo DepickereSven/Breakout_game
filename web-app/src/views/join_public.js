@@ -1,4 +1,4 @@
-const { JoinPublicGameRequestAction } = require('../actions/join_public_game_request')
+const JoinPublicGameRequestAction = require('../actions/join_public_game_request')
 
 const path = 'join_public.html'
 exports.path = path
@@ -11,7 +11,7 @@ exports.view = class JoinPublic {
   }
 
   onLoad () {
-    window.wsClient.send(new JoinPublicGameRequestAction())
+    window.wsClient.send(JoinPublicGameRequestAction.create())
   }
 
   onUnload () {

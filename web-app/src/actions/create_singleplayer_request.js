@@ -1,5 +1,5 @@
 /**
- * @module actions/create_game_request.js
+ * @module actions/create_singleplayer_request.js
  */
 
-exports.CreateSingleplayerRequestAction = class CreateSingleplayerRequestAction {}
+exports.create = () => ({ type: 'CreateSingleplayerRequestAction' })

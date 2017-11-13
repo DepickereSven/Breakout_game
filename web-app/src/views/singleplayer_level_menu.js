@@ -1,6 +1,4 @@
-const {
-  CreateSingleplayerRequestAction
-} = require('../actions/create_singleplayer_request')
+const CreateSingleplayerRequestAction = require('../actions/create_singleplayer_request')
 
 const path = 'singleplayer_level_menu.html'
 exports.path = path
@@ -28,7 +26,7 @@ exports.view = class SingleplayerLevelMenuView {
 
   handleLevelClick (e) {
     const { level } = $(e.currentTarget).data()
-    window.wsClient.send(new CreateSingleplayerRequestAction())
+    window.wsClient.send(CreateSingleplayerRequestAction.create())
   }
 
   onLoad ({ min = this.min, max = this.max }) {
