@@ -19,6 +19,6 @@ exports.handler = function ({ ball, bricks, players, countDown, time }) {
     window.gameLoop.updateBall(ball)
     window.gameLoop.updateBricks(bricks)
     window.gameLoop.updatePlayers(players)
-    window.gameLoop.run()
+    requestAnimationFrame(window.gameLoop.run)
   }
 }

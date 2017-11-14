@@ -20,6 +20,8 @@ exports.GameLoop = class GameLoop {
     this.ball = new Ball()
     this.players = {}
     this.bricks = {}
+
+    this.run = this.run.bind(this)
   }
 
   /**
