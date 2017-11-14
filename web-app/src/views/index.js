@@ -146,7 +146,7 @@ class ViewManager {
         if (callback) {
           setTimeout(callback, SCREEN_ANIMATION_TIME)
         }
-      }, 20)
+      }, 50)
     })
   }
 }

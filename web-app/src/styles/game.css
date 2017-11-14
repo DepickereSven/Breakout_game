@@ -6,6 +6,16 @@
 .game_container canvas {
   border: 3px solid cornflowerblue;
   border-radius: 4px;
+
+  object-fit: contain;
+  width: 90vw !important;
+  height: unset !important;
+  margin: auto auto 8px auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 .game_container .countdown_overlay {
@@ -28,4 +38,6 @@
 
 .game_container #time {
   text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 0;
 }
