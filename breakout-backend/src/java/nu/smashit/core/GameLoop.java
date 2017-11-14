@@ -116,7 +116,7 @@ public abstract class GameLoop extends TimerTask {
         GameStateUpdateAction updateState = new GameStateUpdateAction(ball, gameSession.players, gameSession.countDown, gameSession.time);
 
         if (gameSession.countDown > 0) {
-            if (runCount % 50 == 0) {
+            if (runCount < 2) {
                 for (BrickRow br : field.brickRows) {
                     for (Brick b : br.bricks) {
                         if (b != null) {

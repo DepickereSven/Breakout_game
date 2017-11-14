@@ -37,6 +37,8 @@ const viewsToRemove = {
   'game.html': true
 }
 
+const SCREEN_ANIMATION_TIME = 500
+
 class ViewManager {
   constructor () {
     this.viewHistory = []
@@ -100,7 +102,7 @@ class ViewManager {
 
     setTimeout(() => {
       currentViewEl.remove()
-    }, 500)
+    }, SCREEN_ANIMATION_TIME)
   }
 
   goHome () {
@@ -108,7 +110,7 @@ class ViewManager {
     this.go('modes.html')
   }
 
-  go (path, params = {}) {
+  go (path, params = {}, callback) {
     const ViewConstructor = viewsMap[path]
 
     if (!ViewConstructor) {
@@ -134,13 +136,17 @@ class ViewManager {
     $.ajax({ url: path }).done(html => {
       const header = view.hideHeader ? '' : this.headerHtml
       $(document.body).append(`<div class="screen">${header}${html}</div>`)
+      view.onLoad()
 
-      setTimeout(function () {
-        view.onLoad()
+      setTimeout(() => {
         $('.screen')
           .last()
           .addClass('slideUp')
-      }, 50)
+
+        if (callback) {
+          setTimeout(callback, SCREEN_ANIMATION_TIME)
+        }
+      }, 20)
     })
   }
 }

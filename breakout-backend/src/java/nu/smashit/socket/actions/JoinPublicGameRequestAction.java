@@ -22,7 +22,7 @@ public class JoinPublicGameRequestAction implements RequestAction {
             Game gm = gameSessionManager.joinPublicMultiplayerGame(c);
             c.sendAction(new JoinGameSuccessAction(gm.getKey()));
             if (gm.isFull()) {
-                gm.startCountDown();
+                gm.startGame();
             }
         } catch (Error err) {
             c.sendAction(new JoinGameFailureAction(err.getMessage()));

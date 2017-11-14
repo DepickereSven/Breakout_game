@@ -30,6 +30,8 @@ import nu.smashit.socket.Client;
     @Type(value = MovePaddleStartAction.class)
     ,
     @Type(value = MovePaddleStopAction.class)
+    ,
+    @Type(value = PlayerReadyAction.class)
 })
 public interface RequestAction {
 

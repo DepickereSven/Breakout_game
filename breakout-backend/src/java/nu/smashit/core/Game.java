@@ -45,10 +45,6 @@ public abstract class Game implements Comparable<Game> {
     protected abstract void createGameLoop();
 
     public void startCountDown() {
-        createGameLoop();
-
-        broadcastAction(new GameStartAction());
-
         gameLoopTimer.scheduleAtFixedRate(gameLoop, 100, updateInterval);
 
         countDownTimer.scheduleAtFixedRate(new TimerTask() {
@@ -61,6 +57,11 @@ public abstract class Game implements Comparable<Game> {
                 }
             }
         }, 1000, 1000);
+    }
+
+    public void startGame() {
+        createGameLoop();
+        broadcastAction(new GameStartAction());
     }
 
     public int playerCount() {
@@ -93,6 +94,18 @@ public abstract class Game implements Comparable<Game> {
     @Override
     public int compareTo(Game o) {
         return (this.getKey().compareTo(o.getKey()));
+    }
+
+    public void playerReady(Client c) {
+        getPlayer(c).ready();
+
+        for (Player p : players) {
+            if (!p.isReady()) {
+                return;
+            }
+        }
+
+        startCountDown();
     }
 
 }

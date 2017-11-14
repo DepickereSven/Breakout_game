@@ -23,7 +23,7 @@ public class JoinPrivateGameRequestAction implements RequestAction {
         try {
             Game gm = gameSessionManager.joinPrivateMultiplayerGame(key, c);
             if (gm.isFull()) {
-                gm.startCountDown();
+                gm.startGame();
             }
         } catch (Error err) {
             c.sendAction(new JoinGameFailureAction(err.getMessage()));
