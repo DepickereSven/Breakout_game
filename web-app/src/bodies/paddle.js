@@ -14,7 +14,7 @@
  */
 exports.Paddle = class Paddle {
   constructor () {
-    this.h = 0
+    this.h = 14
     this.w = 0
     this.borderRadius = 4
 
@@ -26,10 +26,9 @@ exports.Paddle = class Paddle {
 
   /**
    * Update body to match the server state
-   * @param {object} bodyObj 
+   * @param {number[]} bodyObj 
    */
-  update ({ h, w, x, y }) {
-    this.h = h
+  update ([ x, y, w ]) {
     this.w = w
     this.x = x
     this.y = y

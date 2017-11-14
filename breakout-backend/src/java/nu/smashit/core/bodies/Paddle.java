@@ -1,11 +1,15 @@
 package nu.smashit.core.bodies;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import nu.smashit.core.GameCanvas;
 
 /**
  *
  * @author jodus
  */
+@JsonIgnoreProperties(value = {"h"})
+@JsonFormat(shape = JsonFormat.Shape.ARRAY)
 public class Paddle extends MovableBody {
 
     public final static int MOVE_STEP_SIZE = 7;

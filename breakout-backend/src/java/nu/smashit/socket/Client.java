@@ -21,10 +21,14 @@ public class Client {
         return session.getId();
     }
 
+    public String getShortId() {
+        return getId().substring(0, 5);
+    }
+
     public void sendAction(ResponseAction a) {
-        if (session != null && session.isOpen()){
+        if (session != null && session.isOpen()) {
             session.getAsyncRemote().sendObject(a);
-        }   
+        }
     }
 
     public boolean isInGame() {
@@ -41,10 +45,5 @@ public class Client {
 
     public void removeGame() {
         this.gameSession = null;
-    }
-
-    @Override
-    public String toString() {
-        return getId();
     }
 }

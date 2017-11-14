@@ -13,12 +13,12 @@ exports.handler = function ({ bl, br, pl, cd, tm }) {
   }
   if (window.gameLoop) {
     if (cd === 0 && br.length > 0) {
-      music.playMusic(1)
+      music.play('brickHit')
     }
 
     window.gameLoop.updateBall(bl)
     window.gameLoop.updateBricks(br)
     window.gameLoop.updatePlayers(pl)
-    requestAnimationFrame(window.gameLoop.run)
+    window.gameLoop.run()
   }
 }

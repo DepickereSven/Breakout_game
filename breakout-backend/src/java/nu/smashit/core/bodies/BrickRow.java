@@ -74,7 +74,7 @@ public class BrickRow extends Body {
             } while (bricks[place] != null);
 
             int x = place * block_width;
-            bricks[place] = new Brick(x + ":" + y, x, y, block_width, Brick.HEIGHT, getRandomBrickType(sort));
+            bricks[place] = new Brick(x, y, block_width, Brick.HEIGHT, getRandomBrickType(sort));
         }
     }
 

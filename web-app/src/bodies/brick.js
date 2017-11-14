@@ -4,10 +4,13 @@
 
 const utils = require('../utils')
 
+exports.getBrickId = ([x, y]) => x + ':' + y
+
 /**
  * Represents a brick
  * @class
  * @prop {string} id
+ * @prop {string} type
  * @prop {number} x - horizontal position
  * @prop {number} h - height
  * @prop {number} w - width
@@ -17,10 +20,11 @@ const utils = require('../utils')
 exports.Brick = class Brick {
   constructor (id) {
     this.id = id
+    this.type = undefined
+    this.lives = 0
     this.x = 0
     this.y = 0
-    this.lives = 0
-    this.h = 0
+    this.h = 16
     this.w = 0
     this.borderRadius = 2
     this.color = utils.randomColor()
@@ -31,8 +35,8 @@ exports.Brick = class Brick {
    * @method
    * @param {object} bodyObj 
    */
-  update ({ h, w, x, y, lives }) {
-    this.h = h
+  update ([x, y, w, type, lives]) {
+    this.type = type
     this.w = w
     this.lives = lives
     this.x = x

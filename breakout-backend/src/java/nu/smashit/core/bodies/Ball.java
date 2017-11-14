@@ -1,12 +1,16 @@
 package nu.smashit.core.bodies;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import nu.smashit.core.GameCanvas;
 
 /**
  *
  * @author jodus
  */
+@JsonIgnoreProperties(value = {"h"})
+@JsonFormat(shape = JsonFormat.Shape.ARRAY)
 public class Ball extends MovableBody {
 
     @JsonIgnore
@@ -26,7 +30,7 @@ public class Ball extends MovableBody {
     static final double MULTIPLIER = 1.0002;
 
     public Ball() {
-        super(X_START_POS, Y_START_POS, HEIGHT, WIDTH);
+        super(X_START_POS, Y_START_POS, WIDTH, HEIGHT);
         this.reset();
     }
 

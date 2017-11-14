@@ -173,7 +173,7 @@ Update the ball to match the server state
 
 | Param | Type |
 | --- | --- |
-| ball | <code>object</code> | 
+| ball | <code>Array.&lt;number&gt;</code> | 
 
 <a name="module_gameLoop.GameLoop+run"></a>
 
@@ -184,12 +184,6 @@ Draws the current state onto the provided sketch
 <a name="module_initialize"></a>
 
 ## initialize
-<a name="module_initialize..timeout"></a>
-
-### initialize~timeout
-- The android app needs 4,5 sec to show the vid.- The body needs to be set to the full height of the browser (vh is not supported in webview)- Fade in the body
-
-**Kind**: inner constant of [<code>initialize</code>](#module_initialize)  
 <a name="module_player"></a>
 
 ## player
@@ -323,7 +317,7 @@ Update body to match the server state
 
 | Param | Type |
 | --- | --- |
-| bodyObj | <code>object</code> | 
+| bodyObj | <code>Array.&lt;number&gt;</code> | 
 
 <a name="module_bodies/ball.Ball+draw"></a>
 
@@ -357,6 +351,7 @@ Represents a brick
 | Name | Type | Description |
 | --- | --- | --- |
 | id | <code>string</code> |  |
+| type | <code>string</code> |  |
 | x | <code>number</code> | horizontal position |
 | h | <code>number</code> | height |
 | w | <code>number</code> | width |
@@ -437,7 +432,7 @@ Update body to match the server state
 
 | Param | Type |
 | --- | --- |
-| bodyObj | <code>object</code> | 
+| bodyObj | <code>Array.&lt;number&gt;</code> | 
 
 <a name="module_bodies/paddle.Paddle+draw"></a>
 
@@ -531,7 +526,8 @@ Open connection
 <a name="module_socket/client..WsClient+setClientId"></a>
 
 #### wsClient.setClientId()
-Set the clientIdOnly done once
+Set the clientId
+Only done once
 
 **Kind**: instance method of [<code>WsClient</code>](#module_socket/client..WsClient)  
 <a name="module_socket/client..WsClient+onOpen"></a>

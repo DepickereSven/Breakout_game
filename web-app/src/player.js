@@ -13,10 +13,10 @@ exports.Player = class Player {
     }
   }
 
-  update ({paddle, score}) {
-    this.paddle.update(paddle)
+  update ({p, s}) {
+    this.paddle.update(p)
     if (this.multiplayer) {
-      this.score.update(score)
+      this.score.update(s)
     }
   }
 }

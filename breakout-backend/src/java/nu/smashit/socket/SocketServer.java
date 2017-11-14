@@ -31,7 +31,7 @@ public class SocketServer {
     @OnOpen
     public void onOpen(Session session) {
         Client c = new Client(session);
-        c.sendAction(new ConnectionSuccessAction(c.getId()));
+        c.sendAction(new ConnectionSuccessAction(c.getShortId()));
 
         clientManager.addClient(c);
     }

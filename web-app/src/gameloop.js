@@ -4,7 +4,7 @@
 
 const { Player } = require('./player')
 const { Ball } = require('./bodies/ball')
-const { Brick } = require('./bodies/brick')
+const { Brick, getBrickId } = require('./bodies/brick')
 
 /**
  * GameLoop provides the state and drawing for the sketch
@@ -30,14 +30,13 @@ exports.GameLoop = class GameLoop {
    * @param {object[]} players
    */
   updatePlayers (players) {
+    const isMultiplayer = players.length === 2
     for (const p of players) {
-      if (!this.players[p.clientId]) {
-        const isCurrentPlayer = p.clientId === window.wsClient.clientId
-        const isMultiplayer = players.length === 2
-
-        this.players[p.clientId] = new Player(isCurrentPlayer, isMultiplayer)
+      if (!this.players[p.c]) {
+        const isCurrentPlayer = p.c === window.wsClient.clientId
+        this.players[p.c] = new Player(isCurrentPlayer, isMultiplayer)
       }
-      this.players[p.clientId].update(p)
+      this.players[p.c].update(p)
     }
   }
 
@@ -48,17 +47,18 @@ exports.GameLoop = class GameLoop {
    */
   updateBricks (bricks) {
     for (const b of bricks) {
-      if (!this.bricks[b.id]) {
-        this.bricks[b.id] = new Brick(b.id)
+      const id = getBrickId(b)
+      if (!this.bricks[id]) {
+        this.bricks[id] = new Brick(id)
       }
-      this.bricks[b.id].update(b)
+      this.bricks[id].update(b)
     }
   }
 
   /**
    * Update the ball to match the server state
    * @method
-   * @param {object} ball 
+   * @param {number[]} ball 
    */
   updateBall (ballObj) {
     this.ball.update(ballObj)

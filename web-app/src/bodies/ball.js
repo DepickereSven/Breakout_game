@@ -12,24 +12,21 @@
  */
 exports.Ball = class Ball {
   constructor () {
-    this.h = 0
-    this.w = 0
-
     this.x = 0
     this.y = 0
+    this.size = 0
 
     this.color = 'white'
   }
 
   /**
    * Update body to match the server state
-   * @param {object} bodyObj 
+   * @param {number[]} bodyObj 
    */
-  update ({ h, w, x, y }) {
-    this.h = h
-    this.w = w
+  update ([ x, y, size ]) {
     this.x = x
     this.y = y
+    this.size = size
   }
 
   /**
@@ -39,6 +36,6 @@ exports.Ball = class Ball {
    */
   draw (s) {
     s.fill(this.color)
-    s.rect(this.x, this.y, this.h, this.w, this.w)
+    s.rect(this.x, this.y, this.size, this.size, this.size)
   }
 }
