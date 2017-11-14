@@ -1,5 +1,15 @@
+const constants = require('./constants')
 
-exports.playMusic = function (audioName) {
-  const snd = new Audio('music/' + audioName + '.mp3')
-  snd.play()
+const sounds = {
+  brickHit: new Audio('music/1.mp3')
+}
+
+exports.play = function (key) {
+  if (!constants.IS_ANDROID_APP) {
+    return
+  }
+  const snd = sounds[key]
+  if (snd) {
+    snd.play()
+  }
 }
