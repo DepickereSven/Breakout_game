@@ -4,9 +4,11 @@ const path = 'singleplayer_level_menu.html'
 exports.path = path
 
 exports.view = class SingleplayerLevelMenuView {
-  constructor (viewManager) {
+  constructor (viewManager, { min, max }) {
     this.path = path
     this.viewManager = viewManager
+    this.min = min
+    this.max = max
 
     this.container = '.singleplayer_level_menu'
     this.levelButton = '.level'
@@ -29,11 +31,8 @@ exports.view = class SingleplayerLevelMenuView {
     window.wsClient.send(CreateSingleplayerRequestAction.create())
   }
 
-  onLoad ({ min = this.min, max = this.max }) {
-    this.min = min
-    this.max = max
-
-    this.generateLevels(min, max)
+  onLoad () {
+    this.generateLevels(this.min, this.max)
     $(this.levelButton).on('click', this.handleLevelClick)
   }
 

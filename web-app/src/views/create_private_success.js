@@ -4,10 +4,11 @@ const path = 'create_private_success.html'
 exports.path = path
 
 exports.view = class CreatePrivateSuccessView {
-  constructor (viewManager) {
+  constructor (viewManager, { key }) {
     this.path = path
     this.viewManager = viewManager
     this.hideHeader = true
+    this.key = key
 
     this.gameCode = '#code'
     this.shareButton = '#sharingIsCaring'
@@ -18,13 +19,13 @@ exports.view = class CreatePrivateSuccessView {
     SmashIt.sharingIsCaring(code)
   }
 
-  onLoad ({ key }) {
-    $(this.gameCode).text(key)
+  onLoad () {
+    $(this.gameCode).text(this.key)
     $(this.shareButton).on('click', this.handleScanQrButtonClick)
     const qr = new QRious({
       element: document.getElementById('qr_code_canvas'),
       size: 200,
-      value: key
+      value: this.key
     })
   }
 

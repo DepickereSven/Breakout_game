@@ -22,14 +22,16 @@ body{
     flex-direction: column;
     background-color: #0C141F;
     transform: translateY(100%);
-    transition: all 0.5s;
-    opacity: 0;
+    transition: transform 0.5s;
     color: white;
 }
 
-.screen.currentScreen {
-    opacity: 1;
+.screen.slideUp {
     transform: translateY(0px);
+}
+
+.screen.slideOut {
+    transform: translateY(-100%);
 }
 
 .container {
@@ -62,52 +64,6 @@ body{
 }
 
 /*
-.container_singleplayer_gamemode,
-.generate_levels_singeplayer{
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    flex: 1;
-    display: flex;
-    margin: 4%;
-}
-
-.container .create_join_public_or_private{
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-items: center;
-    flex: 1;
-    display: flex;
-    margin: 4%;
-}
-
-.container .create_join_public_or_private,
-.container .input_field_for_private_game,
-.container .container_singleplayer_gamemode{
-    margin-top: 7%;
-}
-
-.container .form_for_code_private_join{
-    text-align: center;
-}
-
-.container .form_for_code_private_join label{
-    display: block;
-    margin-bottom: 3%;
-}
-
-.container .form_for_code_private_join input{
-    line-height: normal;
-    border-radius: 4px;
-    padding: 6px 12px;
-    border: #eee solid 1px;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
-    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-}
-
 .stats_multiplayer{
     display: flex;
     justify-content: center;

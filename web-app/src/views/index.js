@@ -33,6 +33,10 @@ views.forEach(function (val) {
 
 exports.viewsMap = viewsMap
 
+const viewsToRemove = {
+  'game.html': true
+}
+
 class ViewManager {
   constructor () {
     this.viewHistory = []
@@ -43,6 +47,10 @@ class ViewManager {
     this.onLocationChange = this.onLocationChange.bind(this)
     this.getCurrent = this.getCurrent.bind(this)
     this.goHome = this.goHome.bind(this)
+  }
+
+  getPrevious () {
+    return this.viewHistory[this.viewHistory.length - 2]
   }
 
   getCurrent () {
@@ -65,20 +73,34 @@ class ViewManager {
 
     const path = hash.slice(2) + '.html'
 
-    const currentView = this.getCurrent()
-    if (!currentView || currentView.path === path) {
+    const foundViewIndex = this.viewHistory.findIndex(v => v.path === path)
+
+    if (foundViewIndex === this.viewHistory.length - 1) {
       return
     }
 
-    this.go(path)
+    if (foundViewIndex > -1 && foundViewIndex === this.viewHistory.length - 2) {
+      this.goBack()
+    } else {
+      this.go(path)
+    }
   }
 
   goBack () {
+    this.getCurrent().onUnload()
+
     this.viewHistory.pop()
-    const previousView = this.viewHistory.pop()
-    if (previousView.path) {
-      this.go(previousView.path)
-    }
+
+    const previousView = this.getCurrent()
+    previousView.onLoad()
+
+    const currentViewEl = $('.screen')
+      .last()
+      .addClass('slideOut')
+
+    setTimeout(() => {
+      currentViewEl.remove()
+    }, 500)
   }
 
   goHome () {
@@ -93,37 +115,36 @@ class ViewManager {
       throw new Error(`View "${path}" doesn't exist.`)
     }
 
-    const view = new ViewConstructor(this)
+    const view = new ViewConstructor(this, params)
 
     const currentView = this.getCurrent()
     if (currentView) {
       currentView.onUnload()
+      if (currentView && viewsToRemove[currentView.path]) {
+        this.viewHistory.pop()
+        $('.screen')
+          .last()
+          .remove()
+      }
     }
-    $('.screen').removeClass('currentScreen')
 
-    $.ajax({
-      url: path
-    }).done(html => {
+    this.viewHistory.push(view)
+    window.location.hash = '/' + path.replace('.html', '')
+
+    $.ajax({ url: path }).done(html => {
       const header = view.hideHeader ? '' : this.headerHtml
       $(document.body).append(`<div class="screen">${header}${html}</div>`)
 
-      view.onLoad(params)
-
-      this.viewHistory.push(view)
-
-      window.location.hash = '/' + path.replace('.html', '')
-
       setTimeout(function () {
+        view.onLoad()
         $('.screen')
           .last()
-          .addClass('currentScreen')
-        $('.screen:not(.currentScreen)').remove()
-      }, 100)
+          .addClass('slideUp')
+      }, 50)
     })
   }
 }
 
 const viewManager = new ViewManager()
-window.onhashchange = viewManager.onLocationChange
 
 exports.viewManager = viewManager

@@ -108,5 +108,7 @@ exports.view = class GameView {
 
     $(window).off('keydown', this.handleKeyDown)
     $(window).off('keyup', this.handleKeyUp)
+
+    $(container).find('canvas').remove()
   }
 }

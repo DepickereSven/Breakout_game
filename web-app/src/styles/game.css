@@ -22,5 +22,10 @@
   background: rgba(0, 0, 0, 0.3);
 }
 
+.game_container .game_header {
+  width: 100%;
+}
+
 .game_container #time {
+  text-align: center;
 }

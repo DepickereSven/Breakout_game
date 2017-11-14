@@ -53,7 +53,6 @@ function timePadding (time, isBack) {
     return newtime
   }
 }
-exports.timePadding = timePadding
 
 function displayTime (timeInSec) {
   const min = Math.floor(timeInSec / 60)
