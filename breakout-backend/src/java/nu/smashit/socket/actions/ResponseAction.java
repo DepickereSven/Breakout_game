@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
  */
 @JsonTypeInfo(use = Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
-        property = "type")
+        property = "t")
 public interface ResponseAction {
 
 }

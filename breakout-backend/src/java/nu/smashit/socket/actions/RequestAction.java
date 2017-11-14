@@ -17,7 +17,7 @@ import nu.smashit.socket.Client;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
-        property = "type")
+        property = "t")
 @JsonSubTypes({
     @Type(value = CreateSingleplayerRequestAction.class)
     ,

@@ -5,20 +5,20 @@
 const { viewManager } = require('../views/index')
 const music = require('../music')
 
-exports.handler = function ({ ball, bricks, players, countDown, time }) {
+exports.handler = function ({ bl, br, pl, cd, tm }) {
   const view = viewManager.getCurrent()
   if (view.setCount) {
-    view.setCount(countDown)
-    view.setTime(time)
+    view.setCount(cd)
+    view.setTime(tm)
   }
   if (window.gameLoop) {
-    if (countDown === 0 && bricks.length > 0) {
+    if (cd === 0 && br.length > 0) {
       music.playMusic(1)
     }
 
-    window.gameLoop.updateBall(ball)
-    window.gameLoop.updateBricks(bricks)
-    window.gameLoop.updatePlayers(players)
+    window.gameLoop.updateBall(bl)
+    window.gameLoop.updateBricks(br)
+    window.gameLoop.updatePlayers(pl)
     requestAnimationFrame(window.gameLoop.run)
   }
 }

@@ -5,6 +5,7 @@
  */
 package nu.smashit.socket.actions;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashSet;
 import java.util.Set;
 import nu.smashit.core.bodies.Ball;
@@ -17,10 +18,15 @@ import nu.smashit.core.Player;
  */
 public class GameStateUpdateAction implements ResponseAction {
 
+    @JsonProperty("bl")
     public Ball ball;
+    @JsonProperty("pl")
     public Player[] players;
+    @JsonProperty("br")
     public Set<Brick> bricks;
+    @JsonProperty("cd")
     public int countDown;
+    @JsonProperty("tm")
     public int time;
 
     public GameStateUpdateAction(Ball ball, Player[] players, int countDown, int time) {

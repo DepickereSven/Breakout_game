@@ -1,2 +1,2 @@
 
-exports.create = () => ({ type: 'PlayerReadyAction' })
+exports.create = () => ({ t: 'PlayerReadyAction' })
