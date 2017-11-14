@@ -3,6 +3,7 @@
  */
 
 const constants = require('../constants')
+const music = require('../music')
 const { requestActionsMap } = require('../actions/index')
 
 /**
@@ -60,7 +61,15 @@ class WsClient {
    */
   onMessage (event) {
     const action = JSON.parse(event.data)
+    // console.log(action)
     const requestAction = requestActionsMap[action.type]
+    const countDown = action.countDown
+    const blockData = action.bricks
+    if (countDown !== undefined) {
+      if (countDown === 0 && blockData.length !== 0) {
+        music.playMusic(1)
+      }
+    }
     if (requestAction) {
       requestAction.handler(action)
     }

@@ -39,11 +39,11 @@ npm start
 <dd></dd>
 <dt><a href="#actions/connection_success.module_js">js</a></dt>
 <dd></dd>
-<dt><a href="#actions/create_game_request.module_js">js</a></dt>
+<dt><a href="#actions/create_multiplayer_request.module_js">js</a></dt>
 <dd></dd>
 <dt><a href="#actions/create_game_success.module_js">js</a></dt>
 <dd></dd>
-<dt><a href="#actions/create_game_request.module_js">js</a></dt>
+<dt><a href="#actions/create_singleplayer_request.module_js">js</a></dt>
 <dd></dd>
 <dt><a href="#actions/create_game_success.module_js">js</a></dt>
 <dd></dd>
@@ -187,9 +187,7 @@ Draws the current state onto the provided sketch
 <a name="module_initialize..timeout"></a>
 
 ### initialize~timeout
-- The android app needs 4,5 sec to show the vid.
-- The body needs to be set to the full height of the browser (vh is not supported in webview)
-- Fade in the body
+- The android app needs 4,5 sec to show the vid.- The body needs to be set to the full height of the browser (vh is not supported in webview)- Fade in the body
 
 **Kind**: inner constant of [<code>initialize</code>](#module_initialize)  
 <a name="module_player"></a>
@@ -248,13 +246,13 @@ Generate random color in RGB
 <a name="actions/connection_success.module_js"></a>
 
 ## js
-<a name="actions/create_game_request.module_js"></a>
+<a name="actions/create_multiplayer_request.module_js"></a>
 
 ## js
 <a name="actions/create_game_success.module_js"></a>
 
 ## js
-<a name="actions/create_game_request.module_js"></a>
+<a name="actions/create_singleplayer_request.module_js"></a>
 
 ## js
 <a name="actions/create_game_success.module_js"></a>
@@ -278,23 +276,6 @@ Generate random color in RGB
 <a name="actions/join_private_game_request.module_js"></a>
 
 ## js
-
-* [js](#actions/join_private_game_request.module_js)
-    * [.JoinPrivateGameRequestAction](#actions/join_private_game_request.module_js.JoinPrivateGameRequestAction)
-        * [new exports.JoinPrivateGameRequestAction(key)](#new_actions/join_private_game_request.module_js.JoinPrivateGameRequestAction_new)
-
-<a name="actions/join_private_game_request.module_js.JoinPrivateGameRequestAction"></a>
-
-### js.JoinPrivateGameRequestAction
-**Kind**: static class of [<code>js</code>](#actions/join_private_game_request.module_js)  
-<a name="new_actions/join_private_game_request.module_js.JoinPrivateGameRequestAction_new"></a>
-
-#### new exports.JoinPrivateGameRequestAction(key)
-
-| Param | Type |
-| --- | --- |
-| key | <code>string</code> | 
-
 <a name="actions/join_public_game_request.module_js"></a>
 
 ## js
@@ -550,8 +531,7 @@ Open connection
 <a name="module_socket/client..WsClient+setClientId"></a>
 
 #### wsClient.setClientId()
-Set the clientId
-Only done once
+Set the clientIdOnly done once
 
 **Kind**: instance method of [<code>WsClient</code>](#module_socket/client..WsClient)  
 <a name="module_socket/client..WsClient+onOpen"></a>

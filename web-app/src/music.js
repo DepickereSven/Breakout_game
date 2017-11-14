@@ -1,11 +1,5 @@
-function select () {
-  const val = $(this).attr('data-val')
-  playMusic(val)
-}
-
-function playMusic (audioName) {
+exports.playMusic = function (audioName) {
   const snd = new Audio('music/' + audioName + '.mp3')
+  console.log(snd, audioName)
   snd.play()
 }
-
-$('.click_me').on('click', select())
