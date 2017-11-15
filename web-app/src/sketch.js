@@ -12,8 +12,12 @@ exports.createSketch = function createSketch () {
       canvas.parent('game_container')
 
       // Don't loop on its own because we draw manualy when the server send and update
-      sketch.noLoop()
+      // sketch.noLoop()
     }
-    sketch.draw = () => {}
+    sketch.draw = function () {
+      if (window.gameLoop) {
+        window.gameLoop.run(sketch)
+      }
+    }
   })
 }

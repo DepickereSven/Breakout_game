@@ -2,7 +2,6 @@ const MovePaddleStartAction = require('../actions/move_paddle_start')
 const MovePaddleStopAction = require('../actions/move_paddle_stop')
 
 const { createSketch } = require('../sketch')
-const { GameLoop } = require('../gameloop')
 const utils = require('../utils')
 
 const path = 'game.html'
@@ -14,8 +13,8 @@ exports.view = class GameView {
     this.viewManager = viewManager
     this.hideHeader = true
 
-    this.currentCount = undefined
-    this.currentTime = undefined
+    this.currentCount = 5
+    this.currentTime = 0
 
     this.container = 'game_container'
     this.keyCodePressed = undefined
@@ -86,12 +85,10 @@ exports.view = class GameView {
   }
 
   onLoad () {
+    createSketch()
+
     const container = document.getElementById(this.container)
     const options = { passive: false }
-
-    const sketch = createSketch()
-    window.gameLoop = new GameLoop(sketch)
-
     container.addEventListener('touchstart', this.handleTouchStart, options)
     container.addEventListener('touchend', this.handleTouchEnd, options)
     container.addEventListener('touchcancel', this.handleTouchEnd, options)

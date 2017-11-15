@@ -3,10 +3,9 @@
  */
 
 const { viewManager } = require('../views/index')
-const playerReadyAction = require('./player_ready')
+const { GameLoop } = require('../gameloop')
 
 exports.handler = function () {
-  viewManager.go('game.html', {}, function () {
-    window.wsClient.send(playerReadyAction.create())
-  })
+  window.gameLoop = new GameLoop()
+  viewManager.go('game.html', {})
 }

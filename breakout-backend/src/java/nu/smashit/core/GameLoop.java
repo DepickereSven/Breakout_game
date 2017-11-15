@@ -17,23 +17,14 @@ public abstract class GameLoop extends TimerTask {
     protected final Field field;
     protected final Game gameSession;
     protected Player lastPlayerToHitPaddle;
-    private double runCount;
 
-    protected boolean firstRun;
+    protected boolean initRun;
 
     public GameLoop(Game gm, Field field) {
         this.gameSession = gm;
         this.field = field;
-        this.runCount = 0;
-        createBall();
-    }
-
-    protected void createBall() {
-        this.ball = new Ball();
-    }
-
-    protected void removeBall() {
-        this.ball = null;
+        initRun = false;
+        ball = new Ball();
     }
 
     private boolean runBrickRowCollision(int i, GameStateUpdateAction updateState) {
@@ -111,12 +102,18 @@ public abstract class GameLoop extends TimerTask {
         updateState.ball.reverseY();
     }
 
+    public void initRun() {
+        initRun = true;
+        run();
+        initRun = false;
+    }
+
     @Override
     public void run() {
         GameStateUpdateAction updateState = new GameStateUpdateAction(ball, gameSession.players, gameSession.countDown, gameSession.time);
 
         if (gameSession.countDown > 0) {
-            if (runCount < 2) {
+            if (initRun) {
                 for (BrickRow br : field.brickRows) {
                     for (Brick b : br.bricks) {
                         if (b != null) {
@@ -139,8 +136,6 @@ public abstract class GameLoop extends TimerTask {
         } else {
             gameSession.broadcastAction(updateState);
         }
-
-        runCount++;
     }
 
     protected abstract void runLoop(GameStateUpdateAction updateState);

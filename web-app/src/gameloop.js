@@ -13,9 +13,7 @@ const { Brick, getBrickId } = require('./bodies/brick')
  * @prop {Ball} ball
  */
 exports.GameLoop = class GameLoop {
-  constructor (sketch) {
-    this.sketch = sketch
-
+  constructor () {
     // Initialise bodies
     this.ball = new Ball()
     this.players = {}
@@ -68,18 +66,18 @@ exports.GameLoop = class GameLoop {
    * Draws the current state onto the provided sketch
    * @method
    */
-  run () {
+  run (sketch) {
     // Clear canvas
-    this.sketch.background(0)
+    sketch.background(0)
 
     for (const clientId in this.players) {
       if (!this.players.hasOwnProperty(clientId)) {
         return
       }
       const player = this.players[clientId]
-      player.paddle.draw(this.sketch)
+      player.paddle.draw(sketch)
       if (player.score) {
-        player.score.draw(this.sketch)
+        player.score.draw(sketch)
       }
     }
 
@@ -89,10 +87,10 @@ exports.GameLoop = class GameLoop {
       }
       const brick = this.bricks[brickId]
       if (!brick.isBroken()) {
-        this.bricks[brickId].draw(this.sketch)
+        this.bricks[brickId].draw(sketch)
       }
     }
 
-    this.ball.draw(this.sketch)
+    this.ball.draw(sketch)
   }
 }

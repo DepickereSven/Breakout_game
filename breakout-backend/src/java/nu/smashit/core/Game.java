@@ -45,7 +45,7 @@ public abstract class Game implements Comparable<Game> {
     protected abstract void createGameLoop();
 
     public void startCountDown() {
-        gameLoopTimer.scheduleAtFixedRate(gameLoop, 1000, updateInterval);
+        gameLoopTimer.scheduleAtFixedRate(gameLoop, 100, updateInterval);
 
         countDownTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -56,12 +56,13 @@ public abstract class Game implements Comparable<Game> {
                     countDown--;
                 }
             }
-        }, 1500, 1000);
+        }, 1000, 1000);
     }
 
     public void startGame() {
         createGameLoop();
         broadcastAction(new GameStartAction());
+        gameLoop.initRun();
     }
 
     public int playerCount() {

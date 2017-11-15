@@ -3,7 +3,10 @@
  */
 
 const { viewManager } = require('../views/index')
+const playerReadyAction = require('./player_ready')
 const music = require('../music')
+
+let firstUpdate = true
 
 exports.handler = function ({ bl, br, pl, cd, tm }) {
   const view = viewManager.getCurrent()
@@ -11,14 +14,23 @@ exports.handler = function ({ bl, br, pl, cd, tm }) {
     view.setCount(cd)
     view.setTime(tm)
   }
-  if (window.gameLoop) {
-    if (cd === 0 && br.length > 0) {
-      music.play('brickHit')
-    }
 
-    window.gameLoop.updateBall(bl)
-    window.gameLoop.updateBricks(br)
-    window.gameLoop.updatePlayers(pl)
-    window.gameLoop.run()
+  if (!firstUpdate && br.length > 0) {
+    music.play('brickHit')
+  }
+
+  window.gameLoop.updateBricks(br)
+  window.gameLoop.updateBall(bl)
+  window.gameLoop.updatePlayers(pl)
+
+  if (firstUpdate) {
+    firstUpdate = false
+
+    // Wait for first 2 frames to be drawn
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        window.wsClient.send(playerReadyAction.create())
+      })
+    })
   }
 }
