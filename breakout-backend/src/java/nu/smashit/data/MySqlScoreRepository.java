@@ -1,7 +1,6 @@
 package nu.smashit.data;
 
 // @author Jonas
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,36 +12,36 @@ import nu.smashit.data.dataobjects.User;
 import nu.smashit.data.utils.MySqlConnection;
 import nu.smashit.utils.BreakoutException;
 
-public class MySqlScoreRepository implements ScoreRepository{
+public class MySqlScoreRepository implements ScoreRepository {
 
     private static final String SQL_GET_ALL_SCORES = "SELECT * FROM scores";
     private static final String SQL_ADD_SCORE = "INSERT INTO scores (userWonID, userLostID, points, time) VALUES(?,?,?,?)";
-    
+
     @Override
     public void addScore(Score score) {
-        try(    Connection conn = MySqlConnection.getConnection();
-                PreparedStatement prep = conn.prepareStatement(SQL_ADD_SCORE);    ){
-            
-            prep.setInt(1, score.getUserWon().getUserID());
-            prep.setInt(2, score.getUserLost().getUserID());
+        try (Connection conn = MySqlConnection.getConnection();
+                PreparedStatement prep = conn.prepareStatement(SQL_ADD_SCORE);) {
+
+            prep.setString(1, score.getUserWon().getUserID());
+            prep.setString(2, score.getUserLost().getUserID());
             prep.setInt(3, score.getPoints());
             prep.setInt(4, score.getTime());
             prep.executeUpdate();
-            
-        }catch(SQLException ex){
+
+        } catch (SQLException ex) {
             throw new BreakoutException("Could not add score.", ex);
         }
     }
 
     @Override
     public List<Score> getAllScores() {
-        try(    Connection conn = MySqlConnection.getConnection();
-                PreparedStatement prep = conn.prepareStatement(SQL_GET_ALL_SCORES);    ){
-            
+        try (Connection conn = MySqlConnection.getConnection();
+                PreparedStatement prep = conn.prepareStatement(SQL_GET_ALL_SCORES);) {
+
             ResultSet rs = prep.executeQuery();
-            
+
             List<Score> scores = new ArrayList();
-            while(rs.next()){
+            while (rs.next()) {
                 int scoreID = rs.getInt("scoreID");
                 int userWonID = rs.getInt("userWon");
                 User userWon = Repositories.getUserRepository().getUser(userWonID);
@@ -51,10 +50,10 @@ public class MySqlScoreRepository implements ScoreRepository{
                 int points = rs.getInt("points");
                 int time = rs.getInt("time");
                 scores.add(new Score(scoreID, userWon, userLost, points, time));
-            }           
+            }
             return scores;
-            
-        }catch(SQLException ex){
+
+        } catch (SQLException ex) {
             throw new BreakoutException("Could not get scores.", ex);
         }
     }

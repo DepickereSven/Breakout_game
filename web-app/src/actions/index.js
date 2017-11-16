@@ -6,6 +6,8 @@ const GameStopAction = require('./game_stop')
 const GameVictoryAction = require('./game_victory')
 const GameLossAction = require('./game_loss')
 const GameStateUpdateAction = require('./game_state_update')
+const UserLoginSuccessAction = require('./user_login_success')
+const UserLoginFailureAction = require('./user_login_failure')
 
 exports.requestActionsMap = {
   ConnectionSuccessAction,
@@ -15,5 +17,7 @@ exports.requestActionsMap = {
   GameStopAction,
   GameVictoryAction,
   GameLossAction,
-  U: GameStateUpdateAction
+  U: GameStateUpdateAction,
+  UserLoginSuccessAction,
+  UserLoginFailureAction
 }

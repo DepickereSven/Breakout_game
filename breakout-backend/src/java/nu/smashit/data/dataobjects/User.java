@@ -3,14 +3,14 @@ package nu.smashit.data.dataobjects;
 // @author Jonas
 public class User {
 
-    private int userID;
+    private String userID;
     private String email;
     private int smashbit;
     private String username;
     private String imageUrl;
     private String country;
 
-    public User(int userID, String email, int smashbit, String username, String imageUrl, String country) {
+    public User(String userID, String email, int smashbit, String username, String imageUrl, String country) {
         setUserID(userID);
         setEmail(email);
         setSmashbit(smashbit);
@@ -19,7 +19,7 @@ public class User {
         setCountry(country);
     }
 
-    public int getUserID() {
+    public String getUserID() {
         return userID;
     }
 
@@ -43,7 +43,7 @@ public class User {
         return country;
     }
 
-    private void setUserID(int userID) {
+    private void setUserID(String userID) {
         this.userID = userID;
     }
 
@@ -66,7 +66,5 @@ public class User {
     private void setCountry(String country) {
         this.country = country;
     }
-    
-    
-    
+
 }

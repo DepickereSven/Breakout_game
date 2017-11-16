@@ -10,18 +10,17 @@ const backUrl = [
 const { wsClient } = require('./socket/client')
 const constants = require('./constants')
 
-// require('./music')
 // require('./stats')
 // require('./get_nation_data')
-// require('./generate_levels')
 
 const { viewManager } = require('./views/index')
 
 // Views
 $(document).ready(function () {
   window.wsClient = wsClient
-  wsClient.open()
-  viewManager.goHome()
+  wsClient.open(function () {
+    viewManager.go('login.html')
+  })
 
   /**
  * - The android app needs 4,5 sec to show the vid.

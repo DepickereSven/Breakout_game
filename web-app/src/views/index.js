@@ -1,3 +1,5 @@
+const login = require('./login')
+const loading = require('./loading')
 const pickMode = require('./pick_mode')
 const multiplayerMenu = require('./multiplayer_menu')
 const createPrivateSuccess = require('./create_private_success')
@@ -12,6 +14,8 @@ const multiplayerWon = require('./multiplayer_game_victory')
 const multiplayerLost = require('./multiplayer_game_loss')
 
 const views = [
+  login,
+  loading,
   pickMode,
   multiplayerMenu,
   createPrivateSuccess,
@@ -34,7 +38,8 @@ views.forEach(function (val) {
 exports.viewsMap = viewsMap
 
 const viewsToRemove = {
-  'game.html': true
+  'game.html': true,
+  'loading.html': true
 }
 
 const SCREEN_ANIMATION_TIME = 500
@@ -111,6 +116,7 @@ class ViewManager {
 
   goHome () {
     this.viewHistory = []
+    $('.screen').remove()
     this.go('modes.html')
   }
 

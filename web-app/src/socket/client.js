@@ -16,7 +16,7 @@ class WsClient {
    * Open connection
    * @method
    */
-  open () {
+  open (callback) {
     if (this.ws !== undefined && this.ws.readyState !== WebSocket.CLOSED) {
       throw new Error('WebSocket is already opened.')
     }
@@ -25,7 +25,7 @@ class WsClient {
 
     this.ws = new WebSocket(constants.API_URL)
 
-    this.ws.onopen = this.onOpen
+    this.ws.onopen = callback
     this.ws.onclose = this.onClose
     this.ws.onmessage = this.onMessage
   }
@@ -37,13 +37,6 @@ class WsClient {
    */
   setClientId (clientId) {
     this.clientId = clientId
-  }
-
-  /**
-   * Event handler for succesfull connection
-   * @method
-   */
-  onOpen () {
   }
 
   /**
