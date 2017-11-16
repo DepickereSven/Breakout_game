@@ -2,6 +2,11 @@
  * @module initialize
  */
 
+const backUrl = [
+  ['modes', 'singleplayer_menu', 'singleplayer_level_menu'],
+  ['modes', 'multiplayer_menu']
+]
+
 const { wsClient } = require('./socket/client')
 const constants = require('./constants')
 
@@ -31,8 +36,22 @@ $(document).ready(function () {
 })
 
 $('body').on('click', '#go-back', function (e) {
-  window.history.back()
+  const url = window.location.href
+  if (url.indexOf('single') > 1) {
+    getRightUrl(0, url)
+  } else {
+    getRightUrl(1, url)
+  }
 })
+
+function getRightUrl (index, url) {
+  for (let i = 0; i < backUrl[index].length; i++) {
+    if (url.indexOf(backUrl[index][i]) > 1) {
+      viewManager.go(backUrl[index][i - 1] + '.html')
+    }
+  }
+  viewManager.go[backUrl[index][backUrl.length - 1]]
+}
 
 window.onhashchange = function (e) {
   viewManager.onLocationChange()
