@@ -28,7 +28,7 @@ exports.view = class SingleplayerLevelMenuView {
 
   handleLevelClick (e) {
     const { level } = $(e.currentTarget).data()
-    window.wsClient.send(CreateSingleplayerRequestAction.create())
+    window.wsClient.send(CreateSingleplayerRequestAction.create(parseInt(level)))
   }
 
   onLoad () {
