@@ -56,6 +56,8 @@ class ViewManager {
     this.onLocationChange = this.onLocationChange.bind(this)
     this.getCurrent = this.getCurrent.bind(this)
     this.goHome = this.goHome.bind(this)
+
+    this.event = new CustomEvent('back')
   }
 
   getPrevious () {
@@ -96,6 +98,7 @@ class ViewManager {
   }
 
   goBack () {
+    window.dispatchEvent(this.event)
     const url = window.location.href
     if (url.indexOf('single') > 1) {
       getRightUrl(0, url)
@@ -103,7 +106,6 @@ class ViewManager {
       getRightUrl(1, url)
     }
     this.getCurrent().onUnload()
-
     this.viewHistory.pop()
 
     // const previousView = this.getCurrent()
