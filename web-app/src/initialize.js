@@ -5,9 +5,6 @@
 const { wsClient } = require('./socket/client')
 const constants = require('./constants')
 
-// require('./stats')
-// require('./get_nation_data')
-
 const { viewManager } = require('./views/index')
 
 // Views

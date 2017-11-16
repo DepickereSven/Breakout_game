@@ -1,7 +1,7 @@
 const path = 'stats.html'
 exports.path = path
 
-exports.view = class PickModeView {
+exports.view = class StatsView {
   constructor (viewManager) {
     this.path = path
     this.hideHeader = false
