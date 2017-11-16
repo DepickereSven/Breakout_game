@@ -49,6 +49,8 @@ class ViewManager {
     this.onLocationChange = this.onLocationChange.bind(this)
     this.getCurrent = this.getCurrent.bind(this)
     this.goHome = this.goHome.bind(this)
+
+    this.event = new CustomEvent('back')
   }
 
   getPrevious () {
@@ -89,6 +91,8 @@ class ViewManager {
   }
 
   goBack () {
+    window.dispatchEvent(this.event)
+
     this.getCurrent().onUnload()
 
     this.viewHistory.pop()

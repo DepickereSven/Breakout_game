@@ -1,4 +1,5 @@
 const QRious = require('qrious')
+const CancelMultiplayerRequestAction = require('../actions/cancel_multiplayer_request')
 
 const path = 'create_private_success.html'
 exports.path = path
@@ -7,11 +8,16 @@ exports.view = class CreatePrivateSuccessView {
   constructor (viewManager, { key }) {
     this.path = path
     this.viewManager = viewManager
-    this.hideHeader = true
     this.key = key
 
     this.gameCode = '#code'
     this.shareButton = '#sharingIsCaring'
+
+    this.handleBack = this.handleBack.bind(this)
+  }
+
+  handleBack () {
+    window.wsClient.send(CancelMultiplayerRequestAction.create())
   }
 
   handleScanQrButtonClick () {
@@ -20,6 +26,7 @@ exports.view = class CreatePrivateSuccessView {
   }
 
   onLoad () {
+    window.addEventListener('back', this.handleBack)
     $(this.gameCode).text(this.key)
     $(this.shareButton).on('click', this.handleScanQrButtonClick)
     const qr = new QRious({
@@ -30,5 +37,6 @@ exports.view = class CreatePrivateSuccessView {
   }
 
   onUnload () {
+    window.removeEventListener('back', this.handleBack)
   }
 }
