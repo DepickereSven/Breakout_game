@@ -201,7 +201,6 @@ public class MainActivity extends Activity {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             //TODO add here links of site you want to show in their favorite app or browser instead
-            Log.d(TAG, "shouldOverrideUrlLoading: " + url);
             if (url.startsWith("tel:") || url.startsWith("sms:") || url.startsWith("smsto:") || url.startsWith("mailto:") || url.startsWith("mms:") || url.startsWith("mmsto:") || url.startsWith("market:") || url.startsWith("https://youtu.be/")) {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 startActivity(intent);
@@ -214,12 +213,17 @@ public class MainActivity extends Activity {
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        Log.d(TAG, "onKeyDown: "  + view);
-        if ((keyCode == KeyEvent.KEYCODE_BACK) && view.canGoBack()) {
-            view.goBack();
-            return true;
+        String url = new String(view.getUrl());
+        if (url.indexOf("#/game") > 1 || url.endsWith("#")){
+            return false;
         }
-        return super.onKeyDown(keyCode, event);
+        else {
+            if ((keyCode == KeyEvent.KEYCODE_BACK) && view.canGoBack()) {
+                view.goBack();
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
