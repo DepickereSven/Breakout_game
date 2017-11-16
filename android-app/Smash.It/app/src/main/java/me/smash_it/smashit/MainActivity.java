@@ -17,7 +17,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
-import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -85,9 +84,8 @@ public class MainActivity extends Activity {
                         + getString(R.string.user_agent_suffix)
         );
         view.getSettings().setJavaScriptEnabled(true);
-        view.getSettings().setAllowFileAccess(true);
         view.getSettings().setDomStorageEnabled(true);
-        view.getSettings().setJavaScriptEnabled(true);
+        view.getSettings().setMediaPlaybackRequiresUserGesture(false);
 //        view.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 //        view.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
 //        view.setLayerType(View.LAYER_TYPE_HARDWARE, null);
@@ -128,7 +126,7 @@ public class MainActivity extends Activity {
 //                }
 //            }
         });
-        view.setWebChromeClient(new WebChromeClient() {
+        view.setWebViewClient(new WebViewClient() {
         });
         view.loadUrl(myURL);
         view.addJavascriptInterface(new WebViewJavaScriptInterface(this), "SmashIt");
@@ -203,6 +201,7 @@ public class MainActivity extends Activity {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             //TODO add here links of site you want to show in their favorite app or browser instead
+            Log.d(TAG, "shouldOverrideUrlLoading: " + url);
             if (url.startsWith("tel:") || url.startsWith("sms:") || url.startsWith("smsto:") || url.startsWith("mailto:") || url.startsWith("mms:") || url.startsWith("mmsto:") || url.startsWith("market:") || url.startsWith("https://youtu.be/")) {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 startActivity(intent);
@@ -215,6 +214,7 @@ public class MainActivity extends Activity {
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        Log.d(TAG, "onKeyDown: "  + view);
         if ((keyCode == KeyEvent.KEYCODE_BACK) && view.canGoBack()) {
             view.goBack();
             return true;

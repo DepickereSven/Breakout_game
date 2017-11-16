@@ -12,7 +12,7 @@ public class MySqlConnection {
 
     private static final String URL = "jdbc:mysql://server.thomasbilliet.com/breakout";
     private static final String UID = "usrbreakout";
-    private static final String PWD = "Tibreakout2017";
+    private static final String PWD = "TIbreakout2017";
 
     // loading the class is only required for web applications
     static {

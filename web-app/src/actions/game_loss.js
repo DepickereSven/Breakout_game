@@ -5,8 +5,8 @@
 const { viewManager } = require('../views/index')
 
 exports.handler = function () {
-  // gameLossView.show()
   const mod = JSON.parse(localStorage.getItem('whatMode'))
+  console.log(mod)
   if (mod === 'multi') {
     viewManager.go('multiplayer_game_lost.html')
   } else {

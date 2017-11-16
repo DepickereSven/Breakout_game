@@ -8,7 +8,8 @@
   border-radius: 4px;
 
   object-fit: contain;
-  width: 90vw !important;
+  width: 90% !important;
+  max-width: 400px;
   height: unset !important;
   margin: auto auto 8px auto;
   position: absolute;
