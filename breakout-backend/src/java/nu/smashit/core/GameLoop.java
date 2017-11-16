@@ -13,7 +13,7 @@ import nu.smashit.socket.actions.GameStateUpdateAction;
  */
 public abstract class GameLoop extends TimerTask {
 
-    protected Ball ball;
+    public Ball ball;
     protected final Field field;
     protected final Game gameSession;
     protected Player lastPlayerToHitPaddle;
