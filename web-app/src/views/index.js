@@ -10,6 +10,12 @@ const singleplayerWon = require('./singleplayer_game_victory')
 const singleplayerLost = require('./singleplayer_game_loss')
 const multiplayerWon = require('./multiplayer_game_victory')
 const multiplayerLost = require('./multiplayer_game_loss')
+const stats = require('./stats_for_multi')
+
+const backUrl = [
+  ['modes', 'singleplayer_menu', 'singleplayer_level_menu'],
+  ['modes', 'multiplayer_menu']
+]
 
 const views = [
   pickMode,
@@ -23,7 +29,8 @@ const views = [
   singleplayerWon,
   singleplayerLost,
   multiplayerWon,
-  multiplayerLost
+  multiplayerLost,
+  stats
 ]
 
 const viewsMap = {}
@@ -89,12 +96,18 @@ class ViewManager {
   }
 
   goBack () {
+    const url = window.location.href
+    if (url.indexOf('single') > 1) {
+      getRightUrl(0, url)
+    } else {
+      getRightUrl(1, url)
+    }
     this.getCurrent().onUnload()
 
     this.viewHistory.pop()
 
-    const previousView = this.getCurrent()
-    previousView.onLoad()
+    // const previousView = this.getCurrent()
+    // previousView.onLoad()
 
     const currentViewEl = $('.screen')
       .last()
@@ -149,6 +162,15 @@ class ViewManager {
       }, 50)
     })
   }
+}
+
+function getRightUrl (index, url) {
+  for (let i = 0; i < backUrl[index].length; i++) {
+    if (url.indexOf(backUrl[index][i]) > 1) {
+      viewManager.go(backUrl[index][i - 1] + '.html')
+    }
+  }
+  viewManager.go(backUrl[index][backUrl.length - 1] + '.html')
 }
 
 const viewManager = new ViewManager()
