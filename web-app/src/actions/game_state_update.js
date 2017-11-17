@@ -6,22 +6,22 @@ const { viewManager } = require('../views/index')
 const playerReadyAction = require('./player_ready')
 const music = require('../music')
 
-exports.handler = function ({ bl, br, pl, cd, tm }) {
+exports.handler = function ({ b, br, p, c, tm }) {
   const view = viewManager.getCurrent()
   if (view.setCount) {
-    view.setCount(cd)
+    view.setCount(c)
     view.setTime(tm)
   }
 
-  if (cd === 0 && br.length > 0) {
+  if (c === 0 && br.length > 0) {
     music.play('brickHit')
   }
 
   window.gameLoop.updateBricks(br)
-  window.gameLoop.updateBall(bl)
-  window.gameLoop.updatePlayers(pl)
+  window.gameLoop.updateBall(b)
+  window.gameLoop.updatePlayers(p)
 
-  if (cd > 0 && br.length > 0) {
+  if (c > 0 && br.length > 0) {
     // Wait for first 2 frames to be drawn
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {

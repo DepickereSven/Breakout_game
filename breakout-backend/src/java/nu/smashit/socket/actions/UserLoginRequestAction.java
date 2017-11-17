@@ -11,8 +11,12 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.async.Callback;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import java.util.concurrent.Future;
+import nu.smashit.data.MySqlUserRepository;
+import nu.smashit.data.Repositories;
+import nu.smashit.data.UserRepository;
 import nu.smashit.data.dataobjects.User;
 import nu.smashit.socket.Client;
+import nu.smashit.utils.BreakoutException;
 import org.json.JSONObject;
 
 /**
@@ -39,6 +43,7 @@ public class UserLoginRequestAction implements RequestAction {
 
                     @Override
                     public void completed(HttpResponse<JsonNode> response) {
+                        UserRepository userRepo = Repositories.getUserRepository();
                         int code = response.getStatus();
 
                         if (code != 200) {
@@ -60,9 +65,17 @@ public class UserLoginRequestAction implements RequestAction {
                         String username = body.getString("name");
                         String imageUrl = body.getString("picture");
 
-                        User u = new User(userID, email, 0, username, imageUrl, country);
+                        User user;
+                        try {
+                            user = userRepo.getUser(userID);
+                        } catch (Exception ex) {
+                            user = new User(userID, email, 0, username, imageUrl, country);
+                            userRepo.addUser(user);
+                        }
 
-                        c.sendAction(new UserLoginSuccessAction(u));
+                        c.setUser(user);
+
+                        c.sendAction(new UserLoginSuccessAction(user));
                     }
 
                     @Override
