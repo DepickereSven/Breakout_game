@@ -10,14 +10,13 @@ const { viewManager } = require('./views/index')
 // Views
 $(document).ready(function () {
   window.wsClient = wsClient
-  if (!constants.IS_ANDROID_APP) {
-    wsClient.open(function () {
+  wsClient.open(function () {
+    if (!constants.IS_ANDROID_APP) {
       viewManager.go('login.html')
-    })
-  } else {
-    wsClient.open()
-    viewManager.goHome()
-  }
+    } else {
+      viewManager.goHome()
+    }
+  })
 
   /**
  * - The android app needs 4,5 sec to show the vid.
