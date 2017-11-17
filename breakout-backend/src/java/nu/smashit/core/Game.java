@@ -22,14 +22,16 @@ public abstract class Game implements Comparable<Game> {
 
     public int time;
     public int countDown;
+    public int level;
 
-    Game(String key) {
+    Game(String key, int level) {
         this.key = key;
         this.gameLoopTimer = new Timer();
         this.countDownTimer = new Timer();
         this.updateInterval = 33;
         this.countDown = 5;
         this.time = 0;
+        this.level = level;
     }
 
     public abstract void join(Client c);

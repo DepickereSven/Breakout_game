@@ -13,13 +13,10 @@ import nu.smashit.core.GameCanvas;
 @JsonFormat(shape = JsonFormat.Shape.ARRAY)
 public class Ball extends MovableBody {
 
-    @JsonIgnore
-    public double dx;
-    @JsonIgnore
-    public double dy;
+    private double dx;
+    private double dy;
 
-    final int DY_START_VALUE = -9;
-    final int DX_START_VALUE = DY_START_VALUE / 3;
+    private double dyStartValue = -9;
 
     public static final int HEIGHT = 12;
     public static final int WIDTH = HEIGHT;
@@ -33,18 +30,25 @@ public class Ball extends MovableBody {
         super(X_START_POS, Y_START_POS, WIDTH, HEIGHT);
         this.reset();
     }
+    
+    public Ball(double speedBall) {
+        super(X_START_POS, Y_START_POS, WIDTH, HEIGHT);
+        dyStartValue = speedBall;
+        setDyStartValue(speedBall);
+        this.reset();
+    }
 
     @Override
     public void reset() {
         super.reset();
-        this.dx = DX_START_VALUE;
-        this.dy = DY_START_VALUE;
+        setDx(getDxStartValue());
+        setDy(getDyStartValue());
     }
 
     public void move() {
-        dx = dx * MULTIPLIER;
-        dy = dy * MULTIPLIER;
-        super.move((int) dx, (int) dy);
+        setDx(getDx() * MULTIPLIER);
+        setDy(getDy() * MULTIPLIER);
+        super.move((int) getDx(), (int) getDy());
     }
 
     @JsonIgnore
@@ -54,7 +58,7 @@ public class Ball extends MovableBody {
 
     @JsonIgnore
     public boolean isGoingUp() {
-        return dy < 0;
+        return getDy() < 0;
     }
 
     @JsonIgnore
@@ -64,7 +68,7 @@ public class Ball extends MovableBody {
 
     @JsonIgnore
     public boolean isGoingLeft() {
-        return dx < 0;
+        return getDx() < 0;
     }
 
     @JsonIgnore
@@ -72,14 +76,44 @@ public class Ball extends MovableBody {
         return !isGoingLeft();
     }
 
-    @JsonIgnore
     public void inverseVerSpeed() {
-        dy = -dy;
+        setDy(-getDy());
+    }
+
+    public void inverseHozSpeed() {
+        setDx(-getDx());
     }
 
     @JsonIgnore
-    public void inverseHozSpeed() {
-        dx = -dx;
+    public double getDx() {
+        return dx;
+    }
+
+    public void setDx(double dx) {
+        this.dx = dx;
+    }
+
+    @JsonIgnore
+    public double getDy() {
+        return dy;
+    }
+
+    public void setDy(double dy) {
+        this.dy = dy;
+    }
+
+    @JsonIgnore
+    public double getDyStartValue() {
+        return dyStartValue;
+    }
+
+    private void setDyStartValue(double dyStartValue) {
+        this.dyStartValue = dyStartValue;
+    }
+    
+    @JsonIgnore
+    public double getDxStartValue() {
+        return getDyStartValue() / 3;
     }
 
 }

@@ -5,6 +5,7 @@ import nu.smashit.core.bodies.BrickRow;
 import nu.smashit.core.bodies.Brick;
 import nu.smashit.core.bodies.Ball;
 import java.util.TimerTask;
+import nu.smashit.data.Repositories;
 import nu.smashit.socket.actions.GameStateUpdateAction;
 
 /**
@@ -24,7 +25,8 @@ public abstract class GameLoop extends TimerTask {
         this.gameSession = gm;
         this.field = field;
         initRun = false;
-        ball = new Ball();
+        double speedBall = Repositories.getLevelRepository().getDifficulty(gm.level).getSpeedBall();
+        ball = new Ball(speedBall);
     }
 
     private boolean runBrickRowCollision(int i, GameStateUpdateAction updateState) {

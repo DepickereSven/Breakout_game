@@ -62,13 +62,16 @@ public class MySqlUserRepository implements UserRepository {
 
     private User createUserFromResultSet(ResultSet rs) {
         try {
-            String userID = rs.getString("userID");
-            String email = rs.getString("email");
-            int smashbit = rs.getInt("smashbit");
-            String username = rs.getString("username");
-            String imageUrl = rs.getString("imageUrl");
-            String country = rs.getString("country");
-            return new User(userID, email, smashbit, username, imageUrl, country);
+            if (rs.next()){
+                String userID = Integer.toString(rs.getInt("userID"));
+                String email = rs.getString("email");
+                int smashbit = rs.getInt("smashbit");
+                String username = rs.getString("username");
+                String imageUrl = rs.getString("imageUrl");
+                String country = rs.getString("country");
+                return new User(userID, email, smashbit, username, imageUrl, country);
+            }
+            throw new BreakoutException("Could not create the user.");
         } catch (SQLException ex) {
             throw new BreakoutException("Could not create the user.", ex);
         }

@@ -1,5 +1,6 @@
 package nu.smashit.core.bodies;
 
+import nu.smashit.data.Repositories;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
@@ -23,6 +24,6 @@ public class TestField {
     
     @Test
     public void testFieldSingleplayer(){
-        field = Field.getSingleplayerInstance(2);
+        field = Field.getSingleplayerInstance(Repositories.getLevelRepository().getDifficulty(2));
     }
 }

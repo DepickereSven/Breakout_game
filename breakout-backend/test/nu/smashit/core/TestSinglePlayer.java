@@ -23,7 +23,8 @@ public class TestSinglePlayer {
         Client client = new Client((Session) session);
         GameManager gsm = GameManager.getInstance();
         
-        SingleplayerGame sps = (SingleplayerGame) gsm.createSingleplayerGame(client);
+        int level = 1;
+        SingleplayerGame sps = (SingleplayerGame) gsm.createSingleplayerGame(client, level);
         
         Player player = sps.getPlayer();
         assertEquals(player.client, client);

@@ -13,10 +13,7 @@ import nu.smashit.utils.BreakoutException;
 public class MySqlLevelRepository implements LevelRepository{
 
     private static final String SQL_GET_DIFFICULTY_OF_LEVEL = 
-            "SELECT d.* " +
-            "FROM levels l" +
-            "INNER JOIN diffuculty d ON l.difficultyID = d.difficultyID" +
-            "WHERE levels = ?";
+            "SELECT difficulty.* FROM levels INNER JOIN difficulty ON levels.difficultyID = difficulty.difficultyID WHERE levels.levels = ?";
     
     @Override
     public Difficulty getDifficulty(int level) {
@@ -25,15 +22,19 @@ public class MySqlLevelRepository implements LevelRepository{
             prep.setInt(1, level);
             ResultSet rs = prep.executeQuery();
             
-            int id = rs.getInt("difficultyID");
-            int numberPowerups = rs.getInt("number_powerups");
-            int numberPowerdowns = rs.getInt("number_powerdowns");
-            int rows = rs.getInt("rows");
-            double speedBall = rs.getInt("speed_ball");
-            
-            return new Difficulty(id, numberPowerups, numberPowerdowns, rows, speedBall);
-        }catch(SQLException ex){
-            throw new BreakoutException("Could not get difficulty.", ex);
+            if (rs.next()){
+                int id = rs.getInt("difficultyID");
+                int numberPowerups = rs.getInt("number_powerups");
+                int numberPowerdowns = rs.getInt("number_powerdowns");
+                int rows = rs.getInt("rows");
+                double speedBall = rs.getInt("speed_ball");
+
+                return new Difficulty(id, numberPowerups, numberPowerdowns, rows, speedBall);
+            }
+            throw new BreakoutException("Could not get difficulty.");
+
+        } catch (SQLException ex) {
+           throw new BreakoutException("Could not get difficulty.", ex);
         }
     }
 

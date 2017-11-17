@@ -14,20 +14,20 @@ public class ThinkFast extends Power{
     public ThinkFast(GameLoop gameLoop, Player player,int extraSpeed){
         super(gameLoop, player);
         this.extraSpeed = extraSpeed;
-        this.originalDx = gameLoop.ball.dx;
-        this.originalDy = gameLoop.ball.dy;
+        this.originalDx = gameLoop.ball.getDx();
+        this.originalDy = gameLoop.ball.getDy();
     }
 
     @Override
     protected void doEffect() {
-        gameLoop.ball.dx = originalDx + extraSpeed;
-        gameLoop.ball.dy = originalDy + extraSpeed;
+        gameLoop.ball.setDx( originalDx + extraSpeed );
+        gameLoop.ball.setDy( originalDy + extraSpeed );
     }
 
     @Override
     protected void undoEffect() {
-        gameLoop.ball.dx = originalDx;
-        gameLoop.ball.dy = originalDy;
+        gameLoop.ball.setDx( originalDx );
+        gameLoop.ball.setDy( originalDy );
     }
 
 }

@@ -2,35 +2,36 @@ package nu.smashit.core.bodies;
 
 // @author Jonas
 import nu.smashit.core.GameCanvas;
+import nu.smashit.data.dataobjects.Difficulty;
 import nu.smashit.utils.Tools;
 
 public class Field extends Body {
 
     public final BrickRow[] brickRows;
     private final int numberOfRows;
-    private final int level;
+    private final Difficulty difficulty;
     private final boolean multiplayer;
     private int numberOfNormalBricks;
 
     private static final int SINGLEPLAYER_MARGIN_TOP = 50;
     private static final int[] ALLOWED_BRICKS_IN_ROW = new int[]{4, 5, 8};
 
-    public static Field getSingleplayerInstance(int level) {
-        return new Field(false, level);
+    public static Field getSingleplayerInstance(Difficulty difficulty) {
+        return new Field(false, difficulty);
     }
 
     public static Field getMultiplayerInstance() {
-        return new Field(true, 1);
+        return new Field(true, new Difficulty(0, 3, 3, 6, -9));
     }
 
-    private Field(boolean multiplayer, int level) {
+    private Field(boolean multiplayer, Difficulty difficulty) {
         super(0, 0, GameCanvas.WIDTH, 0);
 
         this.multiplayer = multiplayer;
-        this.level = Tools.validateBetween(level, 1, 100, 1);
-        this.numberOfRows = calcNumberOfRows();
+        this.difficulty = difficulty;
+        this.numberOfRows = difficulty.getRows();
         this.brickRows = new BrickRow[numberOfRows];
-        numberOfNormalBricks = 0;
+        this.numberOfNormalBricks = 0;
 
         this.height = calcFieldHeight();
         this.y = calcMarginTop() + this.height;
@@ -51,13 +52,8 @@ public class Field extends Body {
 
     private void generateField() {
 
-        int[] powerupsPerRow = new int[numberOfRows];
-        powerupsPerRow[0] = 1;
-        powerupsPerRow[1] = 1;
-        powerupsPerRow[2] = 1;
-        powerupsPerRow = Tools.shuffleArray(powerupsPerRow);
-
-        int[] powerdownsPerRow = Tools.shuffleArray(powerupsPerRow.clone());
+        int[] powerupsPerRow = getPowersPerRow(difficulty.getNumberPowerups());
+        int[] powerdownsPerRow = getPowersPerRow(difficulty.getNumberPowerdowns());
 
         for (int rownr = 0; rownr < numberOfRows; rownr++) {
             int y = (Brick.HEIGHT * (rownr + 1)) + calcMarginTop();
@@ -67,36 +63,18 @@ public class Field extends Body {
             int powerdownsInRow = powerdownsPerRow[rownr];
             int emptyPlacesInRow = getNumberOfEmptyPlacesInRow(totalPlacesInRow);
             int normalBricksInRow = totalPlacesInRow - powerupsInRow - powerdownsInRow - emptyPlacesInRow;
-
             numberOfNormalBricks += totalPlacesInRow - emptyPlacesInRow;
-
+            
             brickRows[rownr] = new BrickRow(normalBricksInRow, powerupsInRow, powerdownsInRow, emptyPlacesInRow, y);
         }
     }
-
-    private int calcNumberOfRows() {
-        //TODO read parameters from database
-        if (isMultiplayer()) {
-            return 6;
+    
+    private int[] getPowersPerRow(int number){
+        int[] array = new int[numberOfRows];
+        for (int i = 0; (i < number) && (i < difficulty.getRows()) ; i++){
+              array[i] = 1;
         }
-
-        if (isSingleplayer()) {
-            if (level <= 2) {
-                return 3;
-            } else if (level > 2 && level <= 4) {
-                return 4;
-            } else if (level > 4 && level <= 10) {
-                return 5;
-            } else if (level > 10 && level <= 40) {
-                return 6;
-            } else if (level > 40 && level <= 75) {
-                return 7;
-            } else {
-                return 8;
-            }
-        }
-
-        throw new Error("Error in field");
+        return Tools.shuffleArray(array);
     }
 
     private int getNumberOfEmptyPlacesInRow(int numberOfTotalPlacesInRow) {
@@ -104,17 +82,6 @@ public class Field extends Body {
             return (int) (numberOfTotalPlacesInRow * 0.45);
         }
         return 0;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(isMultiplayer() == true ? "Multiplayer" : "Singleplayer").append("\n");
-        for (BrickRow field1 : brickRows) {
-            sb.append(field1.toString());
-            sb.append("\n");
-        }
-        return sb.toString();
     }
 
     public BrickRow getRow(int rowIndex) {
@@ -136,8 +103,20 @@ public class Field extends Body {
     public boolean isSingleplayer() {
         return !multiplayer;
     }
-
+    
     public int getNumberOfNormalBricks() {
         return numberOfNormalBricks;
     }
+    
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(isMultiplayer() == true ? "Multiplayer" : "Singleplayer").append("\n");
+        for (BrickRow field1 : brickRows) {
+            sb.append(field1.toString());
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+    
 }

@@ -2,6 +2,7 @@ package nu.smashit.core;
 
 // @author Jonas
 import nu.smashit.core.bodies.Field;
+import nu.smashit.data.Repositories;
 import nu.smashit.socket.actions.GameLossAction;
 import nu.smashit.socket.actions.GameStateUpdateAction;
 import nu.smashit.socket.actions.GameVictoryAction;
@@ -9,9 +10,11 @@ import nu.smashit.socket.actions.GameVictoryAction;
 public class SingleplayerLoop extends GameLoop {
 
     private int brickHits;
-
-    public SingleplayerLoop(Game gm) {
-        super(gm, Field.getSingleplayerInstance(50));
+    
+    public SingleplayerLoop(Game gm, int level) {
+        super(gm, Field.getSingleplayerInstance(
+                Repositories.getLevelRepository().getDifficulty(level)
+        ));
         this.brickHits = 0;
     }
 
@@ -36,7 +39,7 @@ public class SingleplayerLoop extends GameLoop {
                 if (brickHits >= field.getNumberOfNormalBricks()) {
                     gameSession.broadcastAction(new GameVictoryAction());
                     gameSession.stopGame();
-                }
+                }                
             } else if (Collision.isWallCollision(ball)) {
                 ball.inverseHozSpeed();
             }

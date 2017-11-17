@@ -35,9 +35,9 @@ public class GameManager {
         return gm;
     }
 
-    public Game createSingleplayerGame(Client c) {
+    public Game createSingleplayerGame(Client c, int level) {
         String key = generateKey();
-        Game gm = new SingleplayerGame(key, c);
+        Game gm = new SingleplayerGame(key, c, level);
 
         gameSessions.put(gm.getKey(), gm);
         return gm;

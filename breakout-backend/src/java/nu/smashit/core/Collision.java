@@ -10,11 +10,11 @@ import nu.smashit.core.bodies.Body;
 public class Collision {
 
     private static double getBallX(Ball ball) {
-        return ball.dx * 0.7 + ball.x;
+        return ball.getDx() * 0.7 + ball.x;
     }
 
     private static double getBallY(Ball ball) {
-        return ball.dy * 0.7 + ball.y;
+        return ball.getDy() * 0.7 + ball.y;
     }
 
     public static boolean isWallCollision(Ball b) {

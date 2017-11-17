@@ -7,7 +7,7 @@ import nu.smashit.socket.Client;
 public class MultiplayerGame extends Game {
 
     public MultiplayerGame(String key) {
-        super(key);
+        super(key, 2);
         super.players = new Player[2];
     }
 

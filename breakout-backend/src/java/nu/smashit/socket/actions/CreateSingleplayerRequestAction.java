@@ -6,11 +6,13 @@ import nu.smashit.socket.Client;
 
 public class CreateSingleplayerRequestAction implements RequestAction {
 
+    public int level;
+    
     @Override
     public void handler(Client c) {
         GameManager gameSessionManager = GameManager.getInstance();
         try {
-            Game gm = gameSessionManager.createSingleplayerGame(c);
+            Game gm = gameSessionManager.createSingleplayerGame(c, level);
             gm.startGame();
         } catch (Error err) {
             c.sendAction(new CreateGameFailureAction(err.getMessage()));

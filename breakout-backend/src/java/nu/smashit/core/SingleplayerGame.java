@@ -6,8 +6,8 @@ import nu.smashit.core.Player.PlayerType;
 
 public class SingleplayerGame extends Game {
 
-    public SingleplayerGame(String key, Client c) {
-        super(key);
+    public SingleplayerGame(String key, Client c, int level) {
+        super(key, level);
 
         this.players = new Player[1];
         players[0] = new Player(c, PlayerType.PLAYER_1);
@@ -23,10 +23,10 @@ public class SingleplayerGame extends Game {
     public Player getPlayer() {
         return players[0];
     }
-
+    
     @Override
     protected void createGameLoop() {
-        gameLoop = new SingleplayerLoop(this);
+        gameLoop = new SingleplayerLoop(this, level);
     }
 
     @Override
