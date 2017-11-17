@@ -16,14 +16,14 @@ public class SchrunkenBall extends Power{
     
     @Override
     protected void doEffect() {
-        gameLoop.ball.height = SMALLER_DIAMETER;
-        gameLoop.ball.width = SMALLER_DIAMETER;
+        gameLoop.getBall().setHeight(SMALLER_DIAMETER);
+        gameLoop.getBall().setWidth( SMALLER_DIAMETER);
     }
 
     @Override
     protected void undoEffect() {
-        gameLoop.ball.height = Ball.HEIGHT;
-        gameLoop.ball.width = Ball.WIDTH;
+        gameLoop.getBall().setHeight(Ball.HEIGHT);
+        gameLoop.getBall().setWidth(Ball.WIDTH);
     }
 
 }

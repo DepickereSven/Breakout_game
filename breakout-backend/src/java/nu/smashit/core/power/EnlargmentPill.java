@@ -17,12 +17,12 @@ public class EnlargmentPill extends Power{
 
     @Override
     protected void doEffect() {
-        player.paddle.width = Paddle.WIDTH + extraWidth;
+        player.getPaddle().setWidth(Paddle.WIDTH + extraWidth);
     }
 
     @Override
     protected void undoEffect() {
-        player.paddle.width = Paddle.WIDTH;
+        player.getPaddle().setWidth(Paddle.WIDTH);
     }
 
 }

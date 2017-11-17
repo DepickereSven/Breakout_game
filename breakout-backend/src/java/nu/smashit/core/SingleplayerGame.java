@@ -8,10 +8,8 @@ public class SingleplayerGame extends Game {
 
     public SingleplayerGame(String key, Client c, int level) {
         super(key, level);
-
-        this.players = new Player[1];
-        players[0] = new Player(c, PlayerType.PLAYER_1);
-
+        super.setPlayers( new Player[1]);
+        super.getPlayers()[0] = new Player(c, PlayerType.PLAYER_1);
         c.setGame(this);
     }
 
@@ -21,12 +19,12 @@ public class SingleplayerGame extends Game {
     }
 
     public Player getPlayer() {
-        return players[0];
+        return getPlayers()[0];
     }
     
     @Override
     protected void createGameLoop() {
-        gameLoop = new SingleplayerLoop(this, level);
+        setGameLoop(new SingleplayerLoop(this, getLevel()));
     }
 
     @Override

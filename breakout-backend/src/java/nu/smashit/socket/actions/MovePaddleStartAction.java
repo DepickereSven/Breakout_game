@@ -25,7 +25,7 @@ public class MovePaddleStartAction implements RequestAction {
     public void handler(Client c) {
         if (c.isInGame()) {
             Game gm = c.getGame();
-            Paddle p = gm.getPlayer(c).paddle;
+            Paddle p = gm.getPlayer(c).getPaddle();
 
             if (direction.equals(LEFT)) {
                 p.goLeft();

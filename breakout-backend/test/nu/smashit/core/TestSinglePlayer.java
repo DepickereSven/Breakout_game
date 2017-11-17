@@ -27,7 +27,7 @@ public class TestSinglePlayer {
         SingleplayerGame sps = (SingleplayerGame) gsm.createSingleplayerGame(client, level);
         
         Player player = sps.getPlayer();
-        assertEquals(player.client, client);
+        assertEquals(player.getClient(), client);
         
         sps.createGameLoop();
         sps.stopGame();

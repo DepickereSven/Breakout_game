@@ -32,11 +32,11 @@ public class TestMultiplayer {
         
         Player player1 = mps.getPlayer(clientPlayer1);
         Player player2 = mps.getPlayer(clientPlayer2);
-        assertEquals(player1.client, clientPlayer1);
-        assertEquals(player2.client, clientPlayer2);
+        assertEquals(player1.getClient(), clientPlayer1);
+        assertEquals(player2.getClient(), clientPlayer2);
         
-        assertEquals((int)player1.score.getPoints(), 100);
-        assertEquals((int)player2.score.getPoints(), 100);
+        assertEquals((int)player1.getScore().getPoints(), 100);
+        assertEquals((int)player2.getScore().getPoints(), 100);
         
         int level = 1;
         mps.createGameLoop();

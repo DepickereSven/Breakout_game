@@ -19,7 +19,7 @@ public class MovePaddleStopAction implements RequestAction {
     public void handler(Client c) {
         if (c.isInGame()) {
             Game gm = c.getGame();
-            Paddle p = gm.getPlayer(c).paddle;
+            Paddle p = gm.getPlayer(c).getPaddle();
             p.goNowhere();
         }
     }

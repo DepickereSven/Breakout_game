@@ -18,11 +18,9 @@ public class Player {
         PLAYER_2
     }
 
-    @JsonIgnore
-    public final Client client;
-    public final Paddle paddle;
-    @JsonIgnore
-    public final Score score;
+    private final Client client;
+    private final Paddle paddle;
+    private final Score score;
     private boolean ready;
 
     public Player(Client client, PlayerType type) {
@@ -43,10 +41,25 @@ public class Player {
     }
 
     public String getClientId() {
-        return client.getShortId();
+        return getClient().getShortId();
     }
 
     public int getScorePoints() {
-        return score.getPoints();
+        return getScore().getPoints();
     }
+
+    @JsonIgnore
+    public Client getClient() {
+        return client;
+    }
+
+    public Paddle getPaddle() {
+        return paddle;
+    }
+
+    @JsonIgnore
+    public Score getScore() {
+        return score;
+    }
+    
 }

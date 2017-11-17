@@ -22,10 +22,10 @@ public class TestMobableBody {
         
         MovableBody mb = new MovableBody(x,y,width, height);
         mb.move(dx, dy);
-        assertEquals(mb.x, x + dx);
-        assertEquals(mb.y, x + dy);
-        assertEquals(mb.width, width);
-        assertEquals(mb.height, height);
+        assertEquals(mb.getX(), x + dx);
+        assertEquals(mb.getY(), x + dy);
+        assertEquals(mb.getWidth(), width);
+        assertEquals(mb.getHeight(), height);
     }
     
 }

@@ -21,30 +21,30 @@ public class SingleplayerLoop extends GameLoop {
     @Override
     protected void runLoop(GameStateUpdateAction updateState) {
         // Move paddles to position (Player controls)
-        for (Player p : gameSession.players) {
-            p.paddle.move();
+        for (Player p : getGameSession().getPlayers()) {
+            p.getPaddle().move();
         }
 
         // Ball movement
-        if (ball != null) {
-            if (Collision.isCeilingCollision(ball)) {
-                ball.inverseVerSpeed();
-            } else if (Collision.isFloorCollision(ball)) {
-                gameSession.broadcastAction(new GameLossAction());
-                gameSession.stopGame();
+        if (getBall() != null) {
+            if (Collision.isCeilingCollision(getBall())) {
+                getBall().inverseVerSpeed();
+            } else if (Collision.isFloorCollision(getBall())) {
+                getGameSession().broadcastAction(new GameLossAction());
+                getGameSession().stopGame();
                 return;
             } else if (runPaddleCollision(updateState)) {
             } else if (runBrickCollision(updateState)) {
                 brickHits += 1;
-                if (brickHits >= field.getNumberOfNormalBricks()) {
-                    gameSession.broadcastAction(new GameVictoryAction());
-                    gameSession.stopGame();
+                if (brickHits >= getField().getNumberOfNormalBricks()) {
+                    getGameSession().broadcastAction(new GameVictoryAction());
+                    getGameSession().stopGame();
                 }                
-            } else if (Collision.isWallCollision(ball)) {
-                ball.inverseHozSpeed();
+            } else if (Collision.isWallCollision(getBall())) {
+                getBall().inverseHozSpeed();
             }
 
-            ball.move();
+            getBall().move();
         }
     }
 

@@ -11,7 +11,7 @@ import nu.smashit.utils.Tools;
  */
 public class BrickRow extends Body {
 
-    public final Brick[] bricks;
+    private final Brick[] bricks;
     private final int numberOfNormalBricks;
     private final int numberOfPowerups;
     private final int numberOfPowerdowns;
@@ -31,7 +31,7 @@ public class BrickRow extends Body {
     }
 
     public Brick getBrick(int colIndex) {
-        return bricks[colIndex];
+        return getBricks()[colIndex];
     }
 
     public int getNumberOfTotalPlaces() {
@@ -71,10 +71,10 @@ public class BrickRow extends Body {
         for (int bricknr = 0; bricknr < number; bricknr++) {
             do {
                 place = Tools.getRandomBetween(0, getNumberOfTotalPlaces() - 1);
-            } while (bricks[place] != null);
+            } while (getBricks()[place] != null);
 
             int x = place * block_width;
-            bricks[place] = new Brick(x, y, block_width, Brick.HEIGHT, getRandomBrickType(sort));
+            bricks[place] = new Brick(x, getY(), block_width, Brick.HEIGHT, getRandomBrickType(sort));
         }
     }
 
@@ -82,11 +82,15 @@ public class BrickRow extends Body {
         //TODO uit db halen
         return new BrickType("test", sort);
     }
+    
+    public Brick[] getBricks() {
+        return bricks;
+    }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (Brick row1 : bricks) {
+        for (Brick row1 : getBricks()) {
             if (row1 == null) {
                 sb.append("*.............*");
             } else {
@@ -95,4 +99,5 @@ public class BrickRow extends Body {
         }
         return sb.toString();
     }
+
 }
