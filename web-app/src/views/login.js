@@ -1,4 +1,3 @@
-const { User } = require('../user')
 const UserLoginRequestAction = require('../actions/user_login_request')
 
 const path = 'login.html'
@@ -22,18 +21,14 @@ exports.view = class LoginView {
   }
 
   handleSignIn (googleUser) {
-    const profile = googleUser.getBasicProfile()
+    getCountryCode(country => {
+      window.wsClient.send(
+        UserLoginRequestAction.create({
+          token: googleUser.getAuthResponse().id_token,
+          country
+        })
+      )
 
-    getCountryCode((country) => {
-      window.user = new User({
-        id: profile.getId(),
-        username: profile.getName(),
-        imageUrl: profile.getImageUrl(),
-        email: profile.getEmail(),
-        country
-      })
-
-      window.wsClient.send(UserLoginRequestAction.create(window.user))
       this.viewManager.go('loading.html')
     })
   }

@@ -5,10 +5,17 @@
  */
 package nu.smashit.socket.actions;
 
+import nu.smashit.data.dataobjects.User;
+
 /**
  *
  * @author jodus
  */
 public class UserLoginSuccessAction implements ResponseAction {
 
+    public final User user;
+
+    public UserLoginSuccessAction(User user) {
+        this.user = user;
+    }
 }

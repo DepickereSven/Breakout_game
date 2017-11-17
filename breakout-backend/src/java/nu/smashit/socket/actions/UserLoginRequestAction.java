@@ -5,8 +5,15 @@
  */
 package nu.smashit.socket.actions;
 
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.async.Callback;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import java.util.concurrent.Future;
 import nu.smashit.data.dataobjects.User;
 import nu.smashit.socket.Client;
+import org.json.JSONObject;
 
 /**
  *
@@ -14,17 +21,56 @@ import nu.smashit.socket.Client;
  */
 public class UserLoginRequestAction implements RequestAction {
 
-    public String id;
-    public String username;
-    public String email;
-    public String imageUrl;
+    private static final String CLIENT_ID = "870997935508-c4325ugimh126ub88kl8o5c8nr2ms6ot.apps.googleusercontent.com";
+
     public String country;
+    public String token;
 
     @Override
     public void handler(Client c) {
-        User u = new User(id, email, 0, username, imageUrl, country);
+        Future<HttpResponse<JsonNode>> future = Unirest.post("https://www.googleapis.com/oauth2/v3/tokeninfo")
+                .queryString("id_token", token)
+                .asJsonAsync(new Callback<JsonNode>() {
 
-        c.sendAction(new UserLoginSuccessAction());
+                    @Override
+                    public void failed(UnirestException e) {
+                        c.sendAction(new UserLoginFailureAction());
+                    }
+
+                    @Override
+                    public void completed(HttpResponse<JsonNode> response) {
+                        int code = response.getStatus();
+
+                        if (code != 200) {
+                            c.sendAction(new UserLoginFailureAction());
+                            return;
+                        }
+
+                        JSONObject body = response.getBody().getObject();
+
+                        String aud = body.getString("aud");
+
+                        if (!aud.equalsIgnoreCase(CLIENT_ID)) {
+                            c.sendAction(new UserLoginFailureAction());
+                            return;
+                        }
+
+                        String userID = body.getString("sub");
+                        String email = body.getString("email");
+                        String username = body.getString("name");
+                        String imageUrl = body.getString("picture");
+
+                        User u = new User(userID, email, 0, username, imageUrl, country);
+
+                        c.sendAction(new UserLoginSuccessAction(u));
+                    }
+
+                    @Override
+                    public void cancelled() {
+                        c.sendAction(new UserLoginFailureAction());
+                    }
+
+                });
     }
 
 }
