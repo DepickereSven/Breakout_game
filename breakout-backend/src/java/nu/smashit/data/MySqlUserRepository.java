@@ -11,8 +11,7 @@ import nu.smashit.utils.BreakoutException;
 
 public class MySqlUserRepository implements UserRepository {
 
-    private static final String SQL_ADD_USER = "INSERT INTO users (email, smashbit, username, image_url, country) VALUES (?,?,?,?,?)";
-    private static final String SQL_GET_USER_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
+    private static final String SQL_ADD_USER = "INSERT INTO users (email, smashbit, username, image_url, country, userID) VALUES (?,?,?,?,?,?)";
     private static final String SQL_GET_USER_BY_USERID = "SELECT * FROM users WHERE userID = ?";
 
     @Override
@@ -25,6 +24,7 @@ public class MySqlUserRepository implements UserRepository {
             prep.setString(3, user.getUsername());
             prep.setString(4, user.getImageUrl());
             prep.setString(5, user.getCountry());
+            prep.setString(6, user.getUserID());
             prep.executeUpdate();
 
         } catch (SQLException ex) {
@@ -33,25 +33,11 @@ public class MySqlUserRepository implements UserRepository {
     }
 
     @Override
-    public User getUser(String email) {
+    public User getUser(String userID) {
         try (Connection conn = MySqlConnection.getConnection();
-                PreparedStatement prep = conn.prepareStatement(SQL_GET_USER_BY_EMAIL);) {
+                PreparedStatement prep = conn.prepareStatement(SQL_GET_USER_BY_USERID);) {
 
-            prep.setString(1, email);
-            ResultSet rs = prep.executeQuery();
-            return createUserFromResultSet(rs);
-
-        } catch (SQLException ex) {
-            throw new BreakoutException("Could not get user by email.", ex);
-        }
-    }
-
-    @Override
-    public User getUser(int userID) {
-        try (Connection conn = MySqlConnection.getConnection();
-                PreparedStatement prep = conn.prepareStatement(SQL_GET_USER_BY_EMAIL);) {
-
-            prep.setInt(1, userID);
+            prep.setString(1, userID);
             ResultSet rs = prep.executeQuery();
             return createUserFromResultSet(rs);
 
@@ -62,12 +48,12 @@ public class MySqlUserRepository implements UserRepository {
 
     private User createUserFromResultSet(ResultSet rs) {
         try {
-            if (rs.next()){
-                String userID = Integer.toString(rs.getInt("userID"));
+            if (rs.next()) {
+                String userID = rs.getString("userID");
                 String email = rs.getString("email");
                 int smashbit = rs.getInt("smashbit");
                 String username = rs.getString("username");
-                String imageUrl = rs.getString("imageUrl");
+                String imageUrl = rs.getString("image_url");
                 String country = rs.getString("country");
                 return new User(userID, email, smashbit, username, imageUrl, country);
             }
