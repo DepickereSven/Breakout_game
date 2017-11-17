@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "870997935508",
+    "project_id": "neural-caldron-186218"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870997935508:android:e29bea050b64cd70",
+        "android_client_info": {
+          "package_name": "me.smash_it.smashit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "870997935508-8g6qaoi7m3oa3am1fgrr7u5cgmdjtfkc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "me.smash_it.smashit",
+            "certificate_hash": "94e5dc5ca24b02ccdda1dc2df642b4ff44bdf3c0"
+          }
+        },
+        {
+          "client_id": "870997935508-c4325ugimh126ub88kl8o5c8nr2ms6ot.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2z4pn9k6egQ-Rw04VRUsrCwTIiKeNssg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
