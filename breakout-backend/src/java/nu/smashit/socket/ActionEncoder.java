@@ -28,7 +28,9 @@ public class ActionEncoder implements Encoder.Text<ResponseAction> {
     @Override
     public String encode(ResponseAction a) throws EncodeException {
         try {
-            return objectMapper.writeValueAsString(a);
+            String s = objectMapper.writeValueAsString(a);
+            s = s.substring(5, s.length() - 1);
+            return s;
         } catch (JsonProcessingException ex) {
             Logger.getLogger(ActionEncoder.class.getName()).log(Level.SEVERE, null, ex);
             return null;

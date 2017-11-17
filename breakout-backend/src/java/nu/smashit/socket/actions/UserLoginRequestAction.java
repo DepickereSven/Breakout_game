@@ -73,6 +73,8 @@ public class UserLoginRequestAction implements RequestAction {
                             userRepo.addUser(user);
                         }
 
+                        c.setUser(user);
+
                         c.sendAction(new UserLoginSuccessAction(user));
                     }
 

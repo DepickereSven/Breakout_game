@@ -1,15 +1,16 @@
 package nu.smashit.core;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import nu.smashit.core.bodies.Paddle;
 import nu.smashit.data.dataobjects.Score;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import nu.smashit.socket.Client;
 
 /**
  *
  * @author jodus
  */
+@JsonFormat(shape = JsonFormat.Shape.ARRAY)
 public class Player {
 
     public static enum PlayerType {
@@ -19,7 +20,6 @@ public class Player {
 
     @JsonIgnore
     public final Client client;
-    @JsonProperty("p")
     public final Paddle paddle;
     @JsonIgnore
     public final Score score;
@@ -42,12 +42,10 @@ public class Player {
         ready = true;
     }
 
-    @JsonProperty("c")
     public String getClientId() {
         return client.getShortId();
     }
 
-    @JsonProperty("s")
     public int getScorePoints() {
         return score.getPoints();
     }

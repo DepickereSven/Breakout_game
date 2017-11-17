@@ -2,7 +2,7 @@
  * @module gameLoop
  */
 
-const { Player } = require('./player')
+const { Player, getClientId } = require('./player')
 const { Ball } = require('./bodies/ball')
 const { Brick, getBrickId } = require('./bodies/brick')
 
@@ -30,11 +30,12 @@ exports.GameLoop = class GameLoop {
   updatePlayers (players) {
     const isMultiplayer = players.length === 2
     for (const p of players) {
-      if (!this.players[p.c]) {
-        const isCurrentPlayer = p.c === window.wsClient.clientId
-        this.players[p.c] = new Player(isCurrentPlayer, isMultiplayer)
+      const id = getClientId(p)
+      if (!this.players[id]) {
+        const isCurrentPlayer = id === window.wsClient.clientId
+        this.players[id] = new Player(isCurrentPlayer, isMultiplayer)
       }
-      this.players[p.c].update(p)
+      this.players[id].update(p)
     }
   }
 

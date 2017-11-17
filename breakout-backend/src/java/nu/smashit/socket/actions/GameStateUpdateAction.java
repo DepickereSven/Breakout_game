@@ -18,13 +18,13 @@ import nu.smashit.core.Player;
  */
 public class GameStateUpdateAction implements ResponseAction {
 
-    @JsonProperty("bl")
+    @JsonProperty("b")
     public Ball ball;
-    @JsonProperty("pl")
+    @JsonProperty("p")
     public Player[] players;
     @JsonProperty("br")
     public Set<Brick> bricks;
-    @JsonProperty("cd")
+    @JsonProperty("c")
     public int countDown;
     @JsonProperty("tm")
     public int time;

@@ -1,7 +1,9 @@
 /** @module player */
 
-const {Paddle} = require('./bodies/paddle')
-const {Score} = require('./bodies/score')
+const { Paddle } = require('./bodies/paddle')
+const { Score } = require('./bodies/score')
+
+exports.getClientId = ([paddle, clientId]) => clientId
 
 exports.Player = class Player {
   constructor (currentPlayer = false, multiplayer = true) {
@@ -13,10 +15,10 @@ exports.Player = class Player {
     }
   }
 
-  update ({p, s}) {
-    this.paddle.update(p)
+  update ([paddle, clientId, score]) {
+    this.paddle.update(paddle)
     if (this.multiplayer) {
-      this.score.update(s)
+      this.score.update(score)
     }
   }
 }
