@@ -37,6 +37,8 @@ npm start
 <dd></dd>
 <dt><a href="#module_utils">utils</a></dt>
 <dd></dd>
+<dt><a href="#actions/cancel_multiplayer_request.module_js">js</a></dt>
+<dd></dd>
 <dt><a href="#actions/connection_success.module_js">js</a></dt>
 <dd></dd>
 <dt><a href="#actions/create_multiplayer_request.module_js">js</a></dt>
@@ -64,6 +66,12 @@ npm start
 <dt><a href="#actions/move_paddle_start.module_js">js</a></dt>
 <dd></dd>
 <dt><a href="#actions/move_paddle_stop.module_js">js</a></dt>
+<dd></dd>
+<dt><a href="#actions/user_login_failure.module_js">js</a></dt>
+<dd></dd>
+<dt><a href="#actions/user_login_request.module_js">js</a></dt>
+<dd></dd>
+<dt><a href="#actions/user_login_success.module_js">js</a></dt>
 <dd></dd>
 <dt><a href="#module_bodies/ball">bodies/ball</a></dt>
 <dd></dd>
@@ -237,6 +245,9 @@ Generate either 1 or -1
 Generate random color in RGB
 
 **Kind**: inner method of [<code>utils</code>](#module_utils)  
+<a name="actions/cancel_multiplayer_request.module_js"></a>
+
+## js
 <a name="actions/connection_success.module_js"></a>
 
 ## js
@@ -277,6 +288,15 @@ Generate random color in RGB
 
 ## js
 <a name="actions/move_paddle_stop.module_js"></a>
+
+## js
+<a name="actions/user_login_failure.module_js"></a>
+
+## js
+<a name="actions/user_login_request.module_js"></a>
+
+## js
+<a name="actions/user_login_success.module_js"></a>
 
 ## js
 <a name="module_bodies/ball"></a>
@@ -490,7 +510,6 @@ Draws the score on the screen
     * [~WsClient](#module_socket/client..WsClient)
         * [.open()](#module_socket/client..WsClient+open)
         * [.setClientId()](#module_socket/client..WsClient+setClientId)
-        * [.onOpen()](#module_socket/client..WsClient+onOpen)
         * [.onClose()](#module_socket/client..WsClient+onClose)
         * [.onMessage()](#module_socket/client..WsClient+onMessage)
         * [.send(action)](#module_socket/client..WsClient+send)
@@ -512,7 +531,6 @@ Websocket client
 * [~WsClient](#module_socket/client..WsClient)
     * [.open()](#module_socket/client..WsClient+open)
     * [.setClientId()](#module_socket/client..WsClient+setClientId)
-    * [.onOpen()](#module_socket/client..WsClient+onOpen)
     * [.onClose()](#module_socket/client..WsClient+onClose)
     * [.onMessage()](#module_socket/client..WsClient+onMessage)
     * [.send(action)](#module_socket/client..WsClient+send)
@@ -527,12 +545,6 @@ Open connection
 
 #### wsClient.setClientId()
 Set the clientIdOnly done once
-
-**Kind**: instance method of [<code>WsClient</code>](#module_socket/client..WsClient)  
-<a name="module_socket/client..WsClient+onOpen"></a>
-
-#### wsClient.onOpen()
-Event handler for succesfull connection
 
 **Kind**: instance method of [<code>WsClient</code>](#module_socket/client..WsClient)  
 <a name="module_socket/client..WsClient+onClose"></a>
