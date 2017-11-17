@@ -1,4 +1,4 @@
-package me.smash_it.smashit;
+package nu.smashit.view;
 
 import android.app.Activity;
 import android.content.Context;

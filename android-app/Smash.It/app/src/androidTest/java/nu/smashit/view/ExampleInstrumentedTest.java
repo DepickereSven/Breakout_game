@@ -1,4 +1,4 @@
-package me.smash_it.smashit;
+package nu.smashit.view;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
