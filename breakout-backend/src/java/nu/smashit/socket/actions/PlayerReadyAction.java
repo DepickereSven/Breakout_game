@@ -6,6 +6,7 @@
 package nu.smashit.socket.actions;
 
 import nu.smashit.core.Game;
+import nu.smashit.data.dataobjects.User;
 import nu.smashit.socket.Client;
 
 /**
@@ -16,9 +17,10 @@ public class PlayerReadyAction implements RequestAction {
 
     @Override
     public void handler(Client c) {
-        if (c.isInGame()) {
-            Game gm = c.getGame();
-            gm.playerReady(c);
+        User u = c.getUser();
+        if (u.isInGame()) {
+            Game gm = u.getGame();
+            gm.playerReady(u);
         }
     }
 

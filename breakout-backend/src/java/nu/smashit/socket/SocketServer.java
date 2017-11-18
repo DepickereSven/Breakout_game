@@ -10,6 +10,7 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 import nu.smashit.core.Game;
 import nu.smashit.core.GameManager;
+import nu.smashit.data.dataobjects.User;
 import nu.smashit.socket.actions.GameStopAction;
 
 @ServerEndpoint(
@@ -61,9 +62,10 @@ public class SocketServer {
     @OnClose
     public void onClose(Session session) {
         Client c = clientManager.getClient(session);
+        User u = c.getUser();
 
-        if (c.isInGame()) {
-            Game gm = c.getGame();
+        if (u != null && u.isInGame()) {
+            Game gm = u.getGame();
             gm.broadcastAction(new GameStopAction());
             gm.stopGame();
         }

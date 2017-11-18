@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nu.smashit.socket.actions;
 
 import com.mashape.unirest.http.HttpResponse;
@@ -11,12 +6,10 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.async.Callback;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import java.util.concurrent.Future;
-import nu.smashit.data.MySqlUserRepository;
 import nu.smashit.data.Repositories;
 import nu.smashit.data.UserRepository;
 import nu.smashit.data.dataobjects.User;
 import nu.smashit.socket.Client;
-import nu.smashit.utils.BreakoutException;
 import org.json.JSONObject;
 
 /**
@@ -43,9 +36,7 @@ public class UserLoginRequestAction implements RequestAction {
 
                     @Override
                     public void completed(HttpResponse<JsonNode> response) {
-                        UserRepository userRepo = Repositories.getUserRepository();
                         int code = response.getStatus();
-
                         if (code != 200) {
                             c.sendAction(new UserLoginFailureAction());
                             return;
@@ -54,33 +45,41 @@ public class UserLoginRequestAction implements RequestAction {
                         JSONObject body = response.getBody().getObject();
 
                         String aud = body.getString("aud");
-
                         if (!aud.equalsIgnoreCase(CLIENT_ID)) {
                             c.sendAction(new UserLoginFailureAction());
                             return;
                         }
-
-                        String userID = body.getString("sub");
-                        String email = body.getString("email");
-                        String username = body.getString("name");
-                        String imageUrl = body.getString("picture");
-
-                        User user;
-                        try {
-                            user = userRepo.getUser(userID);
-                        } catch (Exception ex) {
-                            user = new User(userID, email, 0, username, imageUrl, country);
-                            userRepo.addUser(user);
-                        }
-
+                        
+                        User user = createUserFromJSONBody(body);
                         c.setUser(user);
-
                         c.sendAction(new UserLoginSuccessAction(user));
                     }
 
                     @Override
                     public void cancelled() {
                         c.sendAction(new UserLoginFailureAction());
+                    }
+
+                    private User createUserFromJSONBody(JSONObject body) {
+                        String userID = body.getString("sub");
+                        String email = body.getString("email");
+                        String username = body.getString("name");
+                        String imageUrl = body.getString("picture");
+
+                        UserRepository userRepo = Repositories.getUserRepository();
+                        User user;
+                        try {
+                            user = userRepo.getUser(userID)
+                                    .setClient(c)
+                                    .build();
+                        } catch (Exception ex) {
+                            user = User.builder()
+                                    .setUserData(userID, email, 0 , username, imageUrl, country)
+                                    .setClient(c)
+                                    .build();
+                            userRepo.addUser(user);
+                        }
+                        return user;
                     }
 
                 });

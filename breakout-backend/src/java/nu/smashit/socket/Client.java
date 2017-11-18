@@ -2,7 +2,6 @@ package nu.smashit.socket;
 
 import nu.smashit.socket.actions.ResponseAction;
 import javax.websocket.Session;
-import nu.smashit.core.Game;
 import nu.smashit.data.dataobjects.User;
 
 /**
@@ -13,7 +12,6 @@ public class Client {
 
     private final Session session;
     private User user;
-    private Game gameSession;
 
     public Client(Session session) {
         this.session = session;
@@ -33,22 +31,6 @@ public class Client {
         }
     }
 
-    public boolean isInGame() {
-        return gameSession != null && session != null;
-    }
-
-    public void setGame(Game gameSession) {
-        this.gameSession = gameSession;
-    }
-
-    public Game getGame() {
-        return gameSession;
-    }
-
-    public void removeGame() {
-        this.gameSession = null;
-    }
-
     public void setUser(User user) {
         this.user = user;
     }
@@ -56,4 +38,5 @@ public class Client {
     public User getUser() {
         return user;
     }
+    
 }

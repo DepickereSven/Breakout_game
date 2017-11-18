@@ -33,7 +33,7 @@ public class MySqlUserRepository implements UserRepository {
     }
 
     @Override
-    public User getUser(String userID) {
+    public User.Builder getUser(String userID) {
         try (Connection conn = MySqlConnection.getConnection();
                 PreparedStatement prep = conn.prepareStatement(SQL_GET_USER_BY_USERID);) {
 
@@ -46,7 +46,7 @@ public class MySqlUserRepository implements UserRepository {
         }
     }
 
-    private User createUserFromResultSet(ResultSet rs) {
+    private User.Builder createUserFromResultSet(ResultSet rs) {
         try {
             if (rs.next()) {
                 String userID = rs.getString("userID");
@@ -55,7 +55,9 @@ public class MySqlUserRepository implements UserRepository {
                 String username = rs.getString("username");
                 String imageUrl = rs.getString("image_url");
                 String country = rs.getString("country");
-                return new User(userID, email, smashbit, username, imageUrl, country);
+                
+                return User.builder()
+                        .setUserData(userID, email, smashbit, username, imageUrl, country);
             }
             throw new BreakoutException("Could not create the user.");
         } catch (SQLException ex) {

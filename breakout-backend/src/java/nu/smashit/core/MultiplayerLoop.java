@@ -43,14 +43,14 @@ public class MultiplayerLoop extends GameLoop {
                 scoredPlayer.getScore().addOpponentDeath();
 
                 if (!lostPlayer.getScore().isAlive()) {
-                    scoredPlayer.getClient().sendAction(new GameVictoryAction());
-                    lostPlayer.getClient().sendAction(new GameLossAction());
+                    scoredPlayer.sendAction(new GameVictoryAction());
+                    lostPlayer.sendAction(new GameLossAction());
                     getGameSession().stopGame();
                     return;
                 }
 
-                scoredPlayer.getClient().sendAction(new OpponentDeathAction());
-                lostPlayer.getClient().sendAction(new PlayerDeathAction());
+                scoredPlayer.sendAction(new OpponentDeathAction());
+                lostPlayer.sendAction(new PlayerDeathAction());
 
                 getBall().reset();
             }

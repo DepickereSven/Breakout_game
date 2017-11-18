@@ -2,7 +2,7 @@ package nu.smashit.core;
 
 // @author Jonas
 import nu.smashit.core.Player.PlayerType;
-import nu.smashit.socket.Client;
+import nu.smashit.data.dataobjects.User;
 
 public class MultiplayerGame extends Game {
 
@@ -12,16 +12,16 @@ public class MultiplayerGame extends Game {
     }
 
     @Override
-    public void join(Client c) {
+    public void join(User u) {
         if (getPlayers()[0] == null) {
-            getPlayers()[0] = new Player(c, PlayerType.PLAYER_1);
+            getPlayers()[0] = new Player(u, PlayerType.PLAYER_1);
         } else if (getPlayers()[1] == null) {
-            getPlayers()[1] = new Player(c, PlayerType.PLAYER_2);
+            getPlayers()[1] = new Player(u, PlayerType.PLAYER_2);
         } else {
             throw new Error("GameSession full");
         }
 
-        c.setGame(this);
+        u.setGame(this);
     }
 
     @Override
@@ -30,8 +30,8 @@ public class MultiplayerGame extends Game {
     }
 
     @Override
-    public Player getPlayer(Client c) {
-        return getPlayers()[0].getClient() == c ? getPlayers()[0] : getPlayers()[1];
+    public Player getPlayer(User u) {
+        return getPlayers()[0].getUser() == u ? getPlayers()[0] : getPlayers()[1];
     }
 
     public Player getTopPlayer() {

@@ -7,6 +7,6 @@ public interface UserRepository {
 
     public void addUser(User user);
 
-    public User getUser(String userID);
+    public User.Builder getUser(String userID);
 
 }

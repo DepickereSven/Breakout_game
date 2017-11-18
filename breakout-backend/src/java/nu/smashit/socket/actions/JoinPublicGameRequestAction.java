@@ -19,7 +19,7 @@ public class JoinPublicGameRequestAction implements RequestAction {
     public void handler(Client c) {
         GameManager gameSessionManager = GameManager.getInstance();
         try {
-            Game gm = gameSessionManager.joinPublicMultiplayerGame(c);
+            Game gm = gameSessionManager.joinPublicMultiplayerGame(c.getUser());
             c.sendAction(new JoinGameSuccessAction(gm.getKey()));
             if (gm.isFull()) {
                 gm.startGame();
