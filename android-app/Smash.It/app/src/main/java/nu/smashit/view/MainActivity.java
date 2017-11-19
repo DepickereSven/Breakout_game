@@ -222,7 +222,7 @@ public class MainActivity extends Activity {
                     Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
                 } else {
                     Log.d(TAG, "wingcrony onActivityResult: " + result);
-                    injectTheResultCode(codeResult);
+                    injectQrCodeCall(codeResult);
                 }
             }
         }
@@ -234,7 +234,7 @@ public class MainActivity extends Activity {
 
             // Signed in successfully, show authenticated UI.
             Log.d(TAG, "wingcrony result data " + account + " "  + account.getIdToken() + " "  + account.getEmail());
-            view.loadUrl("javascript:" + "window.onAndroidSignIn(" + account.getIdToken() + ")");
+            injectSignInTokenCall(account.getIdToken());
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
@@ -242,8 +242,12 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void injectTheResultCode(String message) {
-        view.loadUrl("javascript:" + "$('#code_for_join_private_game').val('" + message + "')");
+    public void injectSignInTokenCall(String idToken) {
+        view.loadUrl("javascript:" + "window.onAndroidSignIn('" + idToken + "')");
+    }
+
+    public void injectQrCodeCall(String message) {
+        view.loadUrl("javascript:" + "window.onAndroidQrScan('" + message + "')");
     }
 
     private class MyWebViewClient extends WebViewClient {

@@ -14,6 +14,7 @@ exports.view = class JoinPrivate {
     this.codeInput = '#code_for_join_private_game'
 
     this.handleSubmitButtonClick = this.handleSubmitButtonClick.bind(this)
+    this.handleKeyRetrieval = this.handleKeyRetrieval.bind(this)
   }
 
   handleKeyRetrieval (key) {
@@ -35,6 +36,8 @@ exports.view = class JoinPrivate {
   }
 
   onLoad () {
+    window.onAndroidQrScan = this.handleKeyRetrieval
+
     $(this.submitButton).on('click', this.handleSubmitButtonClick.bind(this))
     if (constants.IS_ANDROID_APP) {
       window.fill = this.handleSubmitButtonClick
@@ -43,6 +46,8 @@ exports.view = class JoinPrivate {
   }
 
   onUnload () {
+    window.onAndroidQrScan = undefined
+
     $(this.submitButton).off('click')
     if (constants.IS_ANDROID_APP) {
       window.fill = undefined
