@@ -14,38 +14,37 @@ import nu.smashit.socket.actions.GameStateUpdateAction;
  */
 public abstract class GameLoop extends TimerTask {
 
-    public Ball ball;
-    protected final Field field;
-    protected final Game gameSession;
-    protected Player lastPlayerToHitPaddle;
-
-    protected boolean initRun;
+    private Ball ball;
+    private final Field field;
+    private final Game gameSession;
+    private Player lastPlayerToHitPaddle;
+    private boolean initRun;
 
     public GameLoop(Game gm, Field field) {
         this.gameSession = gm;
         this.field = field;
-        initRun = false;
-        double speedBall = Repositories.getLevelRepository().getDifficulty(gm.level).getSpeedBall();
-        ball = new Ball(speedBall);
+        double speedBall = Repositories.getLevelRepository().getDifficulty(gm.getLevel()).getSpeedBall();
+        setBall( new Ball(speedBall) );
+        setInitRun(false);
     }
 
     private boolean runBrickRowCollision(int i, GameStateUpdateAction updateState) {
-        BrickRow brickRow = field.getRow(i);
+        BrickRow brickRow = getField().getRow(i);
 
-        if (Collision.isVerCollision(ball, brickRow)) {
-            for (Brick brick : brickRow.bricks) {
-                if (brick != null && !brick.isBroken() && Collision.isHozCollision(ball, brick)) {
+        if (Collision.isVerCollision(getBall(), brickRow)) {
+            for (Brick brick : brickRow.getBricks()) {
+                if (brick != null && !brick.isBroken() && Collision.isHozCollision(getBall(), brick)) {
                     brick.smashBrick();
                     updateState.addBrick(brick);
 
-                    if (Collision.isTopOrBottomCollision(ball, brick)) {
-                        ball.inverseVerSpeed();
+                    if (Collision.isTopOrBottomCollision(getBall(), brick)) {
+                        getBall().inverseVerSpeed();
                     } else {
-                        ball.inverseHozSpeed();
+                        getBall().inverseHozSpeed();
                     }
 
-                    if (lastPlayerToHitPaddle != null) {
-                        lastPlayerToHitPaddle.score.addBrickSmash(brick);
+                    if (getLastPlayerToHitPaddle() != null) {
+                        getLastPlayerToHitPaddle().getScore().addBrickSmash(brick);
                     }
 
                     return true;
@@ -58,9 +57,9 @@ public abstract class GameLoop extends TimerTask {
 
     protected boolean runBrickCollision(GameStateUpdateAction updateState) {
         int start = 0;
-        int end = field.getNumberOfRows() - 1;
+        int end = getField().getNumberOfRows() - 1;
 
-        if (ball.isGoingUp()) {
+        if (getBall().isGoingUp()) {
             for (int i = end; i >= start; i--) {
                 if (runBrickRowCollision(i, updateState)) {
                     return true;
@@ -78,16 +77,16 @@ public abstract class GameLoop extends TimerTask {
     }
 
     protected boolean runPaddleCollision(GameStateUpdateAction updateState) {
-        int pIndex = (ball.isGoingUp() && gameSession.playerCount() > 1) ? 1 : 0;
-        Player player = gameSession.players[pIndex];
+        int pIndex = (getBall().isGoingUp() && getGameSession().playerCount() > 1) ? 1 : 0;
+        Player player = getGameSession().getPlayers()[pIndex];
 
-        if (player != null && Collision.isCollision(ball, player.paddle)) {
-            if (Collision.isTopOrBottomCollision(ball, player.paddle)) {
-                ball.inverseVerSpeed();
+        if (player != null && Collision.isCollision(getBall(), player.getPaddle())) {
+            if (Collision.isTopOrBottomCollision(getBall(), player.getPaddle())) {
+                getBall().inverseVerSpeed();
             } else {
-                ball.inverseHozSpeed();
+                getBall().inverseHozSpeed();
             }
-            lastPlayerToHitPaddle = player;
+            setLastPlayerToHitPaddle(player);
             return true;
         }
 
@@ -96,7 +95,7 @@ public abstract class GameLoop extends TimerTask {
 
     private void reverseYBodies(GameStateUpdateAction updateState) {
         for (Player p : updateState.players) {
-            p.paddle.reverseY();
+            p.getPaddle().reverseY();
         }
         for (Brick b : updateState.bricks) {
             b.reverseY();
@@ -105,19 +104,19 @@ public abstract class GameLoop extends TimerTask {
     }
 
     public void initRun() {
-        initRun = true;
+        setInitRun(true);
         run();
-        initRun = false;
+        setInitRun(false);
     }
 
     @Override
     public void run() {
-        GameStateUpdateAction updateState = new GameStateUpdateAction(ball, gameSession.players, gameSession.countDown, gameSession.time);
+        GameStateUpdateAction updateState = new GameStateUpdateAction(getBall(), getGameSession().getPlayers(), getGameSession().getCountDown(), getGameSession().getTime());
 
-        if (gameSession.countDown > 0) {
-            if (initRun) {
-                for (BrickRow br : field.brickRows) {
-                    for (Brick b : br.bricks) {
+        if (getGameSession().getCountDown() > 0) {
+            if (isInitRun()) {
+                for (BrickRow br : getField().getBrickRows()) {
+                    for (Brick b : br.getBricks()) {
                         if (b != null) {
                             updateState.addBrick(b);
                         }
@@ -128,17 +127,50 @@ public abstract class GameLoop extends TimerTask {
             runLoop(updateState);
         }
 
-        if (gameSession.playerCount() > 1) {
-            MultiplayerGame mg = (MultiplayerGame) gameSession;
+        if (getGameSession().playerCount() > 1) {
+            MultiplayerGame mg = (MultiplayerGame) getGameSession();
 
-            mg.getBottomPlayer().client.sendAction(updateState);
+            mg.getBottomPlayer().getUser().getClient().sendAction(updateState);
             reverseYBodies(updateState);
-            mg.getTopPlayer().client.sendAction(updateState);
+            mg.getTopPlayer().getUser().getClient().sendAction(updateState);
             reverseYBodies(updateState);
         } else {
-            gameSession.broadcastAction(updateState);
+            getGameSession().broadcastAction(updateState);
         }
     }
 
     protected abstract void runLoop(GameStateUpdateAction updateState);
+
+    public Ball getBall() {
+        return ball;
+    }
+
+    public void setBall(Ball ball) {
+        this.ball = ball;
+    }
+
+    public Field getField() {
+        return field;
+    }
+
+    public Game getGameSession() {
+        return gameSession;
+    }
+
+    public Player getLastPlayerToHitPaddle() {
+        return lastPlayerToHitPaddle;
+    }
+
+    protected void setLastPlayerToHitPaddle(Player lastPlayerToHitPaddle) {
+        this.lastPlayerToHitPaddle = lastPlayerToHitPaddle;
+    }
+
+    public boolean isInitRun() {
+        return initRun;
+    }
+
+    protected void setInitRun(boolean initRun) {
+        this.initRun = initRun;
+    }
+    
 }

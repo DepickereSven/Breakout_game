@@ -17,45 +17,45 @@ public class MultiplayerLoop extends GameLoop {
     @Override
     protected void runLoop(GameStateUpdateAction updateState) {
 
-        for (Player p : gameSession.players) {
-            p.paddle.move();
+        for (Player p : getGameSession().getPlayers()) {
+            p.getPaddle().move();
         }
 
         // Ball movement
-        if (ball != null) {
+        if (getBall() != null) {
             Player scoredPlayer = null;
             Player lostPlayer = null;
 
-            if (Collision.isCeilingCollision(ball)) {
-                lostPlayer = ((MultiplayerGame) gameSession).getTopPlayer();
-                scoredPlayer = ((MultiplayerGame) gameSession).getBottomPlayer();
-            } else if (Collision.isFloorCollision(ball)) {
-                lostPlayer = ((MultiplayerGame) gameSession).getBottomPlayer();
-                scoredPlayer = ((MultiplayerGame) gameSession).getTopPlayer();
+            if (Collision.isCeilingCollision(getBall())) {
+                lostPlayer = ((MultiplayerGame) getGameSession()).getTopPlayer();
+                scoredPlayer = ((MultiplayerGame) getGameSession()).getBottomPlayer();
+            } else if (Collision.isFloorCollision(getBall())) {
+                lostPlayer = ((MultiplayerGame) getGameSession()).getBottomPlayer();
+                scoredPlayer = ((MultiplayerGame) getGameSession()).getTopPlayer();
             } else if (runPaddleCollision(updateState)) {
             } else if (runBrickCollision(updateState)) {
-            } else if (Collision.isWallCollision(ball)) {
-                ball.inverseHozSpeed();
+            } else if (Collision.isWallCollision(getBall())) {
+                getBall().inverseHozSpeed();
             }
 
             if (scoredPlayer != null && lostPlayer != null) {
-                lostPlayer.score.subtractDeath();
-                scoredPlayer.score.addOpponentDeath();
+                lostPlayer.getScore().subtractDeath();
+                scoredPlayer.getScore().addOpponentDeath();
 
-                if (!lostPlayer.score.isAlive()) {
-                    scoredPlayer.client.sendAction(new GameVictoryAction());
-                    lostPlayer.client.sendAction(new GameLossAction());
-                    gameSession.stopGame();
+                if (!lostPlayer.getScore().isAlive()) {
+                    scoredPlayer.sendAction(new GameVictoryAction());
+                    lostPlayer.sendAction(new GameLossAction());
+                    getGameSession().stopGame();
                     return;
                 }
 
-                scoredPlayer.client.sendAction(new OpponentDeathAction());
-                lostPlayer.client.sendAction(new PlayerDeathAction());
+                scoredPlayer.sendAction(new OpponentDeathAction());
+                lostPlayer.sendAction(new PlayerDeathAction());
 
-                ball.reset();
+                getBall().reset();
             }
 
-            ball.move();
+            getBall().move();
         }
     }
 

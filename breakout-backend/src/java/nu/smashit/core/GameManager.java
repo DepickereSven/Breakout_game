@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.PriorityBlockingQueue;
-import nu.smashit.socket.Client;
+import nu.smashit.data.dataobjects.User;
 
 /**
  *
@@ -26,35 +26,35 @@ public class GameManager {
         return INSTANCE;
     }
 
-    public Game createMultiplayerGame(Client c) {
+    public Game createMultiplayerGame(User u) {
         String key = generateKey();
         MultiplayerGame gm = new MultiplayerGame(key);
 
-        gm.join(c);
+        gm.join(u);
         gameSessions.put(gm.getKey(), gm);
         return gm;
     }
 
-    public Game createSingleplayerGame(Client c, int level) {
+    public Game createSingleplayerGame(User u, int level) {
         String key = generateKey();
-        Game gm = new SingleplayerGame(key, c, level);
+        Game gm = new SingleplayerGame(key, u, level);
 
         gameSessions.put(gm.getKey(), gm);
         return gm;
     }
 
-    public Game joinPrivateMultiplayerGame(String key, Client c) {
+    public Game joinPrivateMultiplayerGame(String key, User u) {
         Game gm = gameSessions.get(key);
-        gm.join(c);
+        gm.join(u);
         return gm;
     }
 
-    public Game joinPublicMultiplayerGame(Client c) {
+    public Game joinPublicMultiplayerGame(User u) {
         Game gm = publicGameSessionQueue.poll();
         if (gm != null) {
-            gm.join(c);
+            gm.join(u);
         } else {
-            gm = createMultiplayerGame(c);
+            gm = createMultiplayerGame(u);
             publicGameSessionQueue.add(gm);
         }
         return gm;

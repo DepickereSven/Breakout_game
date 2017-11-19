@@ -2,7 +2,7 @@ package nu.smashit.core;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import nu.smashit.socket.Client;
+import nu.smashit.data.dataobjects.User;
 import nu.smashit.socket.actions.GameStartAction;
 import nu.smashit.socket.actions.ResponseAction;
 
@@ -13,16 +13,15 @@ import nu.smashit.socket.actions.ResponseAction;
 public abstract class Game implements Comparable<Game> {
 
     private final String key;
-    protected Player[] players;
-    protected GameLoop gameLoop;
-
-    protected final Timer gameLoopTimer;
-    protected final Timer countDownTimer;
-    protected final int updateInterval;
-
-    public int time;
-    public int countDown;
-    public int level;
+    private final Timer gameLoopTimer;
+    private final Timer countDownTimer;
+    private final int updateInterval;
+    private final int level;
+    
+    private Player[] players;
+    private GameLoop gameLoop;
+    private int time;
+    private int countDown;
 
     Game(String key, int level) {
         this.key = key;
@@ -34,25 +33,25 @@ public abstract class Game implements Comparable<Game> {
         this.level = level;
     }
 
-    public abstract void join(Client c);
+    public abstract void join(User u);
 
-    public abstract Player getPlayer(Client c);
+    public abstract Player getPlayer(User u);
 
     public void broadcastAction(ResponseAction a) {
-        for (Player p : players) {
-            p.client.sendAction(a);
+        for (Player p : getPlayers()) {
+            p.getUser().getClient().sendAction(a);
         }
     }
 
     protected abstract void createGameLoop();
 
     public void startCountDown() {
-        gameLoopTimer.scheduleAtFixedRate(gameLoop, 100, updateInterval);
+        getGameLoopTimer().scheduleAtFixedRate(getGameLoop(), 100, getUpdateInterval());
 
-        countDownTimer.scheduleAtFixedRate(new TimerTask() {
+        getCountDownTimer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                if (countDown <= 0) {
+                if (getCountDown() <= 0) {
                     time++;
                 } else {
                     countDown--;
@@ -64,21 +63,21 @@ public abstract class Game implements Comparable<Game> {
     public void startGame() {
         createGameLoop();
         broadcastAction(new GameStartAction());
-        gameLoop.initRun();
+        getGameLoop().initRun();
     }
 
     public int playerCount() {
-        return players.length;
+        return getPlayers().length;
     }
 
     public void stopGame() {
-        countDownTimer.cancel();
-        gameLoopTimer.cancel();
+        getCountDownTimer().cancel();
+        getGameLoopTimer().cancel();
 
-        for (Player p : players) {
-            p.client.removeGame();
+        for (Player p : getPlayers()) {
+            p.getUser().removeGame();
         }
-        GameManager.getInstance().removeGame(key);
+        GameManager.getInstance().removeGame(getKey());
     }
 
     public String getKey() {
@@ -86,7 +85,7 @@ public abstract class Game implements Comparable<Game> {
     }
 
     public boolean isFull() {
-        for (Player p : players) {
+        for (Player p : getPlayers()) {
             if (p == null) {
                 return false;
             }
@@ -99,10 +98,10 @@ public abstract class Game implements Comparable<Game> {
         return (this.getKey().compareTo(o.getKey()));
     }
 
-    public void playerReady(Client c) {
-        getPlayer(c).ready();
+    public void playerReady(User u) {
+        getPlayer(u).ready();
 
-        for (Player p : players) {
+        for (Player p : getPlayers()) {
             if (!p.isReady()) {
                 return;
             }
@@ -111,4 +110,44 @@ public abstract class Game implements Comparable<Game> {
         startCountDown();
     }
 
+    public int getTime() {
+        return time;
+    }
+
+    public int getCountDown() {
+        return countDown;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public Player[] getPlayers() {
+        return players;
+    }
+
+    public GameLoop getGameLoop() {
+        return gameLoop;
+    }
+
+    public Timer getGameLoopTimer() {
+        return gameLoopTimer;
+    }
+
+    public Timer getCountDownTimer() {
+        return countDownTimer;
+    }
+
+    public int getUpdateInterval() {
+        return updateInterval;
+    }
+
+    protected void setPlayers(Player[] players) {
+        this.players = players;
+    }
+
+    protected void setGameLoop(GameLoop gameLoop) {
+        this.gameLoop = gameLoop;
+    }
+    
 }

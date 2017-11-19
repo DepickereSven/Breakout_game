@@ -20,14 +20,15 @@ public class MovableBody extends Body {
     }
 
     public void reset() {
-        this.x = ogX;
-        this.y = ogY;
-        this.width = ogWidth;
-        this.height = ogHeight;
+        setX(ogX);
+        setY(ogY);
+        setWidth(ogWidth);
+        setHeight(ogHeight);
     }
 
     public void move(int dx, int dy) {
-        this.x += dx;
-        this.y += dy;
+        setX( getX() + dx);
+        setY( getY() + dy);
     }
+    
 }

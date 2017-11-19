@@ -26,7 +26,7 @@ public class TestPaddle {
     
     @After
     public void testIfYStaysTheSame(){
-        assertEquals(y, paddle.y);
+        assertEquals(y, paddle.getY());
     }
     
     @Test
@@ -34,21 +34,21 @@ public class TestPaddle {
         paddle.goLeft();
         paddle.goRight();
         paddle.move();
-        assertEquals(x, paddle.x);
+        assertEquals(x, paddle.getX());
     }
      
      @Test
      public void goRight() {
         paddle.goRight();
         paddle.move();
-        assertEquals(x+ Paddle.MOVE_STEP_SIZE, paddle.x);
+        assertEquals(x+ Paddle.MOVE_STEP_SIZE, paddle.getX());
      }
      
     @Test
     public void goLeft() {
         paddle.goLeft();
         paddle.move();
-        assertEquals(x - Paddle.MOVE_STEP_SIZE, paddle.x);
+        assertEquals(x - Paddle.MOVE_STEP_SIZE, paddle.getX());
     }
      
     @Test
@@ -56,7 +56,7 @@ public class TestPaddle {
         paddle.goRight();
         paddle.goRight();
         paddle.move();
-        assertEquals(x + (Paddle.MOVE_STEP_SIZE*2), paddle.x);
+        assertEquals(x + (Paddle.MOVE_STEP_SIZE*2), paddle.getX());
     }
      
     @Test
@@ -64,14 +64,14 @@ public class TestPaddle {
         paddle.goLeft();
         paddle.goLeft();
         paddle.move();
-        assertEquals(x - (Paddle.MOVE_STEP_SIZE*2), paddle.x);
+        assertEquals(x - (Paddle.MOVE_STEP_SIZE*2), paddle.getX());
     }
      
     @Test
     public void goNoWhere(){
         paddle.goNowhere();
         paddle.move();
-        assertEquals(x, paddle.x);
+        assertEquals(x, paddle.getX());
     }
      
 }

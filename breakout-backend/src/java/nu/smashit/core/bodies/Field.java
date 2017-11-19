@@ -7,7 +7,7 @@ import nu.smashit.utils.Tools;
 
 public class Field extends Body {
 
-    public final BrickRow[] brickRows;
+    private final BrickRow[] brickRows;
     private final int numberOfRows;
     private final Difficulty difficulty;
     private final boolean multiplayer;
@@ -33,8 +33,8 @@ public class Field extends Body {
         this.brickRows = new BrickRow[numberOfRows];
         this.numberOfNormalBricks = 0;
 
-        this.height = calcFieldHeight();
-        this.y = calcMarginTop() + this.height;
+        super.setHeight(calcFieldHeight());
+        super.setY(calcMarginTop() + super.getHeight());
 
         generateField();
     }
@@ -85,7 +85,7 @@ public class Field extends Body {
     }
 
     public BrickRow getRow(int rowIndex) {
-        return brickRows[rowIndex];
+        return getBrickRows()[rowIndex];
     }
 
     public Brick getBrick(int rowIndex, int colIndex) {
@@ -108,15 +108,19 @@ public class Field extends Body {
         return numberOfNormalBricks;
     }
     
+    public BrickRow[] getBrickRows() {
+        return brickRows;
+    }
+    
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(isMultiplayer() == true ? "Multiplayer" : "Singleplayer").append("\n");
-        for (BrickRow field1 : brickRows) {
+        for (BrickRow field1 : getBrickRows()) {
             sb.append(field1.toString());
             sb.append("\n");
         }
         return sb.toString();
     }
-    
+ 
 }

@@ -53,7 +53,7 @@ public class Ball extends MovableBody {
 
     @JsonIgnore
     public int getRadius() {
-        return this.height / 2;
+        return this.getHeight() / 2;
     }
 
     @JsonIgnore

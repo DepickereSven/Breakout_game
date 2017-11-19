@@ -7,6 +7,7 @@ package nu.smashit.socket.actions;
 
 import nu.smashit.core.Game;
 import nu.smashit.core.bodies.Paddle;
+import nu.smashit.data.dataobjects.User;
 import nu.smashit.socket.Client;
 
 /**
@@ -17,9 +18,10 @@ public class MovePaddleStopAction implements RequestAction {
 
     @Override
     public void handler(Client c) {
-        if (c.isInGame()) {
-            Game gm = c.getGame();
-            Paddle p = gm.getPlayer(c).paddle;
+        User u = c.getUser();
+        if (u.isInGame()) {
+            Game gm = u.getGame();
+            Paddle p = gm.getPlayer(u).getPaddle();
             p.goNowhere();
         }
     }
