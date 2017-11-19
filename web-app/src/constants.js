@@ -6,7 +6,7 @@
  * API url
  * @type {string}
  */
-exports.API_URL = window.location.href.replace(/^http/, 'ws').replace(/\/$/, '') + '/socket'
+exports.API_URL = (window.location.origin + window.location.pathname).replace(/^http/, 'ws').replace(/\/$/, '') + '/socket'
 //exports.API_URL = 'ws://localhost:8080/breakout/socket'
 
 /**
