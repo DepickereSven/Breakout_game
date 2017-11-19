@@ -1,24 +1,55 @@
 package nu.smashit.data.dataobjects;
 
 // @author Jonas
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import nu.smashit.core.Game;
+import nu.smashit.socket.Client;
+
 public class User {
 
-    private String userID;
-    private String email;
+    private final Client client;
+    private final String userID;
+    private final String email;
+    private final String username;
+    private final String imageUrl;
+    private final String country;
+    private Game game;
     private int smashbit;
-    private String username;
-    private String imageUrl;
-    private String country;
 
-    public User(String userID, String email, int smashbit, String username, String imageUrl, String country) {
-        setUserID(userID);
-        setEmail(email);
-        setSmashbit(smashbit);
-        setUsername(username);
-        setImageUrl(imageUrl);
-        setCountry(country);
+    private User(Client client, String userID, String email, int smashbit, String username, String imageUrl, String country) {
+        this.client = client;
+        this.userID = userID;
+        this.email = email;
+        this.smashbit = smashbit;
+        this.username = username;
+        this.imageUrl = imageUrl;
+        this.country = country;
+        this.game = null;
+    }
+    
+    public boolean isInGame() {
+        return game != null && getClient() != null;
     }
 
+    public void setGame(Game gameSession) {
+        this.game = gameSession;
+    }
+
+    @JsonIgnore
+    public Game getGame() {
+        return game;
+    }
+
+    public void removeGame() {
+        this.game = null;
+    }
+    
+    @JsonIgnore
+    public Client getClient() {
+        return client;
+    }
+    
     public String getUserID() {
         return userID;
     }
@@ -29,6 +60,10 @@ public class User {
 
     public int getSmashbit() {
         return smashbit;
+    }
+    
+    public void setSmashbit(int smashbit){
+        this.smashbit = smashbit;
     }
 
     public String getUsername() {
@@ -42,29 +77,40 @@ public class User {
     public String getCountry() {
         return country;
     }
-
-    private void setUserID(String userID) {
-        this.userID = userID;
+    
+    public static class Builder{
+        
+        private Client client;
+        private String userID;
+        private String email;
+        private String username;
+        private String imageUrl;
+        private String country;
+        private int smashbit;
+        
+        public User build(){
+            return new User(client, userID, email, smashbit, username, imageUrl, country);
+        }
+        
+        public Builder setClient(Client client){
+            this.client = client;
+            return this;
+        }
+        
+        public Builder setUserData(String userID, String email, int smashbit, String username, String imageUrl, String country) {
+            this.userID = userID;
+            this.email = email;
+            this.smashbit = smashbit;
+            this.username = username;
+            this.imageUrl = imageUrl;
+            this.country = country;
+            return this;
+        }
+        
     }
-
-    private void setEmail(String email) {
-        this.email = email;
-    }
-
-    private void setSmashbit(int smashbit) {
-        this.smashbit = smashbit;
-    }
-
-    private void setUsername(String username) {
-        this.username = username;
-    }
-
-    private void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    private void setCountry(String country) {
-        this.country = country;
+        
+    public static Builder builder(){
+        return new Builder();
     }
 
 }

@@ -1,4 +1,4 @@
-package me.smash_it.smashit;
+package nu.smashit.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -25,28 +25,50 @@ import android.widget.VideoView;
 import android.widget.ViewAnimator;
 import android.widget.ViewSwitcher;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import static android.content.ContentValues.TAG;
 
 public class MainActivity extends Activity {
-        private String myURL = "http://localhost:8080/breakout/";
-//    private String myURL = "file:///android_asset/www/index.html";
+    private String myURL = "http://localhost:8080/breakout/";
+    //    private String myURL = "file:///android_asset/www/index.html";
     VideoView videoView;
     ViewSwitcher viewSwitcher;
     private WebView view;
     private boolean hasFinishedLoadingPage;
+    private static final int RC_SIGN_IN = 9001;
+    private GoogleSignInClient mGoogleSignInClient = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .requestIdToken("870997935508-c4325ugimh126ub88kl8o5c8nr2ms6ot.apps.googleusercontent.com")
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if (account == null) {
+            startSignForGooglePlay();
+        }
+        else {
+            //do something with the account data;
+        }
+        Log.d(TAG, "wingcrony onCreate " + account + "  " + mGoogleSignInClient + " " + gso);
+
         //TODO create icon for app updater
 //        AppUpdater appUpdater = new AppUpdater(this)
 //                .setDisplay(com.github.javiersantos.appupdater.enums.Display.NOTIFICATION)
 //                .setIcon(R.drawable.ic_update3);
 //        appUpdater.start();
-        setContentView(R.layout.activity_main);
         if (Build.VERSION.SDK_INT >= 23 && (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.CAMERA}, 1);
         }
@@ -70,7 +92,6 @@ public class MainActivity extends Activity {
         } catch (Exception ex) {
 
         }
-
         view = (WebView) this.findViewById(R.id.webView);
         view.setBackgroundColor(Color.parseColor("#0c141f"));
         view.getSettings().setPluginState(WebSettings.PluginState.ON);
@@ -105,6 +126,7 @@ public class MainActivity extends Activity {
                     setViewToSwitchTo(viewSwitcher, videoView);
                 }
                 isRedirected = true;
+
             }
 
             @Override
@@ -132,6 +154,13 @@ public class MainActivity extends Activity {
         view.addJavascriptInterface(new WebViewJavaScriptInterface(this), "SmashIt");
     }
 
+    private void startSignForGooglePlay() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+
+
     public static void setViewToSwitchTo(@NonNull final ViewAnimator viewAnimator, @NonNull final View viewToSwitchTo) {
         if (viewAnimator == null)
             return;
@@ -143,6 +172,7 @@ public class MainActivity extends Activity {
                 break;
             }
     }
+
 
     public class WebViewJavaScriptInterface {
 
@@ -164,10 +194,12 @@ public class MainActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void sharingIsCaring(String code){
+        public void sharingIsCaring(String code) {
             openSharing(code);
         }
     }
+
+
 
     public void startScan() {
         new IntentIntegrator(this).initiateScan();
@@ -175,26 +207,42 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        onResume();
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        String codeResult = result.getContents();
-        if (result != null) {
-            if (result.getContents() == null) {
-                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
-            } else {
-                Log.d(TAG, "onActivityResult: " + result);
-                injectTheResultCode(codeResult);
-                //                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "wingcrony : " + resultCode + " | " + data  + " || " + RC_SIGN_IN + " ||| " + requestCode + " |||| " + data.getExtras());
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
         }
-
+        else {
+            onResume();
+            IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            String codeResult = result.getContents();
+            if (result != null) {
+                if (result.getContents() == null) {
+                    Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+                } else {
+                    Log.d(TAG, "wingcrony onActivityResult: " + result);
+                    injectTheResultCode(codeResult);
+                }
+            }
+        }
     }
 
-    public void injectTheResultCode(String message){
-//            view.evaluateJavascript("$('#code_for_join_private_game').val('"+ message +"')", null);
-            view.loadUrl("javascript:"+ "$('#code_for_join_private_game').val('"+ message +"')");
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+            // Signed in successfully, show authenticated UI.
+            Log.d(TAG, "wingcrony result data " + account + " "  + account.getIdToken() + " "  + account.getEmail());
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w(TAG, "wingcrony signInResult:failed code=" + e.getStatusCode());
+        }
+    }
+
+    public void injectTheResultCode(String message) {
+        view.loadUrl("javascript:" + "$('#code_for_join_private_game').val('" + message + "')");
     }
 
     private class MyWebViewClient extends WebViewClient {
@@ -214,10 +262,9 @@ public class MainActivity extends Activity {
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         String url = new String(view.getUrl());
-        if (url.indexOf("#/game") > 1 || url.endsWith("#") || url.indexOf("#/singleplayer_game_lost") > 1 || url.indexOf("#/singleplayer_game_won") > 1 || url.indexOf("#/multiplayer_game_lost") > 1 || url.indexOf("#/multiplayer_game_won") > 1 ){
+        if (url.indexOf("#/game") > 1 || url.endsWith("#") || url.indexOf("#/singleplayer_game_lost") > 1 || url.indexOf("#/singleplayer_game_won") > 1 || url.indexOf("#/multiplayer_game_lost") > 1 || url.indexOf("#/multiplayer_game_won") > 1) {
             return false;
-        }
-        else {
+        } else {
             if ((keyCode == KeyEvent.KEYCODE_BACK) && view.canGoBack()) {
                 view.goBack();
                 return true;
@@ -238,7 +285,7 @@ public class MainActivity extends Activity {
         view.onResume();
     }
 
-    public void openSharing(String code){
+    public void openSharing(String code) {
         String message = "Come and Smash It with me, my code is: " + code;
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("text/plain");

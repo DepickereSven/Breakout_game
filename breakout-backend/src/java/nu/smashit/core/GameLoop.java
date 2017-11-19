@@ -130,9 +130,9 @@ public abstract class GameLoop extends TimerTask {
         if (getGameSession().playerCount() > 1) {
             MultiplayerGame mg = (MultiplayerGame) getGameSession();
 
-            mg.getBottomPlayer().getClient().sendAction(updateState);
+            mg.getBottomPlayer().getUser().getClient().sendAction(updateState);
             reverseYBodies(updateState);
-            mg.getTopPlayer().getClient().sendAction(updateState);
+            mg.getTopPlayer().getUser().getClient().sendAction(updateState);
             reverseYBodies(updateState);
         } else {
             getGameSession().broadcastAction(updateState);

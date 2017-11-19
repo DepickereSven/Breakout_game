@@ -1,20 +1,20 @@
 package nu.smashit.core;
 
 // @author Jonas
-import nu.smashit.socket.Client;
 import nu.smashit.core.Player.PlayerType;
+import nu.smashit.data.dataobjects.User;
 
 public class SingleplayerGame extends Game {
 
-    public SingleplayerGame(String key, Client c, int level) {
+    public SingleplayerGame(String key, User u, int level) {
         super(key, level);
         super.setPlayers( new Player[1]);
-        super.getPlayers()[0] = new Player(c, PlayerType.PLAYER_1);
-        c.setGame(this);
+        super.getPlayers()[0] = new Player(u, PlayerType.PLAYER_1);
+        u.setGame(this);
     }
 
     @Override
-    public Player getPlayer(Client c) {
+    public Player getPlayer(User u) {
         return getPlayer();
     }
 
@@ -28,7 +28,7 @@ public class SingleplayerGame extends Game {
     }
 
     @Override
-    public void join(Client c) {
+    public void join(User u) {
         throw new Error("Impossible to join a singleplayer game.");
     }
 

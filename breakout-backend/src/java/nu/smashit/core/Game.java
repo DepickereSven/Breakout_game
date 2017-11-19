@@ -2,7 +2,7 @@ package nu.smashit.core;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import nu.smashit.socket.Client;
+import nu.smashit.data.dataobjects.User;
 import nu.smashit.socket.actions.GameStartAction;
 import nu.smashit.socket.actions.ResponseAction;
 
@@ -33,13 +33,13 @@ public abstract class Game implements Comparable<Game> {
         this.level = level;
     }
 
-    public abstract void join(Client c);
+    public abstract void join(User u);
 
-    public abstract Player getPlayer(Client c);
+    public abstract Player getPlayer(User u);
 
     public void broadcastAction(ResponseAction a) {
         for (Player p : getPlayers()) {
-            p.getClient().sendAction(a);
+            p.getUser().getClient().sendAction(a);
         }
     }
 
@@ -75,7 +75,7 @@ public abstract class Game implements Comparable<Game> {
         getGameLoopTimer().cancel();
 
         for (Player p : getPlayers()) {
-            p.getClient().removeGame();
+            p.getUser().removeGame();
         }
         GameManager.getInstance().removeGame(getKey());
     }
@@ -98,8 +98,8 @@ public abstract class Game implements Comparable<Game> {
         return (this.getKey().compareTo(o.getKey()));
     }
 
-    public void playerReady(Client c) {
-        getPlayer(c).ready();
+    public void playerReady(User u) {
+        getPlayer(u).ready();
 
         for (Player p : getPlayers()) {
             if (!p.isReady()) {

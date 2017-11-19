@@ -17,8 +17,8 @@ public class CancelMutliplayerRequestAction implements RequestAction {
 
     @Override
     public void handler(Client c) {
-        if (c.isInGame()) {
-            Game g = c.getGame();
+        if (c.getUser().isInGame()) {
+            Game g = c.getUser().getGame();
             if (!g.isFull()) {
                 GameManager.getInstance().removeGame(g.getKey());
             }

@@ -2,14 +2,17 @@ package nu.smashit.core;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import nu.smashit.core.bodies.Paddle;
 import nu.smashit.data.dataobjects.Score;
-import nu.smashit.socket.Client;
+import nu.smashit.data.dataobjects.User;
+import nu.smashit.socket.actions.ResponseAction;
 
 /**
  *
  * @author jodus
  */
+@JsonPropertyOrder({ "paddle", "clientId", "scorePoints" })
 @JsonFormat(shape = JsonFormat.Shape.ARRAY)
 public class Player {
 
@@ -18,13 +21,13 @@ public class Player {
         PLAYER_2
     }
 
-    private final Client client;
+    private final User user;
     private final Paddle paddle;
     private final Score score;
     private boolean ready;
 
-    public Player(Client client, PlayerType type) {
-        this.client = client;
+    public Player(User user, PlayerType type) {
+        this.user = user;
         this.paddle = new Paddle(type == PlayerType.PLAYER_1 ? Paddle.PLAYER_1_Y : Paddle.PLAYER_2_Y);
         this.score = new Score();
         this.ready = false;
@@ -39,9 +42,13 @@ public class Player {
     public void ready() {
         ready = true;
     }
-
+    
+    public Paddle getPaddle() {
+        return paddle;
+    }
+    
     public String getClientId() {
-        return getClient().getShortId();
+        return getUser().getClient().getShortId();
     }
 
     public int getScorePoints() {
@@ -49,17 +56,17 @@ public class Player {
     }
 
     @JsonIgnore
-    public Client getClient() {
-        return client;
-    }
-
-    public Paddle getPaddle() {
-        return paddle;
+    public User getUser() {
+        return user;
     }
 
     @JsonIgnore
     public Score getScore() {
         return score;
+    }
+    
+    public void sendAction(ResponseAction a) {
+        getUser().getClient().sendAction(a);
     }
     
 }
