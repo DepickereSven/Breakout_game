@@ -234,6 +234,7 @@ public class MainActivity extends Activity {
 
             // Signed in successfully, show authenticated UI.
             Log.d(TAG, "wingcrony result data " + account + " "  + account.getIdToken() + " "  + account.getEmail());
+            view.loadUrl("javascript:" + "window.onAndroidSignIn(" + account.getIdToken() + ")");
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.

@@ -17,27 +17,29 @@ exports.view = class LoginView {
     this.hideHeader = true
     this.viewManager = viewManager
 
-    this.handleSignIn = this.handleSignIn.bind(this)
+    this.handleWebSignIn = this.handleWebSignIn.bind(this)
+    this.signIn = this.signIn.bind(this)
   }
 
-  handleSignIn (googleUser) {
-    getCountryCode(country => {
-      window.wsClient.send(
-        UserLoginRequestAction.create({
-          token: googleUser.getAuthResponse().id_token,
-          country
-        })
-      )
+  signIn (token) {
+    this.viewManager.go('loading.html')
 
-      this.viewManager.go('loading.html')
+    getCountryCode(country => {
+      window.wsClient.send(UserLoginRequestAction.create({ token, country }))
     })
   }
 
+  handleWebSignIn (googleUser) {
+    this.signIn(googleUser.getAuthResponse().id_token)
+  }
+
   onLoad () {
-    window.onSignIn = this.handleSignIn
+    window.onWebSignIn = this.handleWebSignIn
+    window.onAndroidSignIn = this.signIn
   }
 
   onUnload () {
-    window.onSignIn = undefined
+    window.onWebSignIn = undefined
+    window.onAndroidSignIn = undefined
   }
 }
