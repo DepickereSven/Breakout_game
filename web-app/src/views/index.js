@@ -49,7 +49,7 @@ const viewsToRemove = {
   'loading.html': true
 }
 
-const SCREEN_ANIMATION_TIME = 500
+const SCREEN_ANIMATION_TIME = 300
 
 class ViewManager {
   constructor () {
