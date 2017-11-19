@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Smash It</string>
     <string name="user_agent_suffix">Smash_It/1.0</string>
+    <string name="server_client_id">870997935508-c4325ugimh126ub88kl8o5c8nr2ms6ot.apps.googleusercontent.com</string>
 </resources>
