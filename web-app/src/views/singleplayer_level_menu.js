@@ -12,6 +12,9 @@ exports.view = class SingleplayerLevelMenuView {
 
     this.container = '.singleplayer_level_menu'
     this.levelButton = '.level'
+
+    this.generateLevels = this.generateLevels.bind(this)
+    this.handleLevelClick = this.handleLevelClick.bind(this)
   }
 
   generateLevels (min, max) {
@@ -27,6 +30,7 @@ exports.view = class SingleplayerLevelMenuView {
   }
 
   handleLevelClick (e) {
+    this.viewManager.go('loading.html')
     const { level } = $(e.currentTarget).data()
     window.wsClient.send(CreateSingleplayerRequestAction.create(parseInt(level)))
   }
