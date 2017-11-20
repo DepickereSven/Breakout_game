@@ -10,6 +10,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -38,7 +39,7 @@ import com.google.zxing.integration.android.IntentResult;
 import static android.content.ContentValues.TAG;
 
 public class MainActivity extends Activity {
-//    private String myURL = "http://localhost:8080/breakout/";
+    //    private String myURL = "http://localhost:8080/breakout/";
     private String myURL = "http://smash-it.nu";
     VideoView videoView;
     ViewSwitcher viewSwitcher;
@@ -76,10 +77,11 @@ public class MainActivity extends Activity {
             videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    if (hasFinishedLoadingPage)
+                    if (hasFinishedLoadingPage) {
                         setViewToSwitchTo(viewSwitcher, view);
 
-                    setViewToSwitchTo(viewSwitcher, view);
+                    }
+//                    setViewToSwitchTo(viewSwitcher, view);
 
                 }
             });
@@ -105,44 +107,12 @@ public class MainActivity extends Activity {
 //        view.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 //        view.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
 //        view.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-        view.setWebViewClient(new WebViewClient() {
-
-            boolean isRedirected;
-
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return false;
-            }
-
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                super.onPageStarted(view, url, favicon);
-                if (!isRedirected) {
-                    setViewToSwitchTo(viewSwitcher, videoView);
-                }
-                isRedirected = true;
-
-            }
-
-            @Override
-            public void onPageFinished(WebView webView, String url) {
-                super.onPageFinished(webView, url);
-                hasFinishedLoadingPage = true;
-
-                if (account == null) {
-                    startSignForGooglePlay();
-                }
-                else {
-                    injectSignInTokenCall(account.getIdToken());
-                }
-                Log.d(TAG, "wingcrony onCreate " + account + "  " + mGoogleSignInClient + " " + gso);
-            }
-
+        view.setWebViewClient(new MyBrowser() {
         });
         view.setWebChromeClient(new WebChromeClient() {
             public void onConsoleMessage(String message, int lineNumber, String sourceID) {
                 Log.d(TAG, "onConsoleMessage: " + message + sourceID);
-//                Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), "succes", Toast.LENGTH_SHORT).show();
                 //TODO add here logs if something need to pop-up as toast
 //                if (sourceID.equals("file:///android_asset/www/assets/www/index.html") && lineNumber == 37) {
 //                    Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
@@ -155,15 +125,57 @@ public class MainActivity extends Activity {
             }
         });
         view.loadUrl(myURL);
+        Log.d(TAG, "shouldOverrideUrlLoading: " + (view.getUrl()));
         view.addJavascriptInterface(new WebViewJavaScriptInterface(this), "SmashIt");
+        if (account == null) {
+
+            startSignForGooglePlay();
+        } else {
+            Log.d(TAG, "oncreate before account check " + account.getIdToken());
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    injectSignInTokenCall(account.getIdToken());
+                }
+
+            }, 4000);
+        }
+        Log.d(TAG, "wingcrony onCreate " + account + "  " + mGoogleSignInClient + " " + hasFinishedLoadingPage);
     }
 
-    private void startSignForGooglePlay() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+    private class MyBrowser extends WebViewClient {
+        boolean isRedirected;
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            //TODO add here links of site you want to show in their favorite app or browser instead
+            if (url.startsWith("tel:") || url.startsWith("sms:") || url.startsWith("smsto:") || url.startsWith("mailto:") || url.startsWith("mms:") || url.startsWith("mmsto:") || url.startsWith("market:") || url.startsWith("https://youtu.be/")) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(intent);
+                return true;
+            } else {
+                view.loadUrl(url);
+                return true;
+            }
+        }
+
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            super.onPageStarted(view, url, favicon);
+            if (!isRedirected) {
+                setViewToSwitchTo(viewSwitcher, videoView);
+            }
+            isRedirected = true;
+
+        }
+
+        @Override
+        public void onPageFinished(WebView webView, String url) {
+            super.onPageFinished(webView, url);
+            hasFinishedLoadingPage = true;
+        }
     }
-
-
 
     public static void setViewToSwitchTo(@NonNull final ViewAnimator viewAnimator, @NonNull final View viewToSwitchTo) {
         if (viewAnimator == null)
@@ -177,9 +189,48 @@ public class MainActivity extends Activity {
             }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "wingcrony : " + resultCode + " | " + data + " || " + RC_SIGN_IN + " ||| " + requestCode + " |||| " + data.getExtras());
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        } else {
+            onResume();
+            IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            String codeResult = result.getContents();
+            if (result != null) {
+                if (result.getContents() == null) {
+                    Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+                } else {
+                    Log.d(TAG, "wingcrony onActivityResult: " + result);
+                    injectQrCodeCall(codeResult);
+                }
+            }
+        }
+    }
+
+    private void startSignForGooglePlay() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+            injectSignInTokenCall(account.getIdToken());
+            Log.d(TAG, "wingcrony result data " + account + " " + account.getIdToken() + " " + account.getEmail());
+            injectSignInTokenCall(account.getIdToken());
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w(TAG, "wingcrony signInResult:failed code=" + e.getStatusCode());
+        }
+    }
 
     public class WebViewJavaScriptInterface {
-
         private Context context;
 
         public WebViewJavaScriptInterface(Context context) {
@@ -203,47 +254,8 @@ public class MainActivity extends Activity {
         }
     }
 
-
-
     public void startScan() {
         new IntentIntegrator(this).initiateScan();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "wingcrony : " + resultCode + " | " + data  + " || " + RC_SIGN_IN + " ||| " + requestCode + " |||| " + data.getExtras());
-        if (requestCode == RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
-        }
-        else {
-            onResume();
-            IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-            String codeResult = result.getContents();
-            if (result != null) {
-                if (result.getContents() == null) {
-                    Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
-                } else {
-                    Log.d(TAG, "wingcrony onActivityResult: " + result);
-                    injectQrCodeCall(codeResult);
-                }
-            }
-        }
-    }
-
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
-            injectSignInTokenCall(account.getIdToken());
-            Log.d(TAG, "wingcrony result data " + account + " "  + account.getIdToken() + " "  + account.getEmail());
-            injectSignInTokenCall(account.getIdToken());
-        } catch (ApiException e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.w(TAG, "wingcrony signInResult:failed code=" + e.getStatusCode());
-        }
     }
 
     public void injectSignInTokenCall(String idToken) {
@@ -254,19 +266,12 @@ public class MainActivity extends Activity {
         view.loadUrl("javascript:" + "window.onAndroidQrScan('" + message + "')");
     }
 
-    private class MyWebViewClient extends WebViewClient {
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            //TODO add here links of site you want to show in their favorite app or browser instead
-            if (url.startsWith("tel:") || url.startsWith("sms:") || url.startsWith("smsto:") || url.startsWith("mailto:") || url.startsWith("mms:") || url.startsWith("mmsto:") || url.startsWith("market:") || url.startsWith("https://youtu.be/")) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                startActivity(intent);
-                return true;
-            } else {
-                view.loadUrl(url);
-                return true;
-            }
-        }
+    public void openSharing(String code) {
+        String message = "Come and Smash It with me, my code is: " + code;
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("text/plain");
+        share.putExtra(Intent.EXTRA_TEXT, message);
+        startActivity(Intent.createChooser(share, "Share your code"));
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -292,13 +297,5 @@ public class MainActivity extends Activity {
     public void onResume() {
         super.onResume();
         view.onResume();
-    }
-
-    public void openSharing(String code) {
-        String message = "Come and Smash It with me, my code is: " + code;
-        Intent share = new Intent(Intent.ACTION_SEND);
-        share.setType("text/plain");
-        share.putExtra(Intent.EXTRA_TEXT, message);
-        startActivity(Intent.createChooser(share, "Share your code"));
     }
 }
