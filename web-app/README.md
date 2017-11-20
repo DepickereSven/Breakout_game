@@ -90,15 +90,15 @@ npm start
 ## constants
 
 * [constants](#module_constants)
-    * [.API_URL](#module_constants.API_URL) : <code>string</code>
+    * [.API_URL](#module_constants.API_URL)
     * [.C_HEIGHT](#module_constants.C_HEIGHT) : <code>number</code>
     * [.C_WIDTH](#module_constants.C_WIDTH) : <code>number</code>
     * [.IS_ANDROID_APP](#module_constants.IS_ANDROID_APP) : <code>string</code>
 
 <a name="module_constants.API_URL"></a>
 
-### constants.API_URL : <code>string</code>
-API url
+### constants.API_URL
+exports.API_URL = (window.location.origin + window.location.pathname).replace(/^http/, 'ws').replace(/\/$/, '') + '/socket'
 
 **Kind**: static property of [<code>constants</code>](#module_constants)  
 <a name="module_constants.C_HEIGHT"></a>
@@ -544,8 +544,7 @@ Open connection
 <a name="module_socket/client..WsClient+setClientId"></a>
 
 #### wsClient.setClientId()
-Set the clientId
-Only done once
+Set the clientIdOnly done once
 
 **Kind**: instance method of [<code>WsClient</code>](#module_socket/client..WsClient)  
 <a name="module_socket/client..WsClient+onClose"></a>
