@@ -182,5 +182,6 @@ function getRightUrl (index, url) {
 }
 
 const viewManager = new ViewManager()
+window.viewManager = viewManager
 
 exports.viewManager = viewManager
