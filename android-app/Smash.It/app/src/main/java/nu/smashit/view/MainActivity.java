@@ -133,7 +133,7 @@ public class MainActivity extends Activity {
         view.setWebChromeClient(new WebChromeClient() {
             public void onConsoleMessage(String message, int lineNumber, String sourceID) {
                 Log.d(TAG, "onConsoleMessage: " + message + sourceID);
-                Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
                 //TODO add here logs if something need to pop-up as toast
 //                if (sourceID.equals("file:///android_asset/www/assets/www/index.html") && lineNumber == 37) {
 //                    Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
