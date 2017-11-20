@@ -59,15 +59,14 @@ public class MainActivity extends Activity {
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         account = GoogleSignIn.getLastSignedInAccount(this);
-
+        if (Build.VERSION.SDK_INT >= 23 && (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.CAMERA}, 1);
+        }
         //TODO create icon for app updater
 //        AppUpdater appUpdater = new AppUpdater(this)
 //                .setDisplay(com.github.javiersantos.appupdater.enums.Display.NOTIFICATION)
 //                .setIcon(R.drawable.ic_update3);
 //        appUpdater.start();
-        if (Build.VERSION.SDK_INT >= 23 && (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.CAMERA}, 1);
-        }
         try {
             viewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher);
             final VideoView videoView = (VideoView) findViewById(R.id.videoView);
@@ -82,7 +81,6 @@ public class MainActivity extends Activity {
 
                     }
 //                    setViewToSwitchTo(viewSwitcher, view);
-
                 }
             });
             videoView.start();
@@ -104,15 +102,12 @@ public class MainActivity extends Activity {
         view.getSettings().setJavaScriptEnabled(true);
         view.getSettings().setDomStorageEnabled(true);
         view.getSettings().setMediaPlaybackRequiresUserGesture(false);
-//        view.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-//        view.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
-//        view.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         view.setWebViewClient(new MyBrowser() {
         });
         view.setWebChromeClient(new WebChromeClient() {
             public void onConsoleMessage(String message, int lineNumber, String sourceID) {
                 Log.d(TAG, "onConsoleMessage: " + message + sourceID);
-                Toast.makeText(getBaseContext(), "succes", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getBaseContext(), "succes", Toast.LENGTH_SHORT).show();
                 //TODO add here logs if something need to pop-up as toast
 //                if (sourceID.equals("file:///android_asset/www/assets/www/index.html") && lineNumber == 37) {
 //                    Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
@@ -125,13 +120,10 @@ public class MainActivity extends Activity {
             }
         });
         view.loadUrl(myURL);
-        Log.d(TAG, "shouldOverrideUrlLoading: " + (view.getUrl()));
         view.addJavascriptInterface(new WebViewJavaScriptInterface(this), "SmashIt");
         if (account == null) {
-
             startSignForGooglePlay();
         } else {
-            Log.d(TAG, "oncreate before account check " + account.getIdToken());
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
@@ -141,7 +133,6 @@ public class MainActivity extends Activity {
 
             }, 4000);
         }
-        Log.d(TAG, "wingcrony onCreate " + account + "  " + mGoogleSignInClient + " " + hasFinishedLoadingPage);
     }
 
     private class MyBrowser extends WebViewClient {
@@ -149,7 +140,6 @@ public class MainActivity extends Activity {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            //TODO add here links of site you want to show in their favorite app or browser instead
             if (url.startsWith("tel:") || url.startsWith("sms:") || url.startsWith("smsto:") || url.startsWith("mailto:") || url.startsWith("mms:") || url.startsWith("mmsto:") || url.startsWith("market:") || url.startsWith("https://youtu.be/")) {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 startActivity(intent);
@@ -192,7 +182,6 @@ public class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "wingcrony : " + resultCode + " | " + data + " || " + RC_SIGN_IN + " ||| " + requestCode + " |||| " + data.getExtras());
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
@@ -204,7 +193,6 @@ public class MainActivity extends Activity {
                 if (result.getContents() == null) {
                     Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
                 } else {
-                    Log.d(TAG, "wingcrony onActivityResult: " + result);
                     injectQrCodeCall(codeResult);
                 }
             }
@@ -219,13 +207,8 @@ public class MainActivity extends Activity {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
-            injectSignInTokenCall(account.getIdToken());
-            Log.d(TAG, "wingcrony result data " + account + " " + account.getIdToken() + " " + account.getEmail());
             injectSignInTokenCall(account.getIdToken());
         } catch (ApiException e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(TAG, "wingcrony signInResult:failed code=" + e.getStatusCode());
         }
     }
