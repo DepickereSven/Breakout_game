@@ -11,6 +11,15 @@ function getCountryCode (callback) {
   })
 }
 
+function handleSignIn (token) {
+  this.viewManager.go('loading.html')
+  console.log(token)
+  getCountryCode(country => {
+    window.wsClient.send(UserLoginRequestAction.create({ token, country }))
+  })
+}
+window.onAndroidSignIn = handleSignIn
+
 exports.view = class LoginView {
   constructor (viewManager) {
     this.path = path
@@ -18,32 +27,17 @@ exports.view = class LoginView {
     this.viewManager = viewManager
 
     this.handleWebSignIn = this.handleWebSignIn.bind(this)
-    this.signIn = this.signIn.bind(this)
-  }
-  signIn (token) {
-    this.viewManager.go('loading.html')
-    let name = 'wingcrony ' + token
-    console.log(token)
-    console.log(name)
-    getCountryCode(country => {
-      window.wsClient.send(UserLoginRequestAction.create({ token, country }))
-    })
   }
 
   handleWebSignIn (googleUser) {
-    console.log(googleUser)
-    console.log(googleUser.getAuthResponse().id_token)
-    this.signIn(googleUser.getAuthResponse().id_token)
+    handleSignIn(googleUser.getAuthResponse().id_token)
   }
 
   onLoad () {
-    console.log('test')
     window.onWebSignIn = this.handleWebSignIn
-    window.onAndroidSignIn = this.signIn
   }
 
   onUnload () {
     window.onWebSignIn = undefined
-    window.onAndroidSignIn = undefined
   }
 }

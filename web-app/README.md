@@ -544,7 +544,8 @@ Open connection
 <a name="module_socket/client..WsClient+setClientId"></a>
 
 #### wsClient.setClientId()
-Set the clientIdOnly done once
+Set the clientId
+Only done once
 
 **Kind**: instance method of [<code>WsClient</code>](#module_socket/client..WsClient)  
 <a name="module_socket/client..WsClient+onClose"></a>
