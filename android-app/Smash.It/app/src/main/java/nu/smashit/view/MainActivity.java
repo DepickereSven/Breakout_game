@@ -46,6 +46,7 @@ public class MainActivity extends Activity {
     private boolean hasFinishedLoadingPage;
     private static final int RC_SIGN_IN = 9001;
     private GoogleSignInClient mGoogleSignInClient = null;
+    private GoogleSignInAccount account;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,7 @@ public class MainActivity extends Activity {
                 .requestIdToken("870997935508-c4325ugimh126ub88kl8o5c8nr2ms6ot.apps.googleusercontent.com")
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        account = GoogleSignIn.getLastSignedInAccount(this);
 
         //TODO create icon for app updater
 //        AppUpdater appUpdater = new AppUpdater(this)
@@ -127,6 +128,14 @@ public class MainActivity extends Activity {
             public void onPageFinished(WebView webView, String url) {
                 super.onPageFinished(webView, url);
                 hasFinishedLoadingPage = true;
+
+                if (account == null) {
+                    startSignForGooglePlay();
+                }
+                else {
+                    injectSignInTokenCall(account.getIdToken());
+                }
+                Log.d(TAG, "wingcrony onCreate " + account + "  " + mGoogleSignInClient + " " + gso);
             }
 
         });
@@ -146,14 +155,6 @@ public class MainActivity extends Activity {
             }
         });
         view.loadUrl(myURL);
-        if (account == null) {
-            startSignForGooglePlay();
-            injectSignInTokenCall("com.google.android.gms.auth.api.signin.GoogleSignInOptions@47a87030");
-        }
-        else {
-            injectSignInTokenCall(account.getIdToken());
-        }
-        Log.d(TAG, "wingcrony onCreate " + account + "  " + mGoogleSignInClient + " " + gso);
         view.addJavascriptInterface(new WebViewJavaScriptInterface(this), "SmashIt");
     }
 
