@@ -235,6 +235,11 @@ public class MainActivity extends Activity {
         public void sharingIsCaring(String code) {
             openSharing(code);
         }
+
+        @JavascriptInterface
+        public void logoutInAndroid(){
+            //add logout code
+        }
     }
 
     public void startScan() {
