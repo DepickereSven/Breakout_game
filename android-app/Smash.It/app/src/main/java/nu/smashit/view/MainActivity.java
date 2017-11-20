@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -38,7 +39,7 @@ import static android.content.ContentValues.TAG;
 
 public class MainActivity extends Activity {
     private String myURL = "http://localhost:8080/breakout/";
-    //    private String myURL = "file:///android_asset/www/index.html";
+//        private String myURL = "http://smash-it.nu";
     VideoView videoView;
     ViewSwitcher viewSwitcher;
     private WebView view;
@@ -128,9 +129,12 @@ public class MainActivity extends Activity {
                 hasFinishedLoadingPage = true;
             }
 
-//            public void onConsoleMessage(String message, int lineNumber, String sourceID) {
-//                Log.d(TAG, "onConsoleMessage: " + message + sourceID);
-//                //TODO add here logs if something need to pop-up as toast
+        });
+        view.setWebChromeClient(new WebChromeClient() {
+            public void onConsoleMessage(String message, int lineNumber, String sourceID) {
+                Log.d(TAG, "onConsoleMessage: " + message + sourceID);
+                Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
+                //TODO add here logs if something need to pop-up as toast
 //                if (sourceID.equals("file:///android_asset/www/assets/www/index.html") && lineNumber == 37) {
 //                    Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
 //                }
@@ -139,9 +143,7 @@ public class MainActivity extends Activity {
 //                        Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
 //                    }
 //                }
-//            }
-        });
-        view.setWebViewClient(new WebViewClient() {
+            }
         });
         view.loadUrl(myURL);
         if (account == null) {
