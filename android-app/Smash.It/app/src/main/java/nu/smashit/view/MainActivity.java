@@ -38,8 +38,8 @@ import com.google.zxing.integration.android.IntentResult;
 import static android.content.ContentValues.TAG;
 
 public class MainActivity extends Activity {
-    private String myURL = "http://localhost:8080/breakout/";
-//        private String myURL = "http://smash-it.nu";
+//    private String myURL = "http://localhost:8080/breakout/";
+    private String myURL = "http://smash-it.nu";
     VideoView videoView;
     ViewSwitcher viewSwitcher;
     private WebView view;
