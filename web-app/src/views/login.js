@@ -13,7 +13,6 @@ function getCountryCode (callback) {
 
 function handleSignIn (token) {
   window.viewManager.go('loading.html')
-  console.log(token)
   getCountryCode(country => {
     window.wsClient.send(UserLoginRequestAction.create({ token, country }))
   })
