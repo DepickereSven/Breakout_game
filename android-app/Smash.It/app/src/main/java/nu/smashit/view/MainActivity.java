@@ -56,13 +56,6 @@ public class MainActivity extends Activity {
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if (account == null) {
-            startSignForGooglePlay();
-        }
-        else {
-            //do something with the account data;
-        }
-        Log.d(TAG, "wingcrony onCreate " + account + "  " + mGoogleSignInClient + " " + gso);
 
         //TODO create icon for app updater
 //        AppUpdater appUpdater = new AppUpdater(this)
@@ -151,6 +144,14 @@ public class MainActivity extends Activity {
         view.setWebViewClient(new WebViewClient() {
         });
         view.loadUrl(myURL);
+        if (account == null) {
+            startSignForGooglePlay();
+            injectSignInTokenCall("com.google.android.gms.auth.api.signin.GoogleSignInOptions@47a87030");
+        }
+        else {
+            injectSignInTokenCall(account.getIdToken());
+        }
+        Log.d(TAG, "wingcrony onCreate " + account + "  " + mGoogleSignInClient + " " + gso);
         view.addJavascriptInterface(new WebViewJavaScriptInterface(this), "SmashIt");
     }
 
@@ -232,7 +233,7 @@ public class MainActivity extends Activity {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
 
-            // Signed in successfully, show authenticated UI.
+            injectSignInTokenCall(account.getIdToken());
             Log.d(TAG, "wingcrony result data " + account + " "  + account.getIdToken() + " "  + account.getEmail());
             injectSignInTokenCall(account.getIdToken());
         } catch (ApiException e) {

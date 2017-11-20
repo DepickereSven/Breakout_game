@@ -20,20 +20,24 @@ exports.view = class LoginView {
     this.handleWebSignIn = this.handleWebSignIn.bind(this)
     this.signIn = this.signIn.bind(this)
   }
-
   signIn (token) {
     this.viewManager.go('loading.html')
-
+    let name = 'wingcrony ' + token
+    console.log(token)
+    console.log(name)
     getCountryCode(country => {
       window.wsClient.send(UserLoginRequestAction.create({ token, country }))
     })
   }
 
   handleWebSignIn (googleUser) {
+    console.log(googleUser)
+    console.log(googleUser.getAuthResponse().id_token)
     this.signIn(googleUser.getAuthResponse().id_token)
   }
 
   onLoad () {
+    console.log('test')
     window.onWebSignIn = this.handleWebSignIn
     window.onAndroidSignIn = this.signIn
   }
