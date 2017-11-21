@@ -31,7 +31,6 @@ exports.view = class LoginView {
   handleWebSignIn (googleUser) {
     handleSignIn(googleUser.getAuthResponse().id_token)
   }
-
   onLoad () {
     window.onWebSignIn = this.handleWebSignIn
   }

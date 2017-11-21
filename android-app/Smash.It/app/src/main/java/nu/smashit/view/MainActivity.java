@@ -32,6 +32,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -39,8 +40,8 @@ import com.google.zxing.integration.android.IntentResult;
 import static android.content.ContentValues.TAG;
 
 public class MainActivity extends Activity {
-    //    private String myURL = "http://localhost:8080/breakout/";
-    private String myURL = "http://smash-it.nu";
+    private String myURL = "http://localhost:8080/breakout/";
+    //    private String myURL = "http://smash-it.nu";
     VideoView videoView;
     ViewSwitcher viewSwitcher;
     private WebView view;
@@ -213,6 +214,16 @@ public class MainActivity extends Activity {
         }
     }
 
+    private void signOut() {
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                    }
+                });
+        injectToChangeStatus(true);
+    }
+
     public class WebViewJavaScriptInterface {
         private Context context;
 
@@ -237,8 +248,8 @@ public class MainActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void logoutInAndroid(){
-            //add logout code
+        public void logoutInAndroid() {
+            signOut();
         }
     }
 
@@ -252,6 +263,10 @@ public class MainActivity extends Activity {
 
     public void injectQrCodeCall(String message) {
         view.loadUrl("javascript:" + "window.onAndroidQrScan('" + message + "')");
+    }
+
+    public void injectToChangeStatus(Boolean message) {
+        view.loadUrl("javascript:" + "window.changeStatusForGoogle('" + message + "')");
     }
 
     public void openSharing(String code) {
