@@ -15,6 +15,7 @@ class WsClient {
   /**
    * Open connection
    * @method
+   * @param {function} callback
    */
   open (callback) {
     if (this.ws !== undefined && this.ws.readyState !== WebSocket.CLOSED) {
@@ -44,7 +45,7 @@ class WsClient {
    * @method
    */
   onClose () {
-    throw new Error('WebSocket was closed.')
+    console.error(new Error('WebSocket was closed.'))
   }
 
   /**
@@ -72,6 +73,18 @@ class WsClient {
 
     const json = JSON.stringify(action)
     this.ws.send(json)
+  }
+
+  /**
+   * Reset websocket connection
+   * @param {function} callback
+   */
+  reset (callback) {
+    if (this.ws) {
+      this.ws.close()
+    }
+    this.ws = undefined
+    this.open(callback)
   }
 }
 

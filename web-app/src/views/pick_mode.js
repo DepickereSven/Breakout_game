@@ -11,23 +11,28 @@ exports.view = class PickModeView {
 
     this.logoutFromGooglePlay = '.btn_from_google'
     this.changeLogInStatusForAndroid = this.changeLogInStatusForAndroid.bind(this)
+    this.logout = this.logout.bind(this)
   }
   logout () {
-    if (!constants.IS_ANDROID_APP) {
-      // do some browser stuff
-    } else {
-      if ($('.google_status').html() === 'Sign out:') {
-        SmashIt.logoutInAndroid()
-      } else {
-        SmashIt.logInToAndroid()
-      }
+    if ($('.google_status').text() === 'Sign in:') {
+      SmashIt.logInToAndroid()
+      return
     }
+
+    if (!constants.IS_ANDROID_APP) {
+      const auth2 = gapi.auth2.getAuthInstance()
+      auth2.signOut()
+    } else {
+      SmashIt.logoutInAndroid()
+    }
+    this.viewManager.go('login.html')
+    window.wsClient.reset()
   }
   changeLogInStatusForAndroid (isLoggedOut) {
     if (isLoggedOut) {
-      $('.google_status').html('Sign in:')
+      $('.google_status').text('Sign in:')
     } else {
-      $('.google_status').html('Sign out:')
+      $('.google_status').text('Sign out:')
     }
   }
 
@@ -37,5 +42,6 @@ exports.view = class PickModeView {
   }
 
   onUnload () {
+    $(this.logoutFromGooglePlay).off('click')
   }
 }

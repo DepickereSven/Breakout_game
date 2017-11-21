@@ -6,5 +6,9 @@
     "browser": true,
     "jquery": true
   },
-  "extends": "standard"
+  "extends": "standard",
+  "globals": {
+    "SmashIt": true,
+    "gapi": true
+  }
 }
