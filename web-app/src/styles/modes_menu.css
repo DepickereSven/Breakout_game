@@ -13,3 +13,22 @@
     width: 40%;
     max-width: 254.4px;
 }
+
+.btn_box_from_google .btn_from_google img{
+    vertical-align: middle;
+    width: 9%;
+    max-width: 77.48px;
+    height: auto;
+}
+
+.btn_box_from_google a{
+    text-decoration: none;
+    color: #fff;
+    margin-left: 2%;
+}
+
+.btn_from_google{
+    margin-bottom: 1%;
+}
+
+
