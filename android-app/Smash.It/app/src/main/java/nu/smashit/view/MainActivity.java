@@ -129,6 +129,7 @@ public class MainActivity extends Activity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    makeToastForLogInOrLogOut(true, account.getDisplayName());
                     injectSignInTokenCall(account.getIdToken());
                 }
 
@@ -209,6 +210,7 @@ public class MainActivity extends Activity {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             injectSignInTokenCall(account.getIdToken());
+            makeToastForLogInOrLogOut(true, account.getDisplayName());
         } catch (ApiException e) {
             Log.w(TAG, "wingcrony signInResult:failed code=" + e.getStatusCode());
         }
@@ -221,7 +223,6 @@ public class MainActivity extends Activity {
                     public void onComplete(@NonNull Task<Void> task) {
                     }
                 });
-        injectToChangeStatus(true);
     }
 
     public class WebViewJavaScriptInterface {
@@ -249,7 +250,23 @@ public class MainActivity extends Activity {
 
         @JavascriptInterface
         public void logoutInAndroid() {
-            signOut();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    signOut();
+                    makeToastForLogInOrLogOut(false, account.getDisplayName());
+                }
+            });
+        }
+
+        @JavascriptInterface
+        public void logInToAndroid() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    startSignForGooglePlay();
+                }
+            });
         }
     }
 
@@ -267,6 +284,18 @@ public class MainActivity extends Activity {
 
     public void injectToChangeStatus(Boolean message) {
         view.loadUrl("javascript:" + "window.changeStatusForGoogle('" + message + "')");
+    }
+
+    public void makeToastForLogInOrLogOut(Boolean signOutOrSignin, String displayname) {
+        if (signOutOrSignin) {
+            Toast.makeText(getBaseContext(), "Welcome: " + displayname, Toast.LENGTH_SHORT).show();
+            injectToChangeStatus(false);
+        } else {
+            Toast.makeText(getBaseContext(), "You are logged out: " + displayname, Toast.LENGTH_SHORT).show();
+            injectToChangeStatus(true);
+        }
+
+
     }
 
     public void openSharing(String code) {
