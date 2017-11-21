@@ -8,6 +8,7 @@ exports.view = class JoinPublic {
   constructor (viewManager) {
     this.path = path
     this.viewManager = viewManager
+    this.remove = true
 
     this.handleBack = this.handleBack.bind(this)
   }

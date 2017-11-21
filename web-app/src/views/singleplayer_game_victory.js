@@ -7,6 +7,8 @@ exports.view = class PickModeView {
   constructor (viewManager) {
     this.path = path
     this.hideHeader = true
+    this.remove = true
+
     this.viewManager = viewManager
     this.home = '#home'
     this.next = '#next_singleplayer'

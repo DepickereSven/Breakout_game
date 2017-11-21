@@ -12,6 +12,7 @@ exports.view = class GameView {
     this.path = path
     this.viewManager = viewManager
     this.hideHeader = true
+    this.remove = true
 
     this.currentCount = 5
     this.currentTime = 0

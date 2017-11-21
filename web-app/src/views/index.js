@@ -14,11 +14,6 @@ const multiplayerWon = require('./multiplayer_game_victory')
 const multiplayerLost = require('./multiplayer_game_loss')
 const stats = require('./stats_for_multi')
 
-const backUrl = [
-  ['modes', 'singleplayer_menu', 'singleplayer_level_menu'],
-  ['modes', 'multiplayer_menu']
-]
-
 const views = [
   login,
   loading,
@@ -43,11 +38,6 @@ views.forEach(function (val) {
 })
 
 exports.viewsMap = viewsMap
-
-const viewsToRemove = {
-  'game.html': true,
-  'loading.html': true
-}
 
 const SCREEN_ANIMATION_TIME = 300
 
@@ -104,25 +94,13 @@ class ViewManager {
 
   goBack () {
     window.dispatchEvent(this.event)
-    const url = window.location.href
-    if (url.indexOf('single') > 1) {
-      getRightUrl(0, url)
-    } else {
-      getRightUrl(1, url)
-    }
+
     this.getCurrent().onUnload()
     this.viewHistory.pop()
 
-    // const previousView = this.getCurrent()
-    // previousView.onLoad()
+    slideScreenOut()
 
-    const currentViewEl = $('.screen')
-      .last()
-      .addClass('slideOut')
-
-    setTimeout(() => {
-      currentViewEl.remove()
-    }, SCREEN_ANIMATION_TIME)
+    this.getCurrent().onLoad()
   }
 
   goHome () {
@@ -143,7 +121,8 @@ class ViewManager {
     const currentView = this.getCurrent()
     if (currentView) {
       currentView.onUnload()
-      if (currentView && viewsToRemove[currentView.path]) {
+
+      if (currentView && currentView.remove) {
         this.viewHistory.pop()
         $('.screen')
           .last()
@@ -159,26 +138,36 @@ class ViewManager {
       $(document.body).append(`<div class="screen">${header}${html}</div>`)
       view.onLoad()
 
-      setTimeout(() => {
-        $('.screen')
-          .last()
-          .addClass('slideUp')
-
-        if (callback) {
-          setTimeout(callback, SCREEN_ANIMATION_TIME)
-        }
-      }, 50)
+      slideScreenIn(callback)
     })
   }
 }
 
-function getRightUrl (index, url) {
-  for (let i = 0; i < backUrl[index].length; i++) {
-    if (url.indexOf(backUrl[index][i]) > 1) {
-      viewManager.go(backUrl[index][i - 1] + '.html')
+function slideScreenOut (callback) {
+  setTimeout(() => {
+    const screen = $('.screen')
+      .last()
+      .addClass('slideOut')
+
+    setTimeout(() => {
+      screen.remove()
+      if (callback) {
+        callback()
+      }
+    }, SCREEN_ANIMATION_TIME)
+  }, 50)
+}
+
+function slideScreenIn (callback) {
+  setTimeout(() => {
+    $('.screen')
+      .last()
+      .addClass('slideUp')
+
+    if (callback) {
+      setTimeout(callback, SCREEN_ANIMATION_TIME)
     }
-  }
-  viewManager.go(backUrl[index][backUrl.length - 1] + '.html')
+  }, 50)
 }
 
 const viewManager = new ViewManager()

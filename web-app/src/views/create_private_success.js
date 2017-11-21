@@ -9,6 +9,7 @@ exports.view = class CreatePrivateSuccessView {
     this.path = path
     this.viewManager = viewManager
     this.key = key
+    this.remove = true
 
     this.gameCode = '#code'
     this.shareButton = '#sharingIsCaring'

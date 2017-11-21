@@ -129,6 +129,7 @@ public class MainActivity extends Activity {
                 super.onPageFinished(webView, url);
                 hasFinishedLoadingPage = true;
 
+                // Authenticate user
                 if (account == null) {
                     startSignForGooglePlay();
                 }

@@ -6,6 +6,7 @@ exports.view = class LoadingView {
     this.path = path
     this.hideHeader = true
     this.viewManager = viewManager
+    this.remove = true
   }
   onLoad () {
   }
