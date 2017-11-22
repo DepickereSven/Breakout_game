@@ -1,4 +1,5 @@
 const UserLoginRequestAction = require('../actions/user_login_request')
+const constants = require('../constants')
 
 const path = 'login.html'
 exports.path = path
@@ -19,23 +20,44 @@ function handleSignIn (token) {
 }
 window.onAndroidSignIn = handleSignIn
 
+function renderSignIn () {
+  const elId = 'signin'
+
+  gapi.signin2.render(elId, {
+    scope: 'openid',
+    width: 200,
+    height: 40,
+    longtitle: true,
+    theme: 'dark',
+    onsuccess: handleSuccess,
+    onfailure: handleFailure
+  })
+
+  if (constants.IS_ANDROID_APP) {
+    const el = document.getElementById(elId)
+    el.children[0].onclick = SmashIt.logInToAndroid
+  }
+}
+window.renderSignIn = renderSignIn
+
+function handleSuccess (googleUser) {
+  handleSignIn(googleUser.getAuthResponse().id_token)
+}
+
+function handleFailure () {
+  throw new Error('failed google sign in')
+}
+
 exports.view = class LoginView {
   constructor (viewManager) {
     this.path = path
     this.hideHeader = true
     this.viewManager = viewManager
-
-    this.handleWebSignIn = this.handleWebSignIn.bind(this)
   }
 
-  handleWebSignIn (googleUser) {
-    handleSignIn(googleUser.getAuthResponse().id_token)
-  }
   onLoad () {
-    window.onWebSignIn = this.handleWebSignIn
   }
 
   onUnload () {
-    window.onWebSignIn = undefined
   }
 }
