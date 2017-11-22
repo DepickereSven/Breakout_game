@@ -4,19 +4,13 @@
 }
 
 .game_container canvas {
+  width: 95% !important;
+  height: calc(100vh - 60px) !important;
+  max-height: 600px;
   border: 3px solid cornflowerblue;
-  border-radius: 4px;
-
+  border-radius: 3px;
+  margin: auto;
   object-fit: contain;
-  width: 90% !important;
-  max-width: 400px;
-  height: unset !important;
-  margin: auto auto 8px auto;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
 }
 
 .game_container .countdown_overlay {

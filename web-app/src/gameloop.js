@@ -5,6 +5,7 @@
 const { Player, getClientId } = require('./player')
 const { Ball } = require('./bodies/ball')
 const { Brick, getBrickId } = require('./bodies/brick')
+const constants = require('./constants')
 
 /**
  * GameLoop provides the state and drawing for the sketch
