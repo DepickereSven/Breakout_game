@@ -9,7 +9,8 @@
 .gamemodes-container > a,
 .gamemodes-container > button {
     position: relative;
-    min-width: 40%;
+
+    min-width: 125px;
     max-width: 125px;
 
     border-width: 0;
