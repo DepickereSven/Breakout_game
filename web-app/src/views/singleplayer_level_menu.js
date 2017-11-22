@@ -11,7 +11,7 @@ exports.view = class SingleplayerLevelMenuView {
     this.max = max
 
     this.container = '.singleplayer_level_menu'
-    this.levelButton = '.level'
+    this.levelButton = 'button.level'
 
     this.generateLevels = this.generateLevels.bind(this)
     this.handleLevelClick = this.handleLevelClick.bind(this)
@@ -21,9 +21,9 @@ exports.view = class SingleplayerLevelMenuView {
     let items = []
     for (max; min <= max; min++) {
       items.push(`
-        <a href="#" class="level rounded" data-level="${min}">
+        <button class="level rounded" data-level="${min}">
           <span class="levelName">${min}</span>
-        </a>
+        </button>
       `)
     }
     $(this.container).append(items)

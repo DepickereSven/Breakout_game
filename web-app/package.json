@@ -4,7 +4,7 @@
   "description": "",
   "main": "ball.js",
   "scripts": {
-    "start": "brunch watch --server",
+    "start": "brunch watch --server -P 8080",
     "build": "brunch build --production && npm run docs",
     "docs": "jsdoc2md --template README.hbs --files ./src/*.js ./src/**/*.js > README.md",
     "lint": "eslint \"./src/**/*.js\""

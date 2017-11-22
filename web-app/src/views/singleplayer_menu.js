@@ -6,7 +6,7 @@ exports.view = class SingleplayerMenuView {
     this.path = path
     this.viewManager = viewManager
 
-    this.levelButtons = 'a.diff'
+    this.levelButtons = 'button.diff'
   }
 
   handleLevelClick (e) {
