@@ -13,7 +13,6 @@ function getCountryCode (callback) {
 }
 
 function handleSignIn (token) {
-  localStorage.setItem('SignedIn', JSON.stringify(true))
   window.viewManager.go('loading.html')
   getCountryCode(country => {
     window.wsClient.send(UserLoginRequestAction.create({ token, country }))

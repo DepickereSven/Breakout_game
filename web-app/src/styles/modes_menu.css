@@ -16,13 +16,11 @@
 
 .btn_box_from_google .btn_from_google img{
     vertical-align: middle;
-    width: 9%;
-    max-width: 77.48px;
+    width: 50px;
     height: auto;
 }
 
-.btn_box_from_google a{
-    text-decoration: none;
+.btn_box_from_google .btn_from_google {
     color: #fff;
     margin-left: 2%;
 }
