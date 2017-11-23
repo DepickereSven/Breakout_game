@@ -40,5 +40,7 @@ exports.view = class SingleplayerLevelMenuView {
     $(this.levelButton).on('click', this.handleLevelClick)
   }
 
-  onUnload () {}
+  onUnload () {
+    $(this.levelButton).off('click')
+  }
 }
