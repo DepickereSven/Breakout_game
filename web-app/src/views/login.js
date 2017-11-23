@@ -38,7 +38,7 @@ function renderSignIn () {
     setTimeout(() => {
       const el = document.getElementById(elId)
       $(el).replaceWith($(el).clone())
-      $('#' + elId).click(SmashIt.logInToAndroid)
+      $('#' + elId).click(() => SmashIt.logInToAndroid())
     }, 200)
   }
 }
