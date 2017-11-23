@@ -3,22 +3,21 @@
     flex-wrap: wrap;
     justify-content: center;
     align-content: flex-start;
+    /*max-width: 721px;*/
+    /*margin-left: auto;*/
+    /*margin-right: auto;*/
 }
 
 /* Maintain 1:1 aspect ratio */
 .gamemodes-container > a,
 .gamemodes-container > button {
     position: relative;
-
     min-width: 125px;
     max-width: 125px;
-
     border-width: 0;
     background-color: unset;
-
     padding: 0;
     margin: 3%;
-
     flex: 1;
 }
 

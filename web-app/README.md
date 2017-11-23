@@ -508,11 +508,12 @@ Draws the score on the screen
 
 * [socket/client](#module_socket/client)
     * [~WsClient](#module_socket/client..WsClient)
-        * [.open()](#module_socket/client..WsClient+open)
+        * [.open(callback)](#module_socket/client..WsClient+open)
         * [.setClientId()](#module_socket/client..WsClient+setClientId)
         * [.onClose()](#module_socket/client..WsClient+onClose)
         * [.onMessage()](#module_socket/client..WsClient+onMessage)
         * [.send(action)](#module_socket/client..WsClient+send)
+        * [.reset(callback)](#module_socket/client..WsClient+reset)
 
 <a name="module_socket/client..WsClient"></a>
 
@@ -529,23 +530,28 @@ Websocket client
 
 
 * [~WsClient](#module_socket/client..WsClient)
-    * [.open()](#module_socket/client..WsClient+open)
+    * [.open(callback)](#module_socket/client..WsClient+open)
     * [.setClientId()](#module_socket/client..WsClient+setClientId)
     * [.onClose()](#module_socket/client..WsClient+onClose)
     * [.onMessage()](#module_socket/client..WsClient+onMessage)
     * [.send(action)](#module_socket/client..WsClient+send)
+    * [.reset(callback)](#module_socket/client..WsClient+reset)
 
 <a name="module_socket/client..WsClient+open"></a>
 
-#### wsClient.open()
+#### wsClient.open(callback)
 Open connection
 
 **Kind**: instance method of [<code>WsClient</code>](#module_socket/client..WsClient)  
+
+| Param | Type |
+| --- | --- |
+| callback | <code>function</code> | 
+
 <a name="module_socket/client..WsClient+setClientId"></a>
 
 #### wsClient.setClientId()
-Set the clientId
-Only done once
+Set the clientIdOnly done once
 
 **Kind**: instance method of [<code>WsClient</code>](#module_socket/client..WsClient)  
 <a name="module_socket/client..WsClient+onClose"></a>
@@ -570,4 +576,15 @@ Send an action to the server
 | Param | Type |
 | --- | --- |
 | action | <code>RequestAction</code> | 
+
+<a name="module_socket/client..WsClient+reset"></a>
+
+#### wsClient.reset(callback)
+Reset websocket connection
+
+**Kind**: instance method of [<code>WsClient</code>](#module_socket/client..WsClient)  
+
+| Param | Type |
+| --- | --- |
+| callback | <code>function</code> | 
 

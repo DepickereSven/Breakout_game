@@ -97,3 +97,6 @@ table img{
     min-width: 20%;
 }
 
+button:focus{
+    outline: 0;
+}
