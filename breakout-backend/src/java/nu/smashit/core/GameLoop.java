@@ -1,10 +1,13 @@
 package nu.smashit.core;
 
+import java.util.HashSet;
+import java.util.Set;
 import nu.smashit.core.bodies.Field;
 import nu.smashit.core.bodies.BrickRow;
 import nu.smashit.core.bodies.Brick;
 import nu.smashit.core.bodies.Ball;
 import java.util.TimerTask;
+import nu.smashit.core.power.Power;
 import nu.smashit.data.Repositories;
 import nu.smashit.socket.actions.GameStateUpdateAction;
 
@@ -19,10 +22,14 @@ public abstract class GameLoop extends TimerTask {
     private final Game gameSession;
     private Player lastPlayerToHitPaddle;
     private boolean initRun;
+    private Set<Power> powers;
+    private int brickHits;
 
     public GameLoop(Game gm, Field field) {
         this.gameSession = gm;
         this.field = field;
+        this.powers = new HashSet<>();
+        this.brickHits = 0;
         double speedBall = Repositories.getLevelRepository().getDifficulty(gm.getLevel()).getSpeedBall();
         setBall( new Ball(speedBall) );
         setInitRun(false);
@@ -43,7 +50,9 @@ public abstract class GameLoop extends TimerTask {
                         getBall().inverseHozSpeed();
                     }
 
-                    if (getLastPlayerToHitPaddle() != null) {
+                    if (brick.isBroken() && getLastPlayerToHitPaddle() != null) {
+                        brickHits += 1;
+                        powers.add(brick.getPower());
                         getLastPlayerToHitPaddle().getScore().addBrickSmash(brick);
                     }
 
@@ -112,7 +121,12 @@ public abstract class GameLoop extends TimerTask {
     @Override
     public void run() {
         GameStateUpdateAction updateState = new GameStateUpdateAction(getBall(), getGameSession().getPlayers(), getGameSession().getCountDown(), getGameSession().getTime());
-
+        
+//        for (Power power: powers){
+//            Player player = gameSession.getPlayers()[0]; //TODO
+//            power.updateEffect(this, player);
+//        }
+        
         if (getGameSession().getCountDown() > 0) {
             if (isInitRun()) {
                 for (BrickRow br : getField().getBrickRows()) {
@@ -171,6 +185,10 @@ public abstract class GameLoop extends TimerTask {
 
     protected void setInitRun(boolean initRun) {
         this.initRun = initRun;
+    }
+    
+    protected int getBrickHits(){
+        return brickHits;
     }
     
 }

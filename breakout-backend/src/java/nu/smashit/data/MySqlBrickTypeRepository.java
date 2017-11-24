@@ -8,15 +8,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import nu.smashit.data.dataobjects.BrickType;
 import nu.smashit.data.utils.MySqlConnection;
 import nu.smashit.utils.BreakoutException;
 
 public class MySqlBrickTypeRepository implements BrickTypeRepository{
     
-    private static final String SQL_GET_ALL_BRICKTYPES = "SELECT * FROM brick_type";
-    private static final String SQL_GET_BRICKTYPE =  SQL_GET_ALL_BRICKTYPES + "WHERE name = ?";
-    private static final String SQL_GET_ALL_BRICKTYPES_OF_TYPE = SQL_GET_ALL_BRICKTYPES + "WHERE type = ?";
+    private static final String SQL_GET_ALL_BRICKTYPES = "SELECT * FROM brick_type ";
+    private static final String SQL_GET_BRICKTYPE =  SQL_GET_ALL_BRICKTYPES + " WHERE name = ?";
+    private static final String SQL_GET_ALL_BRICKTYPES_OF_TYPE = SQL_GET_ALL_BRICKTYPES + " WHERE type = ?";
     
     @Override
     public BrickType getBrickType(String name) {
@@ -46,9 +48,12 @@ public class MySqlBrickTypeRepository implements BrickTypeRepository{
             }
             return types;
             
-        }catch(SQLException ex){
-            throw new BreakoutException("Could not get brick types.", ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(MySqlBrickTypeRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+            throw new BreakoutException("Could not get brick types.");
+
     }
 
     @Override
@@ -77,8 +82,9 @@ public class MySqlBrickTypeRepository implements BrickTypeRepository{
             int points = rs.getInt("points");
             int value = rs.getInt("value");
             String name = rs.getString("name");
+            String subType = rs.getString("subtype");
             
-            return new BrickType(brickID, name, sort, brickStrength, points, value);
+            return new BrickType(brickID, name, sort, brickStrength, points, value, subType);
         }catch(SQLException ex){
             throw new BreakoutException("Could not create brick type.", ex);
         }

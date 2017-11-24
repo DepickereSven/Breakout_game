@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import nu.smashit.core.power.Power;
+import nu.smashit.core.power.PowerFactory;
 
 @JsonIgnoreProperties(value = {"h"})
 @JsonFormat(shape = JsonFormat.Shape.ARRAY)
@@ -17,6 +19,7 @@ public class Brick extends Body {
     @JsonSerialize(using = ToStringSerializer.class)
     public final BrickType type;
     private int lives;
+    private Power power;
 
     public static final int HEIGHT = 16;
 
@@ -24,6 +27,8 @@ public class Brick extends Body {
         super(x, y, width, height);
         this.type = type;
         this.lives = type.getBrickStrength();
+        PowerFactory pf = new PowerFactory();
+        this.power = pf.createPower(type);
     }
 
     @JsonProperty("l")
@@ -45,4 +50,9 @@ public class Brick extends Body {
         return "Brick" + type + "(" + lives + ")";
     }
 
+    @JsonIgnore
+    public Power getPower() {
+        return power;
+    }
+    
 }

@@ -3,32 +3,35 @@ package nu.smashit.data.dataobjects;
 // @author Jonas
 public class BrickType {
 
-    public enum BrickSort{ N, U, D }
-    
+    public enum BrickSort {
+        N, U, D
+    }
+
     private int brickTypeID;
-    private String name;
-    private BrickSort sort;
     private int brickStrength;
+    private String name;
+    private BrickSort type;
+    private String subType;
     private int points;
     private int value;
-    //TODO extra fields for data powerups and powerdowns?
 
     private static final int DEFAULT_BRICK_STRENGTH = 1;
     private static final int DEFAULT_POINTS = 10;
-    
-    public BrickType(String name, BrickSort sort){
-        this(0,name, sort, DEFAULT_BRICK_STRENGTH, DEFAULT_POINTS,0);
+
+    public BrickType(String name, BrickSort sort, String subType) {
+        this(0, name, sort, DEFAULT_BRICK_STRENGTH, DEFAULT_POINTS, 0, subType);
     }
-    
-    public BrickType(String name, BrickSort sort, int brickStrength, int points) {
-        this(0,name, sort, brickStrength, points,0);
+
+    public BrickType(String name, BrickSort sort, int brickStrength, int points, String subType) {
+        this(0, name, sort, brickStrength, points, 0, subType);
     }
-    
-    public BrickType(int brickTypeID, String name, BrickSort sort, int brickStrength, int points, int value) {
+
+    public BrickType(int brickTypeID, String name, BrickSort type, int brickStrength, int points, int value, String subType) {
         this.brickTypeID = brickTypeID;
-        this.name = name;
-        this.sort = sort;
         this.brickStrength = brickStrength;
+        this.name = name;
+        this.type = type;
+        this.subType = subType;
         this.points = points;
         this.value = value;
     }
@@ -37,8 +40,8 @@ public class BrickType {
         return name;
     }
 
-    public BrickSort getSort() {
-        return sort;
+    public BrickSort getType() {
+        return type;
     }
 
     public int getBrickStrength() {
@@ -48,10 +51,10 @@ public class BrickType {
     public int getPoints() {
         return points;
     }
-    
+
     @Override
     public String toString() {
-        return sort.toString() ;
+        return type.toString();
     }
 
     public int getBrickTypeID() {
@@ -61,5 +64,9 @@ public class BrickType {
     public int getValue() {
         return value;
     }
-       
+
+    public String getSubType() {
+        return subType;
+    }
+
 }
