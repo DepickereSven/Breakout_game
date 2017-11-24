@@ -5,7 +5,6 @@
 const { Player, getClientId } = require('./player')
 const { Ball } = require('./bodies/ball')
 const { Brick, getBrickId } = require('./bodies/brick')
-const constants = require('./constants')
 
 /**
  * GameLoop provides the state and drawing for the sketch
@@ -20,6 +19,8 @@ exports.GameLoop = class GameLoop {
     this.players = {}
     this.bricks = {}
 
+    this.isMultiplayer = false
+
     this.run = this.run.bind(this)
   }
 
@@ -29,12 +30,12 @@ exports.GameLoop = class GameLoop {
    * @param {object[]} players
    */
   updatePlayers (players) {
-    const isMultiplayer = players.length === 2
+    this.isMultiplayer = players.length === 2
     for (const p of players) {
       const id = getClientId(p)
       if (!this.players[id]) {
         const isCurrentPlayer = id === window.wsClient.clientId
-        this.players[id] = new Player(isCurrentPlayer, isMultiplayer)
+        this.players[id] = new Player(isCurrentPlayer, this.isMultiplayer)
       }
       this.players[id].update(p)
     }

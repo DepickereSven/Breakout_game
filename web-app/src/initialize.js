@@ -11,11 +11,7 @@ const { viewManager } = require('./views/index')
 $(document).ready(function () {
   window.wsClient = wsClient
   wsClient.open(function () {
-    if (!constants.IS_ANDROID_APP) {
-      viewManager.go('login.html')
-    } else {
-      viewManager.goHome()
-    }
+    viewManager.go('login.html')
   })
 
   /**

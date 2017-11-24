@@ -31,6 +31,9 @@ public class SocketServer {
      */
     @OnOpen
     public void onOpen(Session session) {
+        // Disable timeout
+        session.setMaxIdleTimeout(0);
+
         Client c = new Client(session);
         c.sendAction(new ConnectionSuccessAction(c.getShortId()));
 

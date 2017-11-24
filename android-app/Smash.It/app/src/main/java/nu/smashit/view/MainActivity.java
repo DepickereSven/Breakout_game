@@ -253,8 +253,8 @@ public class MainActivity extends Activity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    makeToastForLogInOrLogOut(false, null);
                     signOut();
-                    makeToastForLogInOrLogOut(false, account.getDisplayName());
                 }
             });
         }
@@ -291,11 +291,9 @@ public class MainActivity extends Activity {
             Toast.makeText(getBaseContext(), "Welcome: " + displayname, Toast.LENGTH_SHORT).show();
             injectToChangeStatus(false);
         } else {
-            Toast.makeText(getBaseContext(), "You are logged out: " + displayname, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), "You are logged out ", Toast.LENGTH_SHORT).show();
             injectToChangeStatus(true);
         }
-
-
     }
 
     public void openSharing(String code) {

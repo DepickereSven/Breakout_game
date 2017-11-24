@@ -34,8 +34,11 @@ function renderSignIn () {
   })
 
   if (constants.IS_ANDROID_APP) {
-    const el = document.getElementById(elId)
-    el.children[0].onclick = SmashIt.logInToAndroid
+    setTimeout(() => {
+      const el = document.getElementById(elId)
+      $(el).replaceWith($(el).clone())
+      $('#' + elId).click(() => SmashIt.logInToAndroid())
+    }, 200)
   }
 }
 window.renderSignIn = renderSignIn

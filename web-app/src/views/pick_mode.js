@@ -10,14 +10,13 @@ exports.view = class PickModeView {
     this.viewManager = viewManager
 
     this.logoutFromGooglePlay = '.btn_from_google'
-    this.changeLogInStatusForAndroid = this.changeLogInStatusForAndroid.bind(this)
     this.logout = this.logout.bind(this)
   }
+
   logout () {
-    if ($('.google_status').text() === 'Sign in:') {
-      SmashIt.logInToAndroid()
-      return
-    }
+    window.user = undefined
+
+    window.wsClient.reset()
 
     if (!constants.IS_ANDROID_APP) {
       const auth2 = gapi.auth2.getAuthInstance()
@@ -25,19 +24,11 @@ exports.view = class PickModeView {
     } else {
       SmashIt.logoutInAndroid()
     }
+
     this.viewManager.go('login.html')
-    window.wsClient.reset()
-  }
-  changeLogInStatusForAndroid (isLoggedOut) {
-    if (isLoggedOut) {
-      $('.google_status').text('Sign in:')
-    } else {
-      $('.google_status').text('Sign out:')
-    }
   }
 
   onLoad () {
-    window.changeStatusForGoogle = this.changeLogInStatusForAndroid
     $(this.logoutFromGooglePlay).on('click', this.logout)
   }
 
