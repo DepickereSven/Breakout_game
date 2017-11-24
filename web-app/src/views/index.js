@@ -13,6 +13,7 @@ const singleplayerLost = require('./singleplayer_game_loss')
 const multiplayerWon = require('./multiplayer_game_victory')
 const multiplayerLost = require('./multiplayer_game_loss')
 const stats = require('./stats_for_multi')
+const { User } = require('../user')
 
 const views = [
   login,
@@ -137,7 +138,9 @@ class ViewManager {
       const header = view.hideHeader ? '' : this.headerHtml
       $(document.body).append(`<div class="screen">${header}${html}</div>`)
       view.onLoad()
-
+      if (!(header === '')) {
+        $('#points').text(window.user.smashbit)
+      }
       slideScreenIn(callback)
     })
   }

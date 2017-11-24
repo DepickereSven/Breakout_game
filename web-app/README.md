@@ -35,6 +35,8 @@ npm start
 <dd></dd>
 <dt><a href="#module_sketch">sketch</a></dt>
 <dd></dd>
+<dt><a href="#module_updateSmashBits">updateSmashBits</a></dt>
+<dd></dd>
 <dt><a href="#module_utils">utils</a></dt>
 <dd></dd>
 <dt><a href="#actions/cancel_multiplayer_request.module_js">js</a></dt>
@@ -198,6 +200,9 @@ Draws the current state onto the provided sketch
 <a name="module_sketch"></a>
 
 ## sketch
+<a name="module_updateSmashBits"></a>
+
+## updateSmashBits
 <a name="module_utils"></a>
 
 ## utils
