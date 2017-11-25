@@ -7,34 +7,38 @@ import nu.smashit.core.Player;
 
 public abstract class Power {
 
-    protected final GameLoop gameLoop;
-    protected final Player player;
     private int time;
-        
-    private static final int DURATION = 60;
+    private static final int DURATION = 80;
+    private Player player;
 
-    
-    protected Power(GameLoop gameLoop, Player player){
-        this.gameLoop = gameLoop;
-        this.player = player;
+    protected Power(){
         time = DURATION;
+        player = null;
     }
     
-    public void updateEffect(){
+    public void updateEffect(GameLoop gameLoop){
         if (timeLeft()){
-            doEffect();
+            doEffect(gameLoop);
         }else{
-            undoEffect();
+            undoEffect(gameLoop);
         }
         time--;
     }
     
-    protected abstract void doEffect();
+    protected abstract void doEffect(GameLoop gameLoop);
     
-    protected abstract void undoEffect();
+    protected abstract void undoEffect(GameLoop gameLoop);
     
     public boolean timeLeft(){
-        return time <= 0;
+        return time >= 0;
+    }
+    
+    public void setPlayer(Player player){
+        this.player = player;
+    }
+    
+    public Player getPlayer(){
+        return player;
     }
     
 }

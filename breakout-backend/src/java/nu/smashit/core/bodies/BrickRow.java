@@ -1,7 +1,11 @@
 package nu.smashit.core.bodies;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import nu.smashit.core.GameCanvas;
+import nu.smashit.data.Repositories;
 import nu.smashit.data.dataobjects.BrickType;
 import nu.smashit.utils.Tools;
 
@@ -17,6 +21,7 @@ public class BrickRow extends Body {
     private final int numberOfPowerdowns;
     private final int numberOfEmptyPlaces;
     private static final Random RANDOM = new Random();
+    private Map<BrickType.BrickSort, List<BrickType>> brickTypes;
 
     public BrickRow(int numberOfNormalBricks, int numberOfPowerups, int numberOfPowerdowns, int numberOfEmptyPlaces, int y) {
         super(0, y, GameCanvas.WIDTH, Brick.HEIGHT);
@@ -27,6 +32,7 @@ public class BrickRow extends Body {
         this.numberOfEmptyPlaces = numberOfEmptyPlaces;
 
         bricks = new Brick[getNumberOfTotalPlaces()];
+        brickTypes = new HashMap<>();
         fillRow();
     }
 
@@ -79,8 +85,12 @@ public class BrickRow extends Body {
     }
 
     private BrickType getRandomBrickType(BrickType.BrickSort sort) {
-        //TODO uit db halen
-        return new BrickType("test", sort);
+        if (!brickTypes.containsKey(sort)){
+             brickTypes.put(sort, Repositories.getBrickTypeRepository().getAllBricksOfType( sort.toString()));
+        }
+        
+        int i = Tools.getRandomBetween(0, brickTypes.get(sort).size()-1);
+        return brickTypes.get(sort).get(i);
     }
     
     public Brick[] getBricks() {

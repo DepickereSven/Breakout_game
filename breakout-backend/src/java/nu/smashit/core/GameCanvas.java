@@ -6,7 +6,7 @@ package nu.smashit.core;
  */
 public class GameCanvas {
 
-    public static int HEIGHT = 480;
-    public static int WIDTH = 320;
+    public final static int HEIGHT = 480;
+    public final static int WIDTH = 320;
     
 }

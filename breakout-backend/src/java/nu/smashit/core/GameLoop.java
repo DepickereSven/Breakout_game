@@ -1,10 +1,15 @@
 package nu.smashit.core;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 import nu.smashit.core.bodies.Field;
 import nu.smashit.core.bodies.BrickRow;
 import nu.smashit.core.bodies.Brick;
 import nu.smashit.core.bodies.Ball;
 import java.util.TimerTask;
+import nu.smashit.core.power.NoPower;
+import nu.smashit.core.power.Power;
 import nu.smashit.data.Repositories;
 import nu.smashit.socket.actions.GameStateUpdateAction;
 
@@ -19,10 +24,14 @@ public abstract class GameLoop extends TimerTask {
     private final Game gameSession;
     private Player lastPlayerToHitPaddle;
     private boolean initRun;
+    private Set<Power> powers;
+    private int brickHits;
 
     public GameLoop(Game gm, Field field) {
         this.gameSession = gm;
         this.field = field;
+        this.powers = new HashSet<>();
+        this.brickHits = 0;
         double speedBall = Repositories.getLevelRepository().getDifficulty(gm.getLevel()).getSpeedBall();
         setBall(new Ball(speedBall));
         setInitRun(false);
@@ -43,8 +52,14 @@ public abstract class GameLoop extends TimerTask {
                         getBall().inverseHozSpeed();
                     }
 
-                    if (getLastPlayerToHitPaddle() != null) {
-                        getLastPlayerToHitPaddle().getScore().addBrickSmash(brick);
+                    if (brick.isBroken() && getLastPlayerToHitPaddle() != null) {
+                        brickHits += 1;
+                        Power power = brick.getPower();
+                        if (!(power instanceof NoPower)) {
+                            power.setPlayer(lastPlayerToHitPaddle);
+                            powers.add(power);
+                            getLastPlayerToHitPaddle().getScore().addBrickSmash(brick);
+                        }
                     }
 
                     return true;
@@ -113,6 +128,17 @@ public abstract class GameLoop extends TimerTask {
     public void run() {
         GameStateUpdateAction updateState = new GameStateUpdateAction(getBall(), getGameSession().getPlayers(), getGameSession().getCountDown(), getGameSession().getTime());
 
+        Iterator<Power> i = powers.iterator();
+        while (i.hasNext()) {
+            Power power = i.next();
+            power.updateEffect(this);
+            if (!power.timeLeft()) {
+                System.out.println("Remove power " + power.getClass());
+                i.remove();
+            }
+            System.out.println("---->  " + power.getClass()); //TODO temp
+        }
+
         if (getGameSession().getCountDown() > 0) {
             if (isInitRun()) {
                 for (BrickRow br : getField().getBrickRows()) {
@@ -173,4 +199,7 @@ public abstract class GameLoop extends TimerTask {
         this.initRun = initRun;
     }
 
+    protected int getBrickHits() {
+        return brickHits;
+    }
 }

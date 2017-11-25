@@ -38,9 +38,11 @@ public class MySqlUserRepository implements UserRepository {
                 PreparedStatement prep = conn.prepareStatement(SQL_GET_USER_BY_USERID);) {
 
             prep.setString(1, userID);
-            ResultSet rs = prep.executeQuery();
-            return createUserFromResultSet(rs);
-
+            
+            try(ResultSet rs = prep.executeQuery();){
+                return createUserFromResultSet(rs);
+            }
+            
         } catch (SQLException ex) {
             throw new BreakoutException("Could not get user by userID.", ex);
         }

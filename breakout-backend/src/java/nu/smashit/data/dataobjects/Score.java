@@ -3,6 +3,7 @@ package nu.smashit.data.dataobjects;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import nu.smashit.core.bodies.Brick;
+import nu.smashit.utils.Tools;
 
 public class Score {
 
@@ -14,6 +15,7 @@ public class Score {
     private User userLost;
     private int points;
     private int time;
+    private int pointsFactor;
 
     public Score() {
         this(0, null, null, START_POINTS, 0);
@@ -25,6 +27,7 @@ public class Score {
         this.userLost = userLost;
         this.points = points;
         this.time = time;
+        this.pointsFactor = 1;
     }
 
     @JsonIgnore
@@ -41,7 +44,7 @@ public class Score {
     }
 
     public void addBrickSmash(Brick brick) {
-        points += brick.type.getPoints();
+        points += brick.type.getPoints() * getPointsFactor();
     }
 
     @JsonIgnore
@@ -77,4 +80,13 @@ public class Score {
         this.userLost = userLost;
     }
 
+    @JsonIgnore
+    public int getPointsFactor() {
+        return pointsFactor;
+    }
+
+    public void setPointsFactor(int pointsFactor) {
+        this.pointsFactor = Tools.validateBetween(pointsFactor, 0, 100, 1);
+    }
+    
 }
