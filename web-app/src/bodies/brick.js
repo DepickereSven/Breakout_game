@@ -36,31 +36,33 @@ exports.Brick = class Brick {
    * @param {object} bodyObj 
    */
   update ([x, y, w, type, lives]) {
+    if (this.type !== type || this.lives !== lives) {
+      this.setColor()
+    }
     this.type = type
     this.w = w
     this.lives = lives
     this.x = x
     this.y = y
-    this.setColor()
   }
-  
-  setColor(){
+
+  setColor () {
     let alpha
-    if (this.lives > 3){
-        alpha = 255
-    }else{
-        alpha = 55 + (this.lives * 50)
+    if (this.lives > 3) {
+      alpha = 255
+    } else {
+      alpha = 55 + (this.lives * 50)
     }
-    switch(this.type){
-        case "U":
-            this.color = [0,45,96, alpha]
-            break
-        case "D":
-            this.color = [223,116,12, alpha]
-            break
-        default:
-            this.color = [111,195,223, alpha]
-            break
+    switch (this.type) {
+      case 'U':
+        this.color = [0, 45, 96, alpha]
+        break
+      case 'D':
+        this.color = [223, 116, 12, alpha]
+        break
+      default:
+        this.color = [111, 195, 223, alpha]
+        break
     }
   }
 
