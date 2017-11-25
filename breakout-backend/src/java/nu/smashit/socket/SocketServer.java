@@ -9,7 +9,6 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 import nu.smashit.core.Game;
-import nu.smashit.core.GameManager;
 import nu.smashit.data.dataobjects.User;
 import nu.smashit.socket.actions.GameStopAction;
 
@@ -21,7 +20,6 @@ import nu.smashit.socket.actions.GameStopAction;
 public class SocketServer {
 
     private final ClientManager clientManager = ClientManager.getInstance();
-    private final GameManager gameSessionManager = GameManager.getInstance();
 
     /**
      * @param session

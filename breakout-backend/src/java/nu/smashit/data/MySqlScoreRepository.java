@@ -35,10 +35,9 @@ public class MySqlScoreRepository implements ScoreRepository {
 
     @Override
     public List<Score> getAllScores() {
-        try (Connection conn = MySqlConnection.getConnection();
-                PreparedStatement prep = conn.prepareStatement(SQL_GET_ALL_SCORES);) {
-
-            ResultSet rs = prep.executeQuery();
+        try (   Connection conn = MySqlConnection.getConnection();
+                PreparedStatement prep = conn.prepareStatement(SQL_GET_ALL_SCORES);
+                ResultSet rs = prep.executeQuery();) {
 
             List<Score> scores = new ArrayList();
             while (rs.next()) {

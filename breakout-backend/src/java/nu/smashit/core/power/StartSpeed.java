@@ -19,7 +19,7 @@ public class StartSpeed extends Power {
             originalDx = gameLoop.getBall().getDx();
             originalDy = gameLoop.getBall().getDy();
         }
-        gameLoop.getBall().setDx(newStartSpeed /3);
+        gameLoop.getBall().setDx(newStartSpeed / (double) 3);
         gameLoop.getBall().setDy(newStartSpeed);
     }
 

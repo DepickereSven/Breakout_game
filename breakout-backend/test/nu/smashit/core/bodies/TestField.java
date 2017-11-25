@@ -7,9 +7,11 @@ import org.junit.Test;
 
 public class TestField {
     
-    public TestField() {}
-    
     Field field;
+    
+    public TestField() {
+        this.field = null;
+    }
     
     @After
     public void after(){
