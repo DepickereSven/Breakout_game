@@ -3,7 +3,6 @@ package nu.smashit.core.power;
 // @author Jonas
 
 import nu.smashit.core.GameLoop;
-import nu.smashit.core.Player;
 
 public class Points extends Power{
     
@@ -14,13 +13,17 @@ public class Points extends Power{
     }
 
     @Override
-    protected void doEffect(GameLoop gameLoop, Player player) {
-        player.getScore().setPointsFactor(pointsFactor);
+    protected void doEffect(GameLoop gameLoop) {
+        if (getPlayer() != null){
+            getPlayer().getScore().setPointsFactor(pointsFactor);
+        } 
     }
 
     @Override
-    protected void undoEffect(GameLoop gameLoop, Player player) {
-        player.getScore().setPointsFactor(1);
+    protected void undoEffect(GameLoop gameLoop) {
+        if (getPlayer() != null){
+            getPlayer().getScore().setPointsFactor(1);
+        }
     }
 
 }

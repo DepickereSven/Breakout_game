@@ -41,6 +41,27 @@ exports.Brick = class Brick {
     this.lives = lives
     this.x = x
     this.y = y
+    this.setColor()
+  }
+  
+  setColor(){
+    let alpha
+    if (this.lives > 3){
+        alpha = 255
+    }else{
+        alpha = 55 + (this.lives * 50)
+    }
+    switch(this.type){
+        case "U":
+            this.color = [0,45,96, alpha]
+            break
+        case "D":
+            this.color = [223,116,12, alpha]
+            break
+        default:
+            this.color = [111,195,223, alpha]
+            break
+    }
   }
 
   /**

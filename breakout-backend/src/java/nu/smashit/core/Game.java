@@ -39,7 +39,7 @@ public abstract class Game implements Comparable<Game> {
 
     public void broadcastAction(ResponseAction a) {
         for (Player p : getPlayers()) {
-            p.getUser().getClient().sendAction(a);
+            p.sendAction(a);
         }
     }
 

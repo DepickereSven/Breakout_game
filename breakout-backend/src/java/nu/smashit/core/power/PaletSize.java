@@ -3,7 +3,6 @@ package nu.smashit.core.power;
 // @author Jonas
 
 import nu.smashit.core.GameLoop;
-import nu.smashit.core.Player;
 import nu.smashit.core.bodies.Paddle;
 
 public class PaletSize extends Power{
@@ -15,13 +14,17 @@ public class PaletSize extends Power{
     }
 
     @Override
-    protected void doEffect(GameLoop gameLoop, Player player) {
-        player.getPaddle().setWidth(newWidth);
+    protected void doEffect(GameLoop gameLoop) {
+        if (getPlayer() != null){
+            getPlayer().getPaddle().setWidth(newWidth);
+        }
     }
 
     @Override
-    protected void undoEffect(GameLoop gameLoop, Player player) {
-        player.getPaddle().setWidth(Paddle.WIDTH);
+    protected void undoEffect(GameLoop gameLoop) {
+        if (getPlayer() != null){
+            getPlayer().getPaddle().setWidth(Paddle.WIDTH);
+        }
     }
 
 }

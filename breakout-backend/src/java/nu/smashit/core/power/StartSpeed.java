@@ -2,7 +2,6 @@ package nu.smashit.core.power;
 
 // @author Jonas
 import nu.smashit.core.GameLoop;
-import nu.smashit.core.Player;
 
 public class StartSpeed extends Power {
 
@@ -15,17 +14,17 @@ public class StartSpeed extends Power {
     }
 
     @Override
-    protected void doEffect(GameLoop gameLoop, Player player) {
+    protected void doEffect(GameLoop gameLoop) {
         if (originalDx == 0 || originalDy == 0) {
             originalDx = gameLoop.getBall().getDx();
             originalDy = gameLoop.getBall().getDy();
         }
-        gameLoop.getBall().setDx(newStartSpeed);
+        gameLoop.getBall().setDx(newStartSpeed /3);
         gameLoop.getBall().setDy(newStartSpeed);
     }
 
     @Override
-    protected void undoEffect(GameLoop gameLoop, Player player) {
+    protected void undoEffect(GameLoop gameLoop) {
         gameLoop.getBall().setDx(originalDx);
         gameLoop.getBall().setDy(originalDy);
     }

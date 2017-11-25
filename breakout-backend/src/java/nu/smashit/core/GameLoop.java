@@ -1,12 +1,14 @@
 package nu.smashit.core;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import nu.smashit.core.bodies.Field;
 import nu.smashit.core.bodies.BrickRow;
 import nu.smashit.core.bodies.Brick;
 import nu.smashit.core.bodies.Ball;
 import java.util.TimerTask;
+import nu.smashit.core.power.NoPower;
 import nu.smashit.core.power.Power;
 import nu.smashit.data.Repositories;
 import nu.smashit.socket.actions.GameStateUpdateAction;
@@ -52,8 +54,12 @@ public abstract class GameLoop extends TimerTask {
 
                     if (brick.isBroken() && getLastPlayerToHitPaddle() != null) {
                         brickHits += 1;
-                        powers.add(brick.getPower());
-                        getLastPlayerToHitPaddle().getScore().addBrickSmash(brick);
+                        Power power = brick.getPower();
+                        if (!(power instanceof NoPower)){
+                            power.setPlayer(lastPlayerToHitPaddle);
+                            powers.add(power);
+                            getLastPlayerToHitPaddle().getScore().addBrickSmash(brick);
+                        }
                     }
 
                     return true;
@@ -122,10 +128,16 @@ public abstract class GameLoop extends TimerTask {
     public void run() {
         GameStateUpdateAction updateState = new GameStateUpdateAction(getBall(), getGameSession().getPlayers(), getGameSession().getCountDown(), getGameSession().getTime());
         
-//        for (Power power: powers){
-//            Player player = gameSession.getPlayers()[0]; //TODO
-//            power.updateEffect(this, player);
-//        }
+        Iterator<Power> i = powers.iterator();
+        while (i.hasNext()){
+            Power power = i.next();
+            power.updateEffect(this);
+            if (!power.timeLeft()){
+                System.out.println("Remove power " + power.getClass());
+                i.remove();
+            }
+            System.out.println("---->  " + power.getClass()); //TODO temp
+        }
         
         if (getGameSession().getCountDown() > 0) {
             if (isInitRun()) {
