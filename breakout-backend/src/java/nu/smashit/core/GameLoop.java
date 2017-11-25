@@ -24,7 +24,7 @@ public abstract class GameLoop extends TimerTask {
         this.gameSession = gm;
         this.field = field;
         double speedBall = Repositories.getLevelRepository().getDifficulty(gm.getLevel()).getSpeedBall();
-        setBall( new Ball(speedBall) );
+        setBall(new Ball(speedBall));
         setInitRun(false);
     }
 
@@ -82,7 +82,7 @@ public abstract class GameLoop extends TimerTask {
 
         if (player != null && Collision.isCollision(getBall(), player.getPaddle())) {
             if (Collision.isTopOrBottomCollision(getBall(), player.getPaddle())) {
-                getBall().inverseVerSpeed();
+                getBall().reactToPaddleHit(player.getPaddle());
             } else {
                 getBall().inverseHozSpeed();
             }
@@ -172,5 +172,5 @@ public abstract class GameLoop extends TimerTask {
     protected void setInitRun(boolean initRun) {
         this.initRun = initRun;
     }
-    
+
 }

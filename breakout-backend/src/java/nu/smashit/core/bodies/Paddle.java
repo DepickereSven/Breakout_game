@@ -12,7 +12,7 @@ import nu.smashit.core.GameCanvas;
 @JsonFormat(shape = JsonFormat.Shape.ARRAY)
 public class Paddle extends MovableBody {
 
-    public final static int MOVE_STEP_SIZE = 7;
+    public final static int MOVE_STEP_SIZE = 8;
 
     public final static int GAP = 6;
 
