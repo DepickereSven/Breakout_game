@@ -119,14 +119,12 @@ class ViewManager {
     const view = new ViewConstructor(this, params)
 
     const currentView = this.getCurrent()
+    const currentScreenEl = $('.screen').last()
     if (currentView) {
       currentView.onUnload()
 
       if (currentView && currentView.remove) {
         this.viewHistory.pop()
-        $('.screen')
-          .last()
-          .remove()
       }
     }
 
@@ -142,7 +140,13 @@ class ViewManager {
       }
       view.onLoad()
 
-      slideScreenIn(callback)
+      slideScreenIn(() => {
+        if (currentView && currentView.remove && currentScreenEl) {
+          currentScreenEl.remove()
+        }
+
+        callback()
+      })
     })
   }
 }
