@@ -1,3 +1,5 @@
+const constants = require('../constants')
+
 const login = require('./login')
 const loading = require('./loading')
 const pickMode = require('./pick_mode')
@@ -14,6 +16,7 @@ const multiplayerWon = require('./multiplayer_game_victory')
 const multiplayerLost = require('./multiplayer_game_loss')
 const stats = require('./stats_for_multi')
 
+const viewsMap = {}
 const views = [
   login,
   loading,
@@ -31,129 +34,84 @@ const views = [
   multiplayerLost,
   stats
 ]
-
-const viewsMap = {}
 views.forEach(function (val) {
   viewsMap[val.path] = val.view
 })
 
-exports.viewsMap = viewsMap
+let viewHistory = []
+const event = new CustomEvent('back')
 
-const SCREEN_ANIMATION_TIME = 300
+const getPrevious = () => viewHistory[viewHistory.length - 2]
+const getCurrent = () => viewHistory[viewHistory.length - 1]
 
-class ViewManager {
-  constructor () {
-    this.viewHistory = []
-    this.headerHtml = ''
-
-    this.getHeader()
-
-    this.onLocationChange = this.onLocationChange.bind(this)
-    this.getCurrent = this.getCurrent.bind(this)
-    this.goHome = this.goHome.bind(this)
-
-    this.event = new CustomEvent('back')
+function onLocationChange () {
+  const hash = window.location.hash
+  if (!hash.length) {
+    return
   }
-
-  getPrevious () {
-    return this.viewHistory[this.viewHistory.length - 2]
+  const path = hash.slice(2) + '.html'
+  const foundViewIndex = viewHistory.findIndex(v => v.path === path)
+  if (foundViewIndex === viewHistory.length - 1) {
+    return
   }
-
-  getCurrent () {
-    return this.viewHistory[this.viewHistory.length - 1]
+  if (foundViewIndex > -1 && foundViewIndex === viewHistory.length - 2) {
+    goBack()
+  } else {
+    go(path)
   }
+}
 
-  getHeader () {
-    $.ajax({
-      url: 'header.html'
-    }).done(html => {
-      this.headerHtml = html
-    })
+function goBack () {
+  window.dispatchEvent(event)
+  getCurrent().onUnload()
+  viewHistory.pop()
+  slideScreenOut()
+  getCurrent().onLoad()
+}
+
+function goHome () {
+  viewHistory = []
+  $('.screen').remove()
+  go('modes.html')
+}
+
+function go (path, params = {}, callback = () => {}) {
+  const ViewConstructor = viewsMap[path]
+  if (!ViewConstructor) {
+    throw new Error(`View "${path}" doesn't exist.`)
   }
+  const view = new ViewConstructor(viewManager, params)
 
-  onLocationChange () {
-    const hash = window.location.hash
-    if (!hash.length) {
-      return
-    }
-
-    const path = hash.slice(2) + '.html'
-
-    const foundViewIndex = this.viewHistory.findIndex(v => v.path === path)
-
-    if (foundViewIndex === this.viewHistory.length - 1) {
-      return
-    }
-
-    if (foundViewIndex > -1 && foundViewIndex === this.viewHistory.length - 2) {
-      this.goBack()
-    } else {
-      this.go(path)
+  const currentView = getCurrent()
+  const currentScreenEl = $('.screen').last()
+  if (currentView) {
+    currentView.onUnload()
+    if (currentView && currentView.remove) {
+      viewHistory.pop()
     }
   }
 
-  goBack () {
-    window.dispatchEvent(this.event)
+  viewHistory.push(view)
+  window.location.hash = '/' + path.replace('.html', '')
 
-    this.getCurrent().onUnload()
-    this.viewHistory.pop()
-
-    slideScreenOut()
-
-    this.getCurrent().onLoad()
-  }
-
-  goHome () {
-    this.viewHistory = []
-    $('.screen').remove()
-    this.go('modes.html')
-  }
-
-  go (path, params = {}, callback) {
-    const ViewConstructor = viewsMap[path]
-
-    if (!ViewConstructor) {
-      throw new Error(`View "${path}" doesn't exist.`)
-    }
-
-    const view = new ViewConstructor(this, params)
-
-    const currentView = this.getCurrent()
-    const currentScreenEl = $('.screen').last()
-    if (currentView) {
-      currentView.onUnload()
-
-      if (currentView && currentView.remove) {
-        this.viewHistory.pop()
-      }
-    }
-
-    this.viewHistory.push(view)
-    window.location.hash = '/' + path.replace('.html', '')
-
-    $.ajax({ url: path }).done(html => {
-      const header = view.hideHeader ? '' : this.headerHtml
-      $(document.body).append(`<div class="screen">${header}${html}</div>`)
-
+  getHtml(path, html => {
+    getHtml('header.html', headerHtml => {
+      $(document.body).append(`<div class="screen">${!view.hideHeader ? headerHtml : ''}${html}</div>`)
       if (!view.hideHeader && window.user) {
         $('.header-container .points').text(window.user.smashbit)
       }
       view.onLoad()
-
       slideScreenIn(() => {
         if (currentView && currentView.remove && currentScreenEl) {
           currentScreenEl.remove()
         }
-
-        if (callback) {
-          callback()
-        }
+        callback()
       })
     })
-  }
+  })
 }
 
-function slideScreenOut (callback) {
+function slideScreenOut (callback = () => {}) {
   setTimeout(() => {
     const screen = $('.screen')
       .last()
@@ -161,26 +119,46 @@ function slideScreenOut (callback) {
 
     setTimeout(() => {
       screen.remove()
-      if (callback) {
-        callback()
-      }
-    }, SCREEN_ANIMATION_TIME)
+      callback()
+    }, constants.SCREEN_ANIMATION_TIME)
   }, 50)
 }
 
-function slideScreenIn (callback) {
+function slideScreenIn (callback = () => {}) {
   setTimeout(() => {
     $('.screen')
       .last()
       .addClass('slideUp')
 
-    if (callback) {
-      setTimeout(callback, SCREEN_ANIMATION_TIME)
-    }
+    setTimeout(callback, constants.SCREEN_ANIMATION_TIME)
   }, 50)
 }
 
-const viewManager = new ViewManager()
-window.viewManager = viewManager
+const htmlCache = {}
+function getHtml (url, callback = () => {}) {
+  const cachedHtml = htmlCache[url]
+  if (cachedHtml) {
+    callback(cachedHtml)
+    return
+  }
+  $.ajax({ url })
+    .done(html => {
+      htmlCache[url] = html
+      callback(html)
+    })
+}
+
+// Precache game html
+setTimeout(() => {
+  getHtml('game.html')
+}, 3000)
+
+const viewManager = window.viewManager = {
+  getPrevious,
+  getCurrent,
+  goHome,
+  go,
+  onLocationChange
+}
 
 exports.viewManager = viewManager

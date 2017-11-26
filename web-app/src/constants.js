@@ -42,3 +42,9 @@ exports.LOSS_QUOTES = [
   {text: 'Every defeat, every heartbreak, every loss, contains its own seed, its own lesson on how to improve your performance the next time.', author: 'Malcolm X'},
   {text: 'Everything is a learning process: any time you fall over, it\'s just teaching you to stand up the next time.', author: 'Joel Edgerton'}
 ]
+
+/**
+ * The length of the screen transition animation
+ * @type {number}
+ */
+exports.SCREEN_ANIMATION_TIME = 300
