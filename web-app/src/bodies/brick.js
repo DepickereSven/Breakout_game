@@ -37,11 +37,11 @@ exports.Brick = class Brick {
    */
   update ([x, y, w, type, lives]) {
     if (this.type !== type || this.lives !== lives) {
+      this.type = type
+      this.lives = lives
       this.setColor()
     }
-    this.type = type
     this.w = w
-    this.lives = lives
     this.x = x
     this.y = y
   }
