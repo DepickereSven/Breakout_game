@@ -9,6 +9,10 @@ const { viewManager } = require('./views/index')
 
 // Views
 $(document).ready(function () {
+  if (!constants.IS_ANDROID_APP) {
+    $('head').append(`<style type="text/css">.android-only { display:none; }</style>`)
+  }
+
   window.wsClient = wsClient
   wsClient.open(function () {
     viewManager.go('login.html')
