@@ -30,15 +30,13 @@
     text-align: center;
 }
 
-.game_lost_singleplayer p,
-.game_lost_singleplayer small,
-.game_won_singleplayer p,
-.game_won_singleplayer small,
-.game_won_multiplayer p,
-.game_won_multiplayer small,
-.game_lost_multiplayer p,
-.game_lost_multiplayer small{
-    font-size: 0.8rem;
+.screen #quote-text,
+.screen #quote-author {
+    color: #fff;
+    text-align: center;
+    margin: 1rem;
+    padding: 0;
+    font-size: 1rem;
 }
 
 .button_menu_singleplayer,
@@ -48,7 +46,7 @@
     align-items: center;
     justify-content: space-between;
     margin-top: 20%;
-    margin-bottom: 2%;
+    margin-bottom: 20%;
 }
 
 .won_or_lost .btn-blank-smashIt{

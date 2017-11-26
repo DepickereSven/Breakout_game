@@ -145,7 +145,9 @@ class ViewManager {
           currentScreenEl.remove()
         }
 
-        callback()
+        if (callback) {
+          callback()
+        }
       })
     })
   }
