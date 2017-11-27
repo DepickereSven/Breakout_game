@@ -35,8 +35,6 @@ npm start
 <dd></dd>
 <dt><a href="#module_sketch">sketch</a></dt>
 <dd></dd>
-<dt><a href="#module_updateSmashBits">updateSmashBits</a></dt>
-<dd></dd>
 <dt><a href="#module_utils">utils</a></dt>
 <dd></dd>
 <dt><a href="#actions/cancel_multiplayer_request.module_js">js</a></dt>
@@ -92,15 +90,17 @@ npm start
 ## constants
 
 * [constants](#module_constants)
-    * [.API_URL](#module_constants.API_URL)
+    * [.API_URL](#module_constants.API_URL) : <code>string</code>
     * [.C_HEIGHT](#module_constants.C_HEIGHT) : <code>number</code>
     * [.C_WIDTH](#module_constants.C_WIDTH) : <code>number</code>
     * [.IS_ANDROID_APP](#module_constants.IS_ANDROID_APP) : <code>string</code>
+    * [.LOSS_QUOTES](#module_constants.LOSS_QUOTES) : <code>Array.&lt;object&gt;</code>
+    * [.SCREEN_ANIMATION_TIME](#module_constants.SCREEN_ANIMATION_TIME) : <code>number</code>
 
 <a name="module_constants.API_URL"></a>
 
-### constants.API_URL
-exports.API_URL = (window.location.origin + window.location.pathname).replace(/^http/, 'ws').replace(/\/$/, '') + '/socket'
+### constants.API_URL : <code>string</code>
+API url
 
 **Kind**: static property of [<code>constants</code>](#module_constants)  
 <a name="module_constants.C_HEIGHT"></a>
@@ -119,6 +119,18 @@ Canvas width
 
 ### constants.IS_ANDROID_APP : <code>string</code>
 Is the current client the webview in the android app
+
+**Kind**: static property of [<code>constants</code>](#module_constants)  
+<a name="module_constants.LOSS_QUOTES"></a>
+
+### constants.LOSS_QUOTES : <code>Array.&lt;object&gt;</code>
+Array of quotes about losing
+
+**Kind**: static property of [<code>constants</code>](#module_constants)  
+<a name="module_constants.SCREEN_ANIMATION_TIME"></a>
+
+### constants.SCREEN_ANIMATION_TIME : <code>number</code>
+The length of the screen transition animation
 
 **Kind**: static property of [<code>constants</code>](#module_constants)  
 <a name="module_gameLoop"></a>
@@ -200,9 +212,6 @@ Draws the current state onto the provided sketch
 <a name="module_sketch"></a>
 
 ## sketch
-<a name="module_updateSmashBits"></a>
-
-## updateSmashBits
 <a name="module_utils"></a>
 
 ## utils
