@@ -13,6 +13,12 @@
   object-fit: contain;
 }
 
+/* edge canvas width fix*/
+_:-ms-lang(x), canvas { 
+  width:320px !important;
+  height:480px !important;
+}
+
 .game_container .countdown_overlay {
   position: absolute;
   top: 0;

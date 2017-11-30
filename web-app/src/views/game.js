@@ -72,9 +72,11 @@ exports.view = class GameView {
 
     switch (e.key) {
       case 'ArrowLeft':
+      case 'Left':
         window.wsClient.send(MovePaddleStartAction.create('left'))
         break
       case 'ArrowRight':
+      case 'Right':
         window.wsClient.send(MovePaddleStartAction.create('right'))
         break
     }
