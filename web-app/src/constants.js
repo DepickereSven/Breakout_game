@@ -48,3 +48,9 @@ exports.LOSS_QUOTES = [
  * @type {number}
  */
 exports.SCREEN_ANIMATION_TIME = 300
+
+/**
+ * Google application client id
+ * @type {string}
+ */
+exports.G_CLIENT_ID = '870997935508-c4325ugimh126ub88kl8o5c8nr2ms6ot.apps.googleusercontent.com'

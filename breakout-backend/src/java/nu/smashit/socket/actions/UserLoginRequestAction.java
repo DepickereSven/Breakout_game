@@ -25,8 +25,8 @@ public class UserLoginRequestAction implements RequestAction {
 
     @Override
     public void handler(Client c) {
-        Future<HttpResponse<JsonNode>> future = Unirest.post("https://www.googleapis.com/oauth2/v3/tokeninfo")
-                .queryString("id_token", token)
+        Future<HttpResponse<JsonNode>> future = Unirest.post("https://www.googleapis.com/oauth2/v3/userinfo")
+                .queryString("access_token", token)
                 .asJsonAsync(new Callback<JsonNode>() {
 
                     @Override
@@ -36,23 +36,22 @@ public class UserLoginRequestAction implements RequestAction {
 
                     @Override
                     public void completed(HttpResponse<JsonNode> response) {
-                        int code = response.getStatus();
-                        if (code != 200) {
-                            c.sendAction(new UserLoginFailureAction());
-                            return;
-                        }
+                        try {
+                            int code = response.getStatus();
+                            if (code != 200) {
+                                c.sendAction(new UserLoginFailureAction());
+                                return;
+                            }
 
-                        JSONObject body = response.getBody().getObject();
+                            JSONObject body = response.getBody().getObject();
 
-                        String aud = body.getString("aud");
-                        if (!aud.equalsIgnoreCase(CLIENT_ID)) {
+                            User user = createUserFromJSONBody(body);
+                            c.setUser(user);
+                            c.sendAction(new UserLoginSuccessAction(user));
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
                             c.sendAction(new UserLoginFailureAction());
-                            return;
                         }
-                        
-                        User user = createUserFromJSONBody(body);
-                        c.setUser(user);
-                        c.sendAction(new UserLoginSuccessAction(user));
                     }
 
                     @Override
@@ -74,7 +73,7 @@ public class UserLoginRequestAction implements RequestAction {
                                     .build();
                         } catch (Exception ex) {
                             user = User.builder()
-                                    .setUserData(userID, email, 0 , username, imageUrl, country)
+                                    .setUserData(userID, email, 0, username, imageUrl, country)
                                     .setClient(c)
                                     .build();
                             userRepo.addUser(user);
