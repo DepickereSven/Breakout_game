@@ -95,7 +95,9 @@ npm start
     * [.C_WIDTH](#module_constants.C_WIDTH) : <code>number</code>
     * [.IS_ANDROID_APP](#module_constants.IS_ANDROID_APP) : <code>string</code>
     * [.LOSS_QUOTES](#module_constants.LOSS_QUOTES) : <code>Array.&lt;object&gt;</code>
+    * [.WIN_QUOTES](#module_constants.WIN_QUOTES) : <code>Array.&lt;object&gt;</code>
     * [.SCREEN_ANIMATION_TIME](#module_constants.SCREEN_ANIMATION_TIME) : <code>number</code>
+    * [.G_CLIENT_ID](#module_constants.G_CLIENT_ID) : <code>string</code>
 
 <a name="module_constants.API_URL"></a>
 
@@ -127,10 +129,22 @@ Is the current client the webview in the android app
 Array of quotes about losing
 
 **Kind**: static property of [<code>constants</code>](#module_constants)  
+<a name="module_constants.WIN_QUOTES"></a>
+
+### constants.WIN_QUOTES : <code>Array.&lt;object&gt;</code>
+Array of quotes about winning
+
+**Kind**: static property of [<code>constants</code>](#module_constants)  
 <a name="module_constants.SCREEN_ANIMATION_TIME"></a>
 
 ### constants.SCREEN_ANIMATION_TIME : <code>number</code>
 The length of the screen transition animation
+
+**Kind**: static property of [<code>constants</code>](#module_constants)  
+<a name="module_constants.G_CLIENT_ID"></a>
+
+### constants.G_CLIENT_ID : <code>string</code>
+Google application client id
 
 **Kind**: static property of [<code>constants</code>](#module_constants)  
 <a name="module_gameLoop"></a>
