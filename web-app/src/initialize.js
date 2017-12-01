@@ -21,7 +21,7 @@ $(document).ready(function () {
   window.wsClient = wsClient
   wsClient.open(function () {
     if (isLoginRedirect) {
-      const token = initialUrl.hash.slice(14, 149)
+      const token = decodeURI(initialUrl.hash).split('&')[0].replace('#access_token=', '')
       signIn(token)
     } else {
       const storedToken = getToken()
