@@ -8,7 +8,7 @@ import nu.smashit.core.Player;
 public abstract class Power {
 
     private int time;
-    private static final int DURATION = 80;
+    private static final int DURATION = 500;
     private Player player;
 
     protected Power(){
@@ -17,7 +17,7 @@ public abstract class Power {
     }
     
     public void updateEffect(GameLoop gameLoop){
-        if (timeLeft()){
+        if (isActive() && !isLastTime()){
             doEffect(gameLoop);
         }else{
             undoEffect(gameLoop);
@@ -29,8 +29,12 @@ public abstract class Power {
     
     protected abstract void undoEffect(GameLoop gameLoop);
     
-    public boolean timeLeft(){
+    public boolean isActive(){
         return time >= 0;
+    }
+    
+    private boolean isLastTime(){
+        return time == 0;
     }
     
     public void setPlayer(Player player){

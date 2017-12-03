@@ -132,7 +132,7 @@ public abstract class GameLoop extends TimerTask {
         while (i.hasNext()) {
             Power power = i.next();
             power.updateEffect(this);
-            if (!power.timeLeft()) {
+            if (!power.isActive()) {
                 System.out.println("Remove power " + power.getClass());
                 i.remove();
             }
