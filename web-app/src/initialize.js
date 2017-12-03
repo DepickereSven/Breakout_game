@@ -2,11 +2,11 @@
  * @module initialize
  */
 
-const { wsClient } = require('./socket/client')
+const {wsClient} = require('./socket/client')
 const constants = require('./constants')
 
-const { viewManager } = require('./views/index')
-const { signIn, getToken } = require('./user')
+const {viewManager} = require('./views/index')
+const {signIn, getToken} = require('./user')
 
 const initialUrl = (new URL(document.location.href))
 const isLoginRedirect = /^#access_token=/i.test(initialUrl.hash)
@@ -44,4 +44,9 @@ window.onhashchange = function (e) {
 
 window.onpopstate = function (e) {
   e.preventDefault()
+}
+
+if (localStorage.getItem('gameSound') === null) {
+  localStorage.setItem('gameSound', JSON.stringify(true))
+  localStorage.setItem('fxSound', JSON.stringify(true))
 }

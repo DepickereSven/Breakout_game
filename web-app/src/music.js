@@ -5,7 +5,7 @@ const sounds = {
 }
 
 exports.play = function (key) {
-  if (!constants.IS_ANDROID_APP) {
+  if (!constants.IS_ANDROID_APP || !JSON.parse(localStorage.getItem('fxSound'))) {
     return
   }
   const snd = sounds[key]
