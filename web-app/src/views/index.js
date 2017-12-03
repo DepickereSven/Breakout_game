@@ -125,7 +125,7 @@ function slideScreenOut (callback = () => {}) {
   setTimeout(() => {
     const screen = $('.screen')
       .last()
-      .addClass('slideOut')
+      .removeClass('slideUp')
 
     setTimeout(() => {
       screen.remove()

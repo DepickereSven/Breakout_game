@@ -34,10 +34,6 @@ body{
     transform: translateY(0px);
 }
 
-.screen.slideOut {
-    transform: translateY(-100%);
-}
-
 .container {
     display: flex;
     flex-direction: column;
@@ -65,36 +61,6 @@ body{
     background-color: #6fc3df;
     border-color: #0086d4;
     color: #fff;
-}
-
-
-.stats_multiplayer{
-    display: flex;
-    justify-content: center;
-}
-
-.table{
-    width: 100%;
-}
-
-th,
-tr,
-td,
-table img{
-    text-align: left;
-}
-
-.country{
-    min-width: 11%;
-}
-
-.name{
-    min-width: 26%;
-}
-
-.points,
-.time{
-    min-width: 20%;
 }
 
 button {
