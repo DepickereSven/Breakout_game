@@ -15,6 +15,11 @@ const singleplayerLost = require('./singleplayer_game_loss')
 const multiplayerWon = require('./multiplayer_game_victory')
 const multiplayerLost = require('./multiplayer_game_loss')
 const stats = require('./stats_for_multi')
+const settings = require('./settings')
+const soundSettings = require('./soud_setting')
+const meet = require('./meet')
+const gameVersion = require('./game_version')
+const socialMedia = require('./social_media')
 
 const viewsMap = {}
 const views = [
@@ -32,7 +37,12 @@ const views = [
   singleplayerLost,
   multiplayerWon,
   multiplayerLost,
-  stats
+  stats,
+  settings,
+  soundSettings,
+  meet,
+  gameVersion,
+  socialMedia
 ]
 views.forEach(function (val) {
   viewsMap[val.path] = val.view

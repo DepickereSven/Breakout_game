@@ -28,3 +28,61 @@
 .btn_from_google{
     margin-bottom: 1%;
 }
+
+.settings {
+    max-width: 50px;
+}
+
+.setting-link{
+    align-self: end;
+}
+
+.container-setting-menu .chevron-arrow-right{
+    display: inline-block;
+    border-right: 4px solid white;
+    border-bottom: 4px solid white;
+    width: 10px;
+    height: 10px;
+    transform: rotate(-42deg);
+}
+
+.container-setting-menu ul{
+    list-style-type: none;
+}
+
+.container-setting-menu {
+    align-items: flex-start; /*tegengesteld van het view van de flex*/
+    justify-content: flex-start;
+}
+
+.container-setting-menu h1{
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.container-setting-menu p{
+    display: inline-block;
+    margin: 0px;
+}
+
+.container-setting-menu .setting-block{
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container-setting-menu .setting-block a{
+    text-decoration: none;
+    color: #fff;
+}
+
+.container-setting-menu .setting-block .setting-to-choice{
+    border: 1px #fff solid;
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    padding: 15px;
+}
