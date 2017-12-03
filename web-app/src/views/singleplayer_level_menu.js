@@ -32,9 +32,10 @@ exports.view = class SingleplayerLevelMenuView {
 
   handleLevelClick (e) {
     this.viewManager.go('loading.html')
-    const { level } = $(e.currentTarget).data()
+    let { level } = $(e.currentTarget).data()
+    level = parseInt(level)
     state.set('currentLevel', level)
-    window.wsClient.send(CreateSingleplayerRequestAction.create(parseInt(level)))
+    window.wsClient.send(CreateSingleplayerRequestAction.create(level))
   }
 
   onLoad () {
