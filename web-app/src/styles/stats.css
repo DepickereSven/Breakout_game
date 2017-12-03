@@ -1,0 +1,33 @@
+
+.stats_multiplayer {
+  display: flex;
+}
+
+.stats_multiplayer table {
+  width: 100%;
+}
+
+.stats_multiplayer th {
+  padding: 8px 0;
+}
+
+.stats_multiplayer th,
+.stats_multiplayer tr,
+.stats_multiplayer td,
+.stats_multiplayer table img {
+  text-align: left;
+}
+
+.stats_multiplayer .country {
+  min-width: 11%;
+}
+
+.stats_multiplayer .name {
+  min-width: 26%;
+}
+
+.stats_multiplayer .points,
+.stats_multiplayer .time {
+  min-width: 20%;
+}
+
