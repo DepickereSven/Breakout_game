@@ -5,12 +5,23 @@
 
 .game_container canvas {
   width: 95% !important;
-  height: calc(100vh - 60px) !important;
-  max-height: 600px;
-  border: 3px solid cornflowerblue;
-  border-radius: 3px;
+  max-width: 400px;
   margin: auto;
-  object-fit: contain;
+  height: auto !important;
+  border: 3px solid cornflowerblue;
+  border-radius: 4px;
+}
+
+.game_container canvas:before {
+  content: "";
+  float: left;
+  padding-bottom: 150%;
+}
+
+.game_container canvas:after {
+  content: "";
+  display: table;
+  clear: both;
 }
 
 /* edge canvas width fix*/

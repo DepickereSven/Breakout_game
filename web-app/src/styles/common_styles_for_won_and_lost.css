@@ -1,31 +1,16 @@
-.game_lost_singleplayer,
-.game_won_singleplayer,
-.game_won_multiplayer,
-.game_lost_multiplayer{
+.won_or_lost {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.game_lost_singleplayer h1,
-.game_won_singleplayer h1,
-.game_won_multiplayer h1,
-.game_lost_multiplayer h1{
+.won_or_lost h1 {
     text-transform: uppercase;
 }
 
-.game_lost_singleplayer p,
-.game_lost_singleplayer small,
-.game_won_singleplayer p,
-.game_won_singleplayer small,
-.game_won_multiplayer p,
-.game_won_multiplayer small,
-.game_lost_multiplayer p,
-.game_lost_multiplayer small,
-.game_lost_singleplayer h1,
-.game_won_singleplayer h1,
-.game_won_multiplayer h1,
-.game_lost_multiplayer h1{
+.won_or_lost p,
+.won_or_lost small,
+.won_or_lost h1 {
     color: #fff;
     text-align: center;
 }
@@ -34,29 +19,29 @@
 .screen #quote-author {
     color: #fff;
     text-align: center;
-    margin: 1rem;
+    margin: 1rem 2rem;
     padding: 0;
     font-size: 1rem;
 }
 
 .button_menu_singleplayer,
-.button_menu_multiplayer{
+.button_menu_multiplayer {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
-    margin-top: 20%;
-    margin-bottom: 20%;
+    justify-content: center;
+    margin: 10% 0;
 }
 
-.won_or_lost .btn-blank-smashIt{
+.won_or_lost .btn-blank-smashIt {
     background-color: #0C141F;
     border-color: #fff;
     color: #fff;
     font-size: 1.1rem;
     text-transform: uppercase;
     border-radius: 7px;
-    padding: 3%;
+    padding: 10px;
+    margin: 0 3%;
     line-height: 180%;
     font-weight: bold;
 }
