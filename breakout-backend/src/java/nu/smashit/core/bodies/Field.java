@@ -11,7 +11,7 @@ public class Field extends Body {
     private final int numberOfRows;
     private final Difficulty difficulty;
     private final boolean multiplayer;
-    private int numberOfNormalBricks;
+    private int numberOfTotalBricksInField;
 
     private static final int SINGLEPLAYER_MARGIN_TOP = 50;
     private static final int[] ALLOWED_BRICKS_IN_ROW = new int[]{4, 5, 8};
@@ -31,7 +31,7 @@ public class Field extends Body {
         this.difficulty = difficulty;
         this.numberOfRows = difficulty.getRows();
         this.brickRows = new BrickRow[numberOfRows];
-        this.numberOfNormalBricks = 0;
+        this.numberOfTotalBricksInField = 0;
 
         super.setHeight(calcFieldHeight());
         super.setY(calcMarginTop() + super.getHeight());
@@ -63,7 +63,7 @@ public class Field extends Body {
             int powerdownsInRow = powerdownsPerRow[rownr];
             int emptyPlacesInRow = getNumberOfEmptyPlacesInRow(totalPlacesInRow);
             int normalBricksInRow = totalPlacesInRow - powerupsInRow - powerdownsInRow - emptyPlacesInRow;
-            numberOfNormalBricks += totalPlacesInRow - emptyPlacesInRow;
+            numberOfTotalBricksInField += totalPlacesInRow - emptyPlacesInRow;
             
             brickRows[rownr] = new BrickRow(normalBricksInRow, powerupsInRow, powerdownsInRow, emptyPlacesInRow, y);
         }
@@ -104,8 +104,8 @@ public class Field extends Body {
         return !multiplayer;
     }
     
-    public int getNumberOfNormalBricks() {
-        return numberOfNormalBricks;
+    public int getNumberOfTotalBricksInField() {
+        return numberOfTotalBricksInField;
     }
     
     public BrickRow[] getBrickRows() {

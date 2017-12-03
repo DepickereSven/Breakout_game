@@ -32,7 +32,7 @@ public class SingleplayerLoop extends GameLoop {
                 return;
             } else if (runPaddleCollision(updateState)) {
             } else if (runBrickCollision(updateState)) {
-                if (getBrickHits() >= getField().getNumberOfNormalBricks()) {
+                if (getBrickHits() >= getField().getNumberOfTotalBricksInField()) {
                     getGameSession().broadcastAction(new GameVictoryAction());
                     getGameSession().stopGame();
                 }                
