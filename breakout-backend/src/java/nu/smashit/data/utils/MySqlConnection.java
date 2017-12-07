@@ -10,7 +10,7 @@ import java.sql.SQLException;
  */
 public class MySqlConnection {
 
-    private static final String URL = "jdbc:mysql://server.thomasbilliet.com/breakout";
+    private static final String URL = "jdbc:mysql://smashitdb.c8yw74jpzcli.eu-central-1.rds.amazonaws.com/breakout";
     private static final String UID = "usrbreakout";
     private static final String PWD = "TIbreakout2017";
 
