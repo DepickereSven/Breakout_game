@@ -40,8 +40,7 @@ import com.google.zxing.integration.android.IntentResult;
 import static android.content.ContentValues.TAG;
 
 public class MainActivity extends Activity {
-    private String myURL = "http://localhost:8080/breakout/";
-//        private String myURL = "http://smash-it.nu";
+    private String myURL = "http://smash-it.nu";
     VideoView videoView;
     ViewSwitcher viewSwitcher;
     private WebView view;
@@ -142,7 +141,7 @@ public class MainActivity extends Activity {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (url.startsWith("tel:") || url.startsWith("sms:") || url.startsWith("smsto:") || url.startsWith("mailto:") || url.startsWith("mms:") || url.startsWith("mmsto:") || url.startsWith("market:") || url.startsWith("https://youtu.be/")) {
+            if (url.startsWith("tel:") || url.startsWith("sms:") || url.startsWith("smsto:") || url.startsWith("mailto:") || url.startsWith("mms:") || url.startsWith("mmsto:") || url.startsWith("market:") || url.startsWith("https://youtu.be/") || url.startsWith("https://www.linkedin.com/")) {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 startActivity(intent);
                 return true;
@@ -282,17 +281,11 @@ public class MainActivity extends Activity {
         view.loadUrl("javascript:" + "window.onAndroidQrScan('" + message + "')");
     }
 
-    public void injectToChangeStatus(Boolean message) {
-        view.loadUrl("javascript:" + "window.changeStatusForGoogle('" + message + "')");
-    }
-
     public void makeToastForLogInOrLogOut(Boolean signOutOrSignin, String displayname) {
         if (signOutOrSignin) {
             Toast.makeText(getBaseContext(), "Welcome: " + displayname, Toast.LENGTH_SHORT).show();
-            injectToChangeStatus(false);
         } else {
             Toast.makeText(getBaseContext(), "You are logged out ", Toast.LENGTH_SHORT).show();
-            injectToChangeStatus(true);
         }
     }
 
