@@ -20,6 +20,7 @@ const soundSettings = require('./soud_setting')
 const meet = require('./meet')
 const gameVersion = require('./game_version')
 const socialMedia = require('./social_media')
+const privacyPolicy = require('./privacy_policy')
 
 const viewsMap = {}
 const views = [
@@ -42,7 +43,8 @@ const views = [
   soundSettings,
   meet,
   gameVersion,
-  socialMedia
+  socialMedia,
+  privacyPolicy
 ]
 views.forEach(function (val) {
   viewsMap[val.path] = val.view
