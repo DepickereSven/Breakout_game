@@ -9,3 +9,5 @@ When you placed the APK file on your Android device.
 
 Go to settings (on your android device) -> Security the turn Unknow sources on.
 
+-> or visit [Smash-It](http://www.smash-it.nu) 
+
