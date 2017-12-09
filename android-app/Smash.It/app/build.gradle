@@ -1,14 +1,6 @@
 apply plugin: 'com.android.application'
 
 android {
-//    signingConfigs {
-//        config {
-//            keyAlias 'SmashIt'
-//            keyPassword 'cFuYCjz2^[\6C+5tE,'
-//            storeFile file('C:/Users/svend/Android/KeyStore/Smash_it/smashItKeyStore.jks')
-//            storePassword 'WzPvS52C[_~}c3Ns~x'
-//        }
-//    }
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
     defaultConfig {
