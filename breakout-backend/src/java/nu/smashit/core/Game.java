@@ -18,7 +18,7 @@ public abstract class Game implements Comparable<Game> {
     private final Timer countDownTimer;
     private final int updateInterval;
     private final int level;
-    
+
     private Player[] players;
     private GameLoop gameLoop;
     private int time;
@@ -76,7 +76,9 @@ public abstract class Game implements Comparable<Game> {
         getGameLoopTimer().cancel();
 
         for (Player p : getPlayers()) {
-            p.getUser().removeGame();
+            if (p != null) {
+                p.getUser().removeGame();
+            }
         }
         GameManager.getInstance().removeGame(getKey());
     }
@@ -145,7 +147,7 @@ public abstract class Game implements Comparable<Game> {
     protected void setGameLoop(GameLoop gameLoop) {
         this.gameLoop = gameLoop;
     }
-    
+
     @Override
     public int compareTo(Game o) {
         return (this.getKey().compareTo(o.getKey()));
@@ -175,5 +177,5 @@ public abstract class Game implements Comparable<Game> {
         }
         return true;
     }
-    
+
 }

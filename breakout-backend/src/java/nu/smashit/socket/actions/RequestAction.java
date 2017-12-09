@@ -33,7 +33,7 @@ import nu.smashit.socket.Client;
     ,
     @Type(value = PlayerReadyAction.class)
     ,
-    @Type(value = CancelMutliplayerRequestAction.class)
+    @Type(value = CancelMultiplayerRequestAction.class)
     ,
     @Type(value = UserLoginRequestAction.class)
 })
