@@ -21,6 +21,9 @@ function getCountryCode (callback) {
 }
 
 function setToken (token) {
+  if (constants.IS_ANDROID_APP) {
+    return
+  }
   if (token) {
     localStorage.setItem('token', token)
   } else {
@@ -30,6 +33,9 @@ function setToken (token) {
 exports.setToken = setToken
 
 function getToken () {
+  if (constants.IS_ANDROID_APP) {
+    return null
+  }
   return localStorage.getItem('token')
 }
 exports.getToken = getToken
