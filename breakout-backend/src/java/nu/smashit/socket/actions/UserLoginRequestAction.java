@@ -23,10 +23,34 @@ public class UserLoginRequestAction implements RequestAction {
     public String country;
     public String token;
 
+    private User createUserFromJSONBody(Client c, JSONObject body) {
+        String userID = body.getString("sub");
+        String email = body.getString("email");
+        String username = body.getString("name");
+        String imageUrl = body.getString("picture");
+
+        UserRepository userRepo = Repositories.getUserRepository();
+        User user;
+        try {
+            user = userRepo.getUser(userID)
+                    .setClient(c)
+                    .build();
+        } catch (Exception ex) {
+            user = User.builder()
+                    .setUserData(userID, email, 0, username, imageUrl, country)
+                    .setClient(c)
+                    .build();
+            userRepo.addUser(user);
+        }
+        return user;
+    }
+
     @Override
     public void handler(Client c) {
-        Future<HttpResponse<JsonNode>> future = Unirest.post("https://www.googleapis.com/oauth2/v3/userinfo")
-                .queryString("access_token", token)
+        boolean isAccessToken = token.startsWith("ya29");
+        String url = isAccessToken ? "https://www.googleapis.com/oauth2/v3/userinfo" : "https://www.googleapis.com/oauth2/v3/tokeninfo";
+        Future<HttpResponse<JsonNode>> future = Unirest.post(url)
+                .queryString(isAccessToken ? "access_token" : "id_token", token)
                 .asJsonAsync(new Callback<JsonNode>() {
 
                     @Override
@@ -45,7 +69,7 @@ public class UserLoginRequestAction implements RequestAction {
 
                             JSONObject body = response.getBody().getObject();
 
-                            User user = createUserFromJSONBody(body);
+                            User user = createUserFromJSONBody(c, body);
                             c.setUser(user);
                             c.sendAction(new UserLoginSuccessAction(user));
                         } catch (Exception e) {
@@ -57,28 +81,6 @@ public class UserLoginRequestAction implements RequestAction {
                     @Override
                     public void cancelled() {
                         c.sendAction(new UserLoginFailureAction());
-                    }
-
-                    private User createUserFromJSONBody(JSONObject body) {
-                        String userID = body.getString("sub");
-                        String email = body.getString("email");
-                        String username = body.getString("name");
-                        String imageUrl = body.getString("picture");
-
-                        UserRepository userRepo = Repositories.getUserRepository();
-                        User user;
-                        try {
-                            user = userRepo.getUser(userID)
-                                    .setClient(c)
-                                    .build();
-                        } catch (Exception ex) {
-                            user = User.builder()
-                                    .setUserData(userID, email, 0, username, imageUrl, country)
-                                    .setClient(c)
-                                    .build();
-                            userRepo.addUser(user);
-                        }
-                        return user;
                     }
 
                 });
