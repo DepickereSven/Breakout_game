@@ -1,0 +1,38 @@
+.privacy_gdpr{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: auto;
+}
+
+.privacy_gdpr h2, .privacy_gdpr small{
+    text-align: center;
+}
+
+.privacy_gdpr h1{
+    margin-bottom: 40px;
+    margin-top: 35px;
+    font-size: 1.8rem;
+}
+
+.privacy_gdpr h2{
+    margin-bottom: 30px;
+    font-size: 1.5rem;
+}
+
+.privacy_gdpr h3{
+    margin-top: 35px;
+    font-size: 1.2rem;
+}
+
+.privacy_gdpr small{
+    margin-top: 20px;
+}
+
+.privacy_gdpr a{
+    color: #6fc3df;
+}
+
+.privacy_gdpr li{
+    line-height: 170%;
+}
