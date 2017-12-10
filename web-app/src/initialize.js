@@ -2,6 +2,8 @@
  * @module initialize
  */
 
+require('babel-polyfill')
+
 const {wsClient} = require('./socket/client')
 const constants = require('./constants')
 
