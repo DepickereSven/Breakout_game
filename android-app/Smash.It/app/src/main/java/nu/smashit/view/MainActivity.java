@@ -122,7 +122,8 @@ public class MainActivity extends Activity {
         view.loadUrl(myURL);
         view.addJavascriptInterface(new WebViewJavaScriptInterface(this), "SmashIt");
         if (account == null) {
-            startSignForGooglePlay();
+            Log.d(TAG, "not logged in");
+//            startSignForGooglePlay();
         } else {
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
@@ -209,6 +210,7 @@ public class MainActivity extends Activity {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             injectSignInTokenCall(account.getIdToken());
+            Log.d(TAG,"get Token " + account.getIdToken());
             makeToastForLogInOrLogOut(true, account.getDisplayName());
         } catch (ApiException e) {
             Log.w(TAG, "wingcrony signInResult:failed code=" + e.getStatusCode());
