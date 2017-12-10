@@ -7,6 +7,7 @@ exports.view = class LoginView {
   constructor (viewManager) {
     this.path = path
     this.hideHeader = true
+    this.allowUnAuth = true
     this.viewManager = viewManager
 
     this.signInBtn = '#signin-btn'

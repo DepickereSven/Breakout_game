@@ -50,39 +50,62 @@ views.forEach(function (val) {
   viewsMap[val.path] = val.view
 })
 
-let viewHistory = []
+const hashHistory = []
+let viewStack = []
 const event = new CustomEvent('back')
 
-const getPrevious = () => viewHistory[viewHistory.length - 2]
-const getCurrent = () => viewHistory[viewHistory.length - 1]
+const getPreviousView = () => viewStack[viewStack.length - 2]
+const getCurrentView = () => viewStack[viewStack.length - 1]
+
+const getPreviousHash = () => hashHistory[hashHistory.length - 2]
+const getCurrentHash = () => hashHistory[hashHistory.length - 1]
+
+const isValidPath = path => !!viewsMap[path]
+
+function correctCurrentHash () {
+  window.location.hash = getCurrentHash()
+}
 
 function onLocationChange () {
   const hash = window.location.hash
+  const path = hash.slice(2) + '.html'
   if (!hash.length) {
     return
   }
-  const path = hash.slice(2) + '.html'
-  const foundViewIndex = viewHistory.findIndex(v => v.path === path)
-  if (foundViewIndex === viewHistory.length - 1) {
+  if (!isValidPath(path)) {
+    correctCurrentHash()
     return
   }
-  if (foundViewIndex > -1 && foundViewIndex === viewHistory.length - 2) {
-    goBack()
-  } else {
-    go(path)
+
+  if (hash === getCurrentHash()) {
+    return
   }
+  if (hash === getPreviousHash()) {
+    goBack(path)
+    return
+  }
+
+  go(path)
 }
 
-function goBack () {
+function goBack (path) {
+  let prevView = getPreviousView()
+  if (!prevView || path !== prevView.path) {
+    correctCurrentHash()
+    return
+  }
+
+  viewStack.pop()
+  hashHistory.pop()
+
   window.dispatchEvent(event)
-  getCurrent().onUnload()
-  viewHistory.pop()
+  prevView.onUnload()
   slideScreenOut()
-  getCurrent().onLoad()
+  getCurrentView().onLoad()
 }
 
 function goHome () {
-  viewHistory = []
+  viewStack = []
   $('.screen').remove()
   go('modes.html')
 }
@@ -94,17 +117,24 @@ function go (path, params = {}, callback = () => {}) {
   }
   const view = new ViewConstructor(viewManager, params)
 
-  const currentView = getCurrent()
+  if (!view.allowUnAuth && !window.user) {
+    correctCurrentHash()
+    return
+  }
+
+  const currentView = getCurrentView()
   const currentScreenEl = $('.screen').last()
   if (currentView) {
     currentView.onUnload()
     if (currentView && currentView.remove) {
-      viewHistory.pop()
+      viewStack.pop()
     }
   }
 
-  viewHistory.push(view)
-  window.location.hash = '/' + path.replace('.html', '')
+  const hash = '#/' + path.replace('.html', '')
+  hashHistory.push(hash)
+  viewStack.push(view)
+  window.location.hash = hash
 
   getHtml(path, html => {
     getHtml('header.html', headerHtml => {
@@ -153,7 +183,7 @@ function getHtml (url, callback = () => {}) {
     callback(cachedHtml)
     return
   }
-  $.ajax({ url })
+  $.ajax(url)
     .done(html => {
       htmlCache[url] = html
       callback(html)
@@ -166,8 +196,8 @@ setTimeout(() => {
 }, 3000)
 
 const viewManager = window.viewManager = {
-  getPrevious,
-  getCurrent,
+  getPreviousView,
+  getCurrentView,
   goHome,
   go,
   onLocationChange

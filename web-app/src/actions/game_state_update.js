@@ -7,7 +7,7 @@ const playerReadyAction = require('./player_ready')
 const music = require('../music')
 
 exports.handler = function ({ b, br, p, c, tm }) {
-  const view = viewManager.getCurrent()
+  const view = viewManager.getCurrentView()
   if (view.setCount) {
     view.setCount(c)
     view.setTime(tm)
