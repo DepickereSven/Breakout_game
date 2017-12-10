@@ -73,7 +73,7 @@ public class UserLoginRequestAction implements RequestAction {
                             c.setUser(user);
                             c.sendAction(new UserLoginSuccessAction(user));
                         } catch (Exception e) {
-                            System.out.println(e.getMessage());
+                           // System.out.println(e.getMessage());//TODO temp
                             c.sendAction(new UserLoginFailureAction());
                         }
                     }

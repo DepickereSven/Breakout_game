@@ -8,19 +8,24 @@ public class StartSpeed extends Power {
     private final int newStartSpeed;
     private double originalDx;
     private double originalDy;
+    private boolean firstTime;
 
     public StartSpeed(int newStartSpeed) {
         this.newStartSpeed = newStartSpeed;
+        this.firstTime = true;
     }
 
     @Override
     protected void doEffect(GameLoop gameLoop) {
-        if (originalDx == 0 || originalDy == 0) {
+        if (firstTime) {
+            firstTime = false;
+
             originalDx = gameLoop.getBall().getDx();
             originalDy = gameLoop.getBall().getDy();
+
+            gameLoop.getBall().setDx(newStartSpeed / (double) 3);
+            gameLoop.getBall().setDy(newStartSpeed);
         }
-        gameLoop.getBall().setDx(newStartSpeed / (double) 3);
-        gameLoop.getBall().setDy(newStartSpeed);
     }
 
     @Override
