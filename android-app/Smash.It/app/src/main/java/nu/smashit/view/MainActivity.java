@@ -300,16 +300,11 @@ public class MainActivity extends Activity {
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        String url = new String(view.getUrl());
-        if (url.indexOf("#/game") > 1 || url.endsWith("#") || url.indexOf("#/singleplayer_game_lost") > 1 || url.indexOf("#/singleplayer_game_won") > 1 || url.indexOf("#/multiplayer_game_lost") > 1 || url.indexOf("#/multiplayer_game_won") > 1) {
-            return false;
-        } else {
-            if ((keyCode == KeyEvent.KEYCODE_BACK) && view.canGoBack()) {
-                view.goBack();
-                return true;
-            }
+        if ((keyCode == KeyEvent.KEYCODE_BACK) && view.canGoBack()) {
+            view.goBack(); //method goback()
+            return true;
         }
-        return false;
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
