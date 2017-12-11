@@ -1,5 +1,6 @@
 package nu.smashit.core;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -8,6 +9,7 @@ import nu.smashit.core.bodies.BrickRow;
 import nu.smashit.core.bodies.Brick;
 import nu.smashit.core.bodies.Ball;
 import java.util.TimerTask;
+import nu.smashit.core.bodies.Paddle;
 import nu.smashit.core.power.NoPower;
 import nu.smashit.core.power.Power;
 import nu.smashit.data.Repositories;
@@ -26,6 +28,7 @@ public abstract class GameLoop extends TimerTask {
     private boolean initRun;
     private Set<Power> powers;
     private int brickHits;
+    private int prevTime;
 
     public GameLoop(Game gm, Field field) {
         this.gameSession = gm;
@@ -109,7 +112,7 @@ public abstract class GameLoop extends TimerTask {
     }
 
     private void reverseYBodies(GameStateUpdateAction updateState) {
-        for (Player p : updateState.players) {
+        for (Player p : gameSession.getPlayers()) {
             p.getPaddle().reverseY();
         }
         for (Brick b : updateState.bricks) {
@@ -126,7 +129,12 @@ public abstract class GameLoop extends TimerTask {
 
     @Override
     public void run() {
-        GameStateUpdateAction updateState = new GameStateUpdateAction(getBall(), getGameSession().getPlayers(), getGameSession().getCountDown(), getGameSession().getTime());
+        GameStateUpdateAction updateState = new GameStateUpdateAction(getBall(), getGameSession().getCountDown());
+
+        if (prevTime != gameSession.getTime()) {
+            updateState.setTime(gameSession.getTime());
+            prevTime = gameSession.getTime();
+        }
 
         Iterator<Power> i = powers.iterator();
         while (i.hasNext()) {
@@ -138,9 +146,11 @@ public abstract class GameLoop extends TimerTask {
             }
             //System.out.println("---->  " + power.getClass()); //TODO temp
         }
-
         if (getGameSession().getCountDown() > 0) {
             if (isInitRun()) {
+                for (Player p : gameSession.getPlayers()) {
+                    updateState.addPaddle(p.getPaddle());
+                }
                 for (BrickRow br : getField().getBrickRows()) {
                     for (Brick b : br.getBricks()) {
                         if (b != null) {
@@ -150,7 +160,18 @@ public abstract class GameLoop extends TimerTask {
                 }
             }
         } else {
+            for (Player p : gameSession.getPlayers()) {
+                Paddle paddle = p.getPaddle();
+                boolean hasMoved = paddle.move();
+                if (hasMoved) {
+                    updateState.addPaddle(paddle);
+                }
+            }
             runLoop(updateState);
+        }
+
+        for (Player p : gameSession.getPlayers()) {
+            updateState.addScore(p.getScore().getPoints());
         }
 
         if (getGameSession().playerCount() > 1) {
@@ -158,6 +179,7 @@ public abstract class GameLoop extends TimerTask {
 
             mg.getBottomPlayer().getUser().getClient().sendAction(updateState);
             reverseYBodies(updateState);
+            Collections.reverse(updateState.paddles);
             mg.getTopPlayer().getUser().getClient().sendAction(updateState);
             reverseYBodies(updateState);
         } else {

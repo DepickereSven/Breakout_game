@@ -1,9 +1,10 @@
 /** @module player */
 
+const constants = require('./constants')
 const { Paddle } = require('./bodies/paddle')
 const { Score } = require('./bodies/score')
 
-exports.getClientId = ([paddle, clientId]) => clientId
+exports.calcPlayerIndex = ([x, y]) => (y > constants.C_HEIGHT / 2) ? 0 : 1
 
 exports.Player = class Player {
   constructor (currentPlayer = false, multiplayer = true) {
@@ -15,10 +16,11 @@ exports.Player = class Player {
     }
   }
 
-  update ([paddle, clientId, score]) {
+  updatePaddle (paddle) {
     this.paddle.update(paddle)
-    if (this.multiplayer) {
-      this.score.update(score)
-    }
+  }
+
+  updateScore (score) {
+    this.score.update(score)
   }
 }

@@ -2,7 +2,7 @@
  * @module gameLoop
  */
 
-const { Player, getClientId } = require('./player')
+const { Player, calcPlayerIndex } = require('./player')
 const { Ball } = require('./bodies/ball')
 const { Brick, getBrickId } = require('./bodies/brick')
 
@@ -16,7 +16,7 @@ exports.GameLoop = class GameLoop {
   constructor () {
     // Initialise bodies
     this.ball = new Ball()
-    this.players = {}
+    this.players = []
     this.bricks = {}
 
     this.isMultiplayer = false
@@ -25,19 +25,41 @@ exports.GameLoop = class GameLoop {
   }
 
   /**
-   * Update players to current state or create new players if they don't exist already
+   * Create players objects for each player
    * @method
-   * @param {object[]} players
+   * @param {number} playerCount
    */
-  updatePlayers (players) {
-    this.isMultiplayer = players.length === 2
-    for (const p of players) {
-      const id = getClientId(p)
-      if (!this.players[id]) {
-        const isCurrentPlayer = id === window.wsClient.clientId
-        this.players[id] = new Player(isCurrentPlayer, this.isMultiplayer)
-      }
-      this.players[id].update(p)
+  createPlayers (playerCount) {
+    this.isMultiplayer = playerCount === 2
+    for (let i = 0; i < playerCount; i++) {
+      const isCurrentPlayer = i === 0
+      this.players[i] = new Player(isCurrentPlayer, this.isMultiplayer)
+    }
+  }
+
+  /**
+   * Update paddles to current state
+   * @method
+   * @param {number[][]} paddles
+   */
+  updatePaddles (paddles) {
+    for (const paddle of paddles) {
+      const i = calcPlayerIndex(paddle)
+      this.players[i].updatePaddle(paddles[i])
+    }
+  }
+
+  /**
+   * Update scores to current state
+   * @method
+   * @param {number[]} scores
+   */
+  updateScores (scores) {
+    if (!this.isMultiplayer) {
+      return
+    }
+    for (let i = 0; i < scores.length; i++) {
+      this.players[i].updateScore(scores[i])
     }
   }
 

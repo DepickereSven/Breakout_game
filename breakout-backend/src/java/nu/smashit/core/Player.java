@@ -12,7 +12,7 @@ import nu.smashit.socket.actions.ResponseAction;
  *
  * @author jodus
  */
-@JsonPropertyOrder({ "paddle", "clientId", "scorePoints" })
+@JsonPropertyOrder({"paddle", "clientId", "scorePoints"})
 @JsonFormat(shape = JsonFormat.Shape.ARRAY)
 public class Player {
 
@@ -42,11 +42,11 @@ public class Player {
     public void ready() {
         ready = true;
     }
-    
+
     public Paddle getPaddle() {
         return paddle;
     }
-    
+
     public String getClientId() {
         return getUser().getClient().getShortId();
     }
@@ -64,9 +64,9 @@ public class Player {
     public Score getScore() {
         return score;
     }
-    
+
     public void sendAction(ResponseAction a) {
         getUser().getClient().sendAction(a);
     }
-    
+
 }

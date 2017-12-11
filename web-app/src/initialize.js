@@ -41,7 +41,6 @@ $('body').on('click', '#go-back', function (e) {
 })
 
 window.onhashchange = function (e) {
-  e.preventDefault()
   viewManager.onLocationChange()
 }
 

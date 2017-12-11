@@ -16,11 +16,6 @@ public class MultiplayerLoop extends GameLoop {
 
     @Override
     protected void runLoop(GameStateUpdateAction updateState) {
-
-        for (Player p : getGameSession().getPlayers()) {
-            p.getPaddle().move();
-        }
-
         // Ball movement
         if (getBall() != null) {
             Player scoredPlayer = null;

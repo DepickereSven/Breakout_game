@@ -30,14 +30,18 @@ public class Paddle extends MovableBody {
         dx = 0;
     }
 
-    public void move() {
+    public boolean move() {
+        if (dx == 0) {
+            return false;
+        }
         if (dx < 0 && getX() < GAP) {
-            return;
+            return false;
         }
         if (dx > 0 && getX() > GameCanvas.WIDTH - getWidth() - GAP) {
-            return;
+            return false;
         }
         super.move((int) dx, 0);
+        return true;
     }
 
     public void goLeft() {

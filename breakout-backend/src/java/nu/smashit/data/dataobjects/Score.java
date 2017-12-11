@@ -1,5 +1,6 @@
 package nu.smashit.data.dataobjects;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import nu.smashit.core.bodies.Brick;
@@ -88,5 +89,5 @@ public class Score {
     public void setPointsFactor(int pointsFactor) {
         this.pointsFactor = Tools.validateBetween(pointsFactor, 0, 100, 1);
     }
-    
+
 }

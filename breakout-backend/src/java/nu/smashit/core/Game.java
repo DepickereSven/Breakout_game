@@ -28,7 +28,7 @@ public abstract class Game implements Comparable<Game> {
         this.key = key;
         this.gameLoopTimer = new Timer();
         this.countDownTimer = new Timer();
-        this.updateInterval = 33;
+        this.updateInterval = 30;
         this.countDown = 5;
         this.time = 0;
         this.level = level;

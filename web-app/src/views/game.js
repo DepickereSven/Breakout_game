@@ -41,9 +41,6 @@ exports.view = class GameView {
   }
 
   setTime (time) {
-    if (time === this.currentTime) {
-      return
-    }
     this.currentTime = time
     $(this.time).text(utils.displayTime(time))
   }

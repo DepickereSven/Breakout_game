@@ -8,7 +8,7 @@ import nu.smashit.socket.actions.GameStateUpdateAction;
 import nu.smashit.socket.actions.GameVictoryAction;
 
 public class SingleplayerLoop extends GameLoop {
-   
+
     public SingleplayerLoop(Game gm, int level) {
         super(gm, Field.getSingleplayerInstance(
                 Repositories.getLevelRepository().getDifficulty(level)
@@ -17,11 +17,6 @@ public class SingleplayerLoop extends GameLoop {
 
     @Override
     protected void runLoop(GameStateUpdateAction updateState) {
-        // Move paddles to position (Player controls)
-        for (Player p : getGameSession().getPlayers()) {
-            p.getPaddle().move();
-        }
-
         // Ball movement
         if (getBall() != null) {
             if (Collision.isCeilingCollision(getBall())) {
@@ -35,7 +30,7 @@ public class SingleplayerLoop extends GameLoop {
                 if (getBrickHits() >= getField().getNumberOfTotalBricksInField()) {
                     getGameSession().broadcastAction(new GameVictoryAction());
                     getGameSession().stopGame();
-                }                
+                }
             } else if (Collision.isWallCollision(getBall())) {
                 getBall().inverseHozSpeed();
             }

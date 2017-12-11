@@ -5,12 +5,16 @@
  */
 package nu.smashit.socket.actions;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import nu.smashit.core.bodies.Ball;
 import nu.smashit.core.bodies.Brick;
-import nu.smashit.core.Player;
+import nu.smashit.core.bodies.Paddle;
 
 /**
  *
@@ -21,23 +25,46 @@ public class GameStateUpdateAction implements ResponseAction {
     @JsonProperty("b")
     public Ball ball;
     @JsonProperty("p")
-    public Player[] players;
+    @JsonInclude(Include.NON_DEFAULT)
+    public List<Paddle> paddles;
+    @JsonProperty("s")
+    @JsonInclude(Include.NON_DEFAULT)
+    public List<Integer> scores;
     @JsonProperty("br")
+    @JsonInclude(Include.NON_DEFAULT)
     public Set<Brick> bricks;
     @JsonProperty("c")
+    @JsonInclude(Include.NON_DEFAULT)
     public int countDown;
     @JsonProperty("tm")
+    @JsonInclude(Include.NON_DEFAULT)
     public int time;
 
-    public GameStateUpdateAction(Ball ball, Player[] players, int countDown, int time) {
+    public GameStateUpdateAction() {
+        this(null, 0);
+    }
+
+    public GameStateUpdateAction(Ball ball, int countDown) {
         this.ball = ball;
         this.bricks = new HashSet<>();
-        this.players = players;
+        this.paddles = new ArrayList<>(2);
+        this.scores = new ArrayList<>(2);
         this.countDown = countDown;
-        this.time = time;
     }
 
     public void addBrick(Brick b) {
         bricks.add(b);
+    }
+
+    public void addPaddle(Paddle p) {
+        paddles.add(p);
+    }
+
+    public void addScore(int score) {
+        scores.add(score);
+    }
+
+    public void setTime(int time) {
+        this.time = time;
     }
 }
