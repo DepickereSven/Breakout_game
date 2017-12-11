@@ -7,7 +7,6 @@ exports.view = class LoadingView {
     this.hideHeader = false
     this.allowUnAuth = true
     this.viewManager = viewManager
-    this.remove = true
   }
   onLoad () {
     $('.coins').hide()

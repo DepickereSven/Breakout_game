@@ -6,7 +6,7 @@ exports.view = class LoadingView {
     this.path = path
     this.hideHeader = false
     this.viewManager = viewManager
-    this.remove = true
+
     this.gameSound = '#game_sound'
     this.fxSound = '#fx_sound'
   }
