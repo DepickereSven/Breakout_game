@@ -45,7 +45,7 @@ exports.GameLoop = class GameLoop {
   updatePaddles (paddles) {
     for (const paddle of paddles) {
       const i = calcPlayerIndex(paddle)
-      this.players[i].updatePaddle(paddles[i])
+      this.players[i].updatePaddle(paddle)
     }
   }
 
