@@ -9,7 +9,8 @@ public class BallDiameter extends Power{
 
     private int newDiameter;
     
-    public BallDiameter(int newDiameter){
+    public BallDiameter(int powerID, int newDiameter){
+        super(powerID);
         this.newDiameter = newDiameter;
     }
     

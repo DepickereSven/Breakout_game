@@ -7,11 +7,13 @@ import nu.smashit.core.Player;
 
 public abstract class Power {
 
+    private int powerID;
     private int time;
     private static final int DURATION = 500;
     private Player player;
 
-    protected Power(){
+    protected Power(int powerID){
+        this.powerID = powerID;
         time = DURATION;
         player = null;
     }

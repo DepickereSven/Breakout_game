@@ -6,7 +6,9 @@ import nu.smashit.core.GameLoop;
 
 public class NoPower extends Power{
     
-    public NoPower(){}
+    public NoPower(){
+        super(0);
+    }
 
     @Override
     protected void doEffect(GameLoop gameLoop) {}
