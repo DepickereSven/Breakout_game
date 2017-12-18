@@ -57,11 +57,11 @@ public abstract class GameLoop extends TimerTask {
 
                     if (brick.isBroken() && getLastPlayerToHitPaddle() != null) {
                         brickHits += 1;
+                        getLastPlayerToHitPaddle().getScore().addBrickSmash(brick);
                         Power power = brick.getPower();
                         if (!(power instanceof NoPower)) {
                             power.setPlayer(lastPlayerToHitPaddle);
                             powers.add(power);
-                            getLastPlayerToHitPaddle().getScore().addBrickSmash(brick);
                         }
                     }
 
