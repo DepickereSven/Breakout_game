@@ -18,5 +18,9 @@ public class Repositories {
     public static ScoreRepository getScoreRepository() {
         return new MySqlScoreRepository();
     }
+    
+    public static PowerRepository getPowerRepository(){
+        return  new MySqlPowerRepository();
+    }
 
 }

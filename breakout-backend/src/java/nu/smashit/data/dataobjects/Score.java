@@ -45,7 +45,7 @@ public class Score {
     }
 
     public void addBrickSmash(Brick brick) {
-        points += brick.type.getPoints() * getPointsFactor();
+        points += brick.type.getBrickPoints() * getPointsFactor();
     }
 
     @JsonIgnore

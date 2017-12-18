@@ -8,18 +8,19 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import nu.smashit.data.dataobjects.BrickType;
+import nu.smashit.data.dataobjects.PowerData;
 import nu.smashit.data.utils.MySqlConnection;
 import nu.smashit.utils.BreakoutException;
 
 public class MySqlBrickTypeRepository implements BrickTypeRepository {
 
-    private static final String SQL_GET_ALL_BRICKTYPES = "SELECT * FROM brick_type ";
+    private static final String SQL_GET_ALL_BRICKTYPES = "SELECT * FROM brick ";
     private static final String SQL_GET_BRICKTYPE = SQL_GET_ALL_BRICKTYPES + " WHERE name = ?";
     private static final String SQL_GET_ALL_BRICKTYPES_OF_TYPE = SQL_GET_ALL_BRICKTYPES + " WHERE type = ?";
 
     @Override
     public BrickType getBrickType(String name) {
-        try (   Connection conn = MySqlConnection.getConnection();
+        try (Connection conn = MySqlConnection.getConnection();
                 PreparedStatement prep = conn.prepareStatement(SQL_GET_BRICKTYPE);) {
 
             prep.setString(1, name);
@@ -34,7 +35,7 @@ public class MySqlBrickTypeRepository implements BrickTypeRepository {
 
     @Override
     public List<BrickType> getAllBricksOfType(String type) {
-        try (   Connection conn = MySqlConnection.getConnection();
+        try (Connection conn = MySqlConnection.getConnection();
                 PreparedStatement prep = conn.prepareStatement(SQL_GET_ALL_BRICKTYPES_OF_TYPE);) {
 
             prep.setString(1, type);
@@ -53,7 +54,7 @@ public class MySqlBrickTypeRepository implements BrickTypeRepository {
 
     @Override
     public List<BrickType> getAllBricks() {
-        try (   Connection conn = MySqlConnection.getConnection();
+        try (Connection conn = MySqlConnection.getConnection();
                 PreparedStatement prep = conn.prepareStatement(SQL_GET_ALL_BRICKTYPES);
                 ResultSet rs = prep.executeQuery();) {
 
@@ -70,15 +71,20 @@ public class MySqlBrickTypeRepository implements BrickTypeRepository {
 
     private BrickType createBrickTypeFromResultSet(ResultSet rs) {
         try {
-            int brickID = rs.getInt("brickID");
-            BrickType.BrickSort sort = BrickType.BrickSort.valueOf(rs.getString("type"));
-            int brickStrength = rs.getInt("brick_strength");
-            int points = rs.getInt("points");
-            int value = rs.getInt("value");
             String name = rs.getString("name");
-            String subType = rs.getString("subtype");
-
-            return new BrickType(brickID, name, sort, brickStrength, points, value, subType);
+            int brickPoints = rs.getInt("brick_points");
+            int brickStrength = rs.getInt("brick_strength");
+            BrickType.Type type = BrickType.Type.valueOf(rs.getString("type"));
+            
+            int powerID = rs.getInt("powerID");
+            PowerData power;
+            if (powerID != 0){
+                power = Repositories.getPowerRepository().getPower(powerID);
+            }else{
+                power = null;
+            }
+            
+            return new BrickType(name, type, brickPoints, brickStrength, power);
         } catch (SQLException ex) {
             throw new BreakoutException("Could not create brick type.", ex);
         }

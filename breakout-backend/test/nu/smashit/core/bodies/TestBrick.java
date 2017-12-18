@@ -1,7 +1,7 @@
 package nu.smashit.core.bodies;
 
 import nu.smashit.data.dataobjects.BrickType;
-import nu.smashit.data.dataobjects.BrickType.BrickSort;
+import nu.smashit.data.dataobjects.BrickType.Type;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -18,7 +18,7 @@ public class TestBrick {
         int lives = 0;
         Brick brick = createNormalBrick(lives);
         assertTrue(brick.isBroken());
-        assertEquals(BrickSort.N, brick.type.getType());
+        assertEquals(Type.N, brick.type.getType());
         assertEquals(brick.getLives(), lives);
 
         brick.smashBrick();
@@ -30,7 +30,7 @@ public class TestBrick {
         int lives = 1;
         Brick brick = createNormalBrick(lives);
         assertFalse(brick.isBroken());
-        assertEquals(BrickSort.N, brick.type.getType());
+        assertEquals(Type.N, brick.type.getType());
         assertEquals(brick.getLives(), lives);
 
         brick.smashBrick();
@@ -46,7 +46,7 @@ public class TestBrick {
         int lives = 3;
         Brick brick = createNormalBrick(lives);
         assertFalse(brick.isBroken());
-        assertEquals(BrickSort.N, brick.type.getType());
+        assertEquals(Type.N, brick.type.getType());
         assertEquals(brick.getLives(), lives);
 
         brick.smashBrick();
@@ -66,6 +66,7 @@ public class TestBrick {
     }
 
     private Brick createNormalBrick(int lives) {
-        return new Brick(10, 10, 10, 10, new BrickType("TESTBRICK", BrickSort.N, lives, 10, ""));
+        BrickType brickType = new BrickType("TESTBRICK", Type.N, 10, lives);
+        return new Brick(10, 10, 10, 10, brickType);
     }
 }

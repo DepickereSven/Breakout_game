@@ -153,7 +153,9 @@ Google application client id
 
 * [gameLoop](#module_gameLoop)
     * [.GameLoop](#module_gameLoop.GameLoop)
-        * [.updatePlayers(players)](#module_gameLoop.GameLoop+updatePlayers)
+        * [.createPlayers(playerCount)](#module_gameLoop.GameLoop+createPlayers)
+        * [.updatePaddles(paddles)](#module_gameLoop.GameLoop+updatePaddles)
+        * [.updateScores(scores)](#module_gameLoop.GameLoop+updateScores)
         * [.updateBricks(bricks)](#module_gameLoop.GameLoop+updateBricks)
         * [.updateBall(ball)](#module_gameLoop.GameLoop+updateBall)
         * [.run()](#module_gameLoop.GameLoop+run)
@@ -173,21 +175,45 @@ GameLoop provides the state and drawing for the sketch
 
 
 * [.GameLoop](#module_gameLoop.GameLoop)
-    * [.updatePlayers(players)](#module_gameLoop.GameLoop+updatePlayers)
+    * [.createPlayers(playerCount)](#module_gameLoop.GameLoop+createPlayers)
+    * [.updatePaddles(paddles)](#module_gameLoop.GameLoop+updatePaddles)
+    * [.updateScores(scores)](#module_gameLoop.GameLoop+updateScores)
     * [.updateBricks(bricks)](#module_gameLoop.GameLoop+updateBricks)
     * [.updateBall(ball)](#module_gameLoop.GameLoop+updateBall)
     * [.run()](#module_gameLoop.GameLoop+run)
 
-<a name="module_gameLoop.GameLoop+updatePlayers"></a>
+<a name="module_gameLoop.GameLoop+createPlayers"></a>
 
-#### gameLoop.updatePlayers(players)
-Update players to current state or create new players if they don't exist already
+#### gameLoop.createPlayers(playerCount)
+Create players objects for each player
 
 **Kind**: instance method of [<code>GameLoop</code>](#module_gameLoop.GameLoop)  
 
 | Param | Type |
 | --- | --- |
-| players | <code>Array.&lt;object&gt;</code> | 
+| playerCount | <code>number</code> | 
+
+<a name="module_gameLoop.GameLoop+updatePaddles"></a>
+
+#### gameLoop.updatePaddles(paddles)
+Update paddles to current state
+
+**Kind**: instance method of [<code>GameLoop</code>](#module_gameLoop.GameLoop)  
+
+| Param | Type |
+| --- | --- |
+| paddles | <code>Array.&lt;Array.&lt;number&gt;&gt;</code> | 
+
+<a name="module_gameLoop.GameLoop+updateScores"></a>
+
+#### gameLoop.updateScores(scores)
+Update scores to current state
+
+**Kind**: instance method of [<code>GameLoop</code>](#module_gameLoop.GameLoop)  
+
+| Param | Type |
+| --- | --- |
+| scores | <code>Array.&lt;number&gt;</code> | 
 
 <a name="module_gameLoop.GameLoop+updateBricks"></a>
 

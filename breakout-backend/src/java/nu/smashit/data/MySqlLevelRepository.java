@@ -13,7 +13,7 @@ import nu.smashit.utils.BreakoutException;
 public class MySqlLevelRepository implements LevelRepository{
 
     private static final String SQL_GET_DIFFICULTY_OF_LEVEL = 
-            "SELECT difficulty.* FROM levels INNER JOIN difficulty ON levels.difficultyID = difficulty.difficultyID WHERE levels.levels = ?";
+            "SELECT difficulty.* FROM niveau INNER JOIN difficulty ON niveau.difficultyID = difficulty.difficultyID WHERE niveau.niveauID = ?";
     
     @Override
     public Difficulty getDifficulty(int level) {

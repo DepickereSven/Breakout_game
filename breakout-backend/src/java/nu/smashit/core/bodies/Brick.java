@@ -2,7 +2,6 @@ package nu.smashit.core.bodies;
 
 // @author Jonas
 import com.fasterxml.jackson.annotation.JsonFormat;
-import nu.smashit.data.dataobjects.BrickType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +9,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import nu.smashit.core.power.Power;
 import nu.smashit.core.power.PowerFactory;
+import nu.smashit.data.dataobjects.BrickType;
 
 @JsonIgnoreProperties(value = {"h"})
 @JsonFormat(shape = JsonFormat.Shape.ARRAY)

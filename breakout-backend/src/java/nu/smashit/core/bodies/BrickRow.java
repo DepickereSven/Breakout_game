@@ -21,7 +21,7 @@ public class BrickRow extends Body {
     private final int numberOfPowerdowns;
     private final int numberOfEmptyPlaces;
     private static final Random RANDOM = new Random();
-    private Map<BrickType.BrickSort, List<BrickType>> brickTypes;
+    private Map<BrickType.Type, List<BrickType>> brickTypes;
 
     public BrickRow(int numberOfNormalBricks, int numberOfPowerups, int numberOfPowerdowns, int numberOfEmptyPlaces, int y) {
         super(0, y, GameCanvas.WIDTH, Brick.HEIGHT);
@@ -65,12 +65,12 @@ public class BrickRow extends Body {
     }
 
     private void fillRow() {
-        fillType(numberOfNormalBricks, BrickType.BrickSort.N);
-        fillType(numberOfPowerups, BrickType.BrickSort.U);
-        fillType(numberOfPowerdowns, BrickType.BrickSort.D);
+        fillType(numberOfNormalBricks, BrickType.Type.N);
+        fillType(numberOfPowerups, BrickType.Type.U);
+        fillType(numberOfPowerdowns, BrickType.Type.D);
     }
 
-    private void fillType(int number, BrickType.BrickSort sort) {
+    private void fillType(int number, BrickType.Type sort) {
         int block_width = (int) (GameCanvas.WIDTH / getNumberOfTotalPlaces());
         int place;
 
@@ -84,7 +84,7 @@ public class BrickRow extends Body {
         }
     }
 
-    private BrickType getRandomBrickType(BrickType.BrickSort sort) {
+    private BrickType getRandomBrickType(BrickType.Type sort) {
         if (!brickTypes.containsKey(sort)){
              brickTypes.put(sort, Repositories.getBrickTypeRepository().getAllBricksOfType( sort.toString()));
         }
