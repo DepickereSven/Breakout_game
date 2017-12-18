@@ -99,8 +99,9 @@ public abstract class Game implements Comparable<Game> {
     public void playerReady(User u) {
         getPlayer(u).ready();
 
-        for (Player p : getPlayers()) {
-            if (!p.isReady()) {
+        for (int i = 0; i < getPlayers().length; i++) {
+            Player p = getPlayers()[i];
+            if (p == null || !p.isReady()) {
                 return;
             }
         }
