@@ -1,6 +1,5 @@
 package nu.smashit.data.dataobjects;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import nu.smashit.core.bodies.Brick;
@@ -8,8 +7,8 @@ import nu.smashit.utils.Tools;
 
 public class Score {
 
-    private static final int START_POINTS = 100;
-    private static final int DEATH_POINTS = 50;
+    static final int START_POINTS = 100;
+    static final int DEATH_POINTS = 50;
 
     private int scoreID;
     private User userWon;

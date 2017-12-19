@@ -9,7 +9,8 @@ public class PaletSize extends Power{
 
     private int newWidth;
     
-    public PaletSize(int newWidth){
+    public PaletSize(int powerID, int newWidth){
+        super(powerID);
         this.newWidth = newWidth;
     }
 

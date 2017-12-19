@@ -19,7 +19,7 @@ public class Collision {
 
     public static boolean isWallCollision(Ball b) {
         return b.isGoingLeft() && b.getX() < 0
-                || !b.isGoingLeft() && b.getX() > GameCanvas.WIDTH - b.getWidth();
+                || b.isGoingRight() && b.getX() > GameCanvas.WIDTH - b.getWidth();
     }
 
     public static boolean isCeilingCollision(Ball b) {
@@ -27,11 +27,11 @@ public class Collision {
     }
 
     public static boolean isFloorCollision(Ball b) {
-        return !b.isGoingUp() && b.getY() > GameCanvas.HEIGHT - b.getHeight();
+        return b.isGoingDown() && b.getY() > GameCanvas.HEIGHT - b.getHeight();
     }
 
     public static boolean isCollision(Ball ball, Body body) {
-        return isHozCollision(ball, body) && isVerCollision(ball, body);
+        return isHorCollision(ball, body) && isVerCollision(ball, body);
     }
 
     public static boolean isVerCollision(Ball ball, Body body) {
@@ -40,7 +40,7 @@ public class Collision {
                 && ballY + ball.getHeight() >= body.getY();
     }
 
-    public static boolean isHozCollision(Ball ball, Body body) {
+    public static boolean isHorCollision(Ball ball, Body body) {
         double ballX = getBallX(ball);
         return ballX <= body.getX() + body.getWidth()
                 && ballX + ball.getWidth() >= body.getX();

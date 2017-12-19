@@ -10,7 +10,8 @@ public class StartSpeed extends Power {
     private double originalDy;
     private boolean firstTime;
 
-    public StartSpeed(int newStartSpeed) {
+    public StartSpeed(int powerID, int newStartSpeed) {
+        super(powerID);
         this.newStartSpeed = newStartSpeed;
         this.firstTime = true;
     }

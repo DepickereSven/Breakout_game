@@ -15,7 +15,9 @@ import org.junit.runners.Suite;
     nu.smashit.core.bodies.TestMobableBody.class,
     nu.smashit.core.bodies.TestPaddle.class,
     nu.smashit.socket.TestClient.class,
-    nu.smashit.socket.TestClientManager.class
+    nu.smashit.socket.TestClientManager.class,
+    nu.smashit.data.dataobjects.TestScore.class,
+    nu.smashit.core.TestCollision.class
 })
 public class TestAllPackages {
 

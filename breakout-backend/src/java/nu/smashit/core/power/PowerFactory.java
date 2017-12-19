@@ -15,15 +15,16 @@ public class PowerFactory {
             return new NoPower();
         }else{
             int value = powerData.getValue();
+            int powerID = powerData.getPowerID();
             switch (powerData.getType()){
                 case "POINTS":
-                    return new Points(value);
+                    return new Points(powerID, value);
                 case "BALL_DIAMETER":
-                    return new BallDiameter(value);
+                    return new BallDiameter(powerID, value);
                 case "PALET_SIZE":
-                    return new PaletSize(value);
+                    return new PaletSize(powerID, value);
                 case "START_SPEED":
-                    return new StartSpeed(value);
+                    return new StartSpeed(powerID, value);
                 default:
                     return new NoPower();
             }

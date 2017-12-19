@@ -8,7 +8,8 @@ public class Points extends Power{
     
     private int pointsFactor;
     
-    public Points(int pointsFactor){
+    public Points(int powerID, int pointsFactor){
+        super(powerID);
         this.pointsFactor = pointsFactor;
     }
 
