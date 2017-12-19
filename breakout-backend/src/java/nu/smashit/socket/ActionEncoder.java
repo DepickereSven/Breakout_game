@@ -8,6 +8,7 @@ import javax.websocket.EndpointConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import nu.smashit.socket.actions.GameStateUpdateAction;
 
 /**
  *
@@ -29,7 +30,10 @@ public class ActionEncoder implements Encoder.Text<ResponseAction> {
     public String encode(ResponseAction a) throws EncodeException {
         try {
             String s = objectMapper.writeValueAsString(a);
-            s = s.substring(5, s.length() - 1);
+            s = s.substring(1, s.length() - 1);
+            if (a instanceof GameStateUpdateAction) {
+                s = s.replaceFirst("\"t\":\"GameStateUpdateAction\",", "");
+            }
             return s;
         } catch (JsonProcessingException ex) {
             Logger.getLogger(ActionEncoder.class.getName()).log(Level.SEVERE, null, ex);

@@ -1,8 +1,10 @@
 package nu.smashit.core;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import nu.smashit.core.bodies.Field;
 import nu.smashit.core.bodies.BrickRow;
@@ -111,14 +113,12 @@ public abstract class GameLoop extends TimerTask {
         return false;
     }
 
-    private void reverseYBodies(GameStateUpdateAction updateState) {
+    public List getScores() {
+        List scores = new ArrayList<>(2);
         for (Player p : gameSession.getPlayers()) {
-            p.getPaddle().reverseY();
+            scores.add(p.getScore().getPoints());
         }
-        for (Brick b : updateState.bricks) {
-            b.reverseY();
-        }
-        updateState.ball.reverseY();
+        return scores;
     }
 
     public void initRun() {
@@ -130,6 +130,7 @@ public abstract class GameLoop extends TimerTask {
     @Override
     public void run() {
         GameStateUpdateAction updateState = new GameStateUpdateAction(getBall(), getGameSession().getCountDown());
+        List originalScores = getScores();
 
         if (prevTime != gameSession.getTime()) {
             updateState.setTime(gameSession.getTime());
@@ -141,10 +142,8 @@ public abstract class GameLoop extends TimerTask {
             Power power = i.next();
             power.updateEffect(this);
             if (!power.isActive()) {
-                //System.out.println("Remove power " + power.getClass());//TODO temp
                 i.remove();
             }
-            //System.out.println("---->  " + power.getClass()); //TODO temp
         }
         if (getGameSession().getCountDown() > 0) {
             if (isInitRun()) {
@@ -170,18 +169,17 @@ public abstract class GameLoop extends TimerTask {
             runLoop(updateState);
         }
 
-        for (Player p : gameSession.getPlayers()) {
-            updateState.addScore(p.getScore().getPoints());
+        List newScores = getScores();
+        if (isInitRun() || !originalScores.equals(newScores)) {
+            updateState.addScores(newScores);
         }
 
         if (getGameSession().playerCount() > 1) {
             MultiplayerGame mg = (MultiplayerGame) getGameSession();
-
             mg.getBottomPlayer().getUser().getClient().sendAction(updateState);
-            reverseYBodies(updateState);
-            Collections.reverse(updateState.paddles);
+            updateState.reverseState();
             mg.getTopPlayer().getUser().getClient().sendAction(updateState);
-            reverseYBodies(updateState);
+            updateState.reverseState();
         } else {
             getGameSession().broadcastAction(updateState);
         }
