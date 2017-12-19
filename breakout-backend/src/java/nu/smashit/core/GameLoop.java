@@ -141,10 +141,8 @@ public abstract class GameLoop extends TimerTask {
             Power power = i.next();
             power.updateEffect(this);
             if (!power.isActive()) {
-                //System.out.println("Remove power " + power.getClass());//TODO temp
                 i.remove();
             }
-            //System.out.println("---->  " + power.getClass()); //TODO temp
         }
         if (getGameSession().getCountDown() > 0) {
             if (isInitRun()) {
