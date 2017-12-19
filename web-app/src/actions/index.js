@@ -17,7 +17,7 @@ exports.requestActionsMap = {
   GameStopAction,
   GameVictoryAction,
   GameLossAction,
-  U: GameStateUpdateAction,
   UserLoginSuccessAction,
-  UserLoginFailureAction
+  UserLoginFailureAction,
+  GameStateUpdateAction
 }
