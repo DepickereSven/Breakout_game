@@ -55,8 +55,8 @@ class WsClient {
   onMessage (event) {
     const action = JSON.parse('{' + event.data + '}')
     const requestAction = typeof action.t === 'string'
-      ? requestActionsMap[action.t]
-      : requestActionsMap.GameStateUpdateAction
+      ? responseActionsMap[action.t]
+      : responseActionsMap.GameStateUpdateAction
     if (requestAction) {
       requestAction.handler(action)
     }
