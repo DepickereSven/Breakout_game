@@ -18,8 +18,8 @@ exports.responseActionsMap = {
   GameStopAction,
   GameVictoryAction,
   GameLossAction,
-  U: GameStateUpdateAction,
   UserLoginSuccessAction,
   UserLoginFailureAction,
-  ScoresResponseAction
+  ScoresResponseAction,
+  GameStateUpdateAction
 }

@@ -9,13 +9,13 @@ const music = require('../music')
 // Default arguments get created at every run, so lets not make 4 new arrays everytime
 const ARR = []
 
-exports.handler = function ({ b = ARR, br = ARR, p = ARR, s = ARR, c = 0, tm }) {
+exports.handler = function ({ b = ARR, br = ARR, p = ARR, s = ARR, c = 0, t }) {
   const view = viewManager.getCurrentView()
   if (view.setCount) {
     view.setCount(c)
 
-    if (tm !== undefined) {
-      view.setTime(tm)
+    if (t !== undefined) {
+      view.setTime(t)
     }
   }
 

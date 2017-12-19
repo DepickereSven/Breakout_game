@@ -11,9 +11,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 @JsonTypeInfo(use = Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "t")
-@JsonSubTypes({
-    @JsonSubTypes.Type(value = GameStateUpdateAction.class, name = "U")
-})
 public interface ResponseAction {
 
 }

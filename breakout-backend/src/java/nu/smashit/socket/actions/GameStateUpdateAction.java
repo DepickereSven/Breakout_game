@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,7 +37,7 @@ public class GameStateUpdateAction implements ResponseAction {
     @JsonProperty("c")
     @JsonInclude(Include.NON_DEFAULT)
     public int countDown;
-    @JsonProperty("tm")
+    @JsonProperty("t")
     @JsonInclude(Include.NON_DEFAULT)
     public int time;
 
@@ -48,7 +49,6 @@ public class GameStateUpdateAction implements ResponseAction {
         this.ball = ball;
         this.bricks = new HashSet<>();
         this.paddles = new ArrayList<>(2);
-        this.scores = new ArrayList<>(2);
         this.countDown = countDown;
     }
 
@@ -60,8 +60,23 @@ public class GameStateUpdateAction implements ResponseAction {
         paddles.add(p);
     }
 
-    public void addScore(int score) {
-        scores.add(score);
+    public void addScores(List scores) {
+        this.scores = scores;
+    }
+
+    public void reverseState() {
+        for (Paddle p : paddles) {
+            p.reverseY();
+        }
+        Collections.reverse(paddles);
+        for (Brick b : bricks) {
+            b.reverseY();
+        }
+        if (scores != null) {
+            Collections.reverse(scores);
+        }
+        ball.reverseY();
+
     }
 
     public void setTime(int time) {
