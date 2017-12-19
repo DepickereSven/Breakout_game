@@ -3,7 +3,7 @@
  */
 
 const constants = require('../constants')
-const { requestActionsMap } = require('../actions/index')
+const { responseActionsMap } = require('../actions/index')
 
 /**
  * Websocket client
@@ -55,7 +55,7 @@ class WsClient {
   onMessage (event) {
     const completedJSON = `{"t":${event.data}}`
     const action = JSON.parse(completedJSON)
-    const requestAction = requestActionsMap[action.t]
+    const requestAction = responseActionsMap[action.t]
     if (requestAction) {
       requestAction.handler(action)
     }

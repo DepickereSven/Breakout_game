@@ -2,6 +2,8 @@ package nu.smashit.core;
 
 // @author Jonas
 import nu.smashit.core.bodies.Field;
+import nu.smashit.data.Repositories;
+import nu.smashit.data.dataobjects.Score;
 import nu.smashit.socket.actions.GameLossAction;
 import nu.smashit.socket.actions.GameStateUpdateAction;
 import nu.smashit.socket.actions.GameVictoryAction;
@@ -38,6 +40,12 @@ public class MultiplayerLoop extends GameLoop {
                 scoredPlayer.getScore().addOpponentDeath();
 
                 if (!lostPlayer.getScore().isAlive()) {
+                    Score score = scoredPlayer.getScore();
+                    score.setUserLost( scoredPlayer.getUser() );
+                    score.setUserWon( lostPlayer.getUser() );
+                    score.setTime( getGameSession().getTime() );
+                    Repositories.getScoreRepository().addScore( score );
+                    
                     scoredPlayer.sendAction(new GameVictoryAction());
                     lostPlayer.sendAction(new GameLossAction());
                     getGameSession().stopGame();
