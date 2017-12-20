@@ -6,7 +6,7 @@ import nu.smashit.data.dataobjects.User;
 public interface UserRepository {
 
     public void addUser(User user);
-
     public User.Builder getUser(String userID);
+    public void updateSmashbit(User user);
 
 }
