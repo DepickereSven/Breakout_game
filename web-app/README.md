@@ -67,6 +67,10 @@ npm start
 <dd></dd>
 <dt><a href="#actions/move_paddle_stop.module_js">js</a></dt>
 <dd></dd>
+<dt><a href="#actions/scores_request.module_js">js</a></dt>
+<dd></dd>
+<dt><a href="#actions/scores_response.module_js">js</a></dt>
+<dd></dd>
 <dt><a href="#actions/user_login_failure.module_js">js</a></dt>
 <dd></dd>
 <dt><a href="#actions/user_login_request.module_js">js</a></dt>
@@ -342,6 +346,12 @@ Generate random color in RGB
 
 ## js
 <a name="actions/move_paddle_stop.module_js"></a>
+
+## js
+<a name="actions/scores_request.module_js"></a>
+
+## js
+<a name="actions/scores_response.module_js"></a>
 
 ## js
 <a name="actions/user_login_failure.module_js"></a>

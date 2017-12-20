@@ -42,9 +42,9 @@ public class MySqlScoreRepository implements ScoreRepository {
             List<Score> scores = new ArrayList();
             while (rs.next()) {
                 int scoreID = rs.getInt("scoreID");
-                String userWonID = rs.getString("userWon");
+                String userWonID = rs.getString("userWonID");
                 User userWon = Repositories.getUserRepository().getUser(userWonID).build();
-                String userLostID = rs.getString("userLost");
+                String userLostID = rs.getString("userLostID");
                 User userLost = Repositories.getUserRepository().getUser(userLostID).build();
                 int points = rs.getInt("points");
                 int time = rs.getInt("time");
