@@ -89,4 +89,8 @@ public class Score {
         this.pointsFactor = Tools.validateBetween(pointsFactor, 0, 100, 1);
     }
 
+    public void setTime(int time) {
+       this.time = time;
+    }
+
 }

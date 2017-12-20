@@ -9,9 +9,10 @@ public class PowerFactory {
 
     public Power createPower(BrickType brickType){
         PowerData powerData = brickType.getPowerData();
-        if (powerData == null 
-                || brickType.getType() != BrickType.Type.U 
-                || brickType.getType() != BrickType.Type.D ){
+        
+        if (powerData == null
+                && brickType.getType() != BrickType.Type.U 
+                && brickType.getType() != BrickType.Type.D ){
             return new NoPower();
         }else{
             int value = powerData.getValue();
