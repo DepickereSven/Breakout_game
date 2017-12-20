@@ -21,18 +21,20 @@ public class BrickRow extends Body {
     private final int numberOfPowerdowns;
     private final int numberOfEmptyPlaces;
     private static final Random RANDOM = new Random();
-    private Map<BrickType.Type, List<BrickType>> brickTypes;
-
-    public BrickRow(int numberOfNormalBricks, int numberOfPowerups, int numberOfPowerdowns, int numberOfEmptyPlaces, int y) {
+    private Map<BrickType.Type, List<BrickType>> cachedBrickTypes;
+    private final boolean multiplayer;
+    
+    public BrickRow(int numberOfNormalBricks, int numberOfPowerups, int numberOfPowerdowns, int numberOfEmptyPlaces, int y, boolean multiplayer) {
         super(0, y, GameCanvas.WIDTH, Brick.HEIGHT);
 
         this.numberOfNormalBricks = numberOfNormalBricks;
         this.numberOfPowerups = numberOfPowerups;
         this.numberOfPowerdowns = numberOfPowerdowns;
         this.numberOfEmptyPlaces = numberOfEmptyPlaces;
+        this.multiplayer = multiplayer;
 
         bricks = new Brick[getNumberOfTotalPlaces()];
-        brickTypes = new HashMap<>();
+        cachedBrickTypes = new HashMap<>();
         fillRow();
     }
 
@@ -63,6 +65,10 @@ public class BrickRow extends Body {
     public int getNumberOfEmptyPlaces() {
         return numberOfEmptyPlaces;
     }
+    
+    public Brick[] getBricks() {
+        return bricks;
+    }
 
     private void fillRow() {
         fillType(numberOfNormalBricks, BrickType.Type.N);
@@ -85,16 +91,23 @@ public class BrickRow extends Body {
     }
 
     private BrickType getRandomBrickType(BrickType.Type sort) {
-        if (!brickTypes.containsKey(sort)){
-             brickTypes.put(sort, Repositories.getBrickTypeRepository().getAllBricksOfType( sort.toString()));
+        if (!cachedBrickTypes.containsKey(sort)){
+             cachedBrickTypes.put(sort, Repositories.getBrickTypeRepository().getAllBricksOfType( sort.toString()));
         }
         
-        int i = Tools.getRandomBetween(0, brickTypes.get(sort).size()-1);
-        return brickTypes.get(sort).get(i);
+        BrickType brickType;
+        do{
+            int i = Tools.getRandomBetween(0, cachedBrickTypes.get(sort).size()-1);
+            brickType = cachedBrickTypes.get(sort).get(i);
+        }while (isSinglePlayer()
+                && brickType.getType() != BrickType.Type.N 
+                && brickType.getPowerData().getType().equals("POINTS"));
+        
+        return brickType;
     }
     
-    public Brick[] getBricks() {
-        return bricks;
+    private boolean isSinglePlayer(){
+        return !multiplayer;
     }
 
     @Override
