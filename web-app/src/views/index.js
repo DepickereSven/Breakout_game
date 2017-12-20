@@ -21,6 +21,14 @@ const meet = require('./meet')
 const gameVersion = require('./game_version')
 const socialMedia = require('./social_media')
 const privacyPolicy = require('./privacy_policy')
+const tutorial = require('./tutorial')
+const tutorialBall = require('./tutorial-ball')
+const tutorialBlock = require('./block_tutorial')
+const tutorialHowTo = require('./tutorial_howTo')
+const tutorialBallControl = require('./tutorial_ballControl')
+const tutorialPaddleControlPc = require('./tutorial_paddleContolPc')
+const tutorialPaddleControlPhone = require('./tutorial_paddleControlPhone')
+const tutorialPowerUpsPowerDownTutorial = require('./tutorial_PowerUpsPowerDowns')
 
 const viewsMap = {}
 const views = [
@@ -44,7 +52,15 @@ const views = [
   meet,
   gameVersion,
   socialMedia,
-  privacyPolicy
+  privacyPolicy,
+  tutorial,
+  tutorialBall,
+  tutorialBlock,
+  tutorialHowTo,
+  tutorialBallControl,
+  tutorialPaddleControlPc,
+  tutorialPaddleControlPhone,
+  tutorialPowerUpsPowerDownTutorial
 ]
 views.forEach(function (val) {
   viewsMap[val.path] = val.view
@@ -107,7 +123,11 @@ function goBack (path) {
 function goHome () {
   viewStack = []
   $('.screen').remove()
-  go('modes.html')
+  if (JSON.parse(localStorage.getItem('tutorial')) === false) {
+    go('tutorial.html')
+  } else {
+    go('modes.html')
+  }
 }
 
 function go (path, params = {}, callback = () => {}) {

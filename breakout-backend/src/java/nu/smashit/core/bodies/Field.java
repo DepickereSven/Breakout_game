@@ -65,7 +65,7 @@ public class Field extends Body {
             int normalBricksInRow = totalPlacesInRow - powerupsInRow - powerdownsInRow - emptyPlacesInRow;
             numberOfTotalBricksInField += totalPlacesInRow - emptyPlacesInRow;
             
-            brickRows[rownr] = new BrickRow(normalBricksInRow, powerupsInRow, powerdownsInRow, emptyPlacesInRow, y);
+            brickRows[rownr] = new BrickRow(normalBricksInRow, powerupsInRow, powerdownsInRow, emptyPlacesInRow, y, multiplayer);
         }
     }
     
