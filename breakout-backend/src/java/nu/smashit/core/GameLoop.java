@@ -64,6 +64,7 @@ public abstract class GameLoop extends TimerTask {
                         if (!(power instanceof NoPower)) {
                             power.setPlayer(lastPlayerToHitPaddle);
                             powers.add(power);
+                            updateState.addPower(power.powerID);
                         }
                     }
 
