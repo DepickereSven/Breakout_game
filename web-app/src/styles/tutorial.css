@@ -1,0 +1,149 @@
+.container-tutorial {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    flex: 1;
+}
+
+.container-tutorial a {
+    border: #fff 1px solid;
+    border-radius: 16px;
+    padding: 2%;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    color: #fff;
+    text-decoration: none;
+}
+
+.container-tutorial .css-ball {
+    height: 100px;
+    width: 100px;
+    border-radius: 50px;
+    background-color: #fff;
+    margin-top: 12%;
+}
+
+.container-tutorial .padger-dots {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    flex: 1;
+    margin-bottom: 50px;
+    max-height: 25px;
+}
+
+.container-tutorial .padger-dots .ball {
+    height: 10px;
+    width: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.container-tutorial .padger-dots .ball-active {
+    height: 16px;
+    width: 16px;
+    background-color: #fff;
+    border-radius: 8px;
+    margin-right: 10px;
+}
+
+.container-tutorial .blocks-example {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 7.5%;
+}
+
+.container-tutorial .blocks-example .blocks,
+.container-tutorial .powers{
+    width: 100px;
+    height: 17px;
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 5px;
+}
+
+.container-tutorial .blocks-example .blocks-small{
+    width: 56px;
+}
+
+.container-tutorial .blocks-example .firstColor,
+.container-tutorial .powerDown{
+    background-color: rgba(223, 116, 12, 255);
+}
+
+.container-tutorial .blocks-example .SecondColor,
+.container-tutorial .powerUp{
+    background-color: rgba(0, 45, 96, 255);
+}
+
+.container-tutorial .blocks-example .PrimColor {
+    background-color: rgba(111, 195, 233, 255);
+}
+
+.container-tutorial .blocks-example .PrimColorFirst{
+    background-color: rgba(111,195,233,55);
+}
+
+.container-tutorial .blocks-example .PrimColorSecond{
+    background-color: rgba(111,195,233,105);
+}
+
+.container-tutorial .css-paddle{
+    margin-top: 5%;
+    height: 14px;
+    width: 50px;
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+.container-tutorial .press-left{
+    justify-content: flex-start;
+}
+
+.container-tutorial .press{
+    display: flex;
+    height: 100%;
+}
+
+.container-tutorial .press p{
+    width: 50%;
+    border: 1px solid #fff;
+    padding-top: 50%;
+}
+
+.container-tutorial .press-right{
+    justify-content: flex-end;
+}
+
+.container-tutorial .controls{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex: 1;
+}
+
+.container-tutorial .controls ~ .padger-dots{
+    flex: 0;
+}
+
+.container-tutorial .css-ball.small{
+    width: 12px;
+    height: 12px;
+}
+
+.container-tutorial .parent-data-tutorial{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
