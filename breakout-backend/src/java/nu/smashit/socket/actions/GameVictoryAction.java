@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nu.smashit.socket.actions;
 
 /**
@@ -11,4 +6,14 @@ package nu.smashit.socket.actions;
  */
 public class GameVictoryAction implements ResponseAction {
 
+    public int points;
+    
+    public GameVictoryAction(){
+        this(0);
+    }
+    
+    public GameVictoryAction(int points){
+        this.points = points;
+    }
+    
 }

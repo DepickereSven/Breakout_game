@@ -5,7 +5,7 @@ const path = 'multiplayer_game_won.html'
 exports.path = path
 
 exports.view = class PickModeView {
-  constructor (viewManager) {
+  constructor (viewManager, {points}) {
     this.path = path
     this.hideHeader = true
     this.remove = true
@@ -15,6 +15,8 @@ exports.view = class PickModeView {
     this.shop = '#shop_multiplayer'
     this.quoteText = '#quote-text'
     this.quoteAuthor = '#quote-author'
+    this.pointsWon = '#points_won'
+    this.points = points;
 
     this.goHome = this.goHome.bind(this)
     this.goToShop = this.goToShop.bind(this)
@@ -34,6 +36,7 @@ exports.view = class PickModeView {
     const quote = WIN_QUOTES[utils.randomInRange(0, WIN_QUOTES.length - 1)]
     $(this.quoteText).text(quote.text)
     $(this.quoteAuthor).text('- ' + quote.author + ' -')
+    $(this.pointsWon).text(this.points)
   }
 
   onUnload () {
