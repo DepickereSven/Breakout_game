@@ -50,12 +50,3 @@ window.onhashchange = function (e) {
 window.onpopstate = function (e) {
   e.preventDefault()
 }
-
-if (localStorage.getItem('gameSound') === null) {
-  localStorage.setItem('gameSound', JSON.stringify(true))
-  localStorage.setItem('fxSound', JSON.stringify(true))
-}
-
-if (localStorage.getItem('tutorial') === null) {
-  localStorage.setItem('tutorial', JSON.stringify(false))
-}
