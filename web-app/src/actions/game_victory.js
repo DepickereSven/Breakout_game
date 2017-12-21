@@ -3,8 +3,10 @@
  */
 
 const { viewManager } = require('../views/index')
+const backgroundMusic = require('../remember_Music')
 
 exports.handler = function () {
+  backgroundMusic.stopTheMusic()
   if (window.gameLoop && window.gameLoop.isMultiplayer) {
     viewManager.go('multiplayer_game_won.html')
   } else {
