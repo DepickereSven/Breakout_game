@@ -52,7 +52,10 @@ exports.view = class GameView {
   setPowers (powers) {
     this.powerImgEls.addClass('hidden')
     powers.forEach((x) => {
-      this.powerImgEls[x].className = ''
+      const el = this.powerImgEls[x - 1]
+      if (el) {
+        el.className = ''
+      }
     })
   }
 
