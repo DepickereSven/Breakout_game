@@ -18,7 +18,7 @@ exports.GameLoop = class GameLoop {
     this.ball = new Ball()
     this.players = []
     this.bricks = {}
-
+    this.currentTime = 0
     this.isMultiplayer = false
 
     this.run = this.run.bind(this)
@@ -61,6 +61,15 @@ exports.GameLoop = class GameLoop {
     for (let i = 0; i < scores.length; i++) {
       this.players[i].updateScore(scores[i])
     }
+  }
+
+  /**
+   * Update currentTime to current state
+   * @method
+   * @param {number} currentTime
+   */
+  updateCurrentTime (currentTime) {
+    this.currentTime = currentTime
   }
 
   /**

@@ -17,6 +17,7 @@ exports.handler = function ({ b = ARR, br = ARR, p = ARR, s = ARR, pw, c = 0, t 
   }
   if (view.setTime && t !== undefined) {
     view.setTime(t)
+    window.gameLoop.updateCurrentTime(t)
   }
   if (view.setPowers && pw !== undefined) {
     view.setPowers(pw)

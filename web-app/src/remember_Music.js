@@ -1,9 +1,9 @@
 const music = require('./music')
-
+const state = require('./global_state')
 let snd
 
 exports.playMusic = function () {
-  if (!JSON.parse(localStorage.getItem('gameSound'))) {
+  if (!state.get('gameSound')) {
     return
   }
   snd = music.playBackground()

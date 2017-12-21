@@ -1,3 +1,5 @@
+const state = require('../global_state')
+
 const path = 'sound_setting.html'
 exports.path = path
 
@@ -9,22 +11,23 @@ exports.view = class LoadingView {
 
     this.gameSound = '#game_sound'
     this.fxSound = '#fx_sound'
-  }
 
-  getTheStatusOfTheSounds () {
-    $(this.gameSound).prop('checked', JSON.parse(localStorage.getItem('gameSound')))
-    $(this.fxSound).prop('checked', JSON.parse(localStorage.getItem('fxSound')))
+    this.saveStatusGameSound = this.saveStatusGameSound.bind(this)
+    this.saveStatusFxSound = this.saveStatusFxSound.bind(this)
   }
 
   saveStatusGameSound () {
-    localStorage.setItem('gameSound', JSON.stringify($(this).is(':checked')))
+    state.set('gameSound', $(this.gameSound).is(':checked'))
   }
 
   saveStatusFxSound () {
-    localStorage.setItem('fxSound', JSON.stringify($(this).is(':checked')))
+    state.set('fxSound', $(this.fxSound).is(':checked'))
   }
+
   onLoad () {
-    this.getTheStatusOfTheSounds()
+    $(this.gameSound).prop('checked', state.get('gameSound'))
+    $(this.fxSound).prop('checked', state.get('fxSound'))
+
     $(this.gameSound).on('click', this.saveStatusGameSound)
     $(this.fxSound).on('click', this.saveStatusFxSound)
   }

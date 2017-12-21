@@ -1,3 +1,6 @@
+const state = require('./global_state')
+const constants = require('./constants')
+
 const backgroundMusic = [[new Audio('music/Circles.mp3')], [new Audio('music/Firefly.mp3')], [new Audio('music/Invincible.mp3')], [new Audio('music/Limitless.mp3')]]
 
 const sounds = {
@@ -5,7 +8,7 @@ const sounds = {
 }
 
 exports.fxSound = function (key) {
-  if (!JSON.parse(localStorage.getItem('fxSound'))) {
+  if (constants.IS_SAFARI || !state.get('fxSound')) {
     return
   }
   const snd = sounds[key]
@@ -16,7 +19,7 @@ exports.fxSound = function (key) {
 
 exports.playBackground = function () {
   const snd = backgroundMusic[randomNumber()][0]
-  snd.volume = (0.15)
+  snd.volume = (0.45)
   if (snd) {
     snd.play()
   }

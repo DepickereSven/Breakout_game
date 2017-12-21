@@ -14,7 +14,7 @@ exports.view = class LoadingView {
     this.viewManager.go('howToControl_tutorial.html')
   }
   onLoad () {
-    if (constants.IS_TOUCH_SCREEN()) {
+    if (constants.IS_TOUCH_SCREEN) {
       $(window).on('touchend', this.nextPage)
     } else {
       $(window).on('click', this.nextPage)

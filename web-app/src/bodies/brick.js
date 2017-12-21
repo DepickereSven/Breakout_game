@@ -55,7 +55,7 @@ exports.Brick = class Brick {
     }
     switch (this.type) {
       case 'U':
-        this.color = [0, 45, 96, alpha]
+        this.color = [250, 233, 70, alpha]
         break
       case 'D':
         this.color = [223, 116, 12, alpha]

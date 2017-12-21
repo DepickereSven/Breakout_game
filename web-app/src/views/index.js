@@ -1,4 +1,5 @@
 const constants = require('../constants')
+const state = require('../global_state')
 
 const login = require('./login')
 const loading = require('./loading')
@@ -125,7 +126,7 @@ function goBack (path) {
 function goHome () {
   viewStack = []
   $('.screen').remove()
-  if (JSON.parse(localStorage.getItem('tutorial')) === false) {
+  if (state.get('tutorial') === false) {
     go('tutorial.html')
   } else {
     go('modes.html')
