@@ -45,6 +45,7 @@ _:-ms-lang(x), canvas {
 }
 
 .game_container .game_header {
+  position: relative;
   width: 100%;
 }
 
@@ -52,4 +53,16 @@ _:-ms-lang(x), canvas {
   text-align: center;
   font-size: 1.5rem;
   margin-bottom: 0;
+}
+
+.game_container #powers {
+  position: absolute;
+  left: 0;
+  margin-bottom: 0;
+}
+
+.game_container #powers img {
+  height: 1.5rem;
+  width: 1.5rem;
+  margin: 0 5px;
 }

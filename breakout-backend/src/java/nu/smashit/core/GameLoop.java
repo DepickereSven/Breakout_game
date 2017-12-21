@@ -28,7 +28,7 @@ public abstract class GameLoop extends TimerTask {
     private final Game gameSession;
     private Player lastPlayerToHitPaddle;
     private boolean initRun;
-    private Set<Power> powers;
+    private final Set<Power> powers;
     private int brickHits;
     private int prevTime;
 
@@ -62,9 +62,14 @@ public abstract class GameLoop extends TimerTask {
                         getLastPlayerToHitPaddle().getScore().addBrickSmash(brick);
                         Power power = brick.getPower();
                         if (!(power instanceof NoPower)) {
-                            power.setPlayer(lastPlayerToHitPaddle);
+                            if (power.multiplePlayers) {
+                                for (Player p : gameSession.getPlayers()) {
+                                    power.addPlayer(p);
+                                }
+                            } else {
+                                power.addPlayer(lastPlayerToHitPaddle);
+                            }
                             powers.add(power);
-                            updateState.addPower(power.powerID);
                         }
                     }
 
@@ -122,6 +127,14 @@ public abstract class GameLoop extends TimerTask {
         return scores;
     }
 
+    private void addPowersForPlayer(GameStateUpdateAction updateState, Player p) {
+        for (Power pow : powers) {
+            if (pow.containsPlayer(p)) {
+                updateState.addPower(pow.powerID);
+            }
+        }
+    }
+
     public void initRun() {
         setInitRun(true);
         run();
@@ -132,6 +145,7 @@ public abstract class GameLoop extends TimerTask {
     public void run() {
         GameStateUpdateAction updateState = new GameStateUpdateAction(getBall(), getGameSession().getCountDown());
         List originalScores = getScores();
+        int originalPowersHash = powers.hashCode();
 
         if (prevTime != gameSession.getTime()) {
             updateState.setTime(gameSession.getTime());
@@ -175,13 +189,34 @@ public abstract class GameLoop extends TimerTask {
             updateState.addScores(newScores);
         }
 
-        if (getGameSession().playerCount() > 1) {
+        boolean hasPowersChanged = originalPowersHash != powers.hashCode();
+
+        if (getGameSession() instanceof MultiplayerGame) {
             MultiplayerGame mg = (MultiplayerGame) getGameSession();
-            mg.getBottomPlayer().getUser().getClient().sendAction(updateState);
+
+            // Player 0 state update
+            Player p = mg.getBottomPlayer();
+            if (hasPowersChanged) {
+                addPowersForPlayer(updateState, p);
+            }
+            p.getUser().getClient().sendAction(updateState);
+
+            // Player 1 state update
             updateState.reverseState();
-            mg.getTopPlayer().getUser().getClient().sendAction(updateState);
+            p = mg.getTopPlayer();
+            updateState.clearPowers();
+            if (hasPowersChanged) {
+                addPowersForPlayer(updateState, p);
+            }
+            p.getUser().getClient().sendAction(updateState);
+
+            // Reverse bodies back so game logic keeps working
             updateState.reverseState();
         } else {
+            SingleplayerGame sg = (SingleplayerGame) getGameSession();
+            if (hasPowersChanged) {
+                addPowersForPlayer(updateState, sg.getPlayer());
+            }
             getGameSession().broadcastAction(updateState);
         }
     }

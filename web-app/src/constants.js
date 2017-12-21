@@ -27,9 +27,8 @@ exports.C_WIDTH = 320
  */
 exports.IS_ANDROID_APP = navigator.userAgent.indexOf('Smash_It') > 1
 
-exports.IS_TOUCH_SCREEN = function () {
-  return (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0))
-}
+exports.IS_TOUCH_SCREEN = () =>
+  ('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)
 
 /**
  * Array of quotes about losing

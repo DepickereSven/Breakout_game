@@ -1,28 +1,27 @@
 package nu.smashit.core.power;
 
 // @author Jonas
-
 import nu.smashit.core.GameLoop;
 
-public class Points extends Power{
-    
+public class Points extends Power {
+
     private int pointsFactor;
-    
-    public Points(int powerID, int pointsFactor){
-        super(powerID);
+
+    public Points(int powerID, int pointsFactor) {
+        super(powerID, false);
         this.pointsFactor = pointsFactor;
     }
 
     @Override
     protected void doEffect(GameLoop gameLoop) {
-        if (getPlayer() != null){
+        if (!getPlayers().isEmpty()) {
             getPlayer().getScore().setPointsFactor(pointsFactor);
-        } 
+        }
     }
 
     @Override
     protected void undoEffect(GameLoop gameLoop) {
-        if (getPlayer() != null){
+        if (!getPlayers().isEmpty()) {
             getPlayer().getScore().setPointsFactor(1);
         }
     }

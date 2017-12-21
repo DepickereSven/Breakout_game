@@ -1,50 +1,61 @@
 package nu.smashit.core.power;
 
 // @author Jonas
-
+import java.util.HashSet;
+import java.util.Set;
 import nu.smashit.core.GameLoop;
 import nu.smashit.core.Player;
 
 public abstract class Power {
 
-    private int powerID;
+    public final int powerID;
     private int time;
     private static final int DURATION = 500;
-    private Player player;
+    public final boolean multiplePlayers;
+    private final Set<Player> players;
 
-    protected Power(int powerID){
+    protected Power(int powerID, boolean multiplePlayers) {
         this.powerID = powerID;
         time = DURATION;
-        player = null;
+        this.multiplePlayers = multiplePlayers;
+        players = new HashSet<>();
     }
-    
-    public void updateEffect(GameLoop gameLoop){
-        if (isActive() && !isLastTime()){
+
+    public void updateEffect(GameLoop gameLoop) {
+        if (isActive() && !isLastTime()) {
             doEffect(gameLoop);
-        }else{
+        } else {
             undoEffect(gameLoop);
         }
         time--;
     }
-    
+
     protected abstract void doEffect(GameLoop gameLoop);
-    
+
     protected abstract void undoEffect(GameLoop gameLoop);
-    
-    public boolean isActive(){
+
+    public boolean isActive() {
         return time >= 0;
     }
-    
-    private boolean isLastTime(){
+
+    private boolean isLastTime() {
         return time == 0;
     }
-    
-    public void setPlayer(Player player){
-        this.player = player;
+
+    public void addPlayer(Player player) {
+        players.add(player);
     }
-    
-    public Player getPlayer(){
-        return player;
+
+    public Set<Player> getPlayers() {
+        return players;
     }
-    
+
+    public Player getPlayer() {
+        return players.iterator().next();
+    }
+
+    public boolean containsPlayer(Player p) {
+        return players.contains(p);
+    }
+
 }

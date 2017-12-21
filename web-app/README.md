@@ -67,6 +67,10 @@ npm start
 <dd></dd>
 <dt><a href="#actions/move_paddle_stop.module_js">js</a></dt>
 <dd></dd>
+<dt><a href="#actions/scores_request.module_js">js</a></dt>
+<dd></dd>
+<dt><a href="#actions/scores_response.module_js">js</a></dt>
+<dd></dd>
 <dt><a href="#actions/user_login_failure.module_js">js</a></dt>
 <dd></dd>
 <dt><a href="#actions/user_login_request.module_js">js</a></dt>
@@ -344,6 +348,12 @@ Generate random color in RGB
 <a name="actions/move_paddle_stop.module_js"></a>
 
 ## js
+<a name="actions/scores_request.module_js"></a>
+
+## js
+<a name="actions/scores_response.module_js"></a>
+
+## js
 <a name="actions/user_login_failure.module_js"></a>
 
 ## js
@@ -605,7 +615,8 @@ Open connection
 <a name="module_socket/client..WsClient+setClientId"></a>
 
 #### wsClient.setClientId()
-Set the clientIdOnly done once
+Set the clientId
+Only done once
 
 **Kind**: instance method of [<code>WsClient</code>](#module_socket/client..WsClient)  
 <a name="module_socket/client..WsClient+onClose"></a>

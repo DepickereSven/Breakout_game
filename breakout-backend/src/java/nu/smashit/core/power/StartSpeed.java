@@ -11,7 +11,7 @@ public class StartSpeed extends Power {
     private boolean firstTime;
 
     public StartSpeed(int powerID, int newStartSpeed) {
-        super(powerID);
+        super(powerID, true);
         this.newStartSpeed = newStartSpeed;
         this.firstTime = true;
     }

@@ -2,6 +2,7 @@ const MovePaddleStartAction = require('../actions/move_paddle_start')
 const MovePaddleStopAction = require('../actions/move_paddle_stop')
 
 const { createSketch } = require('../sketch')
+const { powerTypes, getPowerImg } = require('../powers')
 const utils = require('../utils')
 
 const path = 'game.html'
@@ -23,10 +24,13 @@ exports.view = class GameView {
     this.countDownOverlay = '.countdown_overlay'
     this.countDownCount = '#countdown_count'
     this.time = '#time'
+    this.powers = '#powers'
+    this.powerImgs = '#powers > img'
 
     this.handleTouchStart = this.handleTouchStart.bind(this)
     this.setCount = this.setCount.bind(this)
     this.setTime = this.setTime.bind(this)
+    this.setPowers = this.setPowers.bind(this)
   }
 
   setCount (count) {
@@ -43,6 +47,19 @@ exports.view = class GameView {
   setTime (time) {
     this.currentTime = time
     $(this.time).text(utils.displayTime(time))
+  }
+
+  setPowers (powers) {
+    this.powerImgEls.addClass('hidden')
+    powers.forEach((x) => {
+      this.powerImgEls[x].className = ''
+    })
+  }
+
+  insertPowersImgs () {
+    const powerImgEls = powerTypes.map((x, i) => `<img src="${getPowerImg(i + 1)}" class="hidden">`)
+    $(this.powers).append(powerImgEls)
+    this.powerImgEls = $(this.powerImgs)
   }
 
   getDirection ({ touches }) {
@@ -92,6 +109,8 @@ exports.view = class GameView {
     container.addEventListener('touchstart', this.handleTouchStart, options)
     container.addEventListener('touchend', this.handleTouchEnd, options)
     container.addEventListener('touchcancel', this.handleTouchEnd, options)
+
+    this.insertPowersImgs()
 
     $(window).on('keydown', this.handleKeyDown)
     $(window).on('keyup', this.handleKeyUp)

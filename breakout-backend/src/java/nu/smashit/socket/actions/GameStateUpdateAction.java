@@ -16,7 +16,7 @@ import java.util.Set;
 import nu.smashit.core.bodies.Ball;
 import nu.smashit.core.bodies.Brick;
 import nu.smashit.core.bodies.Paddle;
-import nu.smashit.core.power.Power;
+import org.jboss.weld.util.collections.ArraySet;
 
 /**
  *
@@ -43,7 +43,7 @@ public class GameStateUpdateAction implements ResponseAction {
     public int time;
     @JsonProperty("pw")
     @JsonInclude(Include.NON_DEFAULT)
-    public List<Integer> powers;
+    public Set<Integer> powers;
 
     public GameStateUpdateAction() {
         this(null, 0);
@@ -53,7 +53,7 @@ public class GameStateUpdateAction implements ResponseAction {
         this.ball = ball;
         this.bricks = new HashSet<>();
         this.paddles = new ArrayList<>(2);
-        this.powers = new ArrayList<>();
+        this.powers = new HashSet<>();
         this.countDown = countDown;
     }
 
@@ -71,6 +71,10 @@ public class GameStateUpdateAction implements ResponseAction {
 
     public void addPower(int power) {
         powers.add(power);
+    }
+
+    public void clearPowers() {
+        powers.clear();
     }
 
     public void reverseState() {

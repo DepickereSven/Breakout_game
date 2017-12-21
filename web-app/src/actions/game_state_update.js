@@ -6,17 +6,19 @@ const { viewManager } = require('../views/index')
 const playerReadyAction = require('./player_ready')
 const music = require('../music')
 
-// Default arguments get created at every run, so lets not make 4 new arrays everytime
+// Default arguments get created at every run, so lets not make 4 new placeholder arrays everytime
 const ARR = []
 
-exports.handler = function ({ b = ARR, br = ARR, p = ARR, s = ARR, c = 0, t }) {
+exports.handler = function ({ b = ARR, br = ARR, p = ARR, s = ARR, pw, c = 0, t }) {
   const view = viewManager.getCurrentView()
   if (view.setCount) {
     view.setCount(c)
-
-    if (t !== undefined) {
-      view.setTime(t)
-    }
+  }
+  if (view.setTime && t !== undefined) {
+    view.setTime(t)
+  }
+  if (view.setPowers && pw !== undefined) {
+    view.setPowers(pw)
   }
 
   if (c === 0 && br.length > 0) {
