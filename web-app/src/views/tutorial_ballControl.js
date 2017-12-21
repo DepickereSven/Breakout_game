@@ -11,14 +11,14 @@ exports.view = class LoadingView {
     this.nextPage = this.nextPage.bind(this)
   }
   nextPage (e) {
-    if (constants.IS_TOUCH_SCREEN()) {
+    if (constants.IS_TOUCH_SCREEN) {
       this.viewManager.go('controlPaddlePhone_tutorial.html')
     } else {
       this.viewManager.go('controlPaddlePc_tutorial.html')
     }
   }
   onLoad () {
-    if (constants.IS_TOUCH_SCREEN()) {
+    if (constants.IS_TOUCH_SCREEN) {
       $(window).on('touchend', this.nextPage)
     } else {
       $(window).on('click', this.nextPage)

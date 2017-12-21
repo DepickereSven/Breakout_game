@@ -1,5 +1,6 @@
 const UserLoginRequestAction = require('./actions/user_login_request')
 const constants = require('./constants')
+const state = require('./global_state')
 
 exports.User = class User {
   constructor ({ userID, username, imageUrl, email, country, smashbit }) {
@@ -25,9 +26,9 @@ function setToken (token) {
     return
   }
   if (token) {
-    localStorage.setItem('token', token)
+    state.set('token', token)
   } else {
-    localStorage.removeItem('token')
+    state.remove('token')
   }
 }
 exports.setToken = setToken
@@ -36,7 +37,7 @@ function getToken () {
   if (constants.IS_ANDROID_APP) {
     return null
   }
-  return localStorage.getItem('token')
+  return state.get('token')
 }
 exports.getToken = getToken
 
