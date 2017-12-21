@@ -11,33 +11,40 @@ const {viewManager} = require('./views/index')
 const {signIn, getToken} = require('./user')
 const state = require('./global_state')
 
-const initialUrl = (new URL(document.location.href))
-const isLoginRedirect = /^#access_token=/i.test(initialUrl.hash)
+const initialHash = (new URL(document.location.href)).hash
+const isLoginRedirect = /^#access_token=/i.test(initialHash)
 
 // Views
 $(document).ready(function () {
   state.rehydrate()
 
   if (!constants.IS_ANDROID_APP) {
-    $('head').append(`<style type="text/css">.android-only { display:none; }</style>`)
+    hideAndroidSpecificElements()
   }
   $('body').css('height', window.innerHeight)
 
   window.wsClient = wsClient
   wsClient.open(function () {
     if (isLoginRedirect) {
-      const token = decodeURI(initialUrl.hash).split('&')[0].replace('#access_token=', '')
-      signIn(token)
+      signIn(getTokenFromUrl())
     } else {
       const storedToken = getToken()
       if (storedToken) {
         signIn(storedToken)
       } else {
-        viewManager.go('login.html')
+        viewManager.goLogin()
       }
     }
   })
 })
+
+function getTokenFromUrl () {
+  return initialHash.split('&')[0].replace('#access_token=', '')
+}
+
+function hideAndroidSpecificElements () {
+  $('head').append(`<style type="text/css">.android-only { display:none; }</style>`)
+}
 
 $('body').on('click', '#go-back', function (e) {
   window.history.back()
