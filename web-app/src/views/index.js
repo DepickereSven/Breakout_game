@@ -27,7 +27,7 @@ const privacyPolicy = require('./privacy_policy')
 const credits = require('./credits_content')
 const tutorial = require('./tutorial')
 const tutorialBall = require('./tutorial-ball')
-const tutorialBlock = require('./block_tutorial')
+const tutorialBlock = require('./tutoria_block')
 const tutorialHowTo = require('./tutorial_howTo')
 const tutorialBallControl = require('./tutorial_ballControl')
 const tutorialPaddleControlPc = require('./tutorial_paddleContolPc')
@@ -177,7 +177,7 @@ function go (path, params = {}, callback = () => {}) {
     getHtml('header.html', headerHtml => {
       $(document.body).append(`<div class="screen">${!view.hideHeader ? headerHtml : ''}${html}</div>`)
       if (!view.hideHeader && window.user) {
-          $('.header-container .points').text(window.user.smashbit)
+        $('.header-container .points').text(window.user.smashbit)
       }
       view.onLoad()
       slideScreenIn(() => {
@@ -214,6 +214,7 @@ function slideScreenIn (callback = () => {}) {
 }
 
 const htmlCache = {}
+
 function getHtml (url, callback = () => {}) {
   const cachedHtml = htmlCache[url]
   if (cachedHtml) {

@@ -3,7 +3,7 @@
  */
 
 const { viewManager } = require('../views/index')
-const backgroundMusic = require('../remember_Music')
+const backgroundMusic = require('../music_controller')
 const state = require('../global_state.js')
 const updateSingleplayerScore = require('./updateSingleplayerScore')
 
@@ -11,7 +11,7 @@ exports.handler = function (action) {
   backgroundMusic.stopTheMusic()
 
   if (window.gameLoop && window.gameLoop.isMultiplayer) {
-    const points = action.points;
+    const points = action.points
     viewManager.go('multiplayer_game_won.html', {points})
   } else {
     updateSingleplayerScore.updateScores(state.get('currentLevel'), window.gameLoop.currentTime)
