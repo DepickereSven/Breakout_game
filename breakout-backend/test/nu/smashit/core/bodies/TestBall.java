@@ -18,11 +18,11 @@ public class TestBall {
         assertTrue(ball.isGoingUp());
         assertTrue(ball.isGoingLeft());
 
-        ball.inverseHozSpeed();
+        ball.inverseHorSpeed();
         assertTrue(ball.isGoingUp());
         assertTrue(ball.isGoingRight());
 
-        ball.inverseHozSpeed();
+        ball.inverseHorSpeed();
         assertTrue(ball.isGoingUp());
         assertTrue(ball.isGoingLeft());
     }
@@ -71,7 +71,7 @@ public class TestBall {
         assertTrue(ball.isGoingLeft());
         assertTrue(ball.isGoingUp());
 
-        ball.inverseHozSpeed();
+        ball.inverseHorSpeed();
         ball.move();
         expectedNewX = expectedNewX - (int) (ball.getDxStartValue() * Ball.MULTIPLIER);
         expectedNewY = expectedNewY + (int) (ball.getDyStartValue() * Ball.MULTIPLIER);

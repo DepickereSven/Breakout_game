@@ -1,7 +1,6 @@
 package nu.smashit.core;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -54,7 +53,7 @@ public abstract class GameLoop extends TimerTask {
                     if (Collision.isTopOrBottomCollision(getBall(), brick)) {
                         getBall().inverseVerSpeed();
                     } else {
-                        getBall().inverseHozSpeed();
+                        getBall().inverseHorSpeed();
                     }
 
                     if (brick.isBroken() && getLastPlayerToHitPaddle() != null) {
@@ -110,7 +109,7 @@ public abstract class GameLoop extends TimerTask {
             if (Collision.isTopOrBottomCollision(getBall(), player.getPaddle())) {
                 getBall().reactToPaddleHit(player.getPaddle());
             } else {
-                getBall().inverseHozSpeed();
+                getBall().inverseHorSpeed();
             }
             setLastPlayerToHitPaddle(player);
             return true;

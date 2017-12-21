@@ -41,8 +41,8 @@ public class Ball extends MovableBody {
     @Override
     public void reset() {
         super.reset();
-        setDx(getDxStartValue());
-        setDy(getDyStartValue());
+        this.dx = getDxStartValue();
+        this.dy = getDyStartValue();
     }
 
     public void move() {
@@ -77,7 +77,7 @@ public class Ball extends MovableBody {
     }
 
     public void inverseVerSpeed() {
-        setDy(-getDy());
+        this.dy = -this.dy;
     }
 
     public void reactToPaddleHit(Paddle paddle) {
@@ -86,7 +86,6 @@ public class Ball extends MovableBody {
         double distanceBetween = Math.sqrt(Math.pow(ballCenterX - paddleCenterX, 2));
 
         double effect = 0;
-
         if (distanceBetween > 20) {
             effect = 3.4;
         } else if (distanceBetween > 17.5) {
@@ -107,16 +106,15 @@ public class Ball extends MovableBody {
             effect = 1;
         }
 
-        effect = ballCenterX > paddleCenterX ? effect : -effect;
-
-        double diff = dx - effect;
-
         setDx(effect);
-        setDy(-getDy());
+        if( ballCenterX <= paddleCenterX ){
+            inverseHorSpeed();
+        }
+        inverseVerSpeed();
     }
 
-    public void inverseHozSpeed() {
-        setDx(-getDx());
+    public void inverseHorSpeed() {
+        this.dx = -this.dx;
     }
 
     @JsonIgnore
@@ -125,7 +123,7 @@ public class Ball extends MovableBody {
     }
 
     public void setDx(double dx) {
-        this.dx = dx;
+        this.dx = Math.signum(getDx()) * Math.abs(dx);
     }
 
     @JsonIgnore
@@ -134,7 +132,7 @@ public class Ball extends MovableBody {
     }
 
     public void setDy(double dy) {
-        this.dy = dy;
+        this.dy = Math.signum(getDy()) * Math.abs(dy);
     }
 
     @JsonIgnore
