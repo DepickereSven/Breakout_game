@@ -1,4 +1,3 @@
-const CreateSingleplayerRequestAction = require('../actions/create_singleplayer_request')
 const state = require('../global_state.js')
 
 const path = 'singleplayer_level_menu.html'
@@ -13,12 +12,13 @@ exports.view = class SingleplayerLevelMenuView {
 
     this.container = '.singleplayer_level_menu'
     this.levelButton = 'button.level'
-
+    this.screen = '.gamemodes-container'
     this.generateLevels = this.generateLevels.bind(this)
     this.handleLevelClick = this.handleLevelClick.bind(this)
   }
 
   generateLevels (min, max) {
+    $(this.container).html('')
     let items = []
     for (max; min <= max; min++) {
       items.push(`
@@ -31,16 +31,23 @@ exports.view = class SingleplayerLevelMenuView {
   }
 
   handleLevelClick (e) {
-    this.viewManager.go('loading.html')
     let { level } = $(e.currentTarget).data()
     level = parseInt(level)
     state.set('currentLevel', level)
-    window.wsClient.send(CreateSingleplayerRequestAction.create(level))
+    this.viewManager.go('singleplayer_score.html')
+  }
+
+  controleIfBlur () {
+    let $screen = $(this.screen).parent()
+    if ($screen.hasClass('blur')) {
+      $screen.removeClass('blur')
+    }
   }
 
   onLoad () {
     this.generateLevels(this.min, this.max)
     $(this.levelButton).on('click', this.handleLevelClick)
+    this.controleIfBlur()
   }
 
   onUnload () {
