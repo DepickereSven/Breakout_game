@@ -29,7 +29,8 @@
     margin-top: 20px;
 }
 
-.privacy_gdpr a{
+.privacy_gdpr a,
+.credits a{
     color: #6fc3df;
 }
 

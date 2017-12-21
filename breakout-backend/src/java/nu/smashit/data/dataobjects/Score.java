@@ -35,6 +35,54 @@ public class Score {
         return getPoints() > 0;
     }
 
+    @JsonIgnore
+    public int getScoreID() {
+        return scoreID;
+    }
+
+    private class SmallUser {
+        public String name;
+        public String country;
+
+        public SmallUser(String name, String country) {
+            this.name = name;
+            this.country = country;
+        }
+    }
+
+    @JsonIgnore
+    public User getUserWon() {
+        return userWon;
+    }
+
+    @JsonProperty("user_won")
+    public SmallUser getSmallUserWon() {
+        return new SmallUser(userWon.getUsername(), userWon.getCountry());
+    }
+
+    @JsonIgnore
+    public User getUserLost() {
+        return userLost;
+    }
+
+    @JsonProperty("user_lost")
+    public SmallUser getSmallLost() {
+        return new SmallUser(userLost.getUsername(), userLost.getCountry());
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    @JsonIgnore
+    public int getPointsFactor() {
+        return pointsFactor;
+    }
+
     public void addOpponentDeath() {
         points += DEATH_POINTS;
     }
@@ -47,31 +95,6 @@ public class Score {
         points += brick.type.getBrickPoints() * getPointsFactor();
     }
 
-    @JsonIgnore
-    public int getScoreID() {
-        return scoreID;
-    }
-
-    @JsonIgnore
-    public User getUserWon() {
-        return userWon;
-    }
-
-    @JsonIgnore
-    public User getUserLost() {
-        return userLost;
-    }
-
-    @JsonProperty("p")
-    public int getPoints() {
-        return points;
-    }
-
-    @JsonIgnore
-    public int getTime() {
-        return time;
-    }
-
     public void setUserWon(User userWon) {
         this.userWon = userWon;
     }
@@ -80,17 +103,12 @@ public class Score {
         this.userLost = userLost;
     }
 
-    @JsonIgnore
-    public int getPointsFactor() {
-        return pointsFactor;
-    }
-
     public void setPointsFactor(int pointsFactor) {
         this.pointsFactor = Tools.validateBetween(pointsFactor, 0, 100, 1);
     }
 
     public void setTime(int time) {
-       this.time = time;
+        this.time = time;
     }
 
 }

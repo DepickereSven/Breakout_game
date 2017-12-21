@@ -4,6 +4,7 @@ package nu.smashit.core;
 import nu.smashit.core.bodies.Field;
 import nu.smashit.data.Repositories;
 import nu.smashit.data.dataobjects.Score;
+import nu.smashit.data.dataobjects.User;
 import nu.smashit.socket.actions.GameLossAction;
 import nu.smashit.socket.actions.GameStateUpdateAction;
 import nu.smashit.socket.actions.GameVictoryAction;
@@ -40,15 +41,7 @@ public class MultiplayerLoop extends GameLoop {
                 scoredPlayer.getScore().addOpponentDeath();
 
                 if (!lostPlayer.getScore().isAlive()) {
-                    Score score = scoredPlayer.getScore();
-                    score.setUserLost( scoredPlayer.getUser() );
-                    score.setUserWon( lostPlayer.getUser() );
-                    score.setTime( getGameSession().getTime() );
-                    Repositories.getScoreRepository().addScore( score );
-                    
-                    scoredPlayer.sendAction(new GameVictoryAction());
-                    lostPlayer.sendAction(new GameLossAction());
-                    getGameSession().stopGame();
+                    gameEnded(scoredPlayer, lostPlayer);
                     return;
                 }
 
@@ -60,6 +53,24 @@ public class MultiplayerLoop extends GameLoop {
 
             getBall().move();
         }
+    }
+
+    private void gameEnded(Player playerWon, Player playerLost) {
+        playerWon.sendAction(new GameVictoryAction());
+        playerLost.sendAction(new GameLossAction());
+        getGameSession().stopGame();
+        
+        Score score = playerWon.getScore();
+        User userWon = playerWon.getUser();
+        User userLost = playerLost.getUser();
+        
+        score.setUserLost(userLost);
+        score.setUserWon(userWon);
+        score.setTime(getGameSession().getTime());
+        Repositories.getScoreRepository().addScore(score);
+        
+        userWon.setSmashbit(userWon.getSmashbit() + score.getPoints());
+        Repositories.getUserRepository().updateSmashbit(userWon);
     }
 
 }

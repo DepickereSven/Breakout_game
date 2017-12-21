@@ -7,5 +7,5 @@ const { viewManager } = require('../views/index')
 
 exports.handler = function ({ user }) {
   window.user = new User(user)
-    viewManager.goHome()
+  viewManager.goHome()
 }

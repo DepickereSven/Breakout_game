@@ -21,6 +21,7 @@ const meet = require('./meet')
 const gameVersion = require('./game_version')
 const socialMedia = require('./social_media')
 const privacyPolicy = require('./privacy_policy')
+const credits = require('./credits_content')
 const tutorial = require('./tutorial')
 const tutorialBall = require('./tutorial-ball')
 const tutorialBlock = require('./block_tutorial')
@@ -53,6 +54,7 @@ const views = [
   gameVersion,
   socialMedia,
   privacyPolicy,
+  credits,
   tutorial,
   tutorialBall,
   tutorialBlock,
