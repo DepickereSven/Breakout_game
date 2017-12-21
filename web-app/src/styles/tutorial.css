@@ -144,6 +144,10 @@
     align-items: center;
 }
 
+.container-tutorial figure img{
+    width: 10%;
+}
+
 
 
 

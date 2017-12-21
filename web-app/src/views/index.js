@@ -33,6 +33,9 @@ const tutorialBallControl = require('./tutorial_ballControl')
 const tutorialPaddleControlPc = require('./tutorial_paddleContolPc')
 const tutorialPaddleControlPhone = require('./tutorial_paddleControlPhone')
 const tutorialPowerUpsPowerDownTutorial = require('./tutorial_PowerUpsPowerDowns')
+const tutorialAboutThePowerUpDownExplanation = require('./powerUpPowerDownExplanation')
+const tutorialWhatAreTheKindOfPowerUpsThatYouCanUse = require('./tutorial_whatKindOfPowerUps')
+const tutorialWhatAreTheKindOfPowerDownsThatYouCanUse = require('./tutorialWhatKindOfPowerDowns')
 
 const viewsMap = {}
 const views = [
@@ -67,7 +70,10 @@ const views = [
   tutorialBallControl,
   tutorialPaddleControlPc,
   tutorialPaddleControlPhone,
-  tutorialPowerUpsPowerDownTutorial
+  tutorialPowerUpsPowerDownTutorial,
+  tutorialAboutThePowerUpDownExplanation,
+  tutorialWhatAreTheKindOfPowerUpsThatYouCanUse,
+  tutorialWhatAreTheKindOfPowerDownsThatYouCanUse
 ]
 views.forEach(function (val) {
   viewsMap[val.path] = val.view
@@ -134,7 +140,7 @@ function clearViews () {
 
 function goHome () {
   clearViews()
-  if (state.get('tutorial') === false) {
+  if (state.get('tutorial') === undefined) {
     go('tutorial.html')
   } else {
     go('modes.html')
