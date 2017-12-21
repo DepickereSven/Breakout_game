@@ -32,7 +32,7 @@ public class SingleplayerLoop extends GameLoop {
                     getGameSession().stopGame();
                 }
             } else if (Collision.isWallCollision(getBall())) {
-                getBall().inverseHozSpeed();
+                getBall().inverseHorSpeed();
             }
 
             getBall().move();

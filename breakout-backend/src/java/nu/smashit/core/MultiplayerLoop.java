@@ -33,7 +33,7 @@ public class MultiplayerLoop extends GameLoop {
             } else if (runPaddleCollision(updateState)) {
             } else if (runBrickCollision(updateState)) {
             } else if (Collision.isWallCollision(getBall())) {
-                getBall().inverseHozSpeed();
+                getBall().inverseHorSpeed();
             }
 
             if (scoredPlayer != null && lostPlayer != null) {

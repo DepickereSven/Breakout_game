@@ -56,7 +56,13 @@ exports.view = class StatsView {
   }
 
   setScores(scores){
-    this.scores = scores
+    this.scores = scores.sort((a,b) => {
+      if (a.points === b.points){
+        return a.time - b.time;
+      }else{
+        return b.points - a.points;
+      }
+    })
     $('.stats_multiplayer').html(this.createTableStats())
   }
 
