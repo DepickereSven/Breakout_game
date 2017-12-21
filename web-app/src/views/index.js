@@ -3,6 +3,7 @@ const state = require('../global_state')
 
 const login = require('./login')
 const loading = require('./loading')
+const offline = require('./offline')
 const pickMode = require('./pick_mode')
 const multiplayerMenu = require('./multiplayer_menu')
 const createPrivateSuccess = require('./create_private_success')
@@ -36,6 +37,7 @@ const tutorialPowerUpsPowerDownTutorial = require('./tutorial_PowerUpsPowerDowns
 const viewsMap = {}
 const views = [
   login,
+  offline,
   loading,
   pickMode,
   multiplayerMenu,
@@ -125,14 +127,24 @@ function goBack (path) {
   getCurrentView().onLoad()
 }
 
-function goHome () {
+function clearViews () {
   viewStack = []
   $('.screen').remove()
+}
+
+function goHome () {
+  clearViews()
   if (state.get('tutorial') === false) {
     go('tutorial.html')
   } else {
     go('modes.html')
   }
+}
+
+function goLogin () {
+  clearViews()
+  $('.screen').remove()
+  go('login.html')
 }
 
 function go (path, params = {}, callback = () => {}) {
@@ -165,7 +177,7 @@ function go (path, params = {}, callback = () => {}) {
     getHtml('header.html', headerHtml => {
       $(document.body).append(`<div class="screen">${!view.hideHeader ? headerHtml : ''}${html}</div>`)
       if (!view.hideHeader && window.user) {
-        $('.header-container .points').text(window.user.smashbit)
+          $('.header-container .points').text(window.user.smashbit)
       }
       view.onLoad()
       slideScreenIn(() => {
@@ -215,15 +227,17 @@ function getHtml (url, callback = () => {}) {
     })
 }
 
-// Precache game html
+// Precache pages
 setTimeout(() => {
+  getHtml('offline.html')
   getHtml('game.html')
-}, 3000)
+}, 1000)
 
 const viewManager = window.viewManager = {
   getPreviousView,
   getCurrentView,
   goHome,
+  goLogin,
   go,
   onLocationChange
 }

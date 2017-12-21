@@ -42,7 +42,7 @@ public class GameStateUpdateAction implements ResponseAction {
     @JsonInclude(Include.NON_DEFAULT)
     public int time;
     @JsonProperty("pw")
-    @JsonInclude(Include.NON_DEFAULT)
+    @JsonInclude(Include.NON_NULL)
     public Set<Integer> powers;
 
     public GameStateUpdateAction() {

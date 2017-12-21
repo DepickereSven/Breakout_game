@@ -10,6 +10,7 @@ import nu.smashit.socket.actions.GameStateUpdateAction;
 import nu.smashit.socket.actions.GameVictoryAction;
 import nu.smashit.socket.actions.OpponentDeathAction;
 import nu.smashit.socket.actions.PlayerDeathAction;
+import nu.smashit.socket.actions.UpdateSmashbitAction;
 
 public class MultiplayerLoop extends GameLoop {
 
@@ -56,21 +57,23 @@ public class MultiplayerLoop extends GameLoop {
     }
 
     private void gameEnded(Player playerWon, Player playerLost) {
-        playerWon.sendAction(new GameVictoryAction());
-        playerLost.sendAction(new GameLossAction());
+        Score score = playerWon.getScore();
+        
+        playerWon.sendAction( new GameVictoryAction( score.getPoints() ) );
+        playerLost.sendAction( new GameLossAction() );
         getGameSession().stopGame();
         
-        Score score = playerWon.getScore();
         User userWon = playerWon.getUser();
         User userLost = playerLost.getUser();
         
-        score.setUserLost(userLost);
-        score.setUserWon(userWon);
-        score.setTime(getGameSession().getTime());
-        Repositories.getScoreRepository().addScore(score);
+        score.setUserLost( userLost );
+        score.setUserWon( userWon );
+        score.setTime( getGameSession().getTime() );
+        Repositories.getScoreRepository().addScore( score );
         
-        userWon.setSmashbit(userWon.getSmashbit() + score.getPoints());
-        Repositories.getUserRepository().updateSmashbit(userWon);
+        userWon.setSmashbit( userWon.getSmashbit() + score.getPoints() );
+        Repositories.getUserRepository().updateSmashbit( userWon );
+        playerWon.sendAction( new UpdateSmashbitAction( userWon.getSmashbit() ) );
     }
 
 }

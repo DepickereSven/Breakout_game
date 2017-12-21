@@ -12,23 +12,28 @@ const { responseActionsMap } = require('../actions/index')
  * @prop {String} clientId - UUID that the socket server gives to our client with the ConnectionSuccessAction
  */
 class WsClient {
+  constructor () {
+    this.open = this.open.bind(this)
+    this.reset = this.reset.bind(this)
+    this.setClientId = this.setClientId.bind(this)
+    this.onOpen = this.onOpen.bind(this)
+    this.onClose = this.onClose.bind(this)
+    this.onMessage = this.onMessage.bind(this)
+    this.send = this.send.bind(this)
+  }
+
   /**
    * Open connection
    * @method
    * @param {function} callback
    */
   open (callback) {
-    if (this.ws !== undefined && this.ws.readyState !== WebSocket.CLOSED) {
+    if (this.ws !== undefined && this.ws.readyState === WebSocket.OPEN) {
       throw new Error('WebSocket is already opened.')
     }
-
-    this.clientId = null
-
-    this.ws = new WebSocket(constants.API_URL)
-
-    this.ws.onopen = callback
-    this.ws.onclose = this.onClose
-    this.ws.onmessage = this.onMessage
+    this.callback = callback
+    this.reset()
+    window.addEventListener('offline', () => this.ws.close())
   }
 
   /**
@@ -41,11 +46,25 @@ class WsClient {
   }
 
   /**
+   * Event handler for connection opening
+   * @method
+   */
+  onOpen () {
+    this.callback()
+  }
+
+  /**
    * Event handler for connection loss
    * @method
    */
   onClose () {
+    const view = window.viewManager.getCurrentView()
+    if (!view || view.path !== 'offline.html') {
+      window.viewManager.go('offline.html')
+    }
     console.error(new Error('WebSocket was closed.'))
+    // Retry connection
+    setTimeout(this.reset, 2000)
   }
 
   /**
@@ -78,14 +97,19 @@ class WsClient {
 
   /**
    * Reset websocket connection
-   * @param {function} callback
+   * @method
    */
-  reset (callback) {
+  reset () {
     if (this.ws) {
       this.ws.close()
     }
-    this.ws = undefined
-    this.open(callback)
+    this.clientId = null
+
+    this.ws = new WebSocket(constants.API_URL)
+
+    this.ws.onopen = this.onOpen
+    this.ws.onclose = this.onClose
+    this.ws.onmessage = this.onMessage
   }
 }
 

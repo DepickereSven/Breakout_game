@@ -9,6 +9,7 @@ const GameStateUpdateAction = require('./game_state_update')
 const UserLoginSuccessAction = require('./user_login_success')
 const UserLoginFailureAction = require('./user_login_failure')
 const ScoresResponseAction = require('./scores_response')
+const UpdateSmashbitAction = require('./update_smashbit')
 
 exports.responseActionsMap = {
   ConnectionSuccessAction,
@@ -21,5 +22,6 @@ exports.responseActionsMap = {
   UserLoginSuccessAction,
   UserLoginFailureAction,
   ScoresResponseAction,
-  GameStateUpdateAction
+  GameStateUpdateAction,
+  UpdateSmashbitAction
 }
