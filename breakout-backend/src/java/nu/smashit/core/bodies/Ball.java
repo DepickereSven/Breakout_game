@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import nu.smashit.core.GameCanvas;
+import nu.smashit.utils.Tools;
 
 /**
  *
@@ -33,7 +34,6 @@ public class Ball extends MovableBody {
 
     public Ball(double speedBall) {
         super(X_START_POS, Y_START_POS, WIDTH, HEIGHT);
-        dyStartValue = speedBall;
         setDyStartValue(speedBall);
         this.reset();
     }
@@ -56,14 +56,30 @@ public class Ball extends MovableBody {
         return this.getHeight() / 2;
     }
 
-    @JsonIgnore
-    public boolean isGoingUp() {
-        return getDy() < 0;
+    public void reactToPaddleHit(Paddle paddle) {
+        double ballCenterX = getX() + getRadius();
+        double paddleCenterX = paddle.getX() + paddle.getWidth() / 2;
+        double distanceBetween = Math.sqrt(Math.pow(ballCenterX - paddleCenterX, 2));
+
+        double effect = 0;
+        if (distanceBetween > 20) {
+            effect = 3.4;
+        } else if (distanceBetween > 0) {
+            effect = (0.115 * distanceBetween) + 1.1007;
+        }
+
+        setDx(effect);
+        if (ballCenterX <= paddleCenterX) {
+            goLeft();
+        } else {
+            goRight();
+        }
+        inverseVerSpeed();
     }
 
     @JsonIgnore
-    public boolean isGoingDown() {
-        return !isGoingUp();
+    public double getDx() {
+        return dx;
     }
 
     @JsonIgnore
@@ -76,54 +92,25 @@ public class Ball extends MovableBody {
         return !isGoingLeft();
     }
 
-    public void inverseVerSpeed() {
-        this.dy = -this.dy;
-    }
-
-    public void reactToPaddleHit(Paddle paddle) {
-        double ballCenterX = getX() + getRadius();
-        double paddleCenterX = paddle.getX() + paddle.getWidth() / 2;
-        double distanceBetween = Math.sqrt(Math.pow(ballCenterX - paddleCenterX, 2));
-
-        double effect = 0;
-        if (distanceBetween > 20) {
-            effect = 3.4;
-        } else if (distanceBetween > 17.5) {
-            effect = 3.2;
-        } else if (distanceBetween > 15) {
-            effect = 3;
-        } else if (distanceBetween > 12.5) {
-            effect = 2.75;
-        } else if (distanceBetween > 10) {
-            effect = 2.5;
-        } else if (distanceBetween > 7.5) {
-            effect = 2.2;
-        } else if (distanceBetween > 5) {
-            effect = 2;
-        } else if (distanceBetween > 2.5) {
-            effect = 1.5;
-        } else if (distanceBetween > 0) {
-            effect = 1;
-        }
-
-        setDx(effect);
-        if( ballCenterX <= paddleCenterX ){
-            inverseHorSpeed();
-        }
-        inverseVerSpeed();
-    }
-
-    public void inverseHorSpeed() {
-        this.dx = -this.dx;
-    }
-
     @JsonIgnore
-    public double getDx() {
-        return dx;
+    public double getDxStartValue() {
+        return getDyStartValue() / 3;
     }
 
     public void setDx(double dx) {
-        this.dx = Math.signum(getDx()) * Math.abs(dx);
+        this.dx = Math.copySign(dx, getDx());
+    }
+
+    public void inverseHorSpeed() {
+        this.dx = -getDx();
+    }
+
+    public void goLeft() {
+        this.dx = -Math.abs(getDx());
+    }
+
+    public void goRight() {
+        this.dx = Math.abs(getDx());
     }
 
     @JsonIgnore
@@ -131,8 +118,14 @@ public class Ball extends MovableBody {
         return dy;
     }
 
-    public void setDy(double dy) {
-        this.dy = Math.signum(getDy()) * Math.abs(dy);
+    @JsonIgnore
+    public boolean isGoingUp() {
+        return getDy() < 0;
+    }
+
+    @JsonIgnore
+    public boolean isGoingDown() {
+        return !isGoingUp();
     }
 
     @JsonIgnore
@@ -140,13 +133,16 @@ public class Ball extends MovableBody {
         return dyStartValue;
     }
 
-    private void setDyStartValue(double dyStartValue) {
-        this.dyStartValue = dyStartValue;
+    public void setDy(double dy) {
+        this.dy = Math.copySign(dy, getDy());
     }
 
-    @JsonIgnore
-    public double getDxStartValue() {
-        return getDyStartValue() / 3;
+    public void inverseVerSpeed() {
+        this.dy = -this.dy;
+    }
+
+    private void setDyStartValue(double dyStartValue) {
+        this.dyStartValue = dyStartValue;
     }
 
 }
