@@ -10,6 +10,10 @@ exports.User = class User {
     this.country = country
     this.smashbit = smashbit
   }
+
+  setSmashbit(smashbit){
+    this.smashbit = smashbit;
+  }
 }
 
 function getCountryCode (callback) {
