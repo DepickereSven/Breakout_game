@@ -54,12 +54,12 @@ exports.view = class StatsView {
     return '<img src="images/nations/' + country + '.png" alt="' + country + '" title="' + country + '"/>'
   }
 
-  setScores(scores){
-    this.scores = scores.sort((a,b) => {
-      if (a.points === b.points){
-        return a.time - b.time;
-      }else{
-        return b.points - a.points;
+  setScores (scores) {
+    this.scores = scores.sort((a, b) => {
+      if (a.points === b.points) {
+        return a.time - b.time
+      } else {
+        return b.points - a.points
       }
     })
     $('.stats_multiplayer').html(this.createTableStats())
