@@ -45,6 +45,7 @@ exports.view = class GameView {
     }
     if (count === 0) {
       $(this.countDownOverlay).addClass('hidden')
+      backgroundMusic.playMusic()
     }
     $(this.countDownCount).text(count)
     this.currentCount = count
@@ -128,11 +129,10 @@ exports.view = class GameView {
     document.body.addEventListener('touchend', this.handleTouchEnd, options)
     document.body.addEventListener('touchcancel', this.handleTouchEnd, options)
 
-    this.insertPowersImgs()
-    backgroundMusic.playMusic()
-
     $(window).on('keydown', this.handleKeyDown)
     $(window).on('keyup', this.handleKeyUp)
+
+    setTimeout(this.insertPowersImgs(), 100)
   }
 
   onUnload () {
