@@ -41,7 +41,7 @@ _:-ms-lang(x), canvas {
   align-items: center;
   z-index: 1000;
   font-size: 4rem;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.4);
 }
 
 .game_container .game_header {
