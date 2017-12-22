@@ -31,7 +31,6 @@ exports.IS_SAFARI = /Safari/.test(navigator.userAgent)
 
 exports.IS_TOUCH_SCREEN = ('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)
 
-
 /**
  * Array of quotes about losing
  * @type {object[]}
