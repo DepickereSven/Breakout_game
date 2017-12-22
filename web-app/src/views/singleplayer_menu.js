@@ -15,7 +15,7 @@ exports.view = class SingleplayerMenuView {
     this.viewManager.go('singleplayer_level_menu.html', data)
   }
   sendToTurial (e) {
-    this.viewManager.go('tutorial.html')
+    this.viewManager.go('tutorialOverview.html')
   }
   onLoad () {
     $(this.levelButtons).on('click', this.handleLevelClick.bind(this))

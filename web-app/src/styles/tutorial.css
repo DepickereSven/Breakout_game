@@ -148,6 +148,11 @@
     width: 10%;
 }
 
+.container-tutorial .basic_tutorial{
+    margin-top: 15%;
+    flex: 1;
+}
 
-
-
+.container-tutorial .power-tutorial{
+    flex: 1;
+}

@@ -27,8 +27,9 @@ const privacyPolicy = require('./privacy_policy')
 const credits = require('./credits_content')
 const tutorial = require('./tutorial')
 const tutorialBall = require('./tutorial-ball')
-const tutorialBlock = require('./tutoria_block')
+const tutorialBlock = require('./tutorial_block')
 const tutorialHowTo = require('./tutorial_howTo')
+const tutorialOverview = require('./tutorialOverview')
 const tutorialBallControl = require('./tutorial_ballControl')
 const tutorialPaddleControlPc = require('./tutorial_paddleContolPc')
 const tutorialPaddleControlPhone = require('./tutorial_paddleControlPhone')
@@ -67,6 +68,7 @@ const views = [
   tutorialBall,
   tutorialBlock,
   tutorialHowTo,
+  tutorialOverview,
   tutorialBallControl,
   tutorialPaddleControlPc,
   tutorialPaddleControlPhone,
