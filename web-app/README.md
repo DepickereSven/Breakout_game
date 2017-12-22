@@ -71,6 +71,8 @@ npm start
 <dd></dd>
 <dt><a href="#actions/scores_response.module_js">js</a></dt>
 <dd></dd>
+<dt><a href="#actions/update_smashbit.module_js">js</a></dt>
+<dd></dd>
 <dt><a href="#actions/user_login_failure.module_js">js</a></dt>
 <dd></dd>
 <dt><a href="#actions/user_login_request.module_js">js</a></dt>
@@ -160,6 +162,7 @@ Google application client id
         * [.createPlayers(playerCount)](#module_gameLoop.GameLoop+createPlayers)
         * [.updatePaddles(paddles)](#module_gameLoop.GameLoop+updatePaddles)
         * [.updateScores(scores)](#module_gameLoop.GameLoop+updateScores)
+        * [.updateCurrentTime(currentTime)](#module_gameLoop.GameLoop+updateCurrentTime)
         * [.updateBricks(bricks)](#module_gameLoop.GameLoop+updateBricks)
         * [.updateBall(ball)](#module_gameLoop.GameLoop+updateBall)
         * [.run()](#module_gameLoop.GameLoop+run)
@@ -182,6 +185,7 @@ GameLoop provides the state and drawing for the sketch
     * [.createPlayers(playerCount)](#module_gameLoop.GameLoop+createPlayers)
     * [.updatePaddles(paddles)](#module_gameLoop.GameLoop+updatePaddles)
     * [.updateScores(scores)](#module_gameLoop.GameLoop+updateScores)
+    * [.updateCurrentTime(currentTime)](#module_gameLoop.GameLoop+updateCurrentTime)
     * [.updateBricks(bricks)](#module_gameLoop.GameLoop+updateBricks)
     * [.updateBall(ball)](#module_gameLoop.GameLoop+updateBall)
     * [.run()](#module_gameLoop.GameLoop+run)
@@ -218,6 +222,17 @@ Update scores to current state
 | Param | Type |
 | --- | --- |
 | scores | <code>Array.&lt;number&gt;</code> | 
+
+<a name="module_gameLoop.GameLoop+updateCurrentTime"></a>
+
+#### gameLoop.updateCurrentTime(currentTime)
+Update currentTime to current state
+
+**Kind**: instance method of [<code>GameLoop</code>](#module_gameLoop.GameLoop)  
+
+| Param | Type |
+| --- | --- |
+| currentTime | <code>number</code> | 
 
 <a name="module_gameLoop.GameLoop+updateBricks"></a>
 
@@ -352,6 +367,9 @@ Generate random color in RGB
 
 ## js
 <a name="actions/scores_response.module_js"></a>
+
+## js
+<a name="actions/update_smashbit.module_js"></a>
 
 ## js
 <a name="actions/user_login_failure.module_js"></a>
@@ -574,10 +592,11 @@ Draws the score on the screen
     * [~WsClient](#module_socket/client..WsClient)
         * [.open(callback)](#module_socket/client..WsClient+open)
         * [.setClientId()](#module_socket/client..WsClient+setClientId)
+        * [.onOpen()](#module_socket/client..WsClient+onOpen)
         * [.onClose()](#module_socket/client..WsClient+onClose)
         * [.onMessage()](#module_socket/client..WsClient+onMessage)
         * [.send(action)](#module_socket/client..WsClient+send)
-        * [.reset(callback)](#module_socket/client..WsClient+reset)
+        * [.reset()](#module_socket/client..WsClient+reset)
 
 <a name="module_socket/client..WsClient"></a>
 
@@ -596,10 +615,11 @@ Websocket client
 * [~WsClient](#module_socket/client..WsClient)
     * [.open(callback)](#module_socket/client..WsClient+open)
     * [.setClientId()](#module_socket/client..WsClient+setClientId)
+    * [.onOpen()](#module_socket/client..WsClient+onOpen)
     * [.onClose()](#module_socket/client..WsClient+onClose)
     * [.onMessage()](#module_socket/client..WsClient+onMessage)
     * [.send(action)](#module_socket/client..WsClient+send)
-    * [.reset(callback)](#module_socket/client..WsClient+reset)
+    * [.reset()](#module_socket/client..WsClient+reset)
 
 <a name="module_socket/client..WsClient+open"></a>
 
@@ -615,8 +635,13 @@ Open connection
 <a name="module_socket/client..WsClient+setClientId"></a>
 
 #### wsClient.setClientId()
-Set the clientId
-Only done once
+Set the clientIdOnly done once
+
+**Kind**: instance method of [<code>WsClient</code>](#module_socket/client..WsClient)  
+<a name="module_socket/client..WsClient+onOpen"></a>
+
+#### wsClient.onOpen()
+Event handler for connection opening
 
 **Kind**: instance method of [<code>WsClient</code>](#module_socket/client..WsClient)  
 <a name="module_socket/client..WsClient+onClose"></a>
@@ -644,12 +669,7 @@ Send an action to the server
 
 <a name="module_socket/client..WsClient+reset"></a>
 
-#### wsClient.reset(callback)
+#### wsClient.reset()
 Reset websocket connection
 
 **Kind**: instance method of [<code>WsClient</code>](#module_socket/client..WsClient)  
-
-| Param | Type |
-| --- | --- |
-| callback | <code>function</code> | 
-
