@@ -1,9 +1,11 @@
 const music = require('./music')
+const constants = require('./constants')
 const state = require('./global_state')
 let snd
 
 exports.playMusic = function () {
-  if (!state.get('gameSound')) {
+  music.controleState(state.get('fxSound'))
+  if (constants.IS_SAFARI || !state.get('gameSound')) {
     return
   }
   snd = music.playBackground()

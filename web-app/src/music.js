@@ -18,6 +18,13 @@ exports.fxSound = function (key) {
   }
 }
 
+exports.controleState = function (stateOfSound) {
+  if (stateOfSound === undefined) {
+    state.set('fxSound', true)
+    state.set('gameSound', true)
+  } else {}
+}
+
 exports.playBackground = function () {
   const snd = backgroundMusic[random.numberGenerator(3)][0]
   snd.volume = (0.45)
