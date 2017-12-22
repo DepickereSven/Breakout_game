@@ -1,5 +1,6 @@
 const state = require('./global_state')
 const constants = require('./constants')
+const random = require('./randomNumber')
 
 const backgroundMusic = [[new Audio('music/Circles.mp3')], [new Audio('music/Firefly.mp3')], [new Audio('music/Invincible.mp3')], [new Audio('music/Limitless.mp3')]]
 
@@ -18,7 +19,7 @@ exports.fxSound = function (key) {
 }
 
 exports.playBackground = function () {
-  const snd = backgroundMusic[randomNumber()][0]
+  const snd = backgroundMusic[random.numberGenerator(3)][0]
   snd.volume = (0.45)
   if (snd) {
     snd.play()
@@ -34,8 +35,4 @@ exports.stopBackgroudMusic = function (snd) {
 
 exports.isBackgroundMusicPlaying = function (snd) {
   return !snd.paused
-}
-
-function randomNumber () {
-  return Math.floor((Math.random() * 3))
 }
