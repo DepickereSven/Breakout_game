@@ -25,6 +25,7 @@ exports.view = class SingleplayerGameVictory {
   handleNextClick () {
     this.viewManager.go('loading.html')
     const level = state.get('currentLevel') + 1
+    state.set('currentLevel', level)
     window.wsClient.send(CreateSingleplayerRequestAction.create(level))
   }
   goHome () {
