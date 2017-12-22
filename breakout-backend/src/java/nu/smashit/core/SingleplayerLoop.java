@@ -17,19 +17,17 @@ public class SingleplayerLoop extends GameLoop {
 
     @Override
     protected void runLoop(GameStateUpdateAction updateState) {
-        // Ball movement
         if (getBall() != null) {
             if (Collision.isCeilingCollision(getBall())) {
                 getBall().inverseVerSpeed();
             } else if (Collision.isFloorCollision(getBall())) {
-                getGameSession().broadcastAction(new GameLossAction());
-                getGameSession().stopGame();
+                gameEndedLost();
                 return;
             } else if (runPaddleCollision(updateState)) {
             } else if (runBrickCollision(updateState)) {
-                if (getBrickHits() >= getField().getNumberOfTotalBricksInField()) {
-                    getGameSession().broadcastAction(new GameVictoryAction());
-                    getGameSession().stopGame();
+                if (isGameEnd()) {
+                    gameEndedWon();
+                    return;
                 }
             } else if (Collision.isWallCollision(getBall())) {
                 getBall().inverseHorSpeed();
@@ -37,6 +35,20 @@ public class SingleplayerLoop extends GameLoop {
 
             getBall().move();
         }
+    }
+
+    private boolean isGameEnd() {
+        return getBrickHits() >= getField().getNumberOfTotalBricksInField();
+    }
+
+    private void gameEndedWon() {
+        getGameSession().broadcastAction(new GameVictoryAction());
+        getGameSession().stopGame();
+    }
+
+    private void gameEndedLost() {
+        getGameSession().broadcastAction(new GameLossAction());
+        getGameSession().stopGame();
     }
 
 }
