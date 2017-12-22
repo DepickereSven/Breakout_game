@@ -27,6 +27,10 @@ exports.view = class SingleplayerLevelMenuView {
         </button>
       `)
     }
+    console.log(max)
+    if (max === 10 || max === 25 || max === 40) {
+      $(this.container).css('width', '500px')
+    }
     $(this.container).append(items)
   }
 
