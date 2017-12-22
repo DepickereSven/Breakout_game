@@ -6,6 +6,7 @@ const { powerTypes, getPowerImg } = require('../powers')
 const utils = require('../utils')
 const random = require('../randomNumber')
 const constants = require('../constants')
+const backgroundMusic = require('../music_controller')
 
 const path = 'game.html'
 exports.path = path
@@ -23,7 +24,7 @@ exports.view = class GameView {
     this.currentCount = 5
     this.currentTime = 0
 
-    this.container = 'game_container'
+    this.container = '#game_container'
     this.keyCodePressed = undefined
 
     this.countDownOverlay = '.countdown_overlay'
@@ -122,27 +123,26 @@ exports.view = class GameView {
   onLoad () {
     createSketch()
     this.setGameBackground()
-    const container = document.getElementById(this.container)
     const options = { passive: false }
-    container.addEventListener('touchstart', this.handleTouchStart, options)
-    container.addEventListener('touchend', this.handleTouchEnd, options)
-    container.addEventListener('touchcancel', this.handleTouchEnd, options)
+    document.body.addEventListener('touchstart', this.handleTouchStart, options)
+    document.body.addEventListener('touchend', this.handleTouchEnd, options)
+    document.body.addEventListener('touchcancel', this.handleTouchEnd, options)
 
     this.insertPowersImgs()
+    backgroundMusic.playMusic()
 
     $(window).on('keydown', this.handleKeyDown)
     $(window).on('keyup', this.handleKeyUp)
   }
 
   onUnload () {
-    const container = document.getElementById(this.container)
-    container.removeEventListener('touchstart', this.handleTouchStart)
-    container.removeEventListener('touchend', this.handleTouchEnd)
-    container.removeEventListener('touchcancel', this.handleTouchEnd)
+    document.body.removeEventListener('touchstart', this.handleTouchStart)
+    document.body.removeEventListener('touchend', this.handleTouchEnd)
+    document.body.removeEventListener('touchcancel', this.handleTouchEnd)
 
     $(window).off('keydown', this.handleKeyDown)
     $(window).off('keyup', this.handleKeyUp)
 
-    $(container).find('canvas').remove()
+    $(this.container).find('canvas').remove()
   }
 }
