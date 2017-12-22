@@ -34,7 +34,7 @@
 }
 
 .setting-link{
-    align-self: end;
+    align-self: flex-end;
 }
 
 .container-setting-menu .chevron-arrow-right{

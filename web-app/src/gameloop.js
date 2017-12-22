@@ -102,7 +102,8 @@ exports.GameLoop = class GameLoop {
    */
   run (sketch) {
     // Clear canvas
-    sketch.background(0)
+    sketch.clear()
+    sketch.background(0, 120)
 
     for (const clientId in this.players) {
       if (!this.players.hasOwnProperty(clientId)) {
