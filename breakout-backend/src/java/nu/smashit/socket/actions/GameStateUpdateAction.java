@@ -53,7 +53,6 @@ public class GameStateUpdateAction implements ResponseAction {
         this.ball = ball;
         this.bricks = new HashSet<>();
         this.paddles = new ArrayList<>(2);
-        this.powers = new HashSet<>();
         this.countDown = countDown;
     }
 
@@ -70,6 +69,9 @@ public class GameStateUpdateAction implements ResponseAction {
     }
 
     public void addPower(int power) {
+        if (powers == null) {
+            powers = new HashSet<>();
+        }
         powers.add(power);
     }
 
