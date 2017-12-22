@@ -16,6 +16,7 @@ import java.util.Set;
 import nu.smashit.core.bodies.Ball;
 import nu.smashit.core.bodies.Brick;
 import nu.smashit.core.bodies.Paddle;
+import nu.smashit.core.power.Power;
 import org.jboss.weld.util.collections.ArraySet;
 
 /**
@@ -68,11 +69,8 @@ public class GameStateUpdateAction implements ResponseAction {
         this.scores = scores;
     }
 
-    public void addPower(int power) {
-        if (powers == null) {
-            powers = new HashSet<>();
-        }
-        powers.add(power);
+    public void setPowers(Set<Integer> powers) {
+        this.powers = powers;
     }
 
     public void clearPowers() {

@@ -42,6 +42,15 @@ public abstract class GameLoop extends TimerTask {
         setLastPlayerToHitPaddle(gm.getPlayers()[0]);
     }
 
+    private boolean powerTypeIsActive(Power p) {
+        for (Power p2 : powers) {
+            if (p.getClass().equals(p2.getClass())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean runBrickRowCollision(int i, GameStateUpdateAction updateState) {
         BrickRow brickRow = getField().getRow(i);
 
@@ -61,7 +70,7 @@ public abstract class GameLoop extends TimerTask {
                         brickHits += 1;
                         getLastPlayerToHitPaddle().getScore().addBrickSmash(brick);
                         Power power = brick.getPower();
-                        if (!(power instanceof NoPower)) {
+                        if (!(power instanceof NoPower) && !powerTypeIsActive(power)) {
                             if (power.multiplePlayers) {
                                 for (Player p : gameSession.getPlayers()) {
                                     power.addPlayer(p);
@@ -128,11 +137,13 @@ public abstract class GameLoop extends TimerTask {
     }
 
     private void addPowersForPlayer(GameStateUpdateAction updateState, Player p) {
+        Set<Integer> powerSet = new HashSet<>();
         for (Power pow : powers) {
             if (pow.containsPlayer(p)) {
-                updateState.addPower(pow.powerID);
+                powerSet.add(pow.powerID);
             }
         }
+        updateState.setPowers(powerSet);
     }
 
     private int getCombinedPaddleHash() {
@@ -192,13 +203,13 @@ public abstract class GameLoop extends TimerTask {
         if (isInitRun() || !originalScores.equals(newScores)) {
             updateState.addScores(newScores);
         }
-        
+
         if (isInitRun() || originalPaddlesHash != getCombinedPaddleHash()) {
-           for (Player p : gameSession.getPlayers()) {
-               Paddle paddle = p.getPaddle();
-               updateState.addPaddle(paddle);
-           }
-       }
+            for (Player p : gameSession.getPlayers()) {
+                Paddle paddle = p.getPaddle();
+                updateState.addPaddle(paddle);
+            }
+        }
 
         boolean hasPowersChanged = originalPowersHash != powers.hashCode();
 
