@@ -5,9 +5,9 @@ import nu.smashit.core.GameLoop;
 
 public class Points extends Power {
 
-    private int pointsFactor;
+    private double pointsFactor;
 
-    public Points(int powerID, int pointsFactor) {
+    public Points(int powerID, double pointsFactor) {
         super(powerID, false);
         this.pointsFactor = pointsFactor;
     }

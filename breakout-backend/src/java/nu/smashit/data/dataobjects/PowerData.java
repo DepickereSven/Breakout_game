@@ -6,8 +6,8 @@ public class PowerData {
     private final int powerID;
     private String type;
     private double value;
-    
-    public PowerData(int powerID, String type, double value){
+
+    public PowerData(int powerID, String type, double value) {
         this.powerID = powerID;
         this.type = type;
         this.value = value;
@@ -21,8 +21,8 @@ public class PowerData {
         return type;
     }
 
-    public int getValue() {
-        return (int) value;
+    public double getValue() {
+        return value;
     }
-    
+
 }

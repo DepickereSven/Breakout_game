@@ -15,7 +15,7 @@ public class Score {
     private User userLost;
     private int points;
     private int time;
-    private int pointsFactor;
+    private double pointsFactor;
 
     public Score() {
         this(0, null, null, START_POINTS, 0);
@@ -41,6 +41,7 @@ public class Score {
     }
 
     private class SmallUser {
+
         public String name;
         public String country;
 
@@ -79,7 +80,7 @@ public class Score {
     }
 
     @JsonIgnore
-    public int getPointsFactor() {
+    public double getPointsFactor() {
         return pointsFactor;
     }
 
@@ -103,7 +104,7 @@ public class Score {
         this.userLost = userLost;
     }
 
-    public void setPointsFactor(int pointsFactor) {
+    public void setPointsFactor(double pointsFactor) {
         this.pointsFactor = Tools.validateBetween(pointsFactor, 0, 100, 1);
     }
 
