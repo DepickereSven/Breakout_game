@@ -14,65 +14,69 @@ import nu.smashit.data.dataobjects.User;
 public class GameManager {
 
     private static final GameManager INSTANCE = new GameManager();
-    private final Map<String, Game> gameSessions;
-    private final Queue<Game> publicGameSessionQueue;
+    private final Map<String, Game> multiplayerPrivateGames;
+    private final Queue<Game> multiplayerPublicGamesQueue;
 
     private GameManager() {
-        this.gameSessions = new HashMap<>();
-        this.publicGameSessionQueue = new PriorityBlockingQueue<>();
+        this.multiplayerPrivateGames = new HashMap<>();
+        this.multiplayerPublicGamesQueue = new PriorityBlockingQueue<>();
     }
 
     public static GameManager getInstance() {
         return INSTANCE;
     }
 
-    public Game createMultiplayerGame(User u) {
-        String key = generateKey();
-        MultiplayerGame gm = new MultiplayerGame(key);
-
-        gm.join(u);
-        gameSessions.put(gm.getKey(), gm);
-        return gm;
-    }
-
     public Game createSingleplayerGame(User u, int level) {
         String key = generateKey();
-        Game gm = new SingleplayerGame(key, u, level);
+        return new SingleplayerGame(key, u, level);
+    }
 
-        gameSessions.put(gm.getKey(), gm);
-        return gm;
+    public Game createMultiplayerGame(User u) {
+        String key = generateKey();
+        MultiplayerGame game = new MultiplayerGame(key);
+
+        game.join(u);
+        multiplayerPrivateGames.put(game.getKey(), game);
+        return game;
     }
 
     public Game joinPrivateMultiplayerGame(String key, User u) {
-        Game gm = gameSessions.get(key);
-        gm.join(u);
-        return gm;
+        Game game = multiplayerPrivateGames.get(key);
+        game.join(u);
+        return game;
     }
 
     public Game joinPublicMultiplayerGame(User u) {
-        Game gm = publicGameSessionQueue.poll();
-        if (gm != null) {
-            gm.join(u);
+        Game game = multiplayerPublicGamesQueue.poll();
+        if (game != null) {
+            game.join(u);
         } else {
-            gm = createMultiplayerGame(u);
-            publicGameSessionQueue.add(gm);
+            game = createMultiplayerGame(u);
+            multiplayerPublicGamesQueue.add(game);
         }
-        return gm;
+        return game;
     }
 
     public void removeGame(String key) {
-        Game gm = gameSessions.get(key);
-        if (!gm.isFull()) {
-            publicGameSessionQueue.remove(gm);
-        }
-        gameSessions.remove(key);
+        Game publicGame = getPublicGameByKey(key);
+        multiplayerPublicGamesQueue.remove(publicGame);
+
+        multiplayerPrivateGames.remove(key);
+    }
+
+    private Game getPublicGameByKey(String key) {
+        return multiplayerPublicGamesQueue.stream().filter((o) -> o.getKey().equals(key)).findFirst().orElse(null);
     }
 
     private String generateKey() {
         String key = null;
-        while (key == null || gameSessions.containsKey(key)) {
+        Game publicGame = null;
+
+        do {
             key = UUID.randomUUID().toString().substring(0, 5).toUpperCase();
-        }
+            publicGame = getPublicGameByKey(key);
+        }while (key == null || multiplayerPrivateGames.containsKey(key) || multiplayerPublicGamesQueue.contains(publicGame));
+        
         return key;
     }
 }
