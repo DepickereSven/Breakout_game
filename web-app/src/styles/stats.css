@@ -5,8 +5,11 @@
 
 .stats_multiplayer table {
     width: 100%;
+    overflow: scroll;
+    position: absolute;
+    height: 100%;
+    justify-content: center;
     display: flex;
-    flex-direction: column;
 }
 
 .stats_multiplayer th {
@@ -24,6 +27,10 @@
     min-width: 11%;
 }
 
+.stats_multiplayer th.country{
+    width: 58.7px;
+}
+
 .stats_multiplayer .name {
     min-width: 26%;
 }
@@ -33,12 +40,15 @@
     min-width: 20%;
 }
 
-.stats_multiplayer .table tbody{
-    overflow: scroll;
-    height: 50%;
+.stats_multiplayer thead{
+    position: fixed;
+    width: 100%;
+    background-color: #0C141F;
+    max-width: 421px;
 }
 
-.stats_multiplayer th.points,
-.stats_multiplayer th.time{
-    text-align: right;
+.stats_multiplayer tbody{
+    padding-top: 50px;
+    width: 100%;
+    max-width: 421px;
 }
