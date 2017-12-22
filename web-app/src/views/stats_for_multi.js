@@ -9,9 +9,8 @@ exports.view = class StatsView {
     this.viewManager = viewManager
     this.scores = null
   }
-  
   createTableStats () {
-    let rows = '';
+    let rows = ''
     $.each(this.scores, (index, item) => {
       const wonPlayer = item.user_won
       rows += this.createRow(wonPlayer, item.points, item.time)
@@ -21,7 +20,7 @@ exports.view = class StatsView {
     })
 
     let res = `<table class="table">
-                    <thead><tr><th></th><th>Players</th><th>Points</th><th>Time</th></tr></thead>
+                    <thead><tr><th class="country"></th><th class="name">Players</th><th class="points">Points</th><th class="time">Time</th></tr></thead>
                     <tbody>${rows}</tbody>
                </table>`
     return res
@@ -33,7 +32,7 @@ exports.view = class StatsView {
                 <td class="name"> ${player.name}</td>
                 <td class="points"> ${points}</td>
                 <td class="time"> ${time === '' ? '': this.calcTime(time)}</td>
-            </tr>`;
+            </tr>`
   }
 
   timePadding (time, isBack) {

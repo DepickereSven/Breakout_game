@@ -1,33 +1,44 @@
 
 .stats_multiplayer {
-  display: flex;
+    display: flex;
 }
 
 .stats_multiplayer table {
-  width: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .stats_multiplayer th {
-  padding: 8px 0;
+    padding: 8px 0;
 }
 
 .stats_multiplayer th,
 .stats_multiplayer tr,
 .stats_multiplayer td,
 .stats_multiplayer table img {
-  text-align: left;
+    text-align: left;
 }
 
 .stats_multiplayer .country {
-  min-width: 11%;
+    min-width: 11%;
 }
 
 .stats_multiplayer .name {
-  min-width: 26%;
+    min-width: 26%;
 }
 
 .stats_multiplayer .points,
 .stats_multiplayer .time {
-  min-width: 20%;
+    min-width: 20%;
 }
 
+.stats_multiplayer .table tbody{
+    overflow: scroll;
+    height: 50%;
+}
+
+.stats_multiplayer th.points,
+.stats_multiplayer th.time{
+    text-align: right;
+}
