@@ -4,9 +4,14 @@ const MovePaddleStopAction = require('../actions/move_paddle_stop')
 const { createSketch } = require('../sketch')
 const { powerTypes, getPowerImg } = require('../powers')
 const utils = require('../utils')
+const random = require('../randomNumber')
+const constants = require('../constants')
 
 const path = 'game.html'
 exports.path = path
+
+const photoArrayAndroid = ['A1.jpg', 'A2.jpg']
+const phototArrayPC = ['PC1.jpeg']
 
 exports.view = class GameView {
   constructor (viewManager) {
@@ -103,10 +108,21 @@ exports.view = class GameView {
     this.keyCodePressed = undefined
     window.wsClient.send(MovePaddleStopAction.create())
   }
+  setGameBackground () {
+    let photo = ''
+    if (constants.IS_ANDROID_APP) {
+      photo = photoArrayAndroid[random.numberGenerator(1)]
+    } else {
+      photo = phototArrayPC[random.numberGenerator(0)]
+    }
+    console.log(photo, $('#game_container').parent())
+    $('#game_container')
+      .parent().css({'background-image': 'url(images/backgrounds/' + photo + ')', 'background-size': 'cover', 'backgroud-position': 'center'})
+  }
 
   onLoad () {
     createSketch()
-
+    this.setGameBackground()
     const container = document.getElementById(this.container)
     const options = { passive: false }
     container.addEventListener('touchstart', this.handleTouchStart, options)
