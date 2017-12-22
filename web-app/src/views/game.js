@@ -115,7 +115,6 @@ exports.view = class GameView {
     } else {
       photo = phototArrayPC[random.numberGenerator(0)]
     }
-    console.log(photo, $('#game_container').parent())
     $('#game_container')
       .parent().css({'background-image': 'url(images/backgrounds/' + photo + ')', 'background-size': 'cover', 'backgroud-position': 'center'})
   }
