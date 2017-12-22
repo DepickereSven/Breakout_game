@@ -1,6 +1,7 @@
 package nu.smashit.core.bodies;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import nu.smashit.core.GameCanvas;
 
@@ -55,4 +56,15 @@ public class Paddle extends MovableBody {
     public void goNowhere() {
         dx = 0;
     }
+
+    @JsonIgnore
+    public int getHash() {
+        return (getX() + ":" + getHeight() + ":" + getWidth()).hashCode();
+    }
+    
+    @Override
+    public void setX(int x){
+        super.setX(x);
+    }
+
 }

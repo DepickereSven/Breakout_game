@@ -11,6 +11,7 @@ public abstract class Power {
     public final int powerID;
     private int time;
     private static final int DURATION = 500;
+    protected static final int TRANSITION = 25;
     public final boolean multiplePlayers;
     private final Set<Player> players;
 
@@ -36,6 +37,14 @@ public abstract class Power {
 
     public boolean isActive() {
         return time >= 0;
+    }
+    
+    protected boolean isEndTransition(){
+        return time <= TRANSITION;
+    }
+    
+    protected boolean isBeginTransition(){
+        return DURATION - time <= TRANSITION;
     }
 
     private boolean isLastTime() {

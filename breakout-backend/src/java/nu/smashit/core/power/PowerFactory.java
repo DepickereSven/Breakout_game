@@ -1,23 +1,22 @@
 package nu.smashit.core.power;
 
 // @author Jonas
-
 import nu.smashit.data.dataobjects.BrickType;
 import nu.smashit.data.dataobjects.PowerData;
 
 public class PowerFactory {
 
-    public Power createPower(BrickType brickType){
+    public Power createPower(BrickType brickType) {
         PowerData powerData = brickType.getPowerData();
-        
+
         if (powerData == null
-                && brickType.getType() != BrickType.Type.U 
-                && brickType.getType() != BrickType.Type.D ){
+                && brickType.getType() != BrickType.Type.U
+                && brickType.getType() != BrickType.Type.D) {
             return new NoPower();
-        }else{
+        } else {
             int value = powerData.getValue();
             int powerID = powerData.getPowerID();
-            switch (powerData.getType()){
+            switch (powerData.getType()) {
                 case "POINTS":
                     return new Points(powerID, value);
                 case "BALL_DIAMETER":
@@ -31,5 +30,5 @@ public class PowerFactory {
             }
         }
     }
-    
+
 }
