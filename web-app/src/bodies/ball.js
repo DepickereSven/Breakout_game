@@ -1,6 +1,7 @@
 /**
  * @module bodies/ball
  */
+const constants = require('../constants')
 
 /**
  * Represents the ball
@@ -16,7 +17,10 @@ exports.Ball = class Ball {
     this.y = 0
     this.size = 0
 
-    this.color = 'white'
+    this.color = [255, 255, 255, 200]
+    this.trailColor = [223, 116, 12]
+    this.history = []
+    this.historyLength = 7
   }
 
   /**
@@ -27,6 +31,11 @@ exports.Ball = class Ball {
     this.x = x
     this.y = y
     this.size = size
+
+    this.history.push({ x, y })
+    if (this.history.length > this.historyLength) {
+      this.history.shift()
+    }
   }
 
   /**
@@ -35,7 +44,22 @@ exports.Ball = class Ball {
    * @param {Sketch} s
    */
   draw (s) {
+    s.noStroke()
+    for (let i = 0; i < this.history.length; i++) {
+      let { x, y } = this.history[i]
+      const alpha = 35 + i * 20
+
+      const mult = (this.history.length - i) * 0.5
+      const size = this.size - mult
+      x += mult
+
+      const [ r, g, b ] = this.trailColor
+      s.fill(r, g, b, alpha)
+      s.rect(x, y, size, size, size)
+    }
     s.fill(this.color)
+    s.stroke(this.trailColor)
     s.rect(this.x, this.y, this.size, this.size, this.size)
+    s.stroke('black')
   }
 }
