@@ -47,7 +47,13 @@ public class Collision {
     }
 
     public static boolean isTopOrBottomCollision(Ball ball, Body body) {
-        return ball.getY() <= body.getY() - (body.getHeight() / 2)
-                || ball.getY() >= body.getY() + (body.getHeight() / 2);
+        double ballTop = getBallY(ball);
+        double ballBottom = getBallY(ball) + ball.getHeight();
+        double bodyTop = body.getY();
+        double bodyBottom = body.getY() + body.getHeight();
+        
+        boolean topCollision = ballBottom >= bodyTop && ballTop <= bodyBottom;
+        boolean bottomCollision = ballTop >= bodyBottom && ballBottom <= bodyTop;
+        return topCollision || bottomCollision;
     }
 }
