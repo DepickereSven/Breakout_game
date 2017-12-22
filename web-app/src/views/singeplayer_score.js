@@ -43,11 +43,10 @@ exports.view = class SingleplayerLevelMenuView {
   }
   getLevelHighScore (level) {
     let scores = state.get('singleScore')
-    let score = scores[level]
-    if (score === undefined) {
+    if (scores === undefined || scores[level] === undefined) {
       return 'NO HIGH SCORES'
     } else {
-      return this.sortTheArrayToGoingUp(score)
+      return this.sortTheArrayToGoingUp(scores[level])
     }
   }
   handleLevelClick (e) {
