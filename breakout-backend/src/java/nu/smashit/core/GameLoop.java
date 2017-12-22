@@ -39,6 +39,7 @@ public abstract class GameLoop extends TimerTask {
         double speedBall = Repositories.getLevelRepository().getDifficulty(gm.getLevel()).getSpeedBall();
         setBall(new Ball(speedBall));
         setInitRun(false);
+        setLastPlayerToHitPaddle(gm.getPlayers()[0]);
     }
 
     private boolean runBrickRowCollision(int i, GameStateUpdateAction updateState) {
