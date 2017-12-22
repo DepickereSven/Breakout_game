@@ -121,9 +121,7 @@ exports.GameLoop = class GameLoop {
         return
       }
       const brick = this.bricks[brickId]
-      if (!brick.isBroken()) {
-        this.bricks[brickId].draw(sketch)
-      }
+      this.bricks[brickId].draw(sketch)
     }
 
     this.ball.draw(sketch)

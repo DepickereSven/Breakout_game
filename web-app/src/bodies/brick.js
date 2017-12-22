@@ -2,8 +2,6 @@
  * @module bodies/brick
  */
 
-const utils = require('../utils')
-
 exports.getBrickId = ([x, y]) => x + ':' + y
 
 /**
@@ -27,7 +25,9 @@ exports.Brick = class Brick {
     this.h = 16
     this.w = 0
     this.borderRadius = 2
-    this.color = utils.randomColor()
+    this.color = [0, 0, 0]
+
+    this.framesSinceDeath = 0
   }
 
   /**
@@ -47,6 +47,10 @@ exports.Brick = class Brick {
   }
 
   setColor () {
+    if(this.lives < 1){
+      return
+    }
+
     let alpha
     if (this.lives > 3) {
       alpha = 255
@@ -81,7 +85,23 @@ exports.Brick = class Brick {
    * @param {Sketch} s
    */
   draw (s) {
-    s.fill(...this.color)
+    if (this.isBroken()) {
+      if (this.color[3] > 0) {
+        s.noStroke()
+        this.color[3] -= 2
+
+        let growFactor = 50
+        this.w += growFactor
+        this.h += growFactor
+        this.x -= growFactor / 2
+        this.y -= growFactor / 2
+      } else {
+        return
+      }
+    }
+
+    s.fill(this.color)
     s.rect(this.x, this.y, this.w, this.h, this.borderRadius)
+    s.stroke('black')
   }
 }

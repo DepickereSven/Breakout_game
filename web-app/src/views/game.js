@@ -118,7 +118,11 @@ exports.view = class GameView {
       photo = phototArrayPC[random.numberGenerator(0)]
     }
     $('#game_container')
-      .parent().css({'background-image': 'url(images/backgrounds/' + photo + ')', 'background-size': 'cover', 'backgroud-position': 'center'})
+      .parent().css({
+        'background-image': `url(images/backgrounds/${photo})`,
+        'background-size': 'cover',
+        'backgroud-position': 'center'
+      })
   }
 
   onLoad () {
