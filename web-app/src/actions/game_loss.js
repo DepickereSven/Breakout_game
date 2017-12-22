@@ -3,7 +3,7 @@
  */
 
 const { viewManager } = require('../views/index')
-const backgroundMusic = require('../remember_Music')
+const backgroundMusic = require('../music_controller')
 
 exports.handler = function () {
   backgroundMusic.stopTheMusic()

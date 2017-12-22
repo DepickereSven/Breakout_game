@@ -5,7 +5,7 @@
 const { viewManager } = require('../views/index')
 const playerReadyAction = require('./player_ready')
 const music = require('../music')
-const backgroundMusic = require('../remember_Music')
+const backgroundMusic = require('../music_controller')
 
 // Default arguments get created at every run, so lets not make 4 new placeholder arrays everytime
 const ARR = []

@@ -1,0 +1,41 @@
+.container-score{
+    text-align: center;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.container-score-table{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.container-score-table .table-level-score{
+    width: 100%;
+}
+
+.container-score-table .table-level-score th{
+    min-width: 50%;
+}
+
+.container-score-table  p{
+    text-align: center;
+}
+
+.container-score .btn-smash-it{
+    font-size: 1.5rem;
+    border-radius: 8px;
+    padding: 6px 14px;
+    background-color: transparent;
+    border-color: #fff;
+    margin-bottom: 8%;
+}
+
+.transparent{
+    background-color: rgba(0,0,0,0);
+}
+
+.blur{
+    filter: blur(5px);
+}

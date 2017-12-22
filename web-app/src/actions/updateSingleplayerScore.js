@@ -2,17 +2,13 @@ const state = require('../global_state.js')
 
 exports.updateScores = function (level, score) {
   let scores = state.get('singleScore')
-  console.log(scores)
   if (scores === undefined) {
     scores = {}
   }
   if (scores[level] === undefined) {
     scores[level] = [[score, generateTime()]]
-    console.log(scores)
   } else {
-    console.log(scores[level])
     scores[level].push([score, generateTime()])
-    console.log(scores)
   }
   state.set('singleScore', scores)
 }

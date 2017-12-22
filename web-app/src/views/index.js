@@ -12,6 +12,7 @@ const joinPublic = require('./join_public')
 const game = require('./game')
 const singleplayerMenu = require('./singleplayer_menu')
 const singleplayerLevelMenu = require('./singleplayer_level_menu')
+const singleplayerScore = require('./singeplayer_score')
 const singleplayerWon = require('./singleplayer_game_victory')
 const singleplayerLost = require('./singleplayer_game_loss')
 const multiplayerWon = require('./multiplayer_game_victory')
@@ -26,12 +27,15 @@ const privacyPolicy = require('./privacy_policy')
 const credits = require('./credits_content')
 const tutorial = require('./tutorial')
 const tutorialBall = require('./tutorial-ball')
-const tutorialBlock = require('./block_tutorial')
+const tutorialBlock = require('./tutoria_block')
 const tutorialHowTo = require('./tutorial_howTo')
 const tutorialBallControl = require('./tutorial_ballControl')
 const tutorialPaddleControlPc = require('./tutorial_paddleContolPc')
 const tutorialPaddleControlPhone = require('./tutorial_paddleControlPhone')
 const tutorialPowerUpsPowerDownTutorial = require('./tutorial_PowerUpsPowerDowns')
+const tutorialAboutThePowerUpDownExplanation = require('./powerUpPowerDownExplanation')
+const tutorialWhatAreTheKindOfPowerUpsThatYouCanUse = require('./tutorial_whatKindOfPowerUps')
+const tutorialWhatAreTheKindOfPowerDownsThatYouCanUse = require('./tutorialWhatKindOfPowerDowns')
 
 const viewsMap = {}
 const views = [
@@ -46,6 +50,7 @@ const views = [
   joinPublic,
   singleplayerMenu,
   singleplayerLevelMenu,
+  singleplayerScore,
   singleplayerWon,
   singleplayerLost,
   multiplayerWon,
@@ -65,7 +70,10 @@ const views = [
   tutorialBallControl,
   tutorialPaddleControlPc,
   tutorialPaddleControlPhone,
-  tutorialPowerUpsPowerDownTutorial
+  tutorialPowerUpsPowerDownTutorial,
+  tutorialAboutThePowerUpDownExplanation,
+  tutorialWhatAreTheKindOfPowerUpsThatYouCanUse,
+  tutorialWhatAreTheKindOfPowerDownsThatYouCanUse
 ]
 views.forEach(function (val) {
   viewsMap[val.path] = val.view
@@ -132,7 +140,7 @@ function clearViews () {
 
 function goHome () {
   clearViews()
-  if (state.get('tutorial') === false) {
+  if (state.get('tutorial') === undefined) {
     go('tutorial.html')
   } else {
     go('modes.html')
@@ -175,7 +183,7 @@ function go (path, params = {}, callback = () => {}) {
     getHtml('header.html', headerHtml => {
       $(document.body).append(`<div class="screen">${!view.hideHeader ? headerHtml : ''}${html}</div>`)
       if (!view.hideHeader && window.user) {
-          $('.header-container .points').text(window.user.smashbit)
+        $('.header-container .points').text(window.user.smashbit)
       }
       view.onLoad()
       slideScreenIn(() => {
@@ -212,6 +220,7 @@ function slideScreenIn (callback = () => {}) {
 }
 
 const htmlCache = {}
+
 function getHtml (url, callback = () => {}) {
   const cachedHtml = htmlCache[url]
   if (cachedHtml) {
