@@ -1,5 +1,7 @@
+const CreateSingleplayerRequestAction = require('../actions/create_singleplayer_request')
+const state = require('../global_state.js')
 
-const path = 'whatKindOfPowerDown.html'
+const path = 'whereToSeeThePowerUpsAndPowerDownsPhone.html'
 exports.path = path
 
 const constants = require('../constants')
@@ -13,12 +15,20 @@ exports.view = class LoadingView {
   }
 
   nextPage (e) {
-    if (constants.IS_TOUCH_SCREEN) {
-      this.viewManager.go('whereToSeeThePowerUpsAndPowerDownsPhone.html')
+    if (state.get('tutorial') === undefined) {
+      this.startFirstLevel()
     } else {
-      this.viewManager.go('whereToSeeThePowerUpsAndPowerDownsPc.html')
+      this.viewManager.go('singleplayer_menu.html')
     }
   }
+
+  startFirstLevel () {
+    this.viewManager.go('loading.html')
+    state.set('currentLevel', 1)
+    window.wsClient.send(CreateSingleplayerRequestAction.create(1))
+    state.set('tutorial', true)
+  }
+
   onLoad () {
     if (constants.IS_TOUCH_SCREEN) {
       $(window).on('touchend', this.nextPage)
