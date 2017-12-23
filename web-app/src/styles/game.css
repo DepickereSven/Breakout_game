@@ -52,31 +52,28 @@ _:-ms-lang(x), canvas {
 .game_container #time {
     text-align: center;
     font-size: 1.5rem;
-    margin-bottom: 0;
 }
 
 .game_container #powers {
-    position: absolute;
-    left: 0;
-    margin-bottom: 0;
-    margin-top: 5%;
-    margin-left: 30%;
+    height:50px;
+    max-width:400px;
+    margin-top: 3%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .game_container #powers img {
-    height: 3.5rem;
-    width: 3.5rem;
-    margin: 0 5px;
+    height: auto;
+    max-width: 12%;
+    min-width:25px;
 }
 
 @media screen and (max-width: 580px ) {
-    .game_container #powers img{
-        height: 2rem;
-        width: 2rem;
+    .game_container #time{
+        margin:0;
     }
 
     .game_container #powers{
-        margin-left: 0;
-        margin-top: 15%;
+        margin:0;
     }
 }
