@@ -120,7 +120,6 @@ exports.GameLoop = class GameLoop {
       if (!this.bricks.hasOwnProperty(brickId)) {
         return
       }
-      const brick = this.bricks[brickId]
       this.bricks[brickId].draw(sketch)
     }
 

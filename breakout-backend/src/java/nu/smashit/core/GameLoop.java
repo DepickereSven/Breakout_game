@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import nu.smashit.core.bodies.Field;
 import nu.smashit.core.bodies.BrickRow;
@@ -37,7 +38,19 @@ public abstract class GameLoop extends TimerTask {
         this.powers = new HashSet<>();
         this.brickHits = 0;
         double speedBall = Repositories.getLevelRepository().getDifficulty(gm.getLevel()).getSpeedBall();
-        setBall(new Ball(speedBall));
+
+        int startPos;
+        if (gm.getPlayers().length > 1) {
+            if ((new Random()).nextInt(2) == 0) {
+                startPos = Ball.Y_START_POS_BOTTOM;
+            } else {
+                startPos = Ball.Y_START_POS_TOP;
+            }
+        } else {
+            startPos = Ball.Y_START_POS_BOTTOM;
+        }
+        setBall(new Ball(startPos, speedBall));
+
         setInitRun(false);
         setLastPlayerToHitPaddle(gm.getPlayers()[0]);
     }
@@ -197,6 +210,7 @@ public abstract class GameLoop extends TimerTask {
                 paddle.move();
             }
             runLoop(updateState);
+            getBall().move();
         }
 
         List newScores = getScores();

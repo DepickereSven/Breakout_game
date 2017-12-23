@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import nu.smashit.core.GameCanvas;
-import nu.smashit.utils.Tools;
 
 /**
  *
@@ -22,20 +21,25 @@ public class Ball extends MovableBody {
     public static final int HEIGHT = 12;
     public static final int WIDTH = HEIGHT;
 
-    public static final int Y_START_POS = GameCanvas.HEIGHT - HEIGHT - Paddle.HEIGHT - Paddle.GAP;
+    public static final int Y_START_POS_BOTTOM = GameCanvas.HEIGHT - HEIGHT - Paddle.HEIGHT - Paddle.GAP;
+    public static final int Y_START_POS_TOP = HEIGHT + Paddle.HEIGHT + Paddle.GAP;
     public static final int X_START_POS = GameCanvas.WIDTH / 2;
 
     static final double MULTIPLIER = 1.0002;
 
-    public Ball() {
-        super(X_START_POS, Y_START_POS, WIDTH, HEIGHT);
+    public Ball(int yStartPos) {
+        super(X_START_POS, yStartPos, WIDTH, HEIGHT);
         this.reset();
     }
 
-    public Ball(double speedBall) {
-        super(X_START_POS, Y_START_POS, WIDTH, HEIGHT);
+    public Ball(int yStartPos, double speedBall) {
+        super(X_START_POS, yStartPos, WIDTH, HEIGHT);
         setDyStartValue(speedBall);
         this.reset();
+    }
+
+    public void resetToPos(int yStartPos) {
+        this.setY(yStartPos);
     }
 
     @Override

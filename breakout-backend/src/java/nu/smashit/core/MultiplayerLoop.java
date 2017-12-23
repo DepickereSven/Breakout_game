@@ -1,6 +1,7 @@
 package nu.smashit.core;
 
 // @author Jonas
+import nu.smashit.core.bodies.Ball;
 import nu.smashit.core.bodies.Field;
 import nu.smashit.data.Repositories;
 import nu.smashit.data.dataobjects.Score;
@@ -22,15 +23,16 @@ public class MultiplayerLoop extends GameLoop {
     protected void runLoop(GameStateUpdateAction updateState) {
         // Ball movement
         if (getBall() != null) {
+            MultiplayerGame gm = (MultiplayerGame) getGameSession();
             Player scoredPlayer = null;
             Player lostPlayer = null;
 
             if (Collision.isCeilingCollision(getBall())) {
-                lostPlayer = ((MultiplayerGame) getGameSession()).getTopPlayer();
-                scoredPlayer = ((MultiplayerGame) getGameSession()).getBottomPlayer();
+                lostPlayer = gm.getTopPlayer();
+                scoredPlayer = gm.getBottomPlayer();
             } else if (Collision.isFloorCollision(getBall())) {
-                lostPlayer = ((MultiplayerGame) getGameSession()).getBottomPlayer();
-                scoredPlayer = ((MultiplayerGame) getGameSession()).getTopPlayer();
+                lostPlayer = gm.getBottomPlayer();
+                scoredPlayer = gm.getTopPlayer();
             } else if (runPaddleCollision(updateState)) {
             } else if (runBrickCollision(updateState)) {
             } else if (Collision.isWallCollision(getBall())) {
@@ -49,31 +51,35 @@ public class MultiplayerLoop extends GameLoop {
                 scoredPlayer.sendAction(new OpponentDeathAction());
                 lostPlayer.sendAction(new PlayerDeathAction());
 
-                getBall().reset();
+                int startPos;
+                if (lostPlayer == gm.getBottomPlayer()) {
+                    startPos = Ball.Y_START_POS_BOTTOM;
+                } else {
+                    startPos = Ball.Y_START_POS_TOP;
+                }
+                getBall().resetToPos(startPos);
             }
-
-            getBall().move();
         }
     }
 
     private void gameEnded(Player playerWon, Player playerLost) {
         Score score = playerWon.getScore();
-        
-        playerWon.sendAction( new GameVictoryAction( score.getPoints() ) );
-        playerLost.sendAction( new GameLossAction() );
+
+        playerWon.sendAction(new GameVictoryAction(score.getPoints()));
+        playerLost.sendAction(new GameLossAction());
         getGameSession().stopGame();
-        
+
         User userWon = playerWon.getUser();
         User userLost = playerLost.getUser();
-        
-        score.setUserLost( userLost );
-        score.setUserWon( userWon );
-        score.setTime( getGameSession().getTime() );
-        Repositories.getScoreRepository().addScore( score );
-        
-        userWon.setSmashbit( userWon.getSmashbit() + score.getPoints() );
-        Repositories.getUserRepository().updateSmashbit( userWon );
-        playerWon.sendAction( new UpdateSmashbitAction( userWon.getSmashbit() ) );
+
+        score.setUserLost(userLost);
+        score.setUserWon(userWon);
+        score.setTime(getGameSession().getTime());
+        Repositories.getScoreRepository().addScore(score);
+
+        userWon.setSmashbit(userWon.getSmashbit() + score.getPoints());
+        Repositories.getUserRepository().updateSmashbit(userWon);
+        playerWon.sendAction(new UpdateSmashbitAction(userWon.getSmashbit()));
     }
 
 }
