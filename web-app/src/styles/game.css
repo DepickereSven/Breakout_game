@@ -1,68 +1,79 @@
 
 .game_container {
-  align-items: center;
+    align-items: center;
 }
 
 .game_container canvas {
-  width: 95% !important;
-  max-width: 400px;
-  margin: auto;
-  height: auto !important;
-  border: 3px solid cornflowerblue;
-  border-radius: 4px;
+    width: 95% !important;
+    max-width: 400px;
+    margin: auto;
+    height: auto !important;
+    border: 3px solid cornflowerblue;
+    border-radius: 4px;
 }
 
 .game_container canvas:before {
-  content: "";
-  float: left;
-  padding-bottom: 150%;
+    content: "";
+    float: left;
+    padding-bottom: 150%;
 }
 
 .game_container canvas:after {
-  content: "";
-  display: table;
-  clear: both;
+    content: "";
+    display: table;
+    clear: both;
 }
 
 /* edge canvas width fix*/
-_:-ms-lang(x), canvas { 
-  width:320px !important;
-  height:480px !important;
+_:-ms-lang(x), canvas {
+    width: 320px !important;
+    height: 480px !important;
 }
 
 .game_container .countdown_overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  font-size: 4rem;
-  background: rgba(0, 0, 0, 0.4);
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    font-size: 4rem;
+    background: rgba(0, 0, 0, 0.4);
 }
 
 .game_container .game_header {
-  position: relative;
-  width: 100%;
+    position: relative;
+    width: 100%;
 }
 
 .game_container #time {
-  text-align: center;
-  font-size: 1.5rem;
-  margin-bottom: 0;
+    text-align: center;
+    font-size: 1.5rem;
 }
 
 .game_container #powers {
-  position: absolute;
-  left: 0;
-  margin-bottom: 0;
+    height:50px;
+    max-width:400px;
+    margin-top: 3%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .game_container #powers img {
-  height: 1.5rem;
-  width: 1.5rem;
-  margin: 0 5px;
+    height: auto;
+    max-width: 12%;
+    min-width:25px;
+}
+
+@media screen and (max-width: 580px ) {
+    .game_container #time{
+        margin:0;
+    }
+
+    .game_container #powers{
+        margin:0;
+    }
 }

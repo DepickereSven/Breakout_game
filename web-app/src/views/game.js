@@ -4,15 +4,14 @@ const MovePaddleStopAction = require('../actions/move_paddle_stop')
 const { createSketch } = require('../sketch')
 const { powerTypes, getPowerImg } = require('../powers')
 const utils = require('../utils')
-const random = require('../randomNumber')
 const constants = require('../constants')
 const backgroundMusic = require('../music_controller')
 
 const path = 'game.html'
 exports.path = path
 
-const photoArrayAndroid = ['A1.jpg', 'A2.jpg']
-const phototArrayPC = ['PC1.jpeg']
+const photoArrayAndroid = ['A1.jpg', 'A2.jpg', 'A3.jpg']
+const phototArrayPC = ['PC1.jpeg', 'PC2.jpg']
 
 exports.view = class GameView {
   constructor (viewManager) {
@@ -113,18 +112,17 @@ exports.view = class GameView {
   setGameBackground () {
     let photo = ''
     if (constants.IS_ANDROID_APP) {
-      photo = photoArrayAndroid[random.numberGenerator(1)]
+      photo = photoArrayAndroid[utils.randomInRange(0,photoArrayAndroid.length -1)]
     } else {
-      photo = phototArrayPC[random.numberGenerator(0)]
+      photo = phototArrayPC[utils.randomInRange(0,phototArrayPC.length -1)]
     }
     $('#game_container')
       .parent().css({
         'background-image': `url(images/backgrounds/${photo})`,
         'background-size': 'cover',
-        'backgroud-position': 'center'
+        'background-position': 'center'
       })
   }
-
   onLoad () {
     createSketch()
     this.setGameBackground()

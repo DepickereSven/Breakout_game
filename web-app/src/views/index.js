@@ -37,6 +37,8 @@ const tutorialPowerUpsPowerDownTutorial = require('./tutorial_PowerUpsPowerDowns
 const tutorialAboutThePowerUpDownExplanation = require('./powerUpPowerDownExplanation')
 const tutorialWhatAreTheKindOfPowerUpsThatYouCanUse = require('./tutorial_whatKindOfPowerUps')
 const tutorialWhatAreTheKindOfPowerDownsThatYouCanUse = require('./tutorialWhatKindOfPowerDowns')
+const tutoralWhereToSeeThePowerUpsAndPowerDownsOnThePc = require('./whereToSeeThePowerUpsAndPowerDownsPc')
+const tutoralWhereToSeeThePowerUpsAndPowerDownsOnThePhone = require('./whereToSeeThePowerUpsAndPowerDownsPhone')
 
 const viewsMap = {}
 const views = [
@@ -75,7 +77,9 @@ const views = [
   tutorialPowerUpsPowerDownTutorial,
   tutorialAboutThePowerUpDownExplanation,
   tutorialWhatAreTheKindOfPowerUpsThatYouCanUse,
-  tutorialWhatAreTheKindOfPowerDownsThatYouCanUse
+  tutorialWhatAreTheKindOfPowerDownsThatYouCanUse,
+  tutoralWhereToSeeThePowerUpsAndPowerDownsOnThePc,
+  tutoralWhereToSeeThePowerUpsAndPowerDownsOnThePhone
 ]
 views.forEach(function (val) {
   viewsMap[val.path] = val.view

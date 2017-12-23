@@ -111,3 +111,17 @@ input[type=checkbox] {
 input[type=checkbox]:checked + label {
     left: 43px;
 }
+
+.social_media .icons{
+    max-width: 128px;
+    min-width: 128px;
+}
+
+.twitter {
+    padding-top: 30%;
+}
+
+.facebook{
+    padding-top: 50%;
+}
+

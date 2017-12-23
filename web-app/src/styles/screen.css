@@ -4,6 +4,7 @@ body{
     padding: 0px;
     background-color: #0C141F;
     overflow: hidden;
+    letter-spacing: 2px;
 }
 
 * {
