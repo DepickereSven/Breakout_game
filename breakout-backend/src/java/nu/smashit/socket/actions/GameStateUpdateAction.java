@@ -74,7 +74,9 @@ public class GameStateUpdateAction implements ResponseAction {
     }
 
     public void clearPowers() {
-        powers.clear();
+        if (powers != null) {
+            powers.clear();
+        }
     }
 
     public void reverseState() {
