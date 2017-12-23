@@ -1,5 +1,6 @@
 const path = 'stats.html'
 const ScoresRequestAction = require('../actions/scores_request')
+const state = require('../global_state')
 exports.path = path
 
 exports.view = class StatsView {
@@ -55,6 +56,7 @@ exports.view = class StatsView {
   }
 
   setScores (scores) {
+    state.get('stats', false)
     this.scores = scores.sort((a, b) => {
       if (a.points === b.points) {
         return a.time - b.time
@@ -66,7 +68,10 @@ exports.view = class StatsView {
   }
 
   onLoad () {
-    window.wsClient.send(ScoresRequestAction.create())
+    if (state.get('stats') === undefined || state.get('state') === false) {
+      window.wsClient.send(ScoresRequestAction.create())
+      window.viewManager.go('loading.html')
+    }
   }
 
   onUnload () {}
