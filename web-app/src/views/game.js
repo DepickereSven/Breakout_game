@@ -11,8 +11,8 @@ const backgroundMusic = require('../music_controller')
 const path = 'game.html'
 exports.path = path
 
-const photoArrayAndroid = ['A1.jpg', 'A2.jpg']
-const phototArrayPC = ['PC1.jpeg']
+const photoArrayAndroid = ['A1.jpg', 'A2.jpg', 'A3.jpg']
+const phototArrayPC = ['PC1.jpeg', 'PC2.jpg']
 
 exports.view = class GameView {
   constructor (viewManager) {
@@ -113,18 +113,17 @@ exports.view = class GameView {
   setGameBackground () {
     let photo = ''
     if (constants.IS_ANDROID_APP) {
-      photo = photoArrayAndroid[random.numberGenerator(1)]
+      photo = photoArrayAndroid[random.numberGenerator(2)]
     } else {
-      photo = phototArrayPC[random.numberGenerator(0)]
+      photo = phototArrayPC[random.numberGenerator(1)]
     }
     $('#game_container')
       .parent().css({
         'background-image': `url(images/backgrounds/${photo})`,
         'background-size': 'cover',
-        'backgroud-position': 'center'
+        'background-position': 'center'
       })
   }
-
   onLoad () {
     createSketch()
     this.setGameBackground()
