@@ -5,6 +5,10 @@
     overflow: auto;
 }
 
+.privacy_gdpr *{
+    max-width: 800px;
+}
+
 .privacy_gdpr h2, .privacy_gdpr small{
     text-align: center;
 }

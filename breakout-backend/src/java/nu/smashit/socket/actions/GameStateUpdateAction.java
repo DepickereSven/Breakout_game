@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nu.smashit.socket.actions;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -16,8 +11,6 @@ import java.util.Set;
 import nu.smashit.core.bodies.Ball;
 import nu.smashit.core.bodies.Brick;
 import nu.smashit.core.bodies.Paddle;
-import nu.smashit.core.power.Power;
-import org.jboss.weld.util.collections.ArraySet;
 
 /**
  *

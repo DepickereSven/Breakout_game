@@ -11,7 +11,7 @@ public abstract class Power {
     public final int powerID;
     private int time;
     private static final int DURATION = 500;
-    protected static final int TRANSITION = 25;
+    protected static final int TRANSITION = 20;
     public final boolean multiplePlayers;
     private final Set<Player> players;
 
