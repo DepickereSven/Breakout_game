@@ -15,7 +15,7 @@ public class SingleplayerLoop extends GameLoop {
                 Repositories.getLevelRepository().getDifficulty(level)
         ));
         double speedBall = Repositories.getLevelRepository().getDifficulty(gm.getLevel()).getSpeedBall();
-        super.setBall(new Ball(speedBall));
+        super.setBall(new Ball((int) speedBall));
     }
 
     @Override
