@@ -1,6 +1,7 @@
 package nu.smashit.core;
 
 // @author Jonas
+import nu.smashit.core.bodies.Ball;
 import nu.smashit.core.bodies.Field;
 import nu.smashit.data.Repositories;
 import nu.smashit.socket.actions.GameLossAction;
@@ -13,6 +14,8 @@ public class SingleplayerLoop extends GameLoop {
         super(gm, Field.getSingleplayerInstance(
                 Repositories.getLevelRepository().getDifficulty(level)
         ));
+        double speedBall = Repositories.getLevelRepository().getDifficulty(gm.getLevel()).getSpeedBall();
+        super.setBall(new Ball(speedBall));
     }
 
     @Override

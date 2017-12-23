@@ -1,6 +1,7 @@
 package nu.smashit.core;
 
 // @author Jonas
+import nu.smashit.core.bodies.Ball;
 import nu.smashit.core.bodies.Field;
 import nu.smashit.data.Repositories;
 import nu.smashit.data.dataobjects.Score;
@@ -14,8 +15,11 @@ import nu.smashit.socket.actions.UpdateSmashbitAction;
 
 public class MultiplayerLoop extends GameLoop {
 
+    private static final int SPEED_BALL_MULTIPLAYER = -9;
+    
     public MultiplayerLoop(MultiplayerGame gm) {
         super(gm, Field.getMultiplayerInstance());
+        setBall(new Ball(SPEED_BALL_MULTIPLAYER));
     }
 
     @Override

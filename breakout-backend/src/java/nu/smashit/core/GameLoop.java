@@ -36,8 +36,6 @@ public abstract class GameLoop extends TimerTask {
         this.field = field;
         this.powers = new HashSet<>();
         this.brickHits = 0;
-        double speedBall = Repositories.getLevelRepository().getDifficulty(gm.getLevel()).getSpeedBall();
-        setBall(new Ball(speedBall));
         setInitRun(false);
         setLastPlayerToHitPaddle(gm.getPlayers()[0]);
     }
