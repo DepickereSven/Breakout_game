@@ -7,11 +7,17 @@
     margin:0;
 }
 
+@keyframes breath{
+    0% { transform: scale(0.8) }
+    50% { transform: scale(1) }
+    100% { transform: scale(0.8) }
+}
 
 .modes_menu_container h1 img{
     display: block;
     margin: 0 auto;
     max-width: 200px;
+    animation: breath 1.5s linear infinite;
 }
 
 .modes_menu_container h2:first-of-type{

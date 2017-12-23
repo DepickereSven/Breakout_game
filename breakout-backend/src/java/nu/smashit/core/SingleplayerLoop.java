@@ -1,7 +1,6 @@
 package nu.smashit.core;
 
 // @author Jonas
-import nu.smashit.core.bodies.Ball;
 import nu.smashit.core.bodies.Field;
 import nu.smashit.data.Repositories;
 import nu.smashit.socket.actions.GameLossAction;

@@ -9,12 +9,14 @@ import static org.junit.Assert.*;
  */
 public class TestBall {
 
+    private static final int Y_START_POS = 5;
+    
     public TestBall() {
     }
 
     @Test
     public void testBallInverseHorSpeed() {
-        Ball ball = new Ball();
+        Ball ball = new Ball(Y_START_POS);
         assertTrue(ball.isGoingUp());
         assertTrue(ball.isGoingLeft());
 
@@ -29,7 +31,7 @@ public class TestBall {
 
     @Test
     public void testBallInverseVerSpeed() {
-        Ball ball = new Ball();
+        Ball ball = new Ball(Y_START_POS);
         assertTrue(ball.isGoingUp());
         assertTrue(ball.isGoingLeft());
 
@@ -44,11 +46,11 @@ public class TestBall {
 
     @Test
     public void testMoveBall() {
-        Ball ball = new Ball();
+        Ball ball = new Ball(Y_START_POS);
 
         ball.move();
-        int expectedNewX = Ball.X_START_POS + (int) (ball.getDxStartValue() * Ball.MULTIPLIER);
-        int expectedNewY = Ball.Y_START_POS + (int) (ball.getDyStartValue() * Ball.MULTIPLIER);
+        int expectedNewX = Y_START_POS + (int) (ball.getDxStartValue() * Ball.MULTIPLIER);
+        int expectedNewY = Y_START_POS + (int) (ball.getDyStartValue() * Ball.MULTIPLIER);
         assertEquals(ball.getX(), expectedNewX);
         assertEquals(ball.getY(), expectedNewY);
 
@@ -61,11 +63,11 @@ public class TestBall {
 
     @Test
     public void testMoveBallAndInverseSpeed() {
-        Ball ball = new Ball();
+        Ball ball = new Ball(Y_START_POS);
 
         ball.move();
-        int expectedNewX = Ball.X_START_POS + (int) (ball.getDxStartValue() * Ball.MULTIPLIER);
-        int expectedNewY = Ball.Y_START_POS + (int) (ball.getDyStartValue() * Ball.MULTIPLIER);
+        int expectedNewX = Y_START_POS + (int) (ball.getDxStartValue() * Ball.MULTIPLIER);
+        int expectedNewY = Y_START_POS + (int) (ball.getDyStartValue() * Ball.MULTIPLIER);
         assertEquals(ball.getX(), expectedNewX);
         assertEquals(ball.getY(), expectedNewY);
         assertTrue(ball.isGoingLeft());

@@ -18,7 +18,7 @@ exports.view = class LoadingView {
     if (state.get('tutorial') === undefined) {
       this.startFirstLevel()
     } else {
-      this.viewManager.go('singleplayer_menu.html')
+      this.viewManager.goHome()
     }
   }
 

@@ -112,9 +112,9 @@ exports.view = class GameView {
   setGameBackground () {
     let photo = ''
     if (constants.IS_ANDROID_APP) {
-      photo = photoArrayAndroid[utils.randomInRange(0,photoArrayAndroid.length -1)]
+      photo = photoArrayAndroid[utils.randomInRange(0, photoArrayAndroid.length - 1)]
     } else {
-      photo = phototArrayPC[utils.randomInRange(0,phototArrayPC.length -1)]
+      photo = phototArrayPC[utils.randomInRange(0, phototArrayPC.length - 1)]
     }
     $('#game_container')
       .parent().css({

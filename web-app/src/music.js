@@ -26,7 +26,7 @@ exports.controleState = function (stateOfSound) {
 }
 
 exports.playBackground = function () {
-  const snd = backgroundMusic[utils.randomInRange(0,backgroundMusic.length -1)][0]
+  const snd = backgroundMusic[utils.randomInRange(0, backgroundMusic.length - 1)][0]
   snd.volume = (0.45)
   if (snd) {
     snd.play()
