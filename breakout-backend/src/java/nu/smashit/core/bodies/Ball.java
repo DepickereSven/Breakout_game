@@ -34,12 +34,22 @@ public class Ball extends MovableBody {
 
     public Ball(int yStartPos, double speedBall) {
         super(X_START_POS, yStartPos, WIDTH, HEIGHT);
-        setDyStartValue(speedBall);
+        if (yStartPos == Y_START_POS_TOP) {
+            dyStartValue = Math.abs(speedBall);
+        } else {
+            dyStartValue = -Math.abs(speedBall);
+        }
         this.reset();
     }
 
     public void resetToPos(int yStartPos) {
-        this.setY(yStartPos);
+        if (yStartPos == Y_START_POS_TOP) {
+            dyStartValue = Math.abs(dyStartValue);
+        } else {
+            dyStartValue = -Math.abs(dyStartValue);
+        }
+        reset();
+        setY(yStartPos);
     }
 
     @Override
@@ -98,7 +108,7 @@ public class Ball extends MovableBody {
 
     @JsonIgnore
     public double getDxStartValue() {
-        return getDyStartValue() / 3;
+        return Math.abs(getDyStartValue()) / 3;
     }
 
     public void setDx(double dx) {

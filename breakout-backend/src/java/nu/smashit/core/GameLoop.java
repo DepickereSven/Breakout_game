@@ -37,19 +37,19 @@ public abstract class GameLoop extends TimerTask {
         this.field = field;
         this.powers = new HashSet<>();
         this.brickHits = 0;
-        double speedBall = Repositories.getLevelRepository().getDifficulty(gm.getLevel()).getSpeedBall();
 
-        int startPos;
-        if (gm.getPlayers().length > 1) {
+        if (gm instanceof MultiplayerGame) {
+            int startPos;
             if ((new Random()).nextInt(2) == 0) {
                 startPos = Ball.Y_START_POS_BOTTOM;
             } else {
                 startPos = Ball.Y_START_POS_TOP;
             }
+            setBall(new Ball(startPos, MultiplayerLoop.SPEED_BALL_MULTIPLAYER));
         } else {
-            startPos = Ball.Y_START_POS_BOTTOM;
+            double speedBall = Repositories.getLevelRepository().getDifficulty(gm.getLevel()).getSpeedBall();
+            setBall(new Ball(Ball.Y_START_POS_BOTTOM, speedBall));
         }
-        setBall(new Ball(startPos, speedBall));
 
         setInitRun(false);
         setLastPlayerToHitPaddle(gm.getPlayers()[0]);
