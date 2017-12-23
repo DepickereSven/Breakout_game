@@ -16,7 +16,7 @@ exports.view = class LoadingView {
     if (state.get('tutorial') === undefined) {
       this.viewManager.go('powerUpExplanation.html')
     } else {
-      this.viewManager.go('singleplayer_menu.html')
+      this.viewManager.goHome()
     }
   }
   onLoad () {
