@@ -4,7 +4,6 @@ const MovePaddleStopAction = require('../actions/move_paddle_stop')
 const { createSketch } = require('../sketch')
 const { powerTypes, getPowerImg } = require('../powers')
 const utils = require('../utils')
-const random = require('../randomNumber')
 const constants = require('../constants')
 const backgroundMusic = require('../music_controller')
 
@@ -113,9 +112,9 @@ exports.view = class GameView {
   setGameBackground () {
     let photo = ''
     if (constants.IS_ANDROID_APP) {
-      photo = photoArrayAndroid[random.numberGenerator(2)]
+      photo = photoArrayAndroid[utils.randomInRange(0,photoArrayAndroid.length -1)]
     } else {
-      photo = phototArrayPC[random.numberGenerator(1)]
+      photo = phototArrayPC[utils.randomInRange(0,phototArrayPC.length -1)]
     }
     $('#game_container')
       .parent().css({
