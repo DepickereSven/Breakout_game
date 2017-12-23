@@ -18,6 +18,7 @@ public class TestBall {
     public void testBallInverseHorSpeed() {
         Ball ball = new Ball(Y_START_POS);
         assertTrue(ball.isGoingUp());
+        ball.goLeft();
         assertTrue(ball.isGoingLeft());
 
         ball.inverseHorSpeed();
@@ -33,6 +34,7 @@ public class TestBall {
     public void testBallInverseVerSpeed() {
         Ball ball = new Ball(Y_START_POS);
         assertTrue(ball.isGoingUp());
+        ball.goLeft();
         assertTrue(ball.isGoingLeft());
 
         ball.inverseVerSpeed();
@@ -49,7 +51,7 @@ public class TestBall {
         Ball ball = new Ball(Y_START_POS);
 
         ball.move();
-        int expectedNewX = Y_START_POS + (int) (ball.getDxStartValue() * Ball.MULTIPLIER);
+        int expectedNewX = Ball.X_START_POS + (int) (ball.getDxStartValue() * Ball.MULTIPLIER);
         int expectedNewY = Y_START_POS + (int) (ball.getDyStartValue() * Ball.MULTIPLIER);
         assertEquals(ball.getX(), expectedNewX);
         assertEquals(ball.getY(), expectedNewY);
@@ -66,16 +68,17 @@ public class TestBall {
         Ball ball = new Ball(Y_START_POS);
 
         ball.move();
-        int expectedNewX = Y_START_POS + (int) (ball.getDxStartValue() * Ball.MULTIPLIER);
+        int expectedNewX = Ball.X_START_POS + (int) (ball.getDxStartValue() * Ball.MULTIPLIER);
         int expectedNewY = Y_START_POS + (int) (ball.getDyStartValue() * Ball.MULTIPLIER);
         assertEquals(ball.getX(), expectedNewX);
         assertEquals(ball.getY(), expectedNewY);
+        ball.goLeft();
         assertTrue(ball.isGoingLeft());
         assertTrue(ball.isGoingUp());
 
         ball.inverseHorSpeed();
         ball.move();
-        expectedNewX = expectedNewX - (int) (ball.getDxStartValue() * Ball.MULTIPLIER);
+        expectedNewX = expectedNewX + (int) (ball.getDxStartValue() * Ball.MULTIPLIER);
         expectedNewY = expectedNewY + (int) (ball.getDyStartValue() * Ball.MULTIPLIER);
         assertEquals(ball.getX(), expectedNewX);
         assertEquals(ball.getY(), expectedNewY);
@@ -84,7 +87,7 @@ public class TestBall {
 
         ball.inverseVerSpeed();
         ball.move();
-        expectedNewX = expectedNewX - (int) (ball.getDxStartValue() * Ball.MULTIPLIER);
+        expectedNewX = expectedNewX + (int) (ball.getDxStartValue() * Ball.MULTIPLIER);
         expectedNewY = expectedNewY - (int) (ball.getDyStartValue() * Ball.MULTIPLIER);
         assertEquals(ball.getX(), expectedNewX);
         assertEquals(ball.getY(), expectedNewY);
