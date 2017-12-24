@@ -108,6 +108,7 @@
 .container-tutorial .press{
     display: flex;
     height: 100%;
+    max-height: 611px;
 }
 
 .container-tutorial .press p{

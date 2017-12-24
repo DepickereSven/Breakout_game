@@ -12,8 +12,8 @@ exports.view = class LoadingView {
     this.nextPage = this.nextPage.bind(this)
   }
   nextPage (e) {
-    state.set('multi-tut', true)
     this.viewManager.goHome()
+    state.set('multi-tut', true)
   }
   onLoad () {
     if (constants.IS_TOUCH_SCREEN) {

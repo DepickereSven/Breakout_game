@@ -25,9 +25,11 @@ exports.view = class PickModeView {
   onLoad () {
     $(this.logoutFromGooglePlay).on('click', signOut)
     $(this.multi).on('click', this.nextPage)
+    $(window).off('touchend')
   }
 
   onUnload () {
     $(this.logoutFromGooglePlay).off('click')
+    $(this.multi).off('click')
   }
 }
