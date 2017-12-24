@@ -112,20 +112,31 @@ public class MainActivity extends Activity {
         });
         view.loadUrl(myURL);
         view.addJavascriptInterface(new WebViewJavaScriptInterface(this), "SmashIt");
-        if (account == null) {
-            Log.d(TAG, "not logged in");
-        } else {
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Log.d(TAG, "onConsoleMessage url: " + view.getUrl());
-                    makeToastForLogInOrLogOut(true, account.getDisplayName());
-                    injectSignInTokenCall(account.getIdToken());
-                }
+//        if (account == null) {
+//            Log.d(TAG, "not logged in");
+//        } else {
+//
+//        }
+        mGoogleSignInClient.silentSignIn()
+                .addOnCompleteListener(this, new OnCompleteListener<GoogleSignInAccount>() {
+                    @Override
+                    public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
+                        handleSignInResult(task);
+                    }
+                });
+    }
 
-            }, 4000);
-        }
+    private void setUpForLoginToAndroid () {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "onConsoleMessage url: " + view.getUrl());
+                makeToastForLogInOrLogOut(true, account.getDisplayName());
+                injectSignInTokenCall(account.getIdToken());
+            }
+
+        }, 4000);
     }
 
     private class MyBrowser extends WebViewClient {
