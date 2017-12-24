@@ -125,3 +125,10 @@ input[type=checkbox]:checked + label {
     padding-top: 50%;
 }
 
+.container.global_settings.credits p{
+    text-align: center;
+}
+
+.container.global_settings.credits{
+    overflow: auto;
+}
