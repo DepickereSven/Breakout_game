@@ -27,6 +27,7 @@ import android.widget.VideoView;
 import android.widget.ViewAnimator;
 import android.widget.ViewSwitcher;
 
+import com.github.javiersantos.appupdater.AppUpdater;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -40,7 +41,7 @@ import com.google.zxing.integration.android.IntentResult;
 import static android.content.ContentValues.TAG;
 
 public class MainActivity extends Activity {
-    private String myURL = "http://smash-it.nu";
+    private String myURL = "file:///android_asset/www/index.html";
     VideoView videoView;
     ViewSwitcher viewSwitcher;
     private WebView view;
@@ -63,10 +64,10 @@ public class MainActivity extends Activity {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.CAMERA}, 1);
         }
         //TODO create icon for app updater
-//        AppUpdater appUpdater = new AppUpdater(this)
-//                .setDisplay(com.github.javiersantos.appupdater.enums.Display.NOTIFICATION)
-//                .setIcon(R.drawable.ic_update3);
-//        appUpdater.start();
+        AppUpdater appUpdater = new AppUpdater(this)
+                .setDisplay(com.github.javiersantos.appupdater.enums.Display.NOTIFICATION)
+                .setIcon(R.drawable.ic_update3);
+        appUpdater.start();
         try {
             viewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher);
             final VideoView videoView = (VideoView) findViewById(R.id.videoView);
@@ -107,28 +108,18 @@ public class MainActivity extends Activity {
         view.setWebChromeClient(new WebChromeClient() {
             public void onConsoleMessage(String message, int lineNumber, String sourceID) {
                 Log.d(TAG, "onConsoleMessage: " + message + sourceID);
-//                Toast.makeText(getBaseContext(), "succes", Toast.LENGTH_SHORT).show();
-                //TODO add here logs if something need to pop-up as toast
-//                if (sourceID.equals("file:///android_asset/www/assets/www/index.html") && lineNumber == 37) {
-//                    Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
-//                }
-//                if (sourceID.equals("file:///android_asset/www/assets/www/index.html") && lineNumber == 38) {
-//                    if (!message.isEmpty()) {
-//                        Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
-//                    }
-//                }
             }
         });
         view.loadUrl(myURL);
         view.addJavascriptInterface(new WebViewJavaScriptInterface(this), "SmashIt");
         if (account == null) {
             Log.d(TAG, "not logged in");
-//            startSignForGooglePlay();
         } else {
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    Log.d(TAG, "onConsoleMessage url: " + view.getUrl());
                     makeToastForLogInOrLogOut(true, account.getDisplayName());
                     injectSignInTokenCall(account.getIdToken());
                 }
@@ -142,7 +133,7 @@ public class MainActivity extends Activity {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (url.startsWith("tel:") || url.startsWith("sms:") || url.startsWith("smsto:") || url.startsWith("mailto:") || url.startsWith("mms:") || url.startsWith("mmsto:") || url.startsWith("market:") || url.startsWith("https://youtu.be/") || url.startsWith("https://www.linkedin.com/")) {
+            if (url.startsWith("tel:") || url.startsWith("sms:") || url.startsWith("smsto:") || url.startsWith("mailto:") || url.startsWith("mms:") || url.startsWith("mmsto:") || url.startsWith("market:") || url.startsWith("https://www.youtube.com") || url.startsWith("https://www.linkedin.com/") || url.startsWith("https://unsplash.com") || url.startsWith("https://www.pexels") || url.startsWith("https://www.freepik.com") || url.startsWith("https://www.flaticon.com") || url.startsWith("https://twitter.com") || url.startsWith("https://www.facebook.com")) {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 startActivity(intent);
                 return true;
@@ -210,7 +201,7 @@ public class MainActivity extends Activity {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             injectSignInTokenCall(account.getIdToken());
-            Log.d(TAG,"get Token " + account.getIdToken());
+            Log.d(TAG, "get Token " + account.getIdToken());
             makeToastForLogInOrLogOut(true, account.getDisplayName());
         } catch (ApiException e) {
             Log.w(TAG, "wingcrony signInResult:failed code=" + e.getStatusCode());
@@ -262,6 +253,7 @@ public class MainActivity extends Activity {
 
         @JavascriptInterface
         public void logInToAndroid() {
+            Log.d(TAG,"onConsoleMessage I am triggered from JS");
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -276,6 +268,7 @@ public class MainActivity extends Activity {
     }
 
     public void injectSignInTokenCall(String idToken) {
+        Log.d(TAG, "onConsoleMessage I will be sending the code to JS" + idToken);
         view.loadUrl("javascript:" + "window.onAndroidSignIn('" + idToken + "')");
     }
 
@@ -292,7 +285,7 @@ public class MainActivity extends Activity {
     }
 
     public void openSharing(String code) {
-        String message = "Come and Smash It with me, my code is: " + code;
+        String message = "Come play breakout on Smash It, my code is: " + code;
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("text/plain");
         share.putExtra(Intent.EXTRA_TEXT, message);
@@ -301,7 +294,7 @@ public class MainActivity extends Activity {
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK) && view.canGoBack()) {
-            view.goBack(); //method goback()
+            view.goBack();
             return true;
         }
         return super.onKeyDown(keyCode, event);
