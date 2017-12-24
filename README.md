@@ -1,13 +1,8 @@
 # Breakout
 
 
-**How to install / play Smash-It?**
+**How to play Smash-It?**
 
-Install the android APK [located here](android-app/)
-
-When you placed the APK file on your Android device.
-
-Go to settings (on your android device) -> Security the turn Unknow sources on.
-
+Go to [Google Play](https://play.google.com/store/apps/details?id=me.smash_it.smashit)
 -> or visit [Smash-It](http://www.smash-it.nu) 
 
