@@ -8,7 +8,6 @@ exports.view = class LoadingView {
     this.path = path
     this.hideHeader = true
     this.viewManager = viewManager
-    this.body = 'body'
     this.nextPage = this.nextPage.bind(this)
   }
   nextPage (e) {
@@ -23,7 +22,7 @@ exports.view = class LoadingView {
   }
 
   onUnload () {
-    $(this.body).off('click')
-    $(this.body).off('touchend')
+    $(window).off('click')
+    $(window).off('touchend')
   }
 }
