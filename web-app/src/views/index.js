@@ -37,8 +37,13 @@ const tutorialPowerUpsPowerDownTutorial = require('./tutorial_PowerUpsPowerDowns
 const tutorialAboutThePowerUpDownExplanation = require('./powerUpPowerDownExplanation')
 const tutorialWhatAreTheKindOfPowerUpsThatYouCanUse = require('./tutorial_whatKindOfPowerUps')
 const tutorialWhatAreTheKindOfPowerDownsThatYouCanUse = require('./tutorialWhatKindOfPowerDowns')
-const tutoralWhereToSeeThePowerUpsAndPowerDownsOnThePc = require('./whereToSeeThePowerUpsAndPowerDownsPc')
-const tutoralWhereToSeeThePowerUpsAndPowerDownsOnThePhone = require('./whereToSeeThePowerUpsAndPowerDownsPhone')
+const tutorialWhereToSeeThePowerUpsAndPowerDownsOnThePc = require('./whereToSeeThePowerUpsAndPowerDownsPc')
+const tutorialWhereToSeeThePowerUpsAndPowerDownsOnThePhone = require('./whereToSeeThePowerUpsAndPowerDownsPhone')
+const tutorialForMulti = require('./tutorialMulti')
+const tutorialGameLookPc = require('./tutorialGameLookPc')
+const tutorialGameLookPhone = require('./tutorialGameLookPhone')
+const tutorialWhatDoYouNeedToDoToWin = require('./tutorialWhatDoYouNeedToWin')
+const tutorialInfoAboutTheGameOptionsInMulti = require('./tutorialGameOptions')
 
 const viewsMap = {}
 const views = [
@@ -78,8 +83,13 @@ const views = [
   tutorialAboutThePowerUpDownExplanation,
   tutorialWhatAreTheKindOfPowerUpsThatYouCanUse,
   tutorialWhatAreTheKindOfPowerDownsThatYouCanUse,
-  tutoralWhereToSeeThePowerUpsAndPowerDownsOnThePc,
-  tutoralWhereToSeeThePowerUpsAndPowerDownsOnThePhone
+  tutorialWhereToSeeThePowerUpsAndPowerDownsOnThePc,
+  tutorialWhereToSeeThePowerUpsAndPowerDownsOnThePhone,
+  tutorialForMulti,
+  tutorialGameLookPc,
+  tutorialGameLookPhone,
+  tutorialWhatDoYouNeedToDoToWin,
+  tutorialInfoAboutTheGameOptionsInMulti
 ]
 views.forEach(function (val) {
   viewsMap[val.path] = val.view

@@ -156,3 +156,16 @@
 .container-tutorial .power-tutorial{
     flex: 1;
 }
+
+.container-tutorial .parent-data-tutorial ul{
+    text-align: left;
+}
+
+.photo-multi-pc{
+    width: 50%;
+}
+
+.photo-multi-phone{
+    height: 30%;
+    max-height: 350px;
+}
