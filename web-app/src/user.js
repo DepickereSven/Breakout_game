@@ -12,8 +12,8 @@ exports.User = class User {
     this.smashbit = smashbit
   }
 
-  setSmashbit(smashbit){
-    this.smashbit = smashbit;
+  setSmashbit (smashbit) {
+    this.smashbit = smashbit
   }
 }
 
